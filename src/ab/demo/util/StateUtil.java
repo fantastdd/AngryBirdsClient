@@ -29,7 +29,6 @@ public class StateUtil {
      * */
 	public static  GameState  checkCurrentState(Proxy proxy)
 	{
-	    System.out.println("check the game state:     ");
 		 byte[] imageBytes = proxy.send(new ProxyScreenshotMessage());
 		
 	        BufferedImage image = null;
@@ -38,6 +37,14 @@ public class StateUtil {
 	        } catch (IOException e) {
 	          
 	        }
+	        GameStateExtractor gameStateExtractor = new GameStateExtractor();
+	        GameStateExtractor.GameState state = gameStateExtractor.getGameState(image);
+	        System.out.println("the game state is :     " + state);
+		  return state;
+	}
+	public static  GameState  checkCurrentState(BufferedImage image)
+	{
+		 
 	        GameStateExtractor gameStateExtractor = new GameStateExtractor();
 	        GameStateExtractor.GameState state = gameStateExtractor.getGameState(image);
 	        System.out.println("the game state is :     " + state);

@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 
 import Jama.Matrix;
 import ab.demo.other.ActionRobot;
+import ab.demo.util.StateUtil;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyScreenshotMessage;
 import ab.utils.ShowDebuggingImage;
@@ -154,7 +155,7 @@ public class TestVision implements Runnable {
 
 		ShowDebuggingImage frame = null;
 		BufferedImage screenshot = null;
-
+		StateUtil stateUtil = new StateUtil();
 		// check command line arguments
 		if (args.length > 1) {
 			System.err.println("  USAGE: java TestVision [(<directory> | <image>)]");
@@ -163,7 +164,7 @@ public class TestVision implements Runnable {
 
 		// connect to game proxy if no arguments given
 		if (args.length == 0) {
-
+			GameStateExtractor gameStateExtractor = new GameStateExtractor();
 			Proxy game = getGameConnection(9000);
 
 			while (true) {
@@ -175,10 +176,12 @@ public class TestVision implements Runnable {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
+				System.out.println(" The game state is : " + gameStateExtractor.getGameState(screenshot));
+		
 				// analyse and show image
 				int[][] meta = computeMetaInformation(screenshot);
 				screenshot = analyseScreenShot(screenshot);
+				
 				if (frame == null) {
 					frame = new ShowDebuggingImage("TestVision", screenshot,
 							meta);
@@ -239,16 +242,21 @@ public class TestVision implements Runnable {
 
 		frame.close();
 	}
+	//add for LoadLevel Agent
+
 	@Override
 	public void run() {
 		ShowDebuggingImage frame = null;
 		BufferedImage screenshot = null;
+		
+       
 		while (true) {
 			// capture an image
 		    screenshot = ActionRobot.doScreenShot();
 			// analyse and show image
 			int[][] meta = computeMetaInformation(screenshot);
 			screenshot = analyseScreenShot(screenshot);
+			
 			if (frame == null) {
 
 				frame = new ShowDebuggingImage("TestVision", screenshot,

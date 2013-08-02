@@ -1,5 +1,5 @@
 /*****************************************************************************
- ** ANGRYBIRDS AI AGENT FRAMEWORK
+a ** ANGRYBIRDS AI AGENT FRAMEWORK
  ** Copyright (c) 2013,XiaoYu (Gary) Ge, Stephen Gould,Jochen Renz
  **  Sahan Abeyasinghe, Jim Keys, Kar-Wai Lim, Zain Mubashir,  Andrew Wang, Peng Zhang
  ** All rights reserved.
@@ -156,13 +156,13 @@ public class ActionRobot {
 		}
 	}
 
-	public static synchronized BufferedImage doScreenShot() {
+	public static  BufferedImage doScreenShot() {
 		byte[] imageBytes = proxy.send(new ProxyScreenshotMessage());
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(new ByteArrayInputStream(imageBytes));
 		} catch (IOException e) {
-			// do something
+			// do somethingti
 		}
 
 		return image;
@@ -172,5 +172,24 @@ public class ActionRobot {
 		 proxy.send(new ProxyScreenshotMessage());
 	}
 
-
+	public static void main(String args[])
+	{
+		ActionRobot aRobot = new ActionRobot();
+	    long time = System.currentTimeMillis();
+		ActionRobot.doScreenShot();
+		time = System.currentTimeMillis() - time;
+		System.out.println(" cost: " + time);
+		time = System.currentTimeMillis();
+		int count = 0;
+		while(count < 40)
+		{
+			ActionRobot.doScreenShot();
+			count++;
+		}
+		//System.out.println(" Num of screenshots taken within 1000 ms: " + count);
+		System.out.println(" time to take 40 screenshots" + (System.currentTimeMillis() - time));
+		System.exit(0);
+		
+	
+	}
 }

@@ -32,7 +32,7 @@ public boolean loadLevel(int i)
 	{	
 		i =( (i % 21) == 0)? 21 : i%21;
 	    
-	}
+	} 
 	System.out.println(StateUtil.checkCurrentState(proxy));
 	  loadLevel(StateUtil.checkCurrentState(proxy),i);
 
@@ -112,7 +112,8 @@ private boolean loadLevel(GameState state,int i)
 		}
 	else
 	{
-		 proxy.send(new ProxyClickMessage(54 + ((i-1)%7) * 86,110 + ((i-1)/7) * 100)); 
+		
+		proxy.send(new ProxyClickMessage(54 + ((i-1)%7) * 86,110 + ((i-1)/7) * 100)); 
 		 try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
