@@ -70,12 +70,9 @@ public class ClientNaiveAgent implements Runnable {
     /* 
      * Run the Client (Naive Agent)
      */
-	public void run() {
-		
-	
+	public void run() {	
 		ar.configure(ClientActionRobot.intToByteArray(id));
 		//load the initial level (default 1)
-		//ar.loadLevel((byte)15);
 		ar.loadLevel();
 		GameState state;
 		while (true) {
@@ -93,9 +90,7 @@ public class ClientNaiveAgent implements Runnable {
 				System.out.println("The global best score: ");
 				for (int i = 0; i < scores.length ; i ++)
 				{
-				    /*  if(scores[i] == 0)
-				    	  break;
-				      else*/
+			
 				    	  System.out.print( " level " + (i+1) + ": " + scores[i]);
 				}
 				System.out.println();
@@ -103,9 +98,7 @@ public class ClientNaiveAgent implements Runnable {
 				scores = ar.checkMyScore();
 				for (int i = 0; i < scores.length ; i ++)
 				{
-				      /*if(scores[i] == 0)
-				    	  break;
-				      else*/
+				   
 				    	  System.out.print( " level " + (i+1) + ": " + scores[i]);
 				}
 				System.out.println();
@@ -273,19 +266,7 @@ public class ClientNaiveAgent implements Runnable {
 						ar.shoot(focus_x, focus_y, (int) releasePoint.getX()
 								- focus_x, (int) releasePoint.getY() - focus_y,
 								0, tap_time, false);
-						/*
-						 * Test shoot sequence...
-						 * int[] shot_1 =  {focus_x, focus_y, (int) releasePoint.getX()
-							- focus_x, (int) releasePoint.getY() - focus_y,
-							0, tap_time};
-							int[] shot_2 =  {focus_x, focus_y, (int) releasePoint.getX()
-								- focus_x, (int) releasePoint.getY() - focus_y,
-								0, tap_time};
-							int[] shot_3 =  {focus_x, focus_y, (int) releasePoint.getX()
-								- focus_x, (int) releasePoint.getY() - focus_y,
-								0, tap_time};
-						ar.cshootSequence(shot_1,shot_2,shot_3);
-						*/
+						
 						
 						// check the state after the shot
 						state = ar.checkState();
@@ -308,45 +289,15 @@ public class ClientNaiveAgent implements Runnable {
 	private double distance(Point p1, Point p2) {
 		return Math.sqrt((double) ((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y)* (p1.y - p2.y)));
 	}
-	public void test(int... id)
-	{
-		ar.configure(ClientActionRobot.intToByteArray(id[0]));
-		while(true)
-			ar.doScreenShot();
-	/*	for (int i = 3; i < 22; i++)
-		{
-			System.out.println(" load level : " + i );
-			ar.loadLevel((byte)i);
-		}*/
-		//ar.fullyZoomIn();
-		//ar.clickInCenter();
-	/*	try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ar.clickInCenter();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ar.clickInCenter();*/
-		//ar.fullyZoomOut();
-	}
+
 	public static void main(String args[]) {
 
 		ClientNaiveAgent na;
-/*		if(args.length > 0)
-			na = new ClientNaiveAgent(args[0]);
-		else*/
-			na = new ClientNaiveAgent();
-		int id = 12345;
 		if(args.length > 0)
-			id = Integer.parseInt(args[0]) + 2;
-		//na.run();
-		na.test(id);
+			na = new ClientNaiveAgent(args[0]);
+		else
+			na = new ClientNaiveAgent();
+		na.run();
+		
 	}
 }

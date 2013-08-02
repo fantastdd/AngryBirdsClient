@@ -54,7 +54,7 @@ public class ClientMessageEncoder {
 				+ dy.length + t1.length + t2.length];
 		message = mergeArray(
 				new byte[] { ClientMessageTable
-						.getValue(ClientMessageTable.cFastshoot) },
+						.getValue(ClientMessageTable.cshoot) },
 				fx, fy, dx, dy, t1, t2);
 		return message;
 
