@@ -444,11 +444,6 @@ public class Vision {
 			// confirm secondary colour 510
 			obj = VisionUtils.dialateRectangle(obj, 2, 2);
 			obj = VisionUtils.cropBoundingBox(obj, _nWidth, _nHeight);
-			   // remove objects too high or too low in the image 
-			// (probably false positives)
-			if ((obj.y < 60) || (obj.y > 385)) {
-				continue;
-		                     }
 			int[] hist = histogram(obj);
 			if (hist[510] > 0 && hist[508] > 0) {
 				objects.add(obj);

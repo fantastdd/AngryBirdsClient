@@ -83,7 +83,7 @@ public void shoot(final Proxy proxy,List<Shot> csc)
 					e.printStackTrace();
 					}
 					   long _time = System.nanoTime();
-					   System.out.println(" waiting time:" + (time - _time));
+					   System.out.println(" waiting time:¡¡" + (time - _time));
 					   proxy.send(new ProxyDragMessage(_shot.getX(),_shot.getY(),_shot.getDx(),_shot.getDy()));
 				   }
 				   else {

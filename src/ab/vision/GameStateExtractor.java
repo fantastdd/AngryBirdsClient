@@ -36,8 +36,7 @@ public class GameStateExtractor {
 	private static BufferedImage _levelselection = null;
 	private static BufferedImage _loading = null;
 	private static BufferedImage _loading2 = null;
-	private static BufferedImage _gamewon1 = null;
-	private static BufferedImage _gamewon2 = null;
+	private static BufferedImage _gamewon = null;
 	private static BufferedImage _gamelost = null;
 
 	// images for classifying end game score
@@ -73,10 +72,8 @@ public class GameStateExtractor {
 					"resources/loading.png"));
 			_loading2 = ImageIO.read(getClass().getResource(
 					"resources/loading2.png"));
-			_gamewon1 = ImageIO.read(getClass().getResource(
-					"resources/gamewon1.png"));
-			_gamewon2 = ImageIO.read(getClass().getResource(
-					"resources/gamewon2.png"));
+			_gamewon = ImageIO.read(getClass().getResource(
+					"resources/gamewon.png"));
 			_gamelost = ImageIO.read(getClass().getResource(
 					"resources/gamelost.png"));
 			_endGame0 = ImageIO.read(getClass().getResource(
@@ -132,14 +129,12 @@ public class GameStateExtractor {
 			return GameState.LOADING;
 		}
 		// otherwise check for end game or playing
-		wnd = screenshot.getSubimage(467, 350, 61, 60);
+		wnd = screenshot.getSubimage(320, 58, 192, 26);
 		numBytes = 3 * wnd.getWidth() * wnd.getHeight();
-		if (VisionUtils.imageDifference(wnd, _gamewon1) < numBytes
-				* avgColourThreshold || VisionUtils.imageDifference(wnd, _gamewon2) < numBytes
+		if (VisionUtils.imageDifference(wnd, _gamewon) < numBytes
 				* avgColourThreshold) {
 			return GameState.WON;
 		}
-	
 
 		wnd = screenshot.getSubimage(320, 112, 192, 26);
 		numBytes = 3 * wnd.getWidth() * wnd.getHeight();
