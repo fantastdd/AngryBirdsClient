@@ -155,6 +155,17 @@ public class ActionRobot {
 			e.printStackTrace();
 		}
 	}
+	public void fullyZoomIn() 
+	{
+		for (int k = 0; k < 10; k++) {
+			proxy.send(new ProxyMouseWheelMessage(1));
+		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static  BufferedImage doScreenShot() {
 		byte[] imageBytes = proxy.send(new ProxyScreenshotMessage());

@@ -26,21 +26,21 @@ import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
 import ab.vision.Vision;
 
-public class NaiveAgent implements Runnable {
+public class NaiveAgentTimeLimit implements Runnable {
 
 	private int focus_x;
 	private int focus_y;
 
 	private ActionRobot ar;
-	public int currentLevel = 19;
+	public static int currentLevel = 1;
 	public static int time_limit = 12;
 	NaiveTrajectoryPlanner tp;
 
 	private boolean firstShot;
 	private Point prevTarget;
-
+	private int[] scores = new int[63];
 	// a standalone implementation of the Naive Agent
-	public NaiveAgent() {
+	public NaiveAgentTimeLimit() {
 		ar = new ActionRobot();
 		tp = new NaiveTrajectoryPlanner();
 		prevTarget = null;
@@ -54,15 +54,16 @@ public class NaiveAgent implements Runnable {
 		return currentLevel;
 	}
 
-	public void setCurrent_level(int current_level) {
-		this.currentLevel = current_level;
-	}
+
 
 	// run the client
 	public void run() {
 
+		System.out.println(" Time Limit: " + time_limit + "  initial level: " + currentLevel);
 		ar.loadLevel(currentLevel);
+		long start_time = System.currentTimeMillis();
 		while (true) {
+			
 			GameState state = solve();
 			if (state == GameState.WON) {
 				try {
@@ -72,19 +73,44 @@ public class NaiveAgent implements Runnable {
 				}
 				
 				int score = StateUtil.checkCurrentScoreSafemode(ar.proxy);
-				
-				System.out.println("###### The score of level " + currentLevel + " is " + score
-						+ "########");
-				
-				ar.loadLevel(++currentLevel);
+				scores[currentLevel - 1] = score;
+				for (int i = 0; i < scores.length; i++)
+					System.out.print(" level " + (i + 1) + " : " + scores[i] + "");
+				System.out.println();
+				start_time = System.currentTimeMillis();
+				if(currentLevel == 63)
+					break;
+				else
+					ar.loadLevel(++currentLevel);
 				// make a new trajectory planner whenever a new level is entered
 				tp = new NaiveTrajectoryPlanner();
 
 				// first shot on this level, try high shot first
 				firstShot = true;
-			} else if (state == GameState.LOST) {
-				System.out.println("restart");
-				ar.restartLevel();
+			} 
+			else if (state == GameState.LOST) 
+			{
+				
+				System.out.println(" Level is lost, check the timer ");
+				long current_time = System.currentTimeMillis();
+				long lapsed_time = current_time - start_time;
+				if(lapsed_time < time_limit * 60 * 1000)
+				{
+				
+					System.out.println(" " + lapsed_time/1000 + " secs have elapsed" );
+					ar.restartLevel();
+				}
+				else
+				{
+					if(currentLevel == 63)
+						break;
+					else{
+						System.out.println(" time limit reaches, go to the next level");
+						start_time = System.currentTimeMillis();
+						ar.loadLevel(++currentLevel);
+					}
+				}
+				//ar.restartLevel();
 			} else if (state == GameState.LEVEL_SELECTION) {
 				System.out
 						.println("unexpected level selection page, go to the lasts current level : "
@@ -105,6 +131,11 @@ public class NaiveAgent implements Runnable {
 			}
 
 		}
+		System.out.println(" All 63 levels have been finished, print the scores and exit");
+		for (int i = 0; i < scores.length; i++)
+			System.out.print(" level " + (i + 1) + " : " + scores[i] + "");
+		System.out.println();
+		System.exit(0);
 
 	}
 
@@ -135,15 +166,10 @@ public class NaiveAgent implements Runnable {
 			sling = vision.findSlingshot();
 		}
 
-		List<Rectangle> red_birds = vision.findRedBirds();
-		List<Rectangle> blue_birds = vision.findBlueBirds();
-		List<Rectangle> yellow_birds = vision.findYellowBirds();
 		List<Rectangle> pigs = vision.findPigs();
-		int bird_count = 0;
-		bird_count = red_birds.size() + blue_birds.size() + yellow_birds.size();
+		
 
-		System.out.println("...found " + pigs.size() + " pigs and "
-				+ bird_count + " birds");
+		
 		GameState state = ar.checkState();
 
 		// if there is a sling, then play, otherwise just skip.
@@ -153,9 +179,7 @@ public class NaiveAgent implements Runnable {
 			int bird_type = NaiveMind.getBirdOnSlingShot(screenshot);
 			ar.fullyZoom();
 			if (!pigs.isEmpty()) {
-				
-				
-				
+
 				// Initialise a shot list
 				ArrayList<Shot> shots = new ArrayList<Shot>();
 				Point releasePoint;
@@ -218,16 +242,8 @@ public class NaiveAgent implements Runnable {
 								releasePoint);
 						System.out.println(" The release angle is : "
 								+ Math.toDegrees(releaseAngle));
-						
-					/*	
-						int base = 0;
-						if (releaseAngle > Math.PI / 4)
-							base = 1400;
-						else
-							base = 550;
-						int tap_time = (int) (base + Math.random() * 1500);*/
+					
 						int tap_time = 0;
-						
 						switch(bird_type)
 						{
 							case NaiveMind.black_bird:
@@ -298,12 +314,38 @@ public class NaiveAgent implements Runnable {
 		}
 		return state;
 	}
-
+	 public static String[] extract(String[] commands)
+	    {
+		   if(commands.length < 2)
+			   return null;
+		   else
+		   {
+			   String _option = commands[0];
+			   String _value = commands[1];
+			  
+			   if (_option.equalsIgnoreCase("-t"))
+			   {
+				   int time_limit = Integer.parseInt(_value);
+				   NaiveAgentTimeLimit.time_limit = time_limit;
+						   
+			   }
+			   else
+				   if(_option.equalsIgnoreCase("-l"))
+				   {
+					   int level = Integer.parseInt(_value);
+					   NaiveAgentTimeLimit.currentLevel = level;
+				   }
+		    String[] _commands = new String[commands.length - 2];
+		    System.arraycopy(commands, 2, _commands, 0, _commands.length);
+		    extract(_commands);
+		}
+		return null;
+		
+	    }
 	public static void main(String args[]) {
 
-		NaiveAgent na = new NaiveAgent();
-		if (args.length > 0)
-			na.currentLevel = Integer.parseInt(args[0]);
+		NaiveAgentTimeLimit na = new NaiveAgentTimeLimit();
+		extract(args);
 		na.run();
 
 	}

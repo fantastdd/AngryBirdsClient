@@ -18,7 +18,7 @@ import ab.vision.GameStateExtractor.GameState;
 public class LoadingLevelSchema {
 private Proxy proxy;
 private int current = -1;
-
+private boolean pageSwitch = false;
 // This schema is used for automatically loading levels in the Standalone version. 
 public LoadingLevelSchema(Proxy proxy)
 {
@@ -29,9 +29,14 @@ public boolean loadLevel(int i)
 {
 	
 	if(i > 21)
-	{	
-		i =( (i % 21) == 0)? 21 : i%21;
-	    
+	{	 
+		if( i == 22 || i == 43 )
+    	pageSwitch = true;
+		i =(  (i % 21) == 0)? 21 : i%21;
+	  
+	    	
+	    	
+	    	
 	} 
 	System.out.println(StateUtil.checkCurrentState(proxy));
 	  loadLevel(StateUtil.checkCurrentState(proxy),i);
@@ -63,16 +68,26 @@ private boolean loadLevel(GameState state,int i)
 	if(state == GameState.WON || state == GameState.LOST)
 	{
 	
-		if(state == GameState.WON && i >= current + 1)
+		/*if(state == GameState.WON && i >= current + 1)
 			  proxy.send(new ProxyClickMessage(500,375)); // go to the next level
-	 else { 
+*/	/*if(state == GameState.WON)*/ { 
+		 
 		 	proxy.send(new ProxyClickMessage(342,382));//Click the left most button at the end page
 		 	try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
-
+		 	if(pageSwitch)
+		 	{
+		 		 proxy.send(new ProxyClickMessage(378, 451)); 
+		 		try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+		 		pageSwitch = false;
+		 	}
 			 proxy.send(new ProxyClickMessage(54 + ((i-1)%7) * 86,110 + ((i-1)/7) * 100)); 
 		 try {
 				Thread.sleep(1000);
@@ -100,6 +115,16 @@ private boolean loadLevel(GameState state,int i)
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
+			  if(pageSwitch)
+			 	{
+			 		 proxy.send(new ProxyClickMessage(378, 451)); 
+			 		try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+			 		pageSwitch = false;
+			 	}
 				 proxy.send(new ProxyClickMessage(54 + ((i-1)%7) * 86,110 + ((i-1)/7) * 100)); 
 			  try {
 					Thread.sleep(1000);
@@ -112,7 +137,16 @@ private boolean loadLevel(GameState state,int i)
 		}
 	else
 	{
-		
+		if(pageSwitch)
+	 	{
+	 		 proxy.send(new ProxyClickMessage(378, 451)); 
+	 		try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+	 		pageSwitch = false;
+	 	}
 		proxy.send(new ProxyClickMessage(54 + ((i-1)%7) * 86,110 + ((i-1)/7) * 100)); 
 		 try {
 			Thread.sleep(1000);

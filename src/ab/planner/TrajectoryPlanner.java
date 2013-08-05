@@ -235,7 +235,7 @@ public class TrajectoryPlanner {
      *          tapPoint - point the tap should be made
      * @return  tap time (relative to the release time) in milli-seconds
      */
-    public int getTapTime(Rectangle sling, Point release, Point tapPoint)
+    protected int getTimeByDistance(Rectangle sling, Point release, Point tapPoint)
     {
         // update trajectory parameters
         setTrajectory(sling, release);
@@ -248,7 +248,8 @@ public class TrajectoryPlanner {
         
         return (int)(distance / _ux * _timeUnit);
     }
-    
+ 
+   
     /* Choose a trajectory by specifying the sling location and release point
      * Derive all related parameters (angle, velocity, equation of the parabola, etc)
      *
@@ -427,7 +428,7 @@ public class TrajectoryPlanner {
     }
     
     // get the velocity for the desired angle
-    private double getVelocity(double theta)
+    public double getVelocity(double theta)
     {
         if (theta < _launchAngle[0])    
             return _scaleFactor * _launchVelocity[0];

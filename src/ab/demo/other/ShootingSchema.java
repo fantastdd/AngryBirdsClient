@@ -81,9 +81,9 @@ public void shoot(final Proxy proxy,List<Shot> csc)
 					   } catch (InterruptedException e) {
 						
 					e.printStackTrace();
-					}
+					}/*
 					   long _time = System.nanoTime();
-					   System.out.println(" waiting time:" + (time - _time));
+					   System.out.println(" waiting time:" + (time - _time));*/
 					   proxy.send(new ProxyDragMessage(_shot.getX(),_shot.getY(),_shot.getDx(),_shot.getDy()));
 				   }
 				   else {
@@ -110,9 +110,9 @@ public void shoot(final Proxy proxy,List<Shot> csc)
 				        gap = System.currentTimeMillis() - gap;
 				   }
 			   }
-System.out.println("wait 10 seconds to ensure all objects in the scene static"); 
+System.out.println("wait 15 seconds to ensure all objects in the scene static"); 
 try {
-	Thread.sleep(10000);
+	Thread.sleep(15000);
 } catch (InterruptedException e) {
 	e.printStackTrace();
 }

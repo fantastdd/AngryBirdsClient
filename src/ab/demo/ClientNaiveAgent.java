@@ -19,6 +19,7 @@ import java.util.Random;
 import ab.demo.other.ClientActionRobot;
 import ab.demo.other.ClientActionRobotJava;
 import ab.demo.other.Env;
+import ab.demo.other.NaiveMind;
 import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
 import ab.vision.Vision;
@@ -166,20 +167,31 @@ public class ClientNaiveAgent implements Runnable {
 			sling = vision.findSlingshot();
 		}
 
-		//find birds and pigs
+		/*//find birds and pigs
 		List<Rectangle> red_birds = vision.findRedBirds();
 		List<Rectangle> blue_birds = vision.findBlueBirds();
 		List<Rectangle> yellow_birds = vision.findYellowBirds();
-		List<Rectangle> pigs = vision.findPigs();
+		
 		int bird_count = 0;
 		bird_count = red_birds.size() + blue_birds.size() + yellow_birds.size();
 
 		System.out.println("...found " + pigs.size() + " pigs and "
-				+ bird_count + " birds");
+				+ bird_count + " birds");*/
+		List<Rectangle> pigs = vision.findPigs();
 		GameState state = ar.checkState();
 		int tap_time = 100;
 		// if there is a sling, then play, otherwise skip.
 		if (sling != null) {
+			
+			ar.fullyZoomIn();
+			
+			/*try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}*/
+			screenshot = ar.doScreenShot();
+			int bird_type = NaiveMind.getBirdOnSlingShot(screenshot);
 			ar.fullyZoomOut();
 			
 			//If there are pigs, we pick up a pig randomly and shoot it. 
@@ -263,9 +275,14 @@ public class ClientNaiveAgent implements Runnable {
 					if (sling.equals(_sling)) {
 
 						// make the shot
-						ar.shoot(focus_x, focus_y, (int) releasePoint.getX()
-								- focus_x, (int) releasePoint.getY() - focus_y,
-								0, tap_time, false);
+						if(bird_type == NaiveMind.black_bird)
+							ar.shoot(focus_x, focus_y, (int) releasePoint.getX()
+									- focus_x, (int) releasePoint.getY() - focus_y,
+									0, 0, false);
+						else
+							ar.shoot(focus_x, focus_y, (int) releasePoint.getX()
+									- focus_x, (int) releasePoint.getY() - focus_y,
+									0, tap_time, false);
 						
 						
 						// check the state after the shot

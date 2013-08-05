@@ -16,6 +16,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import org.java_websocket.WebSocket;
+
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyScreenshotMessage;
 import ab.vision.GameStateExtractor;
@@ -75,6 +77,28 @@ public class StateUtil {
     
     	   
 		return score;
+	}
+	public static int checkCurrentScoreSafemode(Proxy proxy)
+	{
+
+		int current_score = -1;
+		while (current_score != checkCurrentScore(proxy)) 
+		{
+		  try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			
+				e.printStackTrace();
+			}
+		   if(checkCurrentState(proxy) == GameState.WON)
+		   {	
+			   current_score = checkCurrentScore(proxy);
+				//System.out.println("Debug Check the score: " + current_score);
+		   }
+		   else
+			   System.out.println(" unexpected state: PLAYING");
+		}
+		return current_score;
 	}
 	
 
