@@ -110,13 +110,8 @@ public void shoot(final Proxy proxy,List<Shot> csc)
 				        gap = System.currentTimeMillis() - gap;
 				   }
 			   }
-System.out.println("wait 15 seconds to ensure all objects in the scene static"); 
-try {
-	Thread.sleep(15000);
-} catch (InterruptedException e) {
-	e.printStackTrace();
-}
-	}
+	
+		}
 }
 
 }

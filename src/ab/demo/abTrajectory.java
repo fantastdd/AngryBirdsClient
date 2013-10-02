@@ -36,7 +36,7 @@ public class abTrajectory {
             try {
 		server = new Proxy(9000) {
 			@Override
-                        public void onOpen() {
+            public void onOpen() {
                             System.out.println("Client connected");
 			}
 

@@ -25,24 +25,35 @@ public static void main(String args[])
 					{
 						NaiveAgent na = new  NaiveAgent();
 						na.run();
-					} 
+					}
+					else
+						if(args.length > 0 && args[0].equals("-cshoot"))
+						{
+							ShootAgent.shoot(args, true);
+						}
+						else
+							if(args.length > 0 && args[0].equals("-pshoot"))
+							{
+								ShootAgent.shoot(args, false);
+							}
+						
 					else	
 						if (args.length == 1 && command.equalsIgnoreCase("-nasc"))
 						{
-							ClientNaiveAgent na = new ClientNaiveAgent();
+							ClientNaiveAgent2013 na = new ClientNaiveAgent2013();
 							na.run();
 						} 
 						else 
 							if (args.length == 2 && command.equalsIgnoreCase("-nasc"))
 							{
-								ClientNaiveAgent na = new ClientNaiveAgent(args[1]);
+								ClientNaiveAgent2013 na = new ClientNaiveAgent2013(args[1]);
 								na.run();
 							}
 							else
 								if(args.length == 3 && command.equalsIgnoreCase("-nasc"))
 								{
 									int id = Integer.parseInt(args[2]);
-									ClientNaiveAgent na = new ClientNaiveAgent(args[1],id);
+									ClientNaiveAgent2013 na = new ClientNaiveAgent2013(args[1],id);
 									na.run();
 								}
 						

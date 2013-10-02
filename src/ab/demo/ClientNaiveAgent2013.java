@@ -20,30 +20,33 @@ import ab.demo.other.ClientActionRobot;
 import ab.demo.other.ClientActionRobotJava;
 import ab.demo.other.Env;
 import ab.demo.other.NaiveMind;
+import ab.planner.NaiveTrajectoryPlanner;
 import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
 import ab.vision.Vision;
 //Naive agent (server/client version)
 
-public class ClientNaiveAgent implements Runnable {
+public class ClientNaiveAgent2013 implements Runnable {
 
 	//focus point
 	private int focus_x;
 	private int focus_y;
 	//Wrapper of the communicating messages
 	private ClientActionRobotJava ar;
-	public byte currentLevel = 1;
-	TrajectoryPlanner tp;
-	private int id = 12345;
+	public byte currentLevel = -1;
+	public int failedCounter = 0;
+	public int[] solved;
+	NaiveTrajectoryPlanner tp;
+	private int id = 28888;
 	private boolean firstShot;
 	private Point prevTarget;
 	/**
 	 * Constructor using the default IP
 	 * */
-	public ClientNaiveAgent() {
+	public ClientNaiveAgent2013() {
 		// the default ip is the localhost
 		ar = new ClientActionRobotJava("127.0.0.1");
-		tp = new TrajectoryPlanner();
+		tp = new NaiveTrajectoryPlanner();
 		prevTarget = null;
 		firstShot = true;
 
@@ -51,60 +54,99 @@ public class ClientNaiveAgent implements Runnable {
 	/**
 	 * Constructor with a specified IP
 	 * */
-	public ClientNaiveAgent(String ip) {
+	public ClientNaiveAgent2013(String ip) {
 		ar = new ClientActionRobotJava(ip);
-		tp = new TrajectoryPlanner();
+		tp = new NaiveTrajectoryPlanner();
 		prevTarget = null;
 		firstShot = true;
 
 	}
-	public ClientNaiveAgent(String ip, int id)
+	public ClientNaiveAgent2013(String ip, int id)
 	{
 		ar = new ClientActionRobotJava(ip);
-		tp = new TrajectoryPlanner();
+		tp = new NaiveTrajectoryPlanner();
 		prevTarget = null;
 		firstShot = true;
 		this.id = id;
 	}
-	
+	public int getNextLevel()
+	{
+		int level = 0;
+		boolean unsolved = false;
+		//all the levels have been solved, then get the first unsolved level
+		for (int i = 0; i < solved.length; i++)
+		{
+			if(solved[i] == 0 )
+			{
+					unsolved = true;
+					level = (byte)(i + 1);
+					if(level <= currentLevel && currentLevel < solved.length)
+						continue;
+					else
+						return level;
+			}
+		}
+		if(unsolved)
+			return level;
+	    level = (byte)((this.currentLevel + 1)%solved.length);
+		if(level == 0)
+			level = solved.length;
+		return level; 
+	}
 
     /* 
      * Run the Client (Naive Agent)
      */
 	public void run() {	
-		ar.configure(ClientActionRobot.intToByteArray(id));
+		byte[] info = ar.configure(ClientActionRobot.intToByteArray(id));
+		solved = new int[info[2]];
+		
 		//load the initial level (default 1)
-		ar.loadLevel();
+		//Check my score
+		int[] _scores = ar.checkMyScore();
+		int counter = 0;
+		for(int i: _scores)
+		{
+			System.out.println(" level " + ++counter + "  " + i);
+		}
+		currentLevel = (byte)getNextLevel(); 
+		ar.loadLevel(currentLevel);
+		//ar.loadLevel((byte)9);
 		GameState state;
 		while (true) {
-		
+			
 			state = solve();
 			
 			//If the level is solved , go to the next level
 			if (state == GameState.WON) {
 							
-				System.out.println(" loading the level " + (currentLevel + 1) );
-				ar.loadLevel(++currentLevel);
-				
-				//display the global best scores
-				int[] scores = ar.checkScore();
-				System.out.println("The global best score: ");
-				for (int i = 0; i < scores.length ; i ++)
-				{
-			
-				    	  System.out.print( " level " + (i+1) + ": " + scores[i]);
-				}
-				System.out.println();
+				///System.out.println(" loading the level " + (currentLevel + 1) );
 				System.out.println(" My score: ");
-				scores = ar.checkMyScore();
+				int[] scores = ar.checkMyScore();
 				for (int i = 0; i < scores.length ; i ++)
 				{
 				   
 				    	  System.out.print( " level " + (i+1) + ": " + scores[i]);
+				    		if(scores[i] > 0)
+								solved[i] = 1;
+				    		
 				}
 				System.out.println();
+				currentLevel = (byte)getNextLevel(); 
+				ar.loadLevel(currentLevel);
+				//ar.loadLevel((byte)9);
+				//display the global best scores
+				scores = ar.checkScore();
+				System.out.println("The global best score: ");
+				for (int i = 0; i < scores.length ; i ++)
+				{
+				
+					System.out.print( " level " + (i+1) + ": " + scores[i]);
+				}
+				System.out.println();
+				
 				// make a new trajectory planner whenever a new level is entered
-				tp = new TrajectoryPlanner();
+				tp = new NaiveTrajectoryPlanner();
 
 				// first shot on this level, try high shot first
 				firstShot = true;
@@ -112,8 +154,21 @@ public class ClientNaiveAgent implements Runnable {
 			} else 
 				//If lost, then restart the level
 				if (state == GameState.LOST) {
-				System.out.println("restart");
-				ar.restartLevel();
+				failedCounter++;
+				if(failedCounter > 3)
+				{
+					failedCounter = 0;
+					currentLevel = (byte)getNextLevel(); 
+					ar.loadLevel(currentLevel);
+					
+					//ar.loadLevel((byte)9);
+				}
+				else
+				{		
+					System.out.println("restart");
+					ar.restartLevel();
+				}
+						
 			} else 
 				if (state == GameState.LEVEL_SELECTION) {
 				System.out.println("unexpected level selection page, go to the last current level : "
@@ -148,7 +203,7 @@ public class ClientNaiveAgent implements Runnable {
 
 		// process image
 		Vision vision = new Vision(screenshot);
-
+		
 		Rectangle sling = vision.findSlingshot();
 
 		//If the level is loaded (in PLAYING　state)but no slingshot detected, then the agent will request to fully zoom out.
@@ -179,17 +234,11 @@ public class ClientNaiveAgent implements Runnable {
 				+ bird_count + " birds");*/
 		List<Rectangle> pigs = vision.findPigs();
 		GameState state = ar.checkState();
-		int tap_time = 100;
+		int tap_time = 0;
 		// if there is a sling, then play, otherwise skip.
 		if (sling != null) {
 			
 			ar.fullyZoomIn();
-			
-			/*try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}*/
 			screenshot = ar.doScreenShot();
 			int bird_type = NaiveMind.getBirdOnSlingShot(screenshot);
 			ar.fullyZoomOut();
@@ -253,13 +302,40 @@ public class ClientNaiveAgent implements Runnable {
 								releasePoint);
 						System.out.println(" The release angle is : "
 								+ Math.toDegrees(releaseAngle));
-						int base = 0;
-						//tap later when the angle is more than PI/4
-						if (releaseAngle > Math.PI / 4)
-							base = 1400;
-						else
-							base = 550;
-						tap_time = (int) (base + Math.random() * 1500);
+						switch(bird_type)
+						{
+							case NaiveMind.black_bird:
+							{
+								System.out.println(" Bird Type: Black");
+								tap_time = 0;
+								break;
+							}
+							case NaiveMind.yellow_bird :
+							{
+								System.out.println(" Bird Type: Yellow");
+								tap_time = tp.getYellowBirdTapTime(sling,releasePoint,_tpt);
+								break;
+							}
+							case NaiveMind.blue_bird :
+							{
+								System.out.println(" Bird Type: Blue");
+								tap_time = tp.getBlueBirdTapTime(sling,releasePoint,_tpt);
+								break;
+							}
+							case NaiveMind.white_bird :
+							{
+								System.out.println(" Bird Type: White");
+								tap_time = tp.getWhiteBirdTapTime(sling,releasePoint,_tpt);
+								break;
+							}
+							default:
+							{
+								System.out.println(" Bird Type: Red");
+								tap_time = tp.getYellowBirdTapTime(sling,releasePoint,_tpt);
+								break;
+							}
+						}
+						
 						System.out.println("tap_time " + tap_time);
 						
 					} else
@@ -273,7 +349,8 @@ public class ClientNaiveAgent implements Runnable {
 					vision = new Vision(screenshot);
 					Rectangle _sling = vision.findSlingshot();
 					if (sling.equals(_sling)) {
-
+						
+						
 						// make the shot
 						if(bird_type == NaiveMind.black_bird)
 							ar.shoot(focus_x, focus_y, (int) releasePoint.getX()
@@ -296,11 +373,11 @@ public class ClientNaiveAgent implements Runnable {
 							firstShot = false;
 						}
 					} else
-					{	
-						System.out.println("scale is changed, can not execute the shot, will re-segement the image");
-						System.out.println(" Sling: " + sling);
-						System.out.println(" _Sling: " + _sling);
-					}
+						{
+							System.out.println("scale is changed, can not execute the shot, will re-segement the image");
+							System.out.println(" Sling: " + sling);
+							System.out.println(" _Sling: " + _sling);
+						}
 				}
 			}
 		}
@@ -313,11 +390,11 @@ public class ClientNaiveAgent implements Runnable {
 
 	public static void main(String args[]) {
 
-		ClientNaiveAgent na;
+		ClientNaiveAgent2013 na;
 		if(args.length > 0)
-			na = new ClientNaiveAgent(args[0]);
+			na = new ClientNaiveAgent2013(args[0]);
 		else
-			na = new ClientNaiveAgent();
+			na = new ClientNaiveAgent2013();
 		na.run();
 		
 	}

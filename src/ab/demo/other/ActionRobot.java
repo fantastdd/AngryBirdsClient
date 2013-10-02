@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -35,7 +36,6 @@ public class ActionRobot {
 	public int current_score = 0;
 	private LoadingLevelSchema lls;
 	private RestartLevelSchema rls;
-
 
 	// A java util class for the standalone version. It provides common
 	// functions an agent would use. E.g. get the screenshot
@@ -63,7 +63,6 @@ public class ActionRobot {
 
 				lls = new LoadingLevelSchema(proxy);
 				rls = new RestartLevelSchema(proxy);
-				
 
 			} catch (UnknownHostException e) {
 
@@ -121,21 +120,38 @@ public class ActionRobot {
 		return state;
 	}
 
-	public boolean shoot(List<Shot> csc) {
+	public void shoot(List<Shot> csc) {
 		ShootingSchema ss = new ShootingSchema();
+		
 		ss.shoot(proxy, csc);
 		System.out.println("Shooting Completed");
-		return true;
+		System.out
+				.println("wait 15 seconds to ensure all objects in the scene static");
+		try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	
 
 	}
-	public void click()
-	{
-		proxy.send(new ProxyClickMessage(0, 0));
+
+	public void cshoot(Shot shot) {
+		ShootingSchema ss = new ShootingSchema();
+		LinkedList<Shot> shots = new LinkedList<Shot>();
+		shots.add(shot);
+		ss.shoot(proxy, shots);
+		System.out.println("Shooting Completed");
 	}
-	public void drag()
-	{
-		proxy.send(new ProxyDragMessage(0,0,0,0));
+
+	public void click() {
+		proxy.send(new ProxyClickMessage(100, 100));
 	}
+
+	public void drag() {
+		proxy.send(new ProxyDragMessage(0, 0, 0, 0));
+	}
+
 	public void loadLevel(int... i) {
 		int level = 1;
 		if (i.length > 0) {
@@ -146,7 +162,7 @@ public class ActionRobot {
 	}
 
 	public void fullyZoom() {
-		for (int k = 0; k < 10; k++) {
+		for (int k = 0; k < 15; k++) {
 			proxy.send(new ProxyMouseWheelMessage(-1));
 		}
 		try {
@@ -155,8 +171,8 @@ public class ActionRobot {
 			e.printStackTrace();
 		}
 	}
-	public void fullyZoomIn() 
-	{
+
+	public void fullyZoomIn() {
 		for (int k = 0; k < 10; k++) {
 			proxy.send(new ProxyMouseWheelMessage(1));
 		}
@@ -167,40 +183,35 @@ public class ActionRobot {
 		}
 	}
 
-	public static  BufferedImage doScreenShot() {
+	public static BufferedImage doScreenShot() {
 		byte[] imageBytes = proxy.send(new ProxyScreenshotMessage());
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(new ByteArrayInputStream(imageBytes));
 		} catch (IOException e) {
-			// do somethingti
+			
 		}
 
 		return image;
 	}
-	public void testScreenshot()
-	{
-		 proxy.send(new ProxyScreenshotMessage());
-	}
 
-	public static void main(String args[])
-	{
+
+	public static void main(String args[]) {
 		ActionRobot aRobot = new ActionRobot();
-	    long time = System.currentTimeMillis();
+		long time = System.currentTimeMillis();
 		ActionRobot.doScreenShot();
 		time = System.currentTimeMillis() - time;
 		System.out.println(" cost: " + time);
 		time = System.currentTimeMillis();
 		int count = 0;
-		while(count < 40)
-		{
+		while (count < 40) {
 			ActionRobot.doScreenShot();
 			count++;
 		}
-		//System.out.println(" Num of screenshots taken within 1000 ms: " + count);
-		System.out.println(" time to take 40 screenshots" + (System.currentTimeMillis() - time));
+
+		System.out.println(" time to take 40 screenshots"
+				+ (System.currentTimeMillis() - time));
 		System.exit(0);
-		
-	
+
 	}
 }

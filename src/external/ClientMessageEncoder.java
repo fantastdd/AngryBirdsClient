@@ -28,9 +28,10 @@ public class ClientMessageEncoder {
 				new byte[] { ClientMessageTable
 						.getValue(ClientMessageTable.configure) },
 				id);
+	  
 		return message;
 	}
-
+	
 	//encode loadlevel message
 	//allow 0 or 1 input argument
 	public static byte[] loadLevel(byte... level) {

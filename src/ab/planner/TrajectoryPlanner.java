@@ -418,11 +418,14 @@ public class TrajectoryPlanner {
             
         // ignore very large changes
         if (temp > 1.1 || temp < 0.9)
-            return;
+           {
+        	System.out.println(" temp : " + temp);
+        	return;
+           }
                    
-        if (theta > Math.toRadians(40))    
+        if (theta > Math.toRadians(50))    
             _scaleFactor = temp;
-        else
+        else if (theta > Math.toRadians(25))
             _scaleFactor = temp * 0.6 + _scaleFactor * 0.4;
                             
     }
