@@ -9,14 +9,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import ab.demo.other.ActionRobot;
 import ab.demo.other.NaiveMind;
-import ab.demo.other.Shot;
 import ab.planner.NaiveTrajectoryPlanner;
-import ab.utils.ShowImageSegmentation;
-import ab.vision.RefreshSegmentationThread;
-import ab.vision.ShowImageSegmentationThread;
+import ab.utils.ImageSegFrame;
 import ab.vision.Vision;
 import ab.vision.VisionUtils;
 
@@ -25,8 +23,8 @@ public class StarterControlPanel {
 	private JFrame frmControlPanel;
 	private Vision vision = null;
 	private NaiveTrajectoryPlanner tp = null;
-	private ShowImageSegmentation segFrame = null;
-	private ShowImageSegmentationThread segFrameThread;
+	private ImageSegFrame segFrame = null;
+
 	private Point target = null;
 	private ActionRobot actionRobot = new ActionRobot();
 	private JButton btnScenarioRecognition;
@@ -54,6 +52,7 @@ public class StarterControlPanel {
 	 */
 	public StarterControlPanel() {
 		initialize();
+		frmControlPanel.setVisible(true);
 	}
 
 	/**
@@ -71,9 +70,17 @@ public class StarterControlPanel {
 			public void actionPerformed(ActionEvent e) {
 			
 				 btnScenarioRecognition.doClick();
-				
-				 btnFindTarget.doClick();
-				 btnShoot.doClick();
+					SwingUtilities.invokeLater(new Runnable() {
+					    public void run() {    	
+					    	 btnFindTarget.doClick();
+					    }
+					  });
+					SwingUtilities.invokeLater(new Runnable() {
+					    public void run() {    	
+					    	btnShoot.doClick();
+					    }
+					  });
+				 
 			}
 		});
 		frmControlPanel.getContentPane().add(btnAutoRun);
@@ -92,13 +99,9 @@ public class StarterControlPanel {
 				screenshot = VisionUtils.analyseScreenShot(screenshot);
 				
 				if (segFrame == null) {
-					
-					segFrame = new ShowImageSegmentation("Vision Process: Scenario Recognition", screenshot, meta);
-					segFrameThread = new ShowImageSegmentationThread(segFrame);
-					segFrameThread.start();
-					
+					segFrame = new ImageSegFrame("Vision Process: Scenario Recognition", screenshot, meta);			
 				} else {
-					segFrameThread.refresh(screenshot, meta);
+					segFrame.refresh(screenshot, meta);
 				}
 			
 				
@@ -106,14 +109,23 @@ public class StarterControlPanel {
 		});
 		frmControlPanel.getContentPane().add(btnScenarioRecognition);
 		
-		btnFindTarget = new JButton("Find Target");
+		btnFindTarget = new JButton("Set Target");
 		btnFindTarget.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				if(vision == null)
+					btnScenarioRecognition.doClick();				
 				//Get the target point
 				target = NaiveMind.getTarget(vision);
+				segFrame.getFrame().setTitle("Set Target");
 				//draw the point on the image segmentation frame
-				target = new Point(700,20);
-				segFrame.highlightTarget(target);
+				SwingUtilities.invokeLater(new Runnable() {
+				    public void run() {    	
+				    	
+				    	segFrame.highlightTarget(target);
+				    }
+				  });
+				
 			}
 		});
 		frmControlPanel.getContentPane().add(btnFindTarget);
@@ -122,23 +134,25 @@ public class StarterControlPanel {
 		btnShoot.addActionListener(new ActionListener() {
 			//Find a release point according the target
 			public void actionPerformed(ActionEvent e) {
-				Shot shot = null;
+			
 				//initialize the trajectory planner
 				if (tp == null)
 					tp = new NaiveTrajectoryPlanner();
 				if(target != null)
 				{
 					
-					shot = tp.getShot(target);
-					//Plot Trajectory
+				    tp.getShot(target);
+			
 					BufferedImage plot = tp.plotTrajectory();
 					int[][] meta = VisionUtils.computeMetaInformation(plot);
-					//plot = VisionUtils.analyseScreenShot(plot);
-					//segFrame = new ShowImageSegmentation("Plotting Trajectory",plot, meta);
-					// RefreshSegmentationThread rst = new  RefreshSegmentationThread(segFrame);
-					// rst.start();
-					segFrameThread.refresh(plot, meta);
-					actionRobot.cshoot(shot);		
+			    	segFrame.refresh(plot, meta);
+			    	segFrame.getFrame().setTitle("Plotting the Trajectory");
+			    	
+					SwingUtilities.invokeLater(new Runnable() {
+						    public void run() {    	
+						    	actionRobot.cshoot(tp.shot);	
+						    }
+						  });
 					
 				}
 				else
@@ -149,5 +163,6 @@ public class StarterControlPanel {
 		});
 		frmControlPanel.getContentPane().add(btnShoot);
 	}
+	
 
 }

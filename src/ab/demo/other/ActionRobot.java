@@ -9,6 +9,7 @@ a ** ANGRYBIRDS AI AGENT FRAMEWORK
  *****************************************************************************/
 package ab.demo.other;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,12 +20,16 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import ab.demo.util.StateUtil;
+import ab.planner.NaiveTrajectoryPlanner;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyClickMessage;
 import ab.server.proxy.message.ProxyDragMessage;
 import ab.server.proxy.message.ProxyMouseWheelMessage;
 import ab.server.proxy.message.ProxyScreenshotMessage;
+import ab.utils.ImageSegFrame;
 import ab.vision.GameStateExtractor.GameState;
+import ab.vision.Vision;
+import ab.vision.VisionUtils;
 
 /**
  * Util class for basic functions
@@ -198,6 +203,7 @@ public class ActionRobot {
 
 	public static void main(String args[]) {
 		ActionRobot aRobot = new ActionRobot();
+		/*
 		long time = System.currentTimeMillis();
 		ActionRobot.doScreenShot();
 		time = System.currentTimeMillis() - time;
@@ -211,7 +217,21 @@ public class ActionRobot {
 
 		System.out.println(" time to take 40 screenshots"
 				+ (System.currentTimeMillis() - time));
-		System.exit(0);
-
+		System.exit(0);*/
+		
+		BufferedImage screenshot = ActionRobot.doScreenShot();
+		Vision vision = new Vision(screenshot);
+		Point target = NaiveMind.getTarget(vision);
+		NaiveTrajectoryPlanner tp = new NaiveTrajectoryPlanner();
+		Shot shot = tp.getShot(target);
+		int[][] meta = VisionUtils.computeMetaInformation(screenshot);
+		screenshot = VisionUtils.analyseScreenShot(screenshot);
+		 ImageSegFrame segFrame = new ImageSegFrame("Vision Process: Scenario Recognition", screenshot, meta);
+		 BufferedImage plot = tp.plotTrajectory();
+		 meta = VisionUtils.computeMetaInformation(plot);
+		 System.out.println(meta);
+		 segFrame.refresh(plot, meta);
+		 aRobot.cshoot(shot);
+		 System.exit(0);
 	}
 }
