@@ -24,6 +24,7 @@ import ab.demo.util.StateUtil;
 import ab.planner.NaiveTrajectoryPlanner;
 import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
+import ab.vision.ABObject;
 import ab.vision.Vision;
 
 public class NaiveAgent implements Runnable {
@@ -125,7 +126,7 @@ public class NaiveAgent implements Runnable {
 		Vision vision = new Vision(screenshot);
 
 		// find the slingshot
-		Rectangle sling = vision.findSlingshot();
+		Rectangle sling = vision.findSlingshotMBR();
 
 		// confirm the slingshot
 		while (sling == null && ar.checkState() == GameState.PLAYING) {
@@ -134,21 +135,21 @@ public class NaiveAgent implements Runnable {
 			ar.fullyZoom();
 			screenshot = ActionRobot.doScreenShot();
 			vision = new Vision(screenshot);
-			sling = vision.findSlingshot();
+			sling = vision.findSlingshotMBR();
 		}
 
 		List<Rectangle> red_birds = vision.findRedBirds();
 		List<Rectangle> blue_birds = vision.findBlueBirds();
 		List<Rectangle> yellow_birds = vision.findYellowBirds();
-		List<Rectangle> pigs = vision.findPigs();
+		List<Rectangle> pigs = vision.findPigsMBR();
 		int bird_count = 0;
 		bird_count = red_birds.size() + blue_birds.size() + yellow_birds.size();
 
 		System.out.println("...found " + pigs.size() + " pigs and "
 				+ bird_count + " birds");
-
+        
 		GameState state = ar.checkState();
-
+   
 		// if there is a sling, then play, otherwise just skip.
 		if (sling != null) {
 			ar.fullyZoomIn();
@@ -163,7 +164,6 @@ public class NaiveAgent implements Runnable {
 				{
 					// random pick up a pig
 					Random r = new Random();
-
 					int index = r.nextInt(pigs.size());
 					Rectangle pig = pigs.get(index);
 					Point _tpt = new Point((int) pig.getCenterX(),
@@ -265,7 +265,7 @@ public class NaiveAgent implements Runnable {
 					ar.fullyZoom();
 					screenshot = ActionRobot.doScreenShot();
 					vision = new Vision(screenshot);
-					Rectangle _sling = vision.findSlingshot();
+					Rectangle _sling = vision.findSlingshotMBR();
 					if (sling.equals(_sling)) {
 						
 						//Fire the birds

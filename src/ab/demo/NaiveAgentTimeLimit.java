@@ -155,7 +155,7 @@ public class NaiveAgentTimeLimit implements Runnable {
 		// process image
 		Vision vision = new Vision(screenshot);
 
-		Rectangle sling = vision.findSlingshot();
+		Rectangle sling = vision.findSlingshotMBR();
 
 		while (sling == null && ar.checkState() == GameState.PLAYING) {
 			System.out
@@ -163,10 +163,10 @@ public class NaiveAgentTimeLimit implements Runnable {
 			ar.fullyZoom();
 			screenshot = ActionRobot.doScreenShot();
 			vision = new Vision(screenshot);
-			sling = vision.findSlingshot();
+			sling = vision.findSlingshotMBR();
 		}
 
-		List<Rectangle> pigs = vision.findPigs();
+		List<Rectangle> pigs = vision.findPigsMBR();
 		
 
 		
@@ -292,7 +292,7 @@ public class NaiveAgentTimeLimit implements Runnable {
 					ar.fullyZoom();
 					screenshot = ActionRobot.doScreenShot();
 					vision = new Vision(screenshot);
-					Rectangle _sling = vision.findSlingshot();
+					Rectangle _sling = vision.findSlingshotMBR();
 					if (sling.equals(_sling)) {
 						state = ar.shootWithStateInfoReturned(shots);
 						// update parameters after a shot is made

@@ -42,7 +42,7 @@ public class Vision {
 
 	//find slingshot
 	//only return one rectangle
-	public Rectangle findSlingshot() {
+	public Rectangle findSlingshotMBR() {
 		Rectangle obj;
 
 
@@ -206,7 +206,7 @@ public class Vision {
 	}
 
 	// find pigs in the current scene
-	public List<Rectangle> findPigs() {
+	public List<Rectangle> findPigsMBR() {
 		ArrayList<Rectangle> objects = new ArrayList<Rectangle>();
 
 		// find candidates
@@ -457,7 +457,52 @@ public class Vision {
 
 		return objects;
 	}
-
+	public ArrayList<ABObject> findBuildingBlocks(){
+		List<Rectangle> stone = findStones();
+		List<Rectangle> wood = findWood();
+		List<Rectangle> ice = findIce();
+		ArrayList<ABObject> objects = new ArrayList<ABObject>();
+		objects.addAll(constructABObjects(stone,"stone"));
+		objects.addAll(constructABObjects(wood,"wood"));
+		objects.addAll(constructABObjects(ice,"ice"));
+		return objects;
+	}
+	public ArrayList<ABObject> findBirds(){
+		
+		List<Rectangle> rbirds = findRedBirds();
+		List<Rectangle> ybirds = findYellowBirds();
+		List<Rectangle> blbirds = findBlueBirds();
+		List<Rectangle> blackbirds = findBlackBirds();
+		List<Rectangle> wbirds = findWhiteBirds();
+		ArrayList<ABObject> objects = new ArrayList<ABObject>();
+		objects.addAll(constructABObjects(rbirds,"redBirds"));
+		objects.addAll(constructABObjects(ybirds,"yellowBirds"));
+		objects.addAll(constructABObjects(blbirds,"blueBirds"));
+		objects.addAll(constructABObjects(blackbirds,"blackBirds"));
+		objects.addAll(constructABObjects(wbirds,"whiteBirds"));
+		return objects;
+	}
+	
+	public ArrayList<ABObject> findPigs(){
+	
+		return constructABObjects(findPigsMBR(),"pigs");
+		}
+	public void reportObjects()
+	{
+		System.out.println(" Pigs: " + findPigs().size());
+		System.out.println(" Birds: " + findBirds().size());
+		System.out.println(" Buliding Blocks: " + findBuildingBlocks().size());
+	}
+	private ArrayList<ABObject> constructABObjects(List<Rectangle> mbrs, String type)
+	{
+	
+		ArrayList<ABObject> objects = new ArrayList<ABObject>();
+		for(Rectangle rec: mbrs)
+		{
+			objects.add(new ABObject(rec, type));
+		}
+		return objects;
+	}
 	public List<Rectangle> findBlackBirds() {
 		ArrayList<Rectangle> objects = new ArrayList<Rectangle>();
 
@@ -500,7 +545,6 @@ public class Vision {
 
 		return objects;
 	}
-
 	public List<Rectangle> findStones() {
 		ArrayList<Rectangle> objects = new ArrayList<Rectangle>();
 
@@ -911,7 +955,7 @@ public class Vision {
 		double arrayPhiX[][] = new double[trainingSize][3]; // Training set
 		double arrayY[][] = new double[trainingSize][1];
 
-		Rectangle sling = this.findSlingshot();
+		Rectangle sling = this.findSlingshotMBR();
 
 		Matrix PhiX, Y;
 		Matrix W = new Matrix(new double[] { 0, 0, 0 }, 3);

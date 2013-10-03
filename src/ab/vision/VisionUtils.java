@@ -31,6 +31,8 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
+import Jama.Matrix;
+
 /* VisionUtils ------------------------------------------------------------ */
 
 public class VisionUtils {
@@ -470,7 +472,7 @@ public class VisionUtils {
 	}
 
 	// highlight regions with a given id
-	public static BufferedImage highlightRegions(Image img, int[][] regions,
+	public static synchronized BufferedImage highlightRegions(Image img, int[][] regions,
 			int regionId, Color fgColour) {
 		BufferedImage canvas = new BufferedImage(img.getWidth(null),
 				img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -502,6 +504,99 @@ public class VisionUtils {
 
 		return bilinearScaleOp.filter(image, new BufferedImage(width, height,
 				image.getType()));
+	}
+	
+	
+	public 	static int[][] computeMetaInformation(BufferedImage screenshot) {
+		// image size
+		final int nHeight = screenshot.getHeight();
+		final int nWidth = screenshot.getWidth();
+
+		// meta debugging information
+		int[][] meta = new int[nHeight][nWidth];
+		for (int y = 0; y < nHeight; y++) {
+			for (int x = 0; x < nWidth; x++) {
+				final int colour = screenshot.getRGB(x, y);
+				meta[y][x] = ((colour & 0x00e00000) >> 15)
+						| ((colour & 0x0000e000) >> 10)
+						| ((colour & 0x000000e0) >> 5);
+			}
+		}
+
+		return meta;
+	}
+
+	 public static BufferedImage analyseScreenShot(BufferedImage screenshot) {
+
+
+		// get game state
+		GameStateExtractor game = new GameStateExtractor();
+		GameStateExtractor.GameState state = game.getGameState(screenshot);
+	//	System.out.println(state.toString());
+
+		if (state != GameStateExtractor.GameState.PLAYING) {
+			//System.out.println("End game score : " + game.getScoreEndGame(screenshot));
+			screenshot = VisionUtils.convert2grey(screenshot);
+			return screenshot;
+		}
+
+		//System.out.println("In game score : " + game.getScoreInGame(screenshot));
+		// process image
+		Vision vision = new Vision(screenshot);
+		List<Rectangle> pigs = vision.findPigsMBR();
+		List<Rectangle> redBirds = vision.findRedBirds();
+		List<Rectangle> blueBirds = vision.findBlueBirds();
+		List<Rectangle> yellowBirds = vision.findYellowBirds();
+		List<Rectangle> woodBlocks = vision.findWood();
+		List<Rectangle> stoneBlocks = vision.findStones();
+		List<Rectangle> iceBlocks = vision.findIce();
+		List<Rectangle> whiteBirds = vision.findWhiteBirds();
+		List<Rectangle> blackBirds = vision.findBlackBirds();
+		List<Rectangle> TNTs = vision.findTNTs();
+		List<Point> trajPoints = vision.findTrajPoints();
+
+		Rectangle sling = vision.findSlingshotMBR();
+
+
+		// draw objects
+		screenshot = VisionUtils.convert2grey(screenshot);
+		VisionUtils.drawBoundingBoxes(screenshot, pigs, Color.GREEN);
+		VisionUtils.drawBoundingBoxes(screenshot, redBirds, Color.RED);
+		VisionUtils.drawBoundingBoxes(screenshot, blueBirds, Color.BLUE);
+		VisionUtils.drawBoundingBoxes(screenshot, yellowBirds, Color.YELLOW);
+		VisionUtils.drawBoundingBoxes(screenshot, woodBlocks, Color.WHITE,
+				Color.ORANGE);
+		VisionUtils.drawBoundingBoxes(screenshot, stoneBlocks, Color.WHITE,
+				Color.GRAY);
+		VisionUtils.drawBoundingBoxes(screenshot, iceBlocks, Color.WHITE,
+				Color.CYAN);
+		VisionUtils.drawBoundingBoxes(screenshot, whiteBirds, Color.WHITE,
+				Color.lightGray);
+		VisionUtils.drawBoundingBoxes(screenshot, TNTs, Color.WHITE,
+				Color.PINK);
+		VisionUtils.drawBoundingBoxes(screenshot, blackBirds,
+				Color.BLACK);
+		if (sling != null) {
+			VisionUtils.drawBoundingBox(screenshot, sling, Color.ORANGE,
+					Color.BLACK);
+
+			// generate traj points using estimated parameters
+			Matrix W = vision.fitParabola(trajPoints);
+			int p[][] = new int[2][100];
+			int startx = (int) sling.getCenterX();
+			for (int i = 0; i < 100; i++) {
+				p[0][i] = startx;
+				double tem = W.get(0, 0) * Math.pow(p[0][i], 2) + W.get(1, 0)
+						* p[0][i] + W.get(2, 0);
+				p[1][i] = (int) tem;
+				startx += 10;
+			}
+			if (W.get(0, 0) > 0)
+				VisionUtils.drawtrajectory(screenshot, p, Color.RED);
+
+		}
+
+		return screenshot;
 	}
 
 }

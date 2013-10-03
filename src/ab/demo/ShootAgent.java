@@ -17,7 +17,7 @@ public class ShootAgent {
 		TrajectoryPlanner tp = new TrajectoryPlanner();
 		ar.fullyZoom();
 		Vision vision = new Vision(ActionRobot.doScreenShot());
-		Rectangle slingshot = vision.findSlingshot();
+		Rectangle slingshot = vision.findSlingshotMBR();
 		while(slingshot == null)
 		{
 			try {
@@ -28,7 +28,7 @@ public class ShootAgent {
 			}
 			System.out.println("no slingshot detected. Please remove pop up or zoom out");
 			vision = new Vision(ActionRobot.doScreenShot());
-			slingshot = vision.findSlingshot();
+			slingshot = vision.findSlingshotMBR();
 		}
 		Point refPoint = tp.getReferencePoint(slingshot);
 		int x = Integer.parseInt(args[1]);
@@ -49,7 +49,7 @@ public class ShootAgent {
 			shot = new Shot( refPoint.x, refPoint.y, dx, dy,0,tap);
 		}
 		vision = new Vision(ActionRobot.doScreenShot());
-		Rectangle _slingshot = vision.findSlingshot();
+		Rectangle _slingshot = vision.findSlingshotMBR();
 		if(!slingshot.equals(_slingshot))
 			System.out.println("the scale is changed, the shot might not be executed properly.");
 		ar.cshoot(shot);

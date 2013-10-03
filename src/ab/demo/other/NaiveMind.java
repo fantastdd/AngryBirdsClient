@@ -1,10 +1,13 @@
 package ab.demo.other;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Random;
 
 import ab.vision.Vision;
+
 
 public class NaiveMind {
 
@@ -24,9 +27,9 @@ public class NaiveMind {
 		Vision vision = new Vision(image);
 		List<Rectangle> redbirds = vision.findRedBirds();
 		int y = 0;
-		Rectangle sling = vision.findSlingshot();
+		Rectangle sling = vision.findSlingshotMBR();
 		if(sling != null){
-			y = vision.findSlingshot().y;
+			y = vision.findSlingshotMBR().y;
 			for(Rectangle rec : redbirds)
 			{
 				if(rec.getCenterY() > y)
@@ -64,9 +67,26 @@ public class NaiveMind {
 		
 		
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	
+/**
+ * Perform some reasoning to get a target
+ * @param Vision
+ * @return target point
+ */
+	public static Point getTarget(Vision vision)
+	{
+		List<Rectangle> pigs = vision.findPigsMBR();
+		Random r = new Random();
+		int index = r.nextInt(pigs.size());
+		
+		Rectangle pig = pigs.get(index);
+		int x = pig.x;
+		int y = pig.y;
+		int width = pig.width;
+		Point _tpt = new Point((int) pig.getCenterX(), (int) pig.getCenterY());
+		return _tpt;
 	}
-
+	
+	
+	
 }

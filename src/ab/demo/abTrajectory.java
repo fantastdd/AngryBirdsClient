@@ -23,7 +23,7 @@ import javax.imageio.ImageIO;
 import ab.planner.TrajectoryPlanner;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyScreenshotMessage;
-import ab.utils.ShowDebuggingImage;
+import ab.utils.ShowImageSegmentation;
 import ab.vision.GameStateExtractor;
 import ab.vision.Vision;
 import ab.vision.VisionUtils;
@@ -73,7 +73,7 @@ public class abTrajectory {
     public static void main(String args[]) {
         abTrajectory ar = new abTrajectory();
 
-        ShowDebuggingImage frame = null;
+        ShowImageSegmentation frame = null;
         GameStateExtractor gameStateExtractor = new GameStateExtractor();
         TrajectoryPlanner trajectory = new TrajectoryPlanner();
 
@@ -93,10 +93,10 @@ public class abTrajectory {
 
             // process image
             Vision vision = new Vision(screenshot);
-            List<Rectangle> pigs = vision.findPigs();
+            List<Rectangle> pigs = vision.findPigsMBR();
             List<Rectangle> redBirds = vision.findRedBirds();
 
-            Rectangle sling = vision.findSlingshot();
+            Rectangle sling = vision.findSlingshotMBR();
             if (sling == null) {
                 System.out.println("...could not find the slingshot");
                 continue;
@@ -121,7 +121,7 @@ public class abTrajectory {
 
             // show image
             if (frame == null) {
-                frame = new ShowDebuggingImage("trajectory", screenshot);
+                frame = new ShowImageSegmentation("trajectory", screenshot);
             } else {
                 frame.refresh(screenshot);
             }

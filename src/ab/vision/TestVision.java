@@ -29,7 +29,7 @@ import ab.demo.other.ActionRobot;
 import ab.demo.util.StateUtil;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyScreenshotMessage;
-import ab.utils.ShowDebuggingImage;
+import ab.utils.ShowImageSegmentation;
 
 /* TestVision ------------------------------------------------------------- */
 
@@ -95,7 +95,7 @@ public class TestVision implements Runnable {
 		//System.out.println("In game score : " + game.getScoreInGame(screenshot));
 		// process image
 		Vision vision = new Vision(screenshot);
-		List<Rectangle> pigs = vision.findPigs();
+		List<Rectangle> pigs = vision.findPigsMBR();
 		List<Rectangle> redBirds = vision.findRedBirds();
 		List<Rectangle> blueBirds = vision.findBlueBirds();
 		List<Rectangle> yellowBirds = vision.findYellowBirds();
@@ -107,7 +107,7 @@ public class TestVision implements Runnable {
 		List<Rectangle> TNTs = vision.findTNTs();
 		List<Point> trajPoints = vision.findTrajPoints();
 
-		Rectangle sling = vision.findSlingshot();
+		Rectangle sling = vision.findSlingshotMBR();
 
 
 		// draw objects
@@ -153,7 +153,7 @@ public class TestVision implements Runnable {
 
 	static public void main(String[] args) {
 
-		ShowDebuggingImage frame = null;
+		ShowImageSegmentation frame = null;
 		BufferedImage screenshot = null;
 		StateUtil stateUtil = new StateUtil();
 		// check command line arguments
@@ -183,7 +183,7 @@ public class TestVision implements Runnable {
 				screenshot = analyseScreenShot(screenshot);
 				
 				if (frame == null) {
-					frame = new ShowDebuggingImage("TestVision", screenshot,
+					frame = new ShowImageSegmentation("TestVision", screenshot,
 							meta);
 				} else {
 					frame.refresh(screenshot, meta);
@@ -233,7 +233,7 @@ public class TestVision implements Runnable {
 			int[][] meta = computeMetaInformation(screenshot);
 			screenshot = analyseScreenShot(screenshot);
 			if (frame == null) {
-				frame = new ShowDebuggingImage("TestVision", screenshot, meta);
+				frame = new ShowImageSegmentation("TestVision", screenshot, meta);
 			} else {
 				frame.refresh(screenshot, meta);
 			}
@@ -246,7 +246,7 @@ public class TestVision implements Runnable {
 
 	@Override
 	public void run() {
-		ShowDebuggingImage frame = null;
+		ShowImageSegmentation frame = null;
 		BufferedImage screenshot = null;
 		
        
@@ -259,7 +259,7 @@ public class TestVision implements Runnable {
 			
 			if (frame == null) {
 
-				frame = new ShowDebuggingImage("TestVision", screenshot,
+				frame = new ShowImageSegmentation("TestVision", screenshot,
 						meta);
 			} else {
 				frame.refresh(screenshot, meta);

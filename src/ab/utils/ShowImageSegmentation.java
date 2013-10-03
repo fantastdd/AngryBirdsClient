@@ -18,7 +18,7 @@ import javax.imageio.*;
 import javax.swing.*;
 import ab.vision.*;
 
-public class ShowDebuggingImage {
+public class ShowImageSegmentation implements Runnable{
 
     private static int _saveCount = 0;
 
@@ -44,20 +44,37 @@ public class ShowDebuggingImage {
         }
 
         public void refresh(Image img, int[][] meta) {
+        	
             _img = img;
             _meta = meta;
-            this.repaint();
+           
+            repaint();
+          
         }
 
         public void paint(Graphics g) {
+        
             if (_img != null) {
                 if ((_meta != null) && (_highlightIndex != -1)) {
                     BufferedImage canvas = VisionUtils.highlightRegions(_img, _meta, _highlightIndex, Color.RED);
+                  
                     g.drawImage(canvas, 0, 0, null);
                 } else {
+                	
                     g.drawImage(_img, 0, 0, null);
                 }
             }
+        }
+        public void highlightTarget(Point point)
+        {
+        	Graphics2D g = (Graphics2D)getGraphics();
+        	if(_img != null)
+        	{
+        		g.setColor(Color.red);
+        		g.setStroke(new BasicStroke(3));
+        		g.drawLine(point.x - 5, point.y - 5, point.x + 5, point.y + 5);
+        		g.drawLine(point.x + 5, point.y - 5, point.x - 5, point.y + 5);
+        	}
         }
 
         public void keyPressed(KeyEvent key) {
@@ -188,25 +205,17 @@ public class ShowDebuggingImage {
 
     protected JFrame frame;
     protected ImagePanel panel;
+    protected Image img;
+    protected int[][] meta;
+    protected String name;
+    public ShowImageSegmentation(String name, Image img, int[][] meta) {
 
-    public ShowDebuggingImage(String name, Image img, int[][] meta) {
-
-        frame = new JFrame(name);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        panel = new ImagePanel(frame);
-        frame.getContentPane().add(panel);
-
-        frame.pack();
-        Insets insets = frame.getInsets();
-        frame.setSize(img.getWidth(null) + insets.left + insets.right,
-            img.getHeight(null) + insets.top + insets.bottom);
-        frame.setVisible(true);
-
-        panel.refresh(img, meta);
-        panel.requestFocus();
+       this.name = name;
+       this.img = img;
+       this.meta = meta;
     }
 
-    public ShowDebuggingImage(String name, Image img) {
+    public ShowImageSegmentation(String name, Image img) {
         this(name, img, null);
     }
 
@@ -219,7 +228,10 @@ public class ShowDebuggingImage {
     public void refresh(Image img, int[][] meta) {
         panel.refresh(img, meta);
     }
-
+    public void highlightTarget(Point point)
+    {
+    	panel.highlightTarget(point);
+    }
     // close the window
     public void close() {
 	frame.setVisible(false);
@@ -236,4 +248,22 @@ public class ShowDebuggingImage {
             }
         }
     }
+
+	@Override
+	public void run() {
+		 frame = new JFrame(name);
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        panel = new ImagePanel(frame);
+	        frame.getContentPane().add(panel);
+
+	        frame.pack();
+	        Insets insets = frame.getInsets();
+	        frame.setSize(img.getWidth(null) + insets.left + insets.right,
+	            img.getHeight(null) + insets.top + insets.bottom);
+	        frame.setVisible(true);
+
+	        panel.refresh(img, meta);
+	       
+	        panel.requestFocus();
+	}
 }

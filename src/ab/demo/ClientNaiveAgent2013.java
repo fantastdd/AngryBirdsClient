@@ -204,7 +204,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 		// process image
 		Vision vision = new Vision(screenshot);
 		
-		Rectangle sling = vision.findSlingshot();
+		Rectangle sling = vision.findSlingshotMBR();
 
 		//If the level is loaded (in PLAYING　state)but no slingshot detected, then the agent will request to fully zoom out.
 		while (sling == null && ar.checkState() == GameState.PLAYING) {
@@ -219,7 +219,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 			ar.fullyZoomOut();
 			screenshot = ar.doScreenShot();
 			vision = new Vision(screenshot);
-			sling = vision.findSlingshot();
+			sling = vision.findSlingshotMBR();
 		}
 
 		/*//find birds and pigs
@@ -232,7 +232,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 
 		System.out.println("...found " + pigs.size() + " pigs and "
 				+ bird_count + " birds");*/
-		List<Rectangle> pigs = vision.findPigs();
+		List<Rectangle> pigs = vision.findPigsMBR();
 		GameState state = ar.checkState();
 		int tap_time = 0;
 		// if there is a sling, then play, otherwise skip.
@@ -347,7 +347,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 					ar.fullyZoomOut();
 					screenshot = ar.doScreenShot();
 					vision = new Vision(screenshot);
-					Rectangle _sling = vision.findSlingshot();
+					Rectangle _sling = vision.findSlingshotMBR();
 					if (sling.equals(_sling)) {
 						
 						
