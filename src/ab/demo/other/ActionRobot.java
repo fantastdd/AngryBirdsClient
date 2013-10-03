@@ -168,6 +168,7 @@ public class ActionRobot {
 
 	public void fullyZoom() {
 		for (int k = 0; k < 15; k++) {
+			
 			proxy.send(new ProxyMouseWheelMessage(-1));
 		}
 		try {
@@ -179,6 +180,7 @@ public class ActionRobot {
 
 	public void fullyZoomIn() {
 		for (int k = 0; k < 15; k++) {
+			
 			proxy.send(new ProxyMouseWheelMessage(1));
 		}
 		try {
