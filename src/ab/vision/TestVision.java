@@ -29,7 +29,7 @@ import ab.demo.other.ActionRobot;
 import ab.demo.util.StateUtil;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyScreenshotMessage;
-import ab.utils.ShowImageSegmentation;
+import ab.utils.ImageSegFrame;
 
 /* TestVision ------------------------------------------------------------- */
 
@@ -153,7 +153,7 @@ public class TestVision implements Runnable {
 
 	static public void main(String[] args) {
 
-		ShowImageSegmentation frame = null;
+		ImageSegFrame frame = null;
 		BufferedImage screenshot = null;
 		StateUtil stateUtil = new StateUtil();
 		// check command line arguments
@@ -183,7 +183,7 @@ public class TestVision implements Runnable {
 				screenshot = analyseScreenShot(screenshot);
 				
 				if (frame == null) {
-					frame = new ShowImageSegmentation("TestVision", screenshot,
+					frame = new ImageSegFrame("TestVision", screenshot,
 							meta);
 				} else {
 					frame.refresh(screenshot, meta);
@@ -233,7 +233,7 @@ public class TestVision implements Runnable {
 			int[][] meta = computeMetaInformation(screenshot);
 			screenshot = analyseScreenShot(screenshot);
 			if (frame == null) {
-				frame = new ShowImageSegmentation("TestVision", screenshot, meta);
+				frame = new ImageSegFrame("TestVision", screenshot, meta);
 			} else {
 				frame.refresh(screenshot, meta);
 			}
@@ -246,7 +246,7 @@ public class TestVision implements Runnable {
 
 	@Override
 	public void run() {
-		ShowImageSegmentation frame = null;
+		ImageSegFrame frame = null;
 		BufferedImage screenshot = null;
 		
        
@@ -259,7 +259,7 @@ public class TestVision implements Runnable {
 			
 			if (frame == null) {
 
-				frame = new ShowImageSegmentation("TestVision", screenshot,
+				frame = new ImageSegFrame("TestVision", screenshot,
 						meta);
 			} else {
 				frame.refresh(screenshot, meta);

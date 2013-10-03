@@ -80,9 +80,7 @@ public class NaiveMind {
 		int index = r.nextInt(pigs.size());
 		
 		Rectangle pig = pigs.get(index);
-		int x = pig.x;
-		int y = pig.y;
-		int width = pig.width;
+	
 		Point _tpt = new Point((int) pig.getCenterX(), (int) pig.getCenterY());
 		return _tpt;
 	}

@@ -37,6 +37,9 @@ public class Vision {
 
 	// create a vision object for processing a given screenshot
 	public Vision(BufferedImage screenshot) {
+
+		//Reset the ID counter for each segmentation
+		ABObject.resetCounter();
 		processScreenShot(screenshot);
 	}
 
@@ -461,10 +464,12 @@ public class Vision {
 		List<Rectangle> stone = findStones();
 		List<Rectangle> wood = findWood();
 		List<Rectangle> ice = findIce();
+		List<Rectangle> tnt = findTNTs();
 		ArrayList<ABObject> objects = new ArrayList<ABObject>();
-		objects.addAll(constructABObjects(stone,"stone"));
-		objects.addAll(constructABObjects(wood,"wood"));
-		objects.addAll(constructABObjects(ice,"ice"));
+		objects.addAll(constructABObjects(stone,ABType.Stone));
+		objects.addAll(constructABObjects(wood,ABType.Wood));
+		objects.addAll(constructABObjects(ice,ABType.Ice));
+		objects.addAll(constructABObjects(tnt,ABType.TNT));
 		return objects;
 	}
 	public ArrayList<ABObject> findBirds(){
@@ -475,17 +480,17 @@ public class Vision {
 		List<Rectangle> blackbirds = findBlackBirds();
 		List<Rectangle> wbirds = findWhiteBirds();
 		ArrayList<ABObject> objects = new ArrayList<ABObject>();
-		objects.addAll(constructABObjects(rbirds,"redBirds"));
-		objects.addAll(constructABObjects(ybirds,"yellowBirds"));
-		objects.addAll(constructABObjects(blbirds,"blueBirds"));
-		objects.addAll(constructABObjects(blackbirds,"blackBirds"));
-		objects.addAll(constructABObjects(wbirds,"whiteBirds"));
+		objects.addAll(constructABObjects(rbirds, ABType.RedBirds));
+		objects.addAll(constructABObjects(ybirds,ABType.YellowBirds));
+		objects.addAll(constructABObjects(blbirds,ABType.BlueBirds));
+		objects.addAll(constructABObjects(blackbirds,ABType.BlackBirds));
+		objects.addAll(constructABObjects(wbirds,ABType.WhiteBirds));
 		return objects;
 	}
 	
 	public ArrayList<ABObject> findPigs(){
 	
-		return constructABObjects(findPigsMBR(),"pigs");
+		return constructABObjects(findPigsMBR(), ABType.Pig);
 		}
 	public void reportObjects()
 	{
@@ -493,10 +498,11 @@ public class Vision {
 		System.out.println(" Birds: " + findBirds().size());
 		System.out.println(" Buliding Blocks: " + findBuildingBlocks().size());
 	}
-	private ArrayList<ABObject> constructABObjects(List<Rectangle> mbrs, String type)
+	private ArrayList<ABObject> constructABObjects(List<Rectangle> mbrs, ABType type)
 	{
 	
 		ArrayList<ABObject> objects = new ArrayList<ABObject>();
+		
 		for(Rectangle rec: mbrs)
 		{
 			objects.add(new ABObject(rec, type));

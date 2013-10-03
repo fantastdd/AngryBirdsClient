@@ -23,7 +23,7 @@ import javax.imageio.ImageIO;
 import ab.planner.TrajectoryPlanner;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyScreenshotMessage;
-import ab.utils.ShowImageSegmentation;
+import ab.utils.ImageSegFrame;
 import ab.vision.GameStateExtractor;
 import ab.vision.Vision;
 import ab.vision.VisionUtils;
@@ -73,7 +73,7 @@ public class abTrajectory {
     public static void main(String args[]) {
         abTrajectory ar = new abTrajectory();
 
-        ShowImageSegmentation frame = null;
+        ImageSegFrame frame = null;
         GameStateExtractor gameStateExtractor = new GameStateExtractor();
         TrajectoryPlanner trajectory = new TrajectoryPlanner();
 
@@ -121,7 +121,7 @@ public class abTrajectory {
 
             // show image
             if (frame == null) {
-                frame = new ShowImageSegmentation("trajectory", screenshot);
+                frame = new ImageSegFrame("trajectory", screenshot);
             } else {
                 frame.refresh(screenshot);
             }

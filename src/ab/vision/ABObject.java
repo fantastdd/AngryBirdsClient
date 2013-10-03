@@ -4,10 +4,10 @@ import java.awt.Rectangle;
 
 public class ABObject {
  private Rectangle mbr;
- private String type;
+ public ABType type;
  private static int counter = 0;
  private int id;
-public ABObject(Rectangle mbr, String type) {
+public ABObject(Rectangle mbr, ABType type) {
 	super();
 	this.mbr = mbr;
 	this.type = type;
@@ -16,11 +16,16 @@ public ABObject(Rectangle mbr, String type) {
 public Rectangle getMbr() {
 	return mbr;
 }
-public String getType() {
+public ABType getType() {
 	return type;
 }
 public int getId() {
 	return id;
+}
+public static void resetCounter() {
+	
+	counter = 0;
+	
 }
  
  

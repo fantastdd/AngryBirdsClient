@@ -15,7 +15,7 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 
 	private Point prevTarget = null;
 	private boolean firstShot = true;
-	
+	public Shot shot = null;
 	private BufferedImage plot = null;
 
 	public int getYellowBirdTapTime(Rectangle sling, Point release, Point target)
@@ -56,7 +56,6 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 	public Shot getShot(Point _tpt)
 	{
 		Point releasePoint;
-		Shot shot = null;
 		BufferedImage screenshot = ActionRobot.doScreenShot();
 		Vision vision = new Vision(screenshot);
 		Rectangle sling = vision.findSlingshotMBR();
