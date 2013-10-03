@@ -162,8 +162,8 @@ public class ActionRobot {
 		if (i.length > 0) {
 			level = i[0];
 		}
+		
 		lls.loadLevel(level);
-
 	}
 
 	public void fullyZoom() {
@@ -178,7 +178,7 @@ public class ActionRobot {
 	}
 
 	public void fullyZoomIn() {
-		for (int k = 0; k < 10; k++) {
+		for (int k = 0; k < 15; k++) {
 			proxy.send(new ProxyMouseWheelMessage(1));
 		}
 		try {

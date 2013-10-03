@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import ab.demo.other.ActionRobot;
@@ -14,9 +15,17 @@ import ab.vision.Vision;
 public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 
 	private Point prevTarget = null;
-	private boolean firstShot = true;
+	// first shot on this level, try high shot first. enable this feature by setting to true;
+	private boolean firstShot = false;
 	public Shot shot = null;
+	private Point releasePoint = null;
 	private BufferedImage plot = null;
+	private ActionRobot aRobot;
+	public NaiveTrajectoryPlanner()
+	{
+		super();
+		aRobot = new ActionRobot();
+	}
 
 	public int getYellowBirdTapTime(Rectangle sling, Point release, Point target)
 	{
@@ -55,7 +64,7 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 	
 	public Shot getShot(Point _tpt)
 	{
-		Point releasePoint;
+	
 		BufferedImage screenshot = ActionRobot.doScreenShot();
 		Vision vision = new Vision(screenshot);
 		Rectangle sling = vision.findSlingshotMBR();
@@ -64,7 +73,7 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			System.out.println("no slingshot detected. Please remove pop up or zoom out");
@@ -74,8 +83,12 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 		}
 		// if the target is very close to before, randomly choose a
 		// point near it
+		aRobot.fullyZoomIn();
 		
+		screenshot = ActionRobot.doScreenShot();
 		int bird_type = NaiveMind.getBirdOnSlingShot(screenshot);
+		
+		aRobot.fullyZoom();
 		Random r = new Random();
 		
 		if (prevTarget != null && distance(prevTarget, _tpt) < 10) {
@@ -109,14 +122,14 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 		Point refPoint = getReferencePoint(sling);
 	
 
-		System.out.println("the release point is: " + releasePoint);
+		System.out.println("Release Point: " + releasePoint);
 
 		//Calculate the tapping time
 		if (releasePoint != null) {
 			double releaseAngle = getReleaseAngle(sling,
 					releasePoint);
 
-			System.out.println(" The release angle is : "
+			System.out.println("Release Angle : "
 					+ Math.toDegrees(releaseAngle));
 
 			int tap_time = 0;
@@ -160,7 +173,7 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 					-  refPoint.y,0,tap_time);
 			
 			plot = this.plotTrajectory(screenshot, sling, releasePoint);
-			
+		
 		}
 		return shot;
 	}
@@ -174,6 +187,11 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 		public BufferedImage plotTrajectory() {
 			
 			return plot;
+		}
+		public void adjustTrajectory(List<Point> traj, Rectangle sling) {
+			
+			adjustTrajectory(traj, sling, releasePoint);
+			
 		}
 
 	

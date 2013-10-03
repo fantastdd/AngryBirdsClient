@@ -75,13 +75,16 @@ public class NaiveMind {
  */
 	public static Point getTarget(Vision vision)
 	{
+		Point _tpt = null;
 		List<Rectangle> pigs = vision.findPigsMBR();
-		Random r = new Random();
-		int index = r.nextInt(pigs.size());
+		if(!pigs.isEmpty()){
+			Random r = new Random();
+			int index = r.nextInt(pigs.size());
+			
+			Rectangle pig = pigs.get(index);
 		
-		Rectangle pig = pigs.get(index);
-	
-		Point _tpt = new Point((int) pig.getCenterX(), (int) pig.getCenterY());
+			 _tpt = new Point((int) pig.getCenterX(), (int) pig.getCenterY());
+		 }
 		return _tpt;
 	}
 	

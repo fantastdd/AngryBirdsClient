@@ -29,23 +29,20 @@ import ab.vision.Vision;
 
 public class ExampleAgent implements Runnable {
 
-	private int focus_x;
-	private int focus_y;
 
 	private ActionRobot ar;
 	public int currentLevel = 1;
 	public static int time_limit = 12;
 	NaiveTrajectoryPlanner tp;
 
-	private boolean firstShot;
-	private Point prevTarget;
+
+
 
 	// a standalone implementation of the Naive Agent
 	public ExampleAgent() {
 		ar = new ActionRobot();
 		tp = new NaiveTrajectoryPlanner();
-		prevTarget = null;
-		firstShot = true;
+		
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
 
@@ -64,6 +61,7 @@ public class ExampleAgent implements Runnable {
 
 		ar.loadLevel(currentLevel);
 		while (true) {
+		
 			GameState state = solve();
 			if (state == GameState.WON) {
 				try {
@@ -81,8 +79,8 @@ public class ExampleAgent implements Runnable {
 				// make a new trajectory planner whenever a new level is entered
 				tp = new NaiveTrajectoryPlanner();
 
-				// first shot on this level, try high shot first
-				firstShot = true;
+				
+		
 			} else if (state == GameState.LOST) {
 				System.out.println("restart");
 				ar.restartLevel();
@@ -109,22 +107,17 @@ public class ExampleAgent implements Runnable {
 
 	}
 
-	private double distance(Point p1, Point p2) {
-		return Math
-				.sqrt((double) ((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y)
-						* (p1.y - p2.y)));
-	}
 
 	public GameState solve()
 
 	{
-
+		
 		// capture Image
 		BufferedImage screenshot = ActionRobot.doScreenShot();
 
 		// process image
 		Vision vision = new Vision(screenshot);
-
+		
 		// find the slingshot
 		Rectangle sling = vision.findSlingshotMBR();
 
@@ -138,154 +131,48 @@ public class ExampleAgent implements Runnable {
 			sling = vision.findSlingshotMBR();
 		}
 
-		List<Rectangle> red_birds = vision.findRedBirds();
-		List<Rectangle> blue_birds = vision.findBlueBirds();
-		List<Rectangle> yellow_birds = vision.findYellowBirds();
-		List<Rectangle> pigs = vision.findPigsMBR();
-		int bird_count = 0;
-		bird_count = red_birds.size() + blue_birds.size() + yellow_birds.size();
-
-		System.out.println("...found " + pigs.size() + " pigs and "
-				+ bird_count + " birds");
-        
 		GameState state = ar.checkState();
-   
+	
 		// if there is a sling, then play, otherwise just skip.
-		if (sling != null) {
-			ar.fullyZoomIn();
-			screenshot = ar.doScreenShot();
-			int bird_type = NaiveMind.getBirdOnSlingShot(screenshot);
-			ar.fullyZoom();
-			if (!pigs.isEmpty()) {
-
-				// Initialise a shot list
-				ArrayList<Shot> shots = new ArrayList<Shot>();
-				Point releasePoint;
-				{
-					// random pick up a pig
-					Random r = new Random();
-					int index = r.nextInt(pigs.size());
-					Rectangle pig = pigs.get(index);
-					Point _tpt = new Point((int) pig.getCenterX(),
-							(int) pig.getCenterY());
-
-					System.out.println("the target point is " + _tpt);
-
-					// if the target is very close to before, randomly choose a
-					// point near it
-					if (prevTarget != null && distance(prevTarget, _tpt) < 10) {
-						double _angle = r.nextDouble() * Math.PI * 2;
-						_tpt.x = _tpt.x + (int) (Math.cos(_angle) * 10);
-						_tpt.y = _tpt.y + (int) (Math.sin(_angle) * 10);
-						System.out.println("Randomly changing to " + _tpt);
+		if (sling != null) 
+		{
+		   
+				Point target = NaiveMind.getTarget(vision);
+				if(target != null) {
+					Shot shot =  tp.getShot(target);
+					// check whether the slingshot is changed. the change of the Slingshot indicates a change in the scale.
+					{
+						ar.fullyZoom();
+						screenshot = ActionRobot.doScreenShot();
+						vision = new Vision(screenshot);
+						Rectangle _sling = vision.findSlingshotMBR();
+						if (sling.equals(_sling)) {
+							
+							//Make the shot
+							ar.cshoot(shot);
+							state = ar.checkState();
+							// update parameters after a shot is made
+							if (state == GameState.PLAYING) 
+							{
+								screenshot = ActionRobot.doScreenShot();
+								vision = new Vision(screenshot);
+								List<Point> traj = vision.findTrajPoints();
+								tp.adjustTrajectory(traj, sling);
+								
+	
+							}
+						} else
+							System.out.println("scale is changed, can not execute the shot, will re-segement the image");
 					}
-
-					prevTarget = new Point(_tpt.x, _tpt.y);
-
-					// estimate the trajectory
-					ArrayList<Point> pts = tp.estimateLaunchPoint(sling, _tpt);
-
-					// do a high shot when entering a level to find an accurate
-					// velocity
-					if (firstShot && pts.size() > 1) {
-						releasePoint = pts.get(1);
-					} else if (pts.size() == 1)
-						releasePoint = pts.get(0);
-					else {
-					
-						// randomly choose between the trajectories, with a 1 in
-						// 6 chance of choosing the high one
-						if (r.nextInt(6) == 0)
-							releasePoint = pts.get(1);
-						else
-							releasePoint = pts.get(0);
-					}
-					Point refPoint = tp.getReferencePoint(sling);
-					
-					/* Get the center of the active bird */
-					focus_x = (int) ((Env.getFocuslist()
-							.containsKey(currentLevel)) ? Env.getFocuslist()
-							.get(currentLevel).getX() : refPoint.x);
-					focus_y = (int) ((Env.getFocuslist()
-							.containsKey(currentLevel)) ? Env.getFocuslist()
-							.get(currentLevel).getY() : refPoint.y);
-					System.out.println("the release point is: " + releasePoint);
-			
-					//Calculate the tapping time
-					if (releasePoint != null) {
-						double releaseAngle = tp.getReleaseAngle(sling,
-								releasePoint);
-
-						System.out.println(" The release angle is : "
-								+ Math.toDegrees(releaseAngle));
-
-						int tap_time = 0;
-
-						switch (bird_type) {
-						case NaiveMind.black_bird: {
-							System.out.println(" Bird Type: Black");
-							tap_time = 0;
-							break;
-						}
-						case NaiveMind.yellow_bird: {
-							System.out.println(" Bird Type: Yellow");
-							tap_time = tp.getYellowBirdTapTime(sling,
-									releasePoint, _tpt);
-							break;
-						}
-						case NaiveMind.blue_bird: {
-							System.out.println(" Bird Type: Blue");
-							tap_time = tp.getBlueBirdTapTime(sling,
-									releasePoint, _tpt);
-							break;
-						}
-						case NaiveMind.white_bird: {
-							System.out.println(" Bird Type: White");
-							tap_time = tp.getWhiteBirdTapTime(sling,
-									releasePoint, _tpt);
-							break;
-						}
-						default: {
-							System.out.println(" Bird Type: Red");
-							tap_time = tp.getYellowBirdTapTime(sling,
-									releasePoint, _tpt);
-							break;
-						}
-						}
-
-						shots.add(new Shot(focus_x, focus_y, (int) releasePoint
-								.getX() - focus_x, (int) releasePoint.getY()
-								- focus_y, 0, tap_time));
-					} else
-						System.err.println("Out of Knowledge");
 				}
-
-				// check whether the slingshot is changed. the change of the slingshot indicates a change in the scale.
-				{
-					ar.fullyZoom();
-					screenshot = ActionRobot.doScreenShot();
-					vision = new Vision(screenshot);
-					Rectangle _sling = vision.findSlingshotMBR();
-					if (sling.equals(_sling)) {
-						
-						//Fire the birds
-						state = ar.shootWithStateInfoReturned(shots);
-						// update parameters after a shot is made
-						if (state == GameState.PLAYING) {
-							screenshot = ActionRobot.doScreenShot();
-							vision = new Vision(screenshot);
-							List<Point> traj = vision.findTrajPoints();
-							tp.adjustTrajectory(traj, sling, releasePoint);
-							firstShot = false;
-
-						}
-					} else
-						System.out.println("scale is changed, can not execute the shot, will re-segement the image");
-				}
-
-			}
-
+				
+		
+				
 		}
+
+				
+
+	
 		return state;
 	}
 
