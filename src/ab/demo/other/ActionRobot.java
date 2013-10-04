@@ -227,19 +227,5 @@ public class ActionRobot {
 				+ (System.currentTimeMillis() - time));
 		System.exit(0);*/
 		
-		BufferedImage screenshot = ActionRobot.doScreenShot();
-		Vision vision = new Vision(screenshot);
-		Point target = NaiveMind.getTarget(vision);
-		NaiveTrajectoryPlanner tp = new NaiveTrajectoryPlanner();
-		Shot shot = tp.getShot(target);
-		int[][] meta = VisionUtils.computeMetaInformation(screenshot);
-		screenshot = VisionUtils.analyseScreenShot(screenshot);
-		 ImageSegFrame segFrame = new ImageSegFrame("Vision Process: Scenario Recognition", screenshot, meta);
-		 BufferedImage plot = tp.plotTrajectory();
-		 meta = VisionUtils.computeMetaInformation(plot);
-		 System.out.println(meta);
-		 segFrame.refresh(plot, meta);
-		 aRobot.cshoot(shot);
-		 System.exit(0);
 	}
 }

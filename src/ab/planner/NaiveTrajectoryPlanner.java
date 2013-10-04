@@ -10,6 +10,8 @@ import java.util.Random;
 import ab.demo.other.ActionRobot;
 import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
+import ab.vision.ABType;
+import ab.vision.ABUtil;
 import ab.vision.Vision;
 
 public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
@@ -84,9 +86,9 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 		// if the target is very close to before, randomly choose a
 		// point near it
 		aRobot.fullyZoomIn();
-		
 		screenshot = ActionRobot.doScreenShot();
-		int bird_type = NaiveMind.getBirdOnSlingShot(screenshot);
+		vision = new Vision(screenshot);
+		ABType bird_type = ABUtil.getBirdOnSlingShot(vision.findBirds());
 		
 		aRobot.fullyZoom();
 		Random r = new Random();
@@ -135,24 +137,24 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 			int tap_time = 0;
 
 			switch (bird_type) {
-			case NaiveMind.black_bird: {
+			case RedBirds: {
 				System.out.println(" Bird Type: Black");
 				tap_time = 0;
 				break;
 			}
-			case NaiveMind.yellow_bird: {
+			case YellowBirds: {
 				System.out.println(" Bird Type: Yellow");
 				tap_time = getYellowBirdTapTime(sling,
 						releasePoint, _tpt);
 				break;
 			}
-			case NaiveMind.blue_bird: {
+			case BlueBirds: {
 				System.out.println(" Bird Type: Blue");
 				tap_time = getBlueBirdTapTime(sling,
 						releasePoint, _tpt);
 				break;
 			}
-			case NaiveMind.white_bird: {
+			case WhiteBirds: {
 				System.out.println(" Bird Type: White");
 				tap_time = getWhiteBirdTapTime(sling,
 						releasePoint, _tpt);

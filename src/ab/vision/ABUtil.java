@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ABSorter {
+public class ABUtil {
 	
 	/**by
 	 * Sort the ABObjects according their X coordinate (top-left corner)
 	 * */
-	public static List<Rectangle> sortByX(List<Rectangle> objects)
+	public static List<ABObject> sortByX(List<ABObject> objects)
 	{
 		Collections.sort(objects, new Comparator<Rectangle>(){
 
@@ -28,7 +28,7 @@ public class ABSorter {
 	/**
 	 * Sort the ABObjects according their Y coordinate (top-left corner)
 	 * */
-	public static List<Rectangle> sortByY(List<Rectangle> objects)
+	public static List<ABObject> sortByY(List<ABObject> objects)
 	{
 		Collections.sort(objects, new Comparator<Rectangle>(){
 
@@ -43,6 +43,23 @@ public class ABSorter {
 		return objects;
 		
 	}
+	public void process(Rectangle rec){};
+	/**
+	 * Get the type of the bird on the slingshot
+	 * */
+	public static ABType getBirdOnSlingShot(List<ABObject> birds)
+	{
+	
+		if(birds.isEmpty())
+			return ABType.Unknown;
+		
+		sortByY(birds);
+		
+		return birds.get(0).type;
+		
+		
+	}
+	
 	
 
 	public static void main(String[] args) {

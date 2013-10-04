@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 import ab.demo.other.ActionRobot;
 import ab.demo.other.NaiveMind;
 import ab.planner.NaiveTrajectoryPlanner;
+import ab.planner.Strategy;
 import ab.utils.ImageSegFrame;
 import ab.vision.Vision;
 import ab.vision.VisionUtils;
@@ -23,6 +24,7 @@ public class StarterControlPanel {
 	private JFrame frmControlPanel;
 	private Vision vision = null;
 	private NaiveTrajectoryPlanner tp = null;
+	private Strategy naiveMind;
 	private ImageSegFrame segFrame = null;
 
 	private Point target = null;
@@ -114,9 +116,11 @@ public class StarterControlPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(vision == null)
-					btnScenarioRecognition.doClick();				
+					btnScenarioRecognition.doClick();		
+				if(naiveMind == null)
+					naiveMind = new NaiveMind();
 				//Get the target point
-				target = NaiveMind.getTarget(vision);
+				target = naiveMind.getTarget(vision);
 				segFrame.getFrame().setTitle("Set Target");
 				//draw the point on the image segmentation frame
 				SwingUtilities.invokeLater(new Runnable() {

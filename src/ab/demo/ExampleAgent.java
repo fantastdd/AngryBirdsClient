@@ -12,19 +12,16 @@ package ab.demo;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import ab.demo.other.ActionRobot;
-import ab.demo.other.Env;
 import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
 import ab.demo.util.StateUtil;
 import ab.planner.NaiveTrajectoryPlanner;
+import ab.planner.Strategy;
 import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
-import ab.vision.ABObject;
 import ab.vision.Vision;
 
 public class ExampleAgent implements Runnable {
@@ -33,16 +30,16 @@ public class ExampleAgent implements Runnable {
 	private ActionRobot ar;
 	public int currentLevel = 1;
 	public static int time_limit = 12;
-	NaiveTrajectoryPlanner tp;
-
+	private NaiveTrajectoryPlanner trajectoryPlanner;
+	private Strategy naiveMind;
 
 
 
 	// a standalone implementation of the Naive Agent
 	public ExampleAgent() {
 		ar = new ActionRobot();
-		tp = new NaiveTrajectoryPlanner();
-		
+		trajectoryPlanner = new NaiveTrajectoryPlanner();
+		naiveMind = new NaiveMind();
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
 
@@ -77,7 +74,7 @@ public class ExampleAgent implements Runnable {
 
 				ar.loadLevel(++currentLevel);
 				// make a new trajectory planner whenever a new level is entered
-				tp = new NaiveTrajectoryPlanner();
+				trajectoryPlanner = new NaiveTrajectoryPlanner();
 
 				
 		
@@ -133,13 +130,13 @@ public class ExampleAgent implements Runnable {
 
 		GameState state = ar.checkState();
 	
-		// if there is a sling, then play, otherwise just skip.
+		// if there is a sling, then play
 		if (sling != null) 
 		{
 		   
-				Point target = NaiveMind.getTarget(vision);
+				Point target = naiveMind.getTarget(vision);
 				if(target != null) {
-					Shot shot =  tp.getShot(target);
+					Shot shot =  trajectoryPlanner.getShot(target);
 					// check whether the slingshot is changed. the change of the Slingshot indicates a change in the scale.
 					{
 						ar.fullyZoom();
@@ -158,7 +155,7 @@ public class ExampleAgent implements Runnable {
 								screenshot = ActionRobot.doScreenShot();
 								vision = new Vision(screenshot);
 								List<Point> traj = vision.findTrajPoints();
-								tp.adjustTrajectory(traj, sling);
+								trajectoryPlanner.adjustTrajectory(traj, sling);
 								
 	
 							}
@@ -171,9 +168,6 @@ public class ExampleAgent implements Runnable {
 		
 				
 		}
-
-				
-
 	
 		return state;
 	}

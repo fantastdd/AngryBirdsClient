@@ -6,10 +6,11 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Random;
 
+import ab.planner.Strategy;
 import ab.vision.Vision;
 
 
-public class NaiveMind {
+public class NaiveMind implements Strategy {
 
 	/**
 	 * @param args
@@ -73,7 +74,7 @@ public class NaiveMind {
  * @param Vision
  * @return target point
  */
-	public static Point getTarget(Vision vision)
+	public Point getTarget(Vision vision)
 	{
 		Point _tpt = null;
 		List<Rectangle> pigs = vision.findPigsMBR();
