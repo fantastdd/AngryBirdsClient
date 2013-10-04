@@ -20,7 +20,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import ab.demo.util.StateUtil;
-import ab.planner.NaiveTrajectoryPlanner;
+import ab.planner.ExampleTrajectoryPlanner;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyClickMessage;
 import ab.server.proxy.message.ProxyDragMessage;
@@ -154,7 +154,20 @@ public class ActionRobot {
 			e.printStackTrace();
 		}
 	}
-
+	public void fshoot(Shot shot)
+	{
+		ShootingSchema ss = new ShootingSchema();
+		LinkedList<Shot> shots = new LinkedList<Shot>();
+		shots.add(shot);
+		ss.shoot(proxy, shots);
+		System.out.println("Shooting Completed");
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+		
+			e.printStackTrace();
+		}
+	}
 	public void click() {
 		proxy.send(new ProxyClickMessage(100, 100));
 	}

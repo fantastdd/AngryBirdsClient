@@ -7,7 +7,7 @@
  **To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/ 
  *or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
  *****************************************************************************/
-package ab.demo;
+package example;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -18,7 +18,7 @@ import ab.demo.other.ActionRobot;
 import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
 import ab.demo.util.StateUtil;
-import ab.planner.NaiveTrajectoryPlanner;
+import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
 import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
@@ -30,7 +30,7 @@ public class ExampleAgent implements Runnable {
 	private ActionRobot ar;
 	public int currentLevel = 1;
 	public static int time_limit = 12;
-	private NaiveTrajectoryPlanner trajectoryPlanner;
+	private ExampleTrajectoryPlanner trajectoryPlanner;
 	private Strategy naiveMind;
 
 
@@ -38,8 +38,8 @@ public class ExampleAgent implements Runnable {
 	// a standalone implementation of the Naive Agent
 	public ExampleAgent() {
 		ar = new ActionRobot();
-		trajectoryPlanner = new NaiveTrajectoryPlanner();
-		naiveMind = new NaiveMind();
+		trajectoryPlanner = new ExampleTrajectoryPlanner();
+		naiveMind = new ExampleStrategy();
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
 
@@ -74,7 +74,7 @@ public class ExampleAgent implements Runnable {
 
 				ar.loadLevel(++currentLevel);
 				// make a new trajectory planner whenever a new level is entered
-				trajectoryPlanner = new NaiveTrajectoryPlanner();
+				trajectoryPlanner = new ExampleTrajectoryPlanner();
 
 				
 		

@@ -1,4 +1,4 @@
-package ab.demo;
+package example;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 
 import ab.demo.other.ActionRobot;
 import ab.demo.other.NaiveMind;
-import ab.planner.NaiveTrajectoryPlanner;
+import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
 import ab.utils.ImageSegFrame;
 import ab.vision.Vision;
@@ -23,8 +23,8 @@ public class StarterControlPanel {
 
 	private JFrame frmControlPanel;
 	private Vision vision = null;
-	private NaiveTrajectoryPlanner tp = null;
-	private Strategy naiveMind;
+	private ExampleTrajectoryPlanner tp = null;
+	private Strategy exampleStrategy;
 	private ImageSegFrame segFrame = null;
 
 	private Point target = null;
@@ -117,10 +117,10 @@ public class StarterControlPanel {
 				
 				if(vision == null)
 					btnScenarioRecognition.doClick();		
-				if(naiveMind == null)
-					naiveMind = new NaiveMind();
+				if(exampleStrategy == null)
+					exampleStrategy = new ExampleStrategy();
 				//Get the target point
-				target = naiveMind.getTarget(vision);
+				target = exampleStrategy.getTarget(vision);
 				segFrame.getFrame().setTitle("Set Target");
 				//draw the point on the image segmentation frame
 				SwingUtilities.invokeLater(new Runnable() {
@@ -141,7 +141,7 @@ public class StarterControlPanel {
 			
 				//initialize the trajectory planner
 				if (tp == null)
-					tp = new NaiveTrajectoryPlanner();
+					tp = new ExampleTrajectoryPlanner();
 				if(target != null)
 				{
 					
@@ -154,7 +154,7 @@ public class StarterControlPanel {
 			    	
 					SwingUtilities.invokeLater(new Runnable() {
 						    public void run() {    	
-						    	actionRobot.cshoot(tp.shot);	
+						    	actionRobot.fshoot(tp.shot);	
 						    }
 						  });
 					

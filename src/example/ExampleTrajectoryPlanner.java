@@ -1,4 +1,4 @@
-package ab.planner;
+package example;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Random;
 
 import ab.demo.other.ActionRobot;
-import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
+import ab.planner.TrajectoryPlanner;
 import ab.vision.ABType;
 import ab.vision.ABUtil;
 import ab.vision.Vision;
 
-public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
+public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 
 	private Point prevTarget = null;
 	// first shot on this level, try high shot first. enable this feature by setting to true;
@@ -23,7 +23,7 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 	private Point releasePoint = null;
 	private BufferedImage plot = null;
 	private ActionRobot aRobot;
-	public NaiveTrajectoryPlanner()
+	public ExampleTrajectoryPlanner()
 	{
 		super();
 		aRobot = new ActionRobot();
@@ -89,8 +89,15 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 		screenshot = ActionRobot.doScreenShot();
 		vision = new Vision(screenshot);
 		ABType bird_type = ABUtil.getBirdOnSlingShot(vision.findBirds());
-		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		aRobot.fullyZoom();
+		
+		
 		Random r = new Random();
 		
 		if (prevTarget != null && distance(prevTarget, _tpt) < 10) {
@@ -174,7 +181,7 @@ public class NaiveTrajectoryPlanner extends TrajectoryPlanner {
 					.getX() - refPoint.x, (int) releasePoint.getY()
 					-  refPoint.y,0,tap_time);
 			
-			plot = this.plotTrajectory(screenshot, sling, releasePoint);
+			plot = this.plotTrajectory(ActionRobot.doScreenShot(), sling, releasePoint);
 		
 		}
 		return shot;

@@ -20,7 +20,7 @@ import ab.demo.other.ClientActionRobot;
 import ab.demo.other.ClientActionRobotJava;
 import ab.demo.other.Env;
 import ab.demo.other.NaiveMind;
-import ab.planner.NaiveTrajectoryPlanner;
+import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
 import ab.vision.Vision;
@@ -36,7 +36,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 	public byte currentLevel = -1;
 	public int failedCounter = 0;
 	public int[] solved;
-	NaiveTrajectoryPlanner tp;
+	ExampleTrajectoryPlanner tp;
 	private int id = 28888;
 	private boolean firstShot;
 	private Point prevTarget;
@@ -46,7 +46,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 	public ClientNaiveAgent2013() {
 		// the default ip is the localhost
 		ar = new ClientActionRobotJava("127.0.0.1");
-		tp = new NaiveTrajectoryPlanner();
+		tp = new ExampleTrajectoryPlanner();
 		prevTarget = null;
 		firstShot = true;
 
@@ -56,7 +56,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 	 * */
 	public ClientNaiveAgent2013(String ip) {
 		ar = new ClientActionRobotJava(ip);
-		tp = new NaiveTrajectoryPlanner();
+		tp = new ExampleTrajectoryPlanner();
 		prevTarget = null;
 		firstShot = true;
 
@@ -64,7 +64,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 	public ClientNaiveAgent2013(String ip, int id)
 	{
 		ar = new ClientActionRobotJava(ip);
-		tp = new NaiveTrajectoryPlanner();
+		tp = new ExampleTrajectoryPlanner();
 		prevTarget = null;
 		firstShot = true;
 		this.id = id;
@@ -146,7 +146,7 @@ public class ClientNaiveAgent2013 implements Runnable {
 				System.out.println();
 				
 				// make a new trajectory planner whenever a new level is entered
-				tp = new NaiveTrajectoryPlanner();
+				tp = new ExampleTrajectoryPlanner();
 
 				// first shot on this level, try high shot first
 				firstShot = true;

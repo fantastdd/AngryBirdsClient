@@ -21,7 +21,7 @@ import ab.demo.other.Env;
 import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
 import ab.demo.util.StateUtil;
-import ab.planner.NaiveTrajectoryPlanner;
+import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
 import ab.vision.Vision;
@@ -34,7 +34,7 @@ public class NaiveAgentTimeLimit implements Runnable {
 	private ActionRobot ar;
 	public static int currentLevel = 1;
 	public static int time_limit = 12;
-	NaiveTrajectoryPlanner tp;
+	ExampleTrajectoryPlanner tp;
 
 	private boolean firstShot;
 	private Point prevTarget;
@@ -42,7 +42,7 @@ public class NaiveAgentTimeLimit implements Runnable {
 	// a standalone implementation of the Naive Agent
 	public NaiveAgentTimeLimit() {
 		ar = new ActionRobot();
-		tp = new NaiveTrajectoryPlanner();
+		tp = new ExampleTrajectoryPlanner();
 		prevTarget = null;
 		firstShot = true;
 		// --- go to the Poached Eggs episode level selection page ---
@@ -83,7 +83,7 @@ public class NaiveAgentTimeLimit implements Runnable {
 				else
 					ar.loadLevel(++currentLevel);
 				// make a new trajectory planner whenever a new level is entered
-				tp = new NaiveTrajectoryPlanner();
+				tp = new ExampleTrajectoryPlanner();
 
 				// first shot on this level, try high shot first
 				firstShot = true;
