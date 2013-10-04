@@ -146,7 +146,8 @@ public class ExampleAgent implements Runnable {
 						screenshot = ActionRobot.doScreenShot();
 						vision = new Vision(screenshot);
 						Rectangle _sling = vision.findSlingshotMBR();
-						if (sling.equals(_sling)) {
+						double scale_diff = Math.pow((sling.width - _sling.width),2) +  Math.pow((sling.height - _sling.height),2);
+						if (scale_diff < 25) {
 							
 							//Make the shot
 							ar.cshoot(shot);
@@ -162,7 +163,8 @@ public class ExampleAgent implements Runnable {
 	
 							}
 						} else
-							System.out.println("scale is changed, can not execute the shot, will re-segement the image");
+								System.out.println("scale is changed, can not execute the shot, will re-segement the image");
+							
 					}
 				}
 				
