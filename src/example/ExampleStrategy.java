@@ -11,13 +11,11 @@ import ab.vision.Vision;
 
 
 public class ExampleStrategy implements Strategy {
-
-
 	
 /**
  * Perform some reasoning to get a target
- * @param Vision
- * @return target point
+ * @param vision: image segmentation
+ * @return target: the point of the target
  */
 	public Point getTarget(Vision vision)
 	{

@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import ab.demo.other.ActionRobot;
@@ -121,14 +122,17 @@ public class StarterControlPanel {
 					exampleStrategy = new ExampleStrategy();
 				//Get the target point
 				target = exampleStrategy.getTarget(vision);
-				segFrame.getFrame().setTitle("Set Target");
-				//draw the point on the image segmentation frame
-				SwingUtilities.invokeLater(new Runnable() {
-				    public void run() {    	
-				    	
-				    	segFrame.highlightTarget(target);
-				    }
-				  });
+				if(target != null)
+				{
+					segFrame.getFrame().setTitle("Set Target");
+					//draw the point on the image segmentation frame
+					SwingUtilities.invokeLater(new Runnable() {
+					    public void run() {    	
+					    	segFrame.highlightTarget(target);
+					    }
+					  });
+				} else
+					JOptionPane.showMessageDialog(null, " The strategy module cannot find the target");
 				
 			}
 		});
