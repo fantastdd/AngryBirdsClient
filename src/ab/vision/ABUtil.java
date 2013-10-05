@@ -1,11 +1,24 @@
 package ab.vision;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ab.demo.other.ActionRobot;
+import example.State;
+
 public class ABUtil {
+	
+	
+    public static State getState()
+    {
+    	//Do screenshot
+        BufferedImage image = ActionRobot.doScreenShot();
+        
+    	return new State(image);
+    }
 	
 	/**by
 	 * Sort the ABObjects according their X coordinate (top-left corner)
@@ -44,22 +57,39 @@ public class ABUtil {
 		
 	}
 	public void process(Rectangle rec){};
+	
+	public static ABType getBirdTypeOnSling()
+	{
+		ActionRobot.fullyZoomIn();
+		ABType type = getBirdOnSling(getState().findBirds());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
+		
+		ActionRobot.fullyZoomOut();
+		return type;
+	}
+	
+	
 	/**
 	 * Get the type of the bird on the slingshot
 	 * */
-	public static ABType getBirdOnSlingShot(List<ABObject> birds)
+	private static ABType getBirdOnSling(List<ABObject> birds)
 	{
-	
 		if(birds.isEmpty())
 			return ABType.Unknown;
-		
-		sortByY(birds);
-		
+		sortByY(birds);	
 		return birds.get(0).type;
 		
 		
 	}
-	
+	public static boolean isSupport(ABObject supportee, ABObject supporter)
+	{
+		return false;
+	}
 	
 
 	public static void main(String[] args) {

@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Random;
 
+import example.State;
+
 import ab.planner.Strategy;
 import ab.vision.Vision;
 
@@ -88,6 +90,24 @@ public class NaiveMind implements Strategy {
 		 }
 		return _tpt;
 	}
+
+@Override
+public Point getTarget(State state) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public boolean useHighTrajectory(State state) {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+@Override
+public float getTapPoint(State state) {
+	// TODO Auto-generated method stub
+	return 0;
+}
 	
 	
 	

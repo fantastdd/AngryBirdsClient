@@ -2,8 +2,12 @@ package ab.planner;
 
 import java.awt.Point;
 
-import ab.vision.Vision;
+import example.State;
 
 public interface Strategy {
-public Point getTarget(Vision vision);
+
+public Point getTarget(State state);
+public boolean useHighTrajectory(State state);
+public float getTapPoint(State state);
+
 }

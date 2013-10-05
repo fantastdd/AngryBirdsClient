@@ -13,21 +13,21 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import ab.demo.other.ActionRobot;
-import ab.demo.other.NaiveMind;
 import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
 import ab.utils.ImageSegFrame;
+import ab.vision.ABUtil;
 import ab.vision.Vision;
 import ab.vision.VisionUtils;
 
 public class StarterControlPanel {
 
 	private JFrame frmControlPanel;
-	private Vision vision = null;
+	
 	private ExampleTrajectoryPlanner tp = null;
 	private Strategy exampleStrategy;
 	private ImageSegFrame segFrame = null;
-
+	private State currentState = null;
 	private Point target = null;
 	private ActionRobot actionRobot = new ActionRobot();
 	private JButton btnScenarioRecognition;
@@ -56,6 +56,7 @@ public class StarterControlPanel {
 	public StarterControlPanel() {
 		initialize();
 		frmControlPanel.setVisible(true);
+		exampleStrategy = new ExampleStrategy();
 	}
 
 	/**
@@ -94,17 +95,14 @@ public class StarterControlPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				//Add a loading-image here
-				actionRobot.fullyZoom();
-				BufferedImage screenshot = ActionRobot.doScreenShot();
-				vision = new Vision(screenshot);
-				vision.reportObjects();
-				int[][] meta = VisionUtils.computeMetaInformation(screenshot);
-				screenshot = VisionUtils.analyseScreenShot(screenshot);
-				
+				ActionRobot.fullyZoomOut();
+				currentState = ABUtil.getState();
+				currentState.PrintAllObjects();
+				int[][] meta = VisionUtils.computeMetaInformation(currentState.image);			
 				if (segFrame == null) {
-					segFrame = new ImageSegFrame("Vision Process: Scenario Recognition", screenshot, meta);			
+					segFrame = new ImageSegFrame("Vision Process: Scenario Recognition", VisionUtils.analyseScreenShot(currentState.image), meta);			
 				} else {
-					segFrame.refresh(screenshot, meta);
+					segFrame.refresh(VisionUtils.analyseScreenShot(currentState.image), meta);
 				}
 			
 				
@@ -116,12 +114,13 @@ public class StarterControlPanel {
 		btnFindTarget.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if(vision == null)
+				if(currentState == null)
 					btnScenarioRecognition.doClick();		
 				if(exampleStrategy == null)
 					exampleStrategy = new ExampleStrategy();
 				//Get the target point
-				target = exampleStrategy.getTarget(vision);
+				target = exampleStrategy.getTarget(currentState);
+			
 				if(target != null)
 				{
 					segFrame.getFrame().setTitle("Set Target");
@@ -146,10 +145,13 @@ public class StarterControlPanel {
 				//initialize the trajectory planner
 				if (tp == null)
 					tp = new ExampleTrajectoryPlanner();
+				if(exampleStrategy == null)
+					exampleStrategy = new ExampleStrategy();
 				if(target != null)
 				{
-					
-				    tp.getShot(target);
+					State state = ABUtil.getState();
+				
+				    tp.getShot(state, target, exampleStrategy.useHighTrajectory(state), exampleStrategy.getTapPoint(state));
 			
 					BufferedImage plot = tp.plotTrajectory();
 					int[][] meta = VisionUtils.computeMetaInformation(plot);

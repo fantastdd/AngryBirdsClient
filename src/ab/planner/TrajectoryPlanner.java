@@ -459,9 +459,9 @@ public class TrajectoryPlanner {
             if ((activeBird == null) || (activeBird.y > r.y)) {
                 activeBird = r;
             }
-        }
-       
+        }      
         return activeBird;
     }  
+    
   
 }

@@ -9,7 +9,6 @@ a ** ANGRYBIRDS AI AGENT FRAMEWORK
  *****************************************************************************/
 package ab.demo.other;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -20,16 +19,12 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import ab.demo.util.StateUtil;
-import ab.planner.ExampleTrajectoryPlanner;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyClickMessage;
 import ab.server.proxy.message.ProxyDragMessage;
 import ab.server.proxy.message.ProxyMouseWheelMessage;
 import ab.server.proxy.message.ProxyScreenshotMessage;
-import ab.utils.ImageSegFrame;
 import ab.vision.GameStateExtractor.GameState;
-import ab.vision.Vision;
-import ab.vision.VisionUtils;
 
 /**
  * Util class for basic functions
@@ -161,12 +156,7 @@ public class ActionRobot {
 		shots.add(shot);
 		ss.shoot(proxy, shots);
 		System.out.println("Shooting Completed");
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
 		
-			e.printStackTrace();
-		}
 	}
 	public void click() {
 		proxy.send(new ProxyClickMessage(100, 100));
@@ -185,7 +175,7 @@ public class ActionRobot {
 		lls.loadLevel(level);
 	}
 
-	public void fullyZoom() {
+	public static void fullyZoomOut() {
 		for (int k = 0; k < 15; k++) {
 			
 			proxy.send(new ProxyMouseWheelMessage(-1));
@@ -197,7 +187,7 @@ public class ActionRobot {
 		}
 	}
 
-	public void fullyZoomIn() {
+	public static void fullyZoomIn() {
 		for (int k = 0; k < 15; k++) {
 			
 			proxy.send(new ProxyMouseWheelMessage(1));
@@ -223,8 +213,8 @@ public class ActionRobot {
 
 
 	public static void main(String args[]) {
-		ActionRobot aRobot = new ActionRobot();
-		/*
+		
+		
 		long time = System.currentTimeMillis();
 		ActionRobot.doScreenShot();
 		time = System.currentTimeMillis() - time;
@@ -238,7 +228,7 @@ public class ActionRobot {
 
 		System.out.println(" time to take 40 screenshots"
 				+ (System.currentTimeMillis() - time));
-		System.exit(0);*/
+		System.exit(0);
 		
 	}
 }

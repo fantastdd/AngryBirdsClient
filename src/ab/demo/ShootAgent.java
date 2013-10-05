@@ -15,7 +15,7 @@ public class ShootAgent {
 	{
 		ActionRobot ar = new ActionRobot();
 		TrajectoryPlanner tp = new TrajectoryPlanner();
-		ar.fullyZoom();
+		ar.fullyZoomOut();
 		Vision vision = new Vision(ActionRobot.doScreenShot());
 		Rectangle slingshot = vision.findSlingshotMBR();
 		while(slingshot == null)

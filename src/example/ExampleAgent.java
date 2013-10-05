@@ -11,18 +11,16 @@ package example;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 import ab.demo.other.ActionRobot;
-import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
 import ab.demo.util.StateUtil;
 import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
-import ab.planner.TrajectoryPlanner;
+import ab.vision.ABObject;
+import ab.vision.ABUtil;
 import ab.vision.GameStateExtractor.GameState;
-import ab.vision.Vision;
 
 public class ExampleAgent implements Runnable {
 
@@ -31,7 +29,7 @@ public class ExampleAgent implements Runnable {
 	public int currentLevel = 1;
 	public static int time_limit = 12;
 	private ExampleTrajectoryPlanner trajectoryPlanner;
-	private Strategy naiveMind;
+	private Strategy strategy;
 
 
 
@@ -39,7 +37,7 @@ public class ExampleAgent implements Runnable {
 	public ExampleAgent() {
 		ar = new ActionRobot();
 		trajectoryPlanner = new ExampleTrajectoryPlanner();
-		naiveMind = new ExampleStrategy();
+		strategy = new ExampleStrategy();
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
 
@@ -60,6 +58,7 @@ public class ExampleAgent implements Runnable {
 		while (true) {
 		
 			GameState state = solve();
+			
 			if (state == GameState.WON) {
 				try {
 					Thread.sleep(3000);
@@ -67,11 +66,11 @@ public class ExampleAgent implements Runnable {
 					e.printStackTrace();
 				}
 
-				int score = StateUtil.checkCurrentScoreSafemode(ar.proxy);
+				int score = StateUtil.checkCurrentScoreSafemode(ActionRobot.proxy);
 
 				System.out.println(" Level " + currentLevel
 						+ " Score: " + score + " ");
-
+				
 				ar.loadLevel(++currentLevel);
 				// make a new trajectory planner whenever a new level is entered
 				trajectoryPlanner = new ExampleTrajectoryPlanner();
@@ -109,55 +108,47 @@ public class ExampleAgent implements Runnable {
 
 	{
 		
-		// capture Image
-		BufferedImage screenshot = ActionRobot.doScreenShot();
-
-		// process image
-		Vision vision = new Vision(screenshot);
+		// get the state of the current game
+		State state = ABUtil.getState();
 		
-		// find the slingshot
-		Rectangle sling = vision.findSlingshotMBR();
+		// find the sling
+		Rectangle sling = state.findSlingshot();
 
-		// confirm the slingshot
-		while (sling == null && ar.checkState() == GameState.PLAYING) {
+		// confirm the sling
+		while (sling == null && state.getGameState() == GameState.PLAYING) {
 			System.out
 					.println("no slingshot detected. Please remove pop up or zoom out");
-			ar.fullyZoom();
-			screenshot = ActionRobot.doScreenShot();
-			vision = new Vision(screenshot);
-			sling = vision.findSlingshotMBR();
+			ActionRobot.fullyZoomOut();
+			state = ABUtil.getState();
+			sling = state.findSlingshot();
 		}
-
-		GameState state = ar.checkState();
 	
 		// if there is a sling, then play
 		if (sling != null) 
 		{
 		   
-				Point target = naiveMind.getTarget(vision);
+				Point target = strategy.getTarget(ABUtil.getState());
+				
 				if(target != null) {
 					Shot shot =  trajectoryPlanner.getShot(target);
 					// check whether the slingshot is changed. the change of the Slingshot indicates a change in the scale.
 					{
-						ar.fullyZoom();
-						screenshot = ActionRobot.doScreenShot();
-						vision = new Vision(screenshot);
-						Rectangle _sling = vision.findSlingshotMBR();
+						ActionRobot.fullyZoomOut();
+						state = ABUtil.getState();
+						ABObject _sling = state.findSlingshot();						
 						double scale_diff = Math.pow((sling.width - _sling.width),2) +  Math.pow((sling.height - _sling.height),2);
+						//Check whether a significant scale change happens
 						if (scale_diff < 25) {
 							
-							//Make the shot
+							//execute the shot
 							ar.cshoot(shot);
-							state = ar.checkState();
-							// update parameters after a shot is made
-							if (state == GameState.PLAYING) 
-							{
-								screenshot = ActionRobot.doScreenShot();
-								vision = new Vision(screenshot);
-								List<Point> traj = vision.findTrajPoints();
+							state = ABUtil.getState();
+							
+							// update parameters after a shot is executed
+							if (state.getGameState() == GameState.PLAYING) 
+							{			
+								List<Point> traj = state.findTrajPoints();
 								trajectoryPlanner.adjustTrajectory(traj, sling);
-								
-	
 							}
 						} else
 								System.out.println("scale is changed, can not execute the shot, will re-segement the image");
@@ -168,8 +159,10 @@ public class ExampleAgent implements Runnable {
 		
 				
 		}
+		else
+			state = ABUtil.getState();
 	
-		return state;
+		return state.getGameState();
 	}
 
 	public static void main(String args[]) {

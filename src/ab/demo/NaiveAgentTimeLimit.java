@@ -160,7 +160,7 @@ public class NaiveAgentTimeLimit implements Runnable {
 		while (sling == null && ar.checkState() == GameState.PLAYING) {
 			System.out
 					.println("no slingshot detected. Please remove pop up or zoom out");
-			ar.fullyZoom();
+			ar.fullyZoomOut();
 			screenshot = ActionRobot.doScreenShot();
 			vision = new Vision(screenshot);
 			sling = vision.findSlingshotMBR();
@@ -177,7 +177,7 @@ public class NaiveAgentTimeLimit implements Runnable {
 			ar.fullyZoomIn();
 			screenshot = ar.doScreenShot();
 			int bird_type = NaiveMind.getBirdOnSlingShot(screenshot);
-			ar.fullyZoom();
+			ar.fullyZoomOut();
 			if (!pigs.isEmpty()) {
 
 				// Initialise a shot list
@@ -289,7 +289,7 @@ public class NaiveAgentTimeLimit implements Runnable {
 				// check whether the slingshot is changed. the change of the
 				// slingshot indicates a change in the scale.
 				{
-					ar.fullyZoom();
+					ar.fullyZoomOut();
 					screenshot = ActionRobot.doScreenShot();
 					vision = new Vision(screenshot);
 					Rectangle _sling = vision.findSlingshotMBR();

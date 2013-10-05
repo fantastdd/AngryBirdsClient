@@ -22,11 +22,11 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 	public Shot shot = null;
 	private Point releasePoint = null;
 	private BufferedImage plot = null;
-	private ActionRobot aRobot;
+
 	public ExampleTrajectoryPlanner()
 	{
 		super();
-		aRobot = new ActionRobot();
+		
 	}
 
 	public int getYellowBirdTapTime(Rectangle sling, Point release, Point target)
@@ -85,17 +85,9 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 		}
 		// if the target is very close to before, randomly choose a
 		// point near it
-		aRobot.fullyZoomIn();
-		screenshot = ActionRobot.doScreenShot();
-		vision = new Vision(screenshot);
-		ABType bird_type = ABUtil.getBirdOnSlingShot(vision.findBirds());
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		aRobot.fullyZoom();
+		
+		ABType bird_type = ABUtil.getBirdTypeOnSling();
+	
 		
 		
 		Random r = new Random();
@@ -119,10 +111,8 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 		} else if (pts.size() == 1)
 			releasePoint = pts.get(0);
 		else {
-		
 			// randomly choose between the trajectories, with a 1 in
 			// 6 chance of choosing the high one
-		
 			if (r.nextInt(6) == 0)
 				releasePoint = pts.get(1);
 			else
@@ -181,7 +171,7 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 					.getX() - refPoint.x, (int) releasePoint.getY()
 					-  refPoint.y,0,tap_time);
 			
-			plot = this.plotTrajectory(ActionRobot.doScreenShot(), sling, releasePoint);
+			plot = plotTrajectory(ActionRobot.doScreenShot(), sling, releasePoint);
 		
 		}
 		return shot;

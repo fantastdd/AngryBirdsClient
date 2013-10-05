@@ -492,12 +492,7 @@ public class Vision {
 	
 		return constructABObjects(findPigsMBR(), ABType.Pig);
 		}
-	public void reportObjects()
-	{
-		System.out.println(" Pigs: " + findPigs().size());
-		System.out.println(" Birds: " + findBirds().size());
-		System.out.println(" Buliding Blocks: " + findBuildingBlocks().size());
-	}
+
 	private ArrayList<ABObject> constructABObjects(List<Rectangle> mbrs, ABType type)
 	{
 	

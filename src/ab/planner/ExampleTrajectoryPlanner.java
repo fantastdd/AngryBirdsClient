@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 import ab.demo.other.ActionRobot;
-import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
 import ab.vision.ABType;
 import ab.vision.ABUtil;
 import ab.vision.Vision;
+import example.State;
 
 public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 
@@ -85,17 +85,15 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 		}
 		// if the target is very close to before, randomly choose a
 		// point near it
-		aRobot.fullyZoomIn();
-		screenshot = ActionRobot.doScreenShot();
-		vision = new Vision(screenshot);
-		ABType bird_type = ABUtil.getBirdOnSlingShot(vision.findBirds());
+		
+		ABType bird_type = ABUtil.getBirdTypeOnSling();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		aRobot.fullyZoom();
+		aRobot.fullyZoomOut();
 		
 		
 		Random r = new Random();
@@ -145,7 +143,7 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 
 			switch (bird_type) {
 			case RedBirds: {
-				System.out.println(" Bird Type: Black");
+				System.out.println(" Bird Type: Red");
 				tap_time = 0;
 				break;
 			}
@@ -163,6 +161,12 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 			}
 			case WhiteBirds: {
 				System.out.println(" Bird Type: White");
+				tap_time = getWhiteBirdTapTime(sling,
+						releasePoint, _tpt);
+				break;
+			}
+			case BlackBirds: {
+				System.out.println(" Bird Type: Black");
 				tap_time = getWhiteBirdTapTime(sling,
 						releasePoint, _tpt);
 				break;
@@ -203,7 +207,63 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 			
 		}
 
+		public Shot getShot(State state, Point target, boolean useHighTraj, float tapInterval)
+		{
 	
+			Rectangle sling = state.findSlingshot();
+			//We can not make a shot without sling
+			while(sling == null)
+			{
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					
+					e.printStackTrace();
+				}
+				System.out.println("no slingshot detected. Please remove pop up or zoom out");
+				state = ABUtil.getState();
+				sling = state.findSlingshot();
+			}
+			
+			// estimate the trajectory
+			ArrayList<Point> pts = estimateLaunchPoint(sling, target);
+
+			if (useHighTraj)
+					releasePoint = pts.get(1);
+				else
+					releasePoint = pts.get(0);
+			
+			Point refPoint = getReferencePoint(sling);
+		
+
+			System.out.println("Release Point: " + releasePoint);
+
+			//Calculate the tapping time
+			if (releasePoint != null) {
+				double releaseAngle = getReleaseAngle(sling,
+						releasePoint);
+				System.out.println("Release Angle : "
+						+ Math.toDegrees(releaseAngle));
+				int tap_time = 0;
+				Point tapPoint = new Point();
+				int distance = target.x - sling.x;
+				
+				System.out.println(" tap at " + tapInterval + " of the distance");
+				tapPoint.setLocation(new Point((int)(distance * tapInterval + sling.x) , target.y));
+				tap_time = getTimeByDistance(sling, releasePoint, tapPoint);
+				
+					
+				shot = new Shot( refPoint.x, refPoint.y, 
+						(int) releasePoint
+						.getX() - refPoint.x, (int) releasePoint.getY()
+						-  refPoint.y,0,tap_time);
+				
+				plot = plotTrajectory(ActionRobot.doScreenShot(), sling, releasePoint);
+			
+			}
+			return shot;
+			
+		}
 
 
 }
