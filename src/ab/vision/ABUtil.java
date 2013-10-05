@@ -11,6 +11,7 @@ import example.State;
 
 public class ABUtil {
 	
+	static final int gap = 5;
 	
     public static State getState()
     {
@@ -72,7 +73,24 @@ public class ABUtil {
 		ActionRobot.fullyZoomOut();
 		return type;
 	}
-	
+	// If o1 supports o2, return true
+	public static boolean isSupport(ABObject o1, ABObject o2)
+	{
+		int ex_o1 = o1.x + o1.width;
+		int ex_o2 = o2.x + o2.width;
+		int ey_o1 = o1.y + o1.height;
+		int ey_o2 = o2.y + o2.height;
+		if(
+			(Math.abs(ey_o2 - o1.y) < gap)
+			&&
+			()
+		  )
+		
+		
+		
+		return false;
+		
+	}
 	
 	/**
 	 * Get the type of the bird on the slingshot
