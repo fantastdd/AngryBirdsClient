@@ -61,9 +61,10 @@ public class StarterControlPanel {
 	}
 	public StarterControlPanel(Strategy strategy)
 	{
+		exampleStrategy = strategy;
 		initialize();
 		frmControlPanel.setVisible(true);
-		exampleStrategy = strategy;
+		
 		
 	}
 	/**
