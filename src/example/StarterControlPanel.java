@@ -42,8 +42,8 @@ public class StarterControlPanel {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					StarterControlPanel window = new StarterControlPanel();
-					window.frmControlPanel.setVisible(true);
+					new StarterControlPanel();
+				
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

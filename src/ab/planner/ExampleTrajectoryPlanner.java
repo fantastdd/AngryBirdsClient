@@ -228,7 +228,7 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 			// estimate the trajectory
 			ArrayList<Point> pts = estimateLaunchPoint(sling, target);
 
-			if (useHighTraj)
+			if (useHighTraj && pts.size() > 1)
 					releasePoint = pts.get(1);
 				else
 					releasePoint = pts.get(0);
@@ -247,8 +247,10 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 				int tap_time = 0;
 				Point tapPoint = new Point();
 				int distance = target.x - sling.x;
-				
-				System.out.println(" tap at " + tapInterval + " of the distance");
+				if(tapInterval == 0)
+					System.out.println(" No tapping");
+				else
+					System.out.println(" Tap: " + tapInterval + " of the distance");
 				tapPoint.setLocation(new Point((int)(distance * tapInterval + sling.x) , target.y));
 				tap_time = getTimeByDistance(sling, releasePoint, tapPoint);
 				

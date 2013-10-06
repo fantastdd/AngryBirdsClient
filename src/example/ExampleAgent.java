@@ -128,16 +128,20 @@ public class ExampleAgent implements Runnable {
 		// if there is a sling, then play
 		if (sling != null) 
 		{
-		   
-				Point target = strategy.getTarget(ABUtil.getState());
+				state = ABUtil.getState();
+				Point target = strategy.getTarget(state);
 				
 				if(target != null) {
-					Shot shot =  trajectoryPlanner.getShot(target);
+			
+					Shot shot =  trajectoryPlanner.getShot(state, target, strategy.useHighTrajectory(state), strategy.getTapPoint(state));
+			
 					// check whether the slingshot is changed. the change of the Slingshot indicates a change in the scale.
 					{
 						ActionRobot.fullyZoomOut();
 						state = ABUtil.getState();
-						ABObject _sling = state.findSlingshot();						
+						ABObject _sling = state.findSlingshot();
+						if(_sling != null){
+						
 						double scale_diff = Math.pow((sling.width - _sling.width),2) +  Math.pow((sling.height - _sling.height),2);
 						//Check whether a significant scale change happens
 						if (scale_diff < 25) {
@@ -152,8 +156,12 @@ public class ExampleAgent implements Runnable {
 								List<Point> traj = state.findTrajPoints();
 								trajectoryPlanner.adjustTrajectory(traj, sling);
 							}
-						} else
-								System.out.println("scale is changed, can not execute the shot, will re-segement the image");
+						} 
+						else
+							System.out.println("scale is changed, can not execute the shot, will re-segement the image");
+						}else
+							System.out.println("no sling detected, can not execute the shot, will re-segement the image");
+						
 							
 					}
 				}
