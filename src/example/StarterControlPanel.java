@@ -18,8 +18,8 @@ import ab.planner.Strategy;
 import ab.utils.ImageSegFrame;
 import ab.vision.ABUtil;
 import ab.vision.VisionUtils;
-import example.strategy.Strategy_RandomHitPigs;
-import example.strategy.Strategy_RandomHitSupporters;
+import example.strategy.HitRandomPig;
+import example.strategy.HitRandomSupporter;
 
 public class StarterControlPanel {
 
@@ -57,7 +57,7 @@ public class StarterControlPanel {
 	public StarterControlPanel() {
 		initialize();
 		frmControlPanel.setVisible(true);
-		exampleStrategy = new Strategy_RandomHitSupporters();
+		exampleStrategy = new HitRandomSupporter();
 	}
 	public StarterControlPanel(Strategy strategy)
 	{
@@ -125,7 +125,7 @@ public class StarterControlPanel {
 				if(currentState == null)
 					btnScenarioRecognition.doClick();		
 				if(exampleStrategy == null)
-					exampleStrategy = new Strategy_RandomHitSupporters();
+					exampleStrategy = new HitRandomSupporter();
 				//Get the target point
 				target = exampleStrategy.getTarget(currentState);
 			
@@ -154,7 +154,7 @@ public class StarterControlPanel {
 				if (tp == null)
 					tp = new ExampleTrajectoryPlanner();
 				if(exampleStrategy == null)
-					exampleStrategy = new Strategy_RandomHitSupporters();
+					exampleStrategy = new HitRandomSupporter();
 				if(target != null)
 				{
 					State state = ABUtil.getState();

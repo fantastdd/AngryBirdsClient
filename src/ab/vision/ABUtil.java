@@ -88,7 +88,7 @@ public class ABUtil {
 		if(
 			(Math.abs(ey_o2 - o1.y) < gap)
 			&& 
- 			!( (Math.abs(ex_o1 - o2.x) > gap) || (Math.abs(o1.x - ex_o2) > gap))
+ 			!( o2.x - ex_o1  > gap || o1.x - ex_o2 > gap )
 		  )
 	        return true;	
 		
