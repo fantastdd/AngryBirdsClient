@@ -23,40 +23,41 @@ import ab.planner.Strategy;
 import ab.vision.ABObject;
 import ab.vision.ABUtil;
 import ab.vision.GameStateExtractor.GameState;
-
+//An example agent that will loop through 1 - 21 levels. 
 public class ExampleAgent implements Runnable {
 
 
-	private ActionRobot ar;
+	private ActionRobot aRobot;
 	public int currentLevel = 1;
-	public static int time_limit = 12;
+	
 	private ExampleTrajectoryPlanner trajectoryPlanner;
 	private Strategy strategy;
 
 
-
-	// a standalone implementation of the Naive Agent
 	public ExampleAgent() {
-		ar = new ActionRobot();
+		aRobot = new ActionRobot();
 		trajectoryPlanner = new ExampleTrajectoryPlanner();
 		strategy = new Strategy_RandomHitPigs();
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
 
 	}
+	public ExampleAgent(Strategy strategy)
+	{
+		aRobot = new ActionRobot();
+		trajectoryPlanner = new ExampleTrajectoryPlanner();
+		this.strategy = strategy;
+		// --- go to the Poached Eggs episode level selection page ---
+		ActionRobot.GoFromMainMenuToLevelSelection();
 
-	public int getCurrent_level() {
-		return currentLevel;
 	}
 
-	public void setCurrent_level(int current_level) {
-		this.currentLevel = current_level;
-	}
+
 
 	// run the client
 	public void run() {
 
-		ar.loadLevel(currentLevel);
+		aRobot.loadLevel(currentLevel);
 		while (true) {
 		
 			GameState state = solve();
@@ -73,7 +74,7 @@ public class ExampleAgent implements Runnable {
 				System.out.println(" Level " + currentLevel
 						+ " Score: " + score + " ");
 				
-				ar.loadLevel(++currentLevel);
+				aRobot.loadLevel(++currentLevel);
 				// make a new trajectory planner whenever a new level is entered
 				trajectoryPlanner = new ExampleTrajectoryPlanner();
 
@@ -81,24 +82,24 @@ public class ExampleAgent implements Runnable {
 		
 			} else if (state == GameState.LOST) {
 				System.out.println("restart");
-				ar.restartLevel();
+				aRobot.restartLevel();
 			} else if (state == GameState.LEVEL_SELECTION) {
 				System.out
 						.println("unexpected level selection page, go to the lasts current level : "
 								+ currentLevel);
-				ar.loadLevel(currentLevel);
+				aRobot.loadLevel(currentLevel);
 			} else if (state == GameState.MAIN_MENU) {
 				System.out
 						.println("unexpected main menu page, go to the lasts current level : "
 								+ currentLevel);
 				ActionRobot.GoFromMainMenuToLevelSelection();
-				ar.loadLevel(currentLevel);
+				aRobot.loadLevel(currentLevel);
 			} else if (state == GameState.EPISODE_MENU) {
 				System.out
 						.println("unexpected episode menu page, go to the lasts current level : "
 								+ currentLevel);
 				ActionRobot.GoFromMainMenuToLevelSelection();
-				ar.loadLevel(currentLevel);
+				aRobot.loadLevel(currentLevel);
 			}
 
 		}
@@ -147,7 +148,7 @@ public class ExampleAgent implements Runnable {
 						if (scale_diff < 25) {
 							
 							//execute the shot
-							ar.cshoot(shot);
+							aRobot.cshoot(shot);
 							state = ABUtil.getState();
 							
 							// update parameters after a shot is executed

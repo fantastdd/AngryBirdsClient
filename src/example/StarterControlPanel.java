@@ -59,7 +59,13 @@ public class StarterControlPanel {
 		frmControlPanel.setVisible(true);
 		exampleStrategy = new Strategy_RandomHitSupporters();
 	}
-
+	public StarterControlPanel(Strategy strategy)
+	{
+		initialize();
+		frmControlPanel.setVisible(true);
+		exampleStrategy = strategy;
+		
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
