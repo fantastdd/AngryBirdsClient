@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import ab.demo.other.ActionRobot;
@@ -74,24 +75,37 @@ public class ABUtil {
 		return type;
 	}
 	// If o1 supports o2, return true
-	public static boolean isSupport(ABObject o1, ABObject o2)
+	public static boolean isSupport(ABObject o2, ABObject o1)
 	{
 		int ex_o1 = o1.x + o1.width;
 		int ex_o2 = o2.x + o2.width;
-		int ey_o1 = o1.y + o1.height;
+		
 		int ey_o2 = o2.y + o2.height;
 		if(
 			(Math.abs(ey_o2 - o1.y) < gap)
-			&&
-			()
+			&& 
+ 			!( (Math.abs(ex_o1 - o2.x) < gap) || (Math.abs(o1.x - ex_o2) < gap))
 		  )
-		
-		
+	        return true;	
 		
 		return false;
 		
 	}
-	
+	//Return a link list of ABObjects that support o1 (test by isSupport function ). 
+	//objs refers to a list of potential supporters.
+	//Empty list will be returned if no such supporters. 
+	public static LinkedList<ABObject> getSupporters(ABObject o2, 
+			List<ABObject> objs)
+			{
+				LinkedList<ABObject> result = new LinkedList<ABObject>();
+				//Loop through the potential supporters
+		        for(ABObject o1: objs)
+		        {
+		        	if(isSupport(o2,o1))
+		        		result.add(o1);
+		        }
+		        return result;
+			}
 	/**
 	 * Get the type of the bird on the slingshot
 	 * */
@@ -104,10 +118,7 @@ public class ABUtil {
 		
 		
 	}
-	public static boolean isSupport(ABObject supportee, ABObject supporter)
-	{
-		return false;
-	}
+
 	
 
 	public static void main(String[] args) {

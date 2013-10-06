@@ -13,6 +13,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
+import example.strategy.Strategy_RandomHitPigs;
+
 import ab.demo.other.ActionRobot;
 import ab.demo.other.Shot;
 import ab.demo.util.StateUtil;
@@ -37,7 +39,7 @@ public class ExampleAgent implements Runnable {
 	public ExampleAgent() {
 		ar = new ActionRobot();
 		trajectoryPlanner = new ExampleTrajectoryPlanner();
-		strategy = new ExampleStrategy();
+		strategy = new Strategy_RandomHitPigs();
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
 

@@ -1,7 +1,8 @@
-package example;
+package example.strategy;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -9,22 +10,36 @@ import ab.planner.Strategy;
 import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.ABUtil;
+import example.State;
 
 
-public class ExampleStrategy implements Strategy {
+public class Strategy_RandomHitSupporters implements Strategy {
 	List<ABObject> pigs;
+	List<ABObject> buildingBlocks;
 	@Override
+	//Get the center point of a building block that supports a pig
 	public Point getTarget(State state) 
 	{
+		List<ABObject> supporters = new LinkedList<ABObject>();
 		Point _tpt = null;
 		pigs = state.findPigs();
+		buildingBlocks = state.findBuildingBlocks();
 		if(!pigs.isEmpty()){
 			Random r = new Random();
-			int index = r.nextInt(pigs.size());
-			
-			Rectangle pig = pigs.get(index);
-		
-			 _tpt = new Point((int) pig.getCenterX(), (int) pig.getCenterY());
+			// Choose a random pig
+			int index = r.nextInt(pigs.size());			
+			ABObject pig = pigs.get(index);
+			// Get the list of supporters that supports the pig
+			supporters = ABUtil.getSupporters(pig, buildingBlocks);
+			System.out.println(" Supporters Num: " + supporters.size());
+			if(!supporters.isEmpty())
+			{
+				// Choose a random supporter
+				ABObject supporter = supporters.get(r.nextInt(supporters.size()));
+				_tpt = new Point((int)supporter.getCenterX(), (int)supporter.getCenterY());
+			}
+			else
+				_tpt = new Point((int) pig.getCenterX(), (int) pig.getCenterY());
 		}
 		return _tpt;
 	}
@@ -38,7 +53,6 @@ public class ExampleStrategy implements Strategy {
 	}
 
 	@Override
-	//Non-usd state
 	public float getTapPoint(State state) {	
 		
 		//Find out the type of the bird on the sling

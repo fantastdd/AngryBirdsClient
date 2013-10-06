@@ -185,7 +185,7 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 					.getX() - refPoint.x, (int) releasePoint.getY()
 					-  refPoint.y,0,tap_time);
 			
-			plot = this.plotTrajectory(ActionRobot.doScreenShot(), sling, releasePoint);
+			plot = plotTrajectory(ActionRobot.doScreenShot(), sling, releasePoint);
 		
 		}
 		return shot;
@@ -258,7 +258,7 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 						.getX() - refPoint.x, (int) releasePoint.getY()
 						-  refPoint.y,0,tap_time);
 				
-				plot = plotTrajectory(ActionRobot.doScreenShot(), sling, releasePoint);
+				plot = plotTrajectory(state.image, sling, releasePoint);
 			
 			}
 			return shot;
