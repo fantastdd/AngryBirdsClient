@@ -7,7 +7,10 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import ab.demo.other.ActionRobot;
+import ab.planner.Strategy;
 import example.State;
 
 public class ABUtil {
@@ -119,7 +122,23 @@ public class ABUtil {
 		
 		
 	}
-
+	//New a strategy by the class name
+	public static Strategy getStrategy(String strategyFullName)
+	{
+		Strategy strategy = null;
+		try {
+			strategy = (Strategy) Class.forName(strategyFullName).newInstance();
+		} catch (InstantiationException e1) {
+		
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			JOptionPane.showMessageDialog(null, "Can not find the strategy: " + strategyFullName);
+		}
+		return strategy;
+	}
 	
 
 	public static void main(String[] args) {
