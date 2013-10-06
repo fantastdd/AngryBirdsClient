@@ -12,7 +12,7 @@ import example.State;
 
 public class ABUtil {
 	
-	static final int gap = 5;
+	public static int gap = 5;
 	
     public static State getState()
     {
@@ -21,6 +21,7 @@ public class ABUtil {
         
     	return new State(image);
     }
+
 	
 	/**by
 	 * Sort the ABObjects according their X coordinate (top-left corner)
@@ -84,7 +85,7 @@ public class ABUtil {
 		if(
 			(Math.abs(ey_o2 - o1.y) < gap)
 			&& 
- 			!( (Math.abs(ex_o1 - o2.x) < gap) || (Math.abs(o1.x - ex_o2) < gap))
+ 			!( (Math.abs(ex_o1 - o2.x) > gap) || (Math.abs(o1.x - ex_o2) > gap))
 		  )
 	        return true;	
 		

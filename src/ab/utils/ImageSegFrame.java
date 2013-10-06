@@ -68,8 +68,10 @@ public class ImageSegFrame {
         public void highlightTarget(Point point)
         {
         	Graphics2D g = (Graphics2D)getGraphics();
+        	paint(g);
         	if(_img != null)
         	{
+        	
         		g.setColor(Color.red);
         		g.setStroke(new BasicStroke(3));
         		g.drawLine(point.x - 5, point.y - 5, point.x + 5, point.y + 5);
