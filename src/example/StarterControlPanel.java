@@ -17,6 +17,7 @@ import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
 import ab.utils.ImageSegFrame;
 import ab.vision.ABUtil;
+import ab.vision.State;
 import ab.vision.VisionUtils;
 import example.strategy.HitRandomPig;
 import example.strategy.HitRandomSupporter;
@@ -34,7 +35,10 @@ public class StarterControlPanel {
 	private JButton btnScenarioRecognition;
 	private JButton btnFindTarget;
 	private JButton btnShoot;
-	
+	private int panel_x = -1;
+	private int panel_y = -1;
+	private int segImage_x = -1;
+	private int segImage_y = -1;
 	/**
 	 * Launch the application.
 	 */
@@ -67,13 +71,30 @@ public class StarterControlPanel {
 		
 		
 	}
+	public StarterControlPanel(Strategy strategy, int panel_x, int panel_y,
+			int segImage_x, int segImage_y)
+	{
+		this.panel_x = panel_x;
+		this.panel_y = panel_y;
+		this.segImage_x = segImage_x;
+		this.segImage_y = segImage_y;
+		exampleStrategy = strategy;
+		initialize();
+		frmControlPanel.setVisible(true);
+		
+		
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		frmControlPanel = new JFrame();
 		frmControlPanel.setTitle("Control Panel");
-		frmControlPanel.setBounds(100, 100, 445, 88);
+		if(panel_x != -1 && panel_y != -1)
+			frmControlPanel.setBounds(panel_x, panel_y, 445, 88);
+		else
+			frmControlPanel.setBounds(100, 100, 445, 88);
 		frmControlPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmControlPanel.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -108,7 +129,9 @@ public class StarterControlPanel {
 				currentState.PrintAllObjects();
 				int[][] meta = VisionUtils.computeMetaInformation(currentState.image);			
 				if (segFrame == null) {
-					segFrame = new ImageSegFrame("Vision Process: Scenario Recognition", VisionUtils.analyseScreenShot(currentState.image), meta);			
+					segFrame = new ImageSegFrame("Vision Process: Scenario Recognition", VisionUtils.analyseScreenShot(currentState.image), meta
+							,segImage_x, segImage_y);			
+					
 				} else {
 					segFrame.refresh(VisionUtils.analyseScreenShot(currentState.image), meta);
 				}

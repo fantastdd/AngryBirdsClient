@@ -1,4 +1,4 @@
-package example;
+package ab.vision;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -6,18 +6,16 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import ab.demo.other.ActionRobot;
 import ab.demo.util.StateUtil;
-import ab.vision.ABObject;
-import ab.vision.ABType;
 import ab.vision.GameStateExtractor.GameState;
-import ab.vision.Vision;
 
 public class State {
 	private Vision vision;
 	public BufferedImage image;
-	private ArrayList<ABObject> buildingBlocks;
-	private ArrayList<ABObject> pigs;
-	private ArrayList<ABObject> birds;
+	private ABList buildingBlocks;
+	private ABList pigs;
+	private ABList birds;
 	private GameState gameState;
 	private ABObject slingshot;
 	
@@ -27,25 +25,25 @@ public class State {
 		
 		this.image = image;
 		vision = new Vision(image);
-		buildingBlocks = new ArrayList<ABObject>();
-		pigs = new ArrayList<ABObject>();
-		birds = new ArrayList<ABObject>();
+		buildingBlocks = ABList.newList();
+		pigs = ABList.newList();
+		birds = ABList.newList();
 		slingshot = null;
 		gameState = GameState.UNKNOWN;
 	}
-	public ArrayList<ABObject> findBuildingBlocks()
+	public ABList findBuildingBlocks()
 	{
 		if(buildingBlocks.isEmpty())
 			buildingBlocks = vision.findBuildingBlocks();
 		return buildingBlocks;
 	}
-	public ArrayList<ABObject> findPigs()
+	public ABList findPigs()
 	{
 		if(pigs.isEmpty())
 			pigs = vision.findPigs();
 		return pigs;
 	}
-	public ArrayList<ABObject> findBirds()
+	public ABList findBirds()
 	{
 		if(birds.isEmpty())
 			birds = vision.findBirds();
@@ -79,6 +77,29 @@ public class State {
 		
 	}
 
+	
+	public ABType getBirdTypeOnSling()
+	{
+		ActionRobot.fullyZoomIn();
+
+		State state = ABUtil.getState();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
+		
+		ActionRobot.fullyZoomOut();
+		ABList _birds = state.findBirds();
+		if(_birds.isEmpty())
+			return ABType.Unknown;
+		ABUtil.sortByY(_birds);	
+		
+		return _birds.get(0).type;
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

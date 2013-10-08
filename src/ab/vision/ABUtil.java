@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 
 import ab.demo.other.ActionRobot;
 import ab.planner.Strategy;
-import example.State;
 
 public class ABUtil {
 	
@@ -21,7 +20,6 @@ public class ABUtil {
     {
     	//Do screenshot
         BufferedImage image = ActionRobot.doScreenShot();
-        
     	return new State(image);
     }
 
@@ -64,20 +62,7 @@ public class ABUtil {
 	}
 	public void process(Rectangle rec){};
 	
-	public static ABType getBirdTypeOnSling()
-	{
-		ActionRobot.fullyZoomIn();
-		ABType type = getBirdOnSling(getState().findBirds());
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			
-			e.printStackTrace();
-		}
-		
-		ActionRobot.fullyZoomOut();
-		return type;
-	}
+
 	// If o1 supports o2, return true
 	public static boolean isSupport(ABObject o2, ABObject o1)
 	{
@@ -98,10 +83,10 @@ public class ABUtil {
 	//Return a link list of ABObjects that support o1 (test by isSupport function ). 
 	//objs refers to a list of potential supporters.
 	//Empty list will be returned if no such supporters. 
-	public static LinkedList<ABObject> getSupporters(ABObject o2, 
+	public static ABList getSupporters(ABObject o2, 
 			List<ABObject> objs)
 			{
-				LinkedList<ABObject> result = new LinkedList<ABObject>();
+				ABList result = ABList.newList();
 				//Loop through the potential supporters
 		        for(ABObject o1: objs)
 		        {
@@ -110,18 +95,7 @@ public class ABUtil {
 		        }
 		        return result;
 			}
-	/**
-	 * Get the type of the bird on the slingshot
-	 * */
-	private static ABType getBirdOnSling(List<ABObject> birds)
-	{
-		if(birds.isEmpty())
-			return ABType.Unknown;
-		sortByY(birds);	
-		return birds.get(0).type;
-		
-		
-	}
+
 	//New a strategy by the class name
 	public static Strategy getStrategy(String strategyFullName)
 	{

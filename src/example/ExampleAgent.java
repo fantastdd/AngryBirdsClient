@@ -22,6 +22,7 @@ import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
 import ab.vision.ABObject;
 import ab.vision.ABUtil;
+import ab.vision.State;
 import ab.vision.GameStateExtractor.GameState;
 //An example agent that will loop through 1 - 21 levels. 
 public class ExampleAgent implements Runnable {

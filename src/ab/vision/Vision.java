@@ -460,43 +460,43 @@ public class Vision {
 
 		return objects;
 	}
-	public ArrayList<ABObject> findBuildingBlocks(){
+	public ABList findBuildingBlocks(){
 		List<Rectangle> stone = findStones();
 		List<Rectangle> wood = findWood();
 		List<Rectangle> ice = findIce();
 		List<Rectangle> tnt = findTNTs();
-		ArrayList<ABObject> objects = new ArrayList<ABObject>();
+		ABList objects = ABList.newList();
 		objects.addAll(constructABObjects(stone,ABType.Stone));
 		objects.addAll(constructABObjects(wood,ABType.Wood));
 		objects.addAll(constructABObjects(ice,ABType.Ice));
 		objects.addAll(constructABObjects(tnt,ABType.TNT));
 		return objects;
 	}
-	public ArrayList<ABObject> findBirds(){
+	public ABList findBirds(){
 		
 		List<Rectangle> rbirds = findRedBirds();
 		List<Rectangle> ybirds = findYellowBirds();
 		List<Rectangle> blbirds = findBlueBirds();
 		List<Rectangle> blackbirds = findBlackBirds();
 		List<Rectangle> wbirds = findWhiteBirds();
-		ArrayList<ABObject> objects = new ArrayList<ABObject>();
-		objects.addAll(constructABObjects(rbirds, ABType.RedBirds));
-		objects.addAll(constructABObjects(ybirds,ABType.YellowBirds));
-		objects.addAll(constructABObjects(blbirds,ABType.BlueBirds));
-		objects.addAll(constructABObjects(blackbirds,ABType.BlackBirds));
-		objects.addAll(constructABObjects(wbirds,ABType.WhiteBirds));
+		ABList objects = ABList.newList();
+		objects.addAll(constructABObjects(rbirds, ABType.RedBird));
+		objects.addAll(constructABObjects(ybirds,ABType.YellowBird));
+		objects.addAll(constructABObjects(blbirds,ABType.BlueBird));
+		objects.addAll(constructABObjects(blackbirds,ABType.BlackBird));
+		objects.addAll(constructABObjects(wbirds,ABType.WhiteBird));
 		return objects;
 	}
 	
-	public ArrayList<ABObject> findPigs(){
+	public ABList findPigs(){
 	
 		return constructABObjects(findPigsMBR(), ABType.Pig);
 		}
 
-	private ArrayList<ABObject> constructABObjects(List<Rectangle> mbrs, ABType type)
+	private ABList constructABObjects(List<Rectangle> mbrs, ABType type)
 	{
 	
-		ArrayList<ABObject> objects = new ArrayList<ABObject>();
+		ABList objects = ABList.newList();
 		
 		for(Rectangle rec: mbrs)
 		{

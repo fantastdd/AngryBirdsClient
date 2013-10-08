@@ -211,9 +211,32 @@ public class ImageSegFrame {
     protected int[][] meta;
     protected String name;
     protected volatile boolean refresh = false;
+    private int bound_x = -1;
+    private int bound_y = -1;
     public JFrame getFrame()
     {
     	return frame;
+    }
+    public ImageSegFrame(String name, Image img, int[][] meta, int bound_x, int bound_y)
+    {
+    	 this.name = name;
+         this.img = img;
+         this.meta = meta;
+  	   	frame = new JFrame(name);
+  	    //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  	    panel = new ImagePanel(frame);
+  	   
+  	    frame.getContentPane().add(panel);
+  	
+  	    frame.pack();
+  	    Insets insets = frame.getInsets();
+  	    frame.setSize(img.getWidth(null) + insets.left + insets.right,
+  	        img.getHeight(null) + insets.top + insets.bottom);
+  	    if(bound_x != -1 && bound_y != -1)
+  	    	frame.setBounds(bound_x, bound_y, frame.getSize().width, frame.getSize().height);
+          frame.setVisible(true);
+          if(img != null && meta != null)
+          	panel.refresh(img, meta);
     }
     public ImageSegFrame(String name, Image img, int[][] meta) {
 
@@ -230,7 +253,8 @@ public class ImageSegFrame {
 	    Insets insets = frame.getInsets();
 	    frame.setSize(img.getWidth(null) + insets.left + insets.right,
 	        img.getHeight(null) + insets.top + insets.bottom);
-	    
+	    if(bound_x != -1 && bound_y != -1)
+	    	frame.setBounds(bound_x, bound_y, frame.getSize().width, frame.getSize().height);
         frame.setVisible(true);
         if(img != null && meta != null)
         	panel.refresh(img, meta);
