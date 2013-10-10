@@ -1,7 +1,6 @@
-package abplayer;
+package example.strategy;
 
 import ab.planner.Strategy;
-import ab.vision.ABPig;
 import ab.vision.ABPoint;
 
 /**
@@ -12,7 +11,7 @@ import ab.vision.ABPoint;
  */
 
 
-public class HitLeftmostPigLeftEdge extends Strategy {
+public class HitRandomSupport extends Strategy {
 	/**
 	 * @param state The state of the game
 	 * @return a point that identifies the target for the bird
@@ -20,11 +19,7 @@ public class HitLeftmostPigLeftEdge extends Strategy {
 	@Override
 	public ABPoint getTarget() {
 		
-		ABPig pig = randomPig();
-		//We manually select a point by using the bounding rectangle.
-		ABPoint target = new ABPoint(pig.x, pig.y + pig.height/2);
-		return target;
-		
+		return randomSupport(randomPig()).getCenter();  // a random support for a random pig
 	}
 
 	/**
@@ -61,17 +56,13 @@ public class HitLeftmostPigLeftEdge extends Strategy {
 			return 60;
 		}
 	}
-	
+
 	/**
 	 * The main program.   When you press run (the green 'play' button),
 	 * this code will be executed.
 	 */
 	public static void main(String[] args) {
 		boolean useControlPanel = true;
-		runAgent(HitLeftmostPigLeftEdge.class, useControlPanel);
-		
-		
-		//new HitLeftmostPig().runAgent();
+		runAgent(HitRandomSupport.class, useControlPanel);
 	}
-
 }

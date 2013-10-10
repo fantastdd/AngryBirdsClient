@@ -1,8 +1,10 @@
-package abplayer;
+package example.strategy;
 
 import ab.planner.Strategy;
+import ab.vision.ABList;
 import ab.vision.ABObject;
 import ab.vision.ABPoint;
+import ab.vision.ABType;
 
 /**
  * Use this class as a template for writing your own AB strategy.
@@ -12,29 +14,32 @@ import ab.vision.ABPoint;
  */
 
 
-public class NewHitReachablePig extends Strategy {
-	
-	boolean reachableByHighTraj = false;
-	
+public class Hit2ndLeftmostWoodblock extends Strategy {
 	/**
 	 * @param state The state of the game
 	 * @return a point that identifies the target for the bird
 	 */
 	@Override
 	public ABPoint getTarget() {
-		for (ABObject pig : findPigs()) {
-			if (isReachable(pig, true)) {
-				reachableByHighTraj = true;
-	    		debug(" reachable by the high traj");
-				return pig.getCenter();
-			} else if (isReachable(pig, false)) {
-				reachableByHighTraj = false;				
-	    		debug(" reachable by the low traj");
-				return pig.getCenter();
-			}
+		
+
+		//Get all the building blocks
+		ABList blocks = findBlocks();
+		//Sort all the building blocks
+		blocks.sortByX();
+		//Loop through the blocks and get the 2nd wood block
+		int counter = 1;
+		for(ABObject block : blocks)
+		{
+			if(block.getType() == ABType.Wood)
+				if(counter == 2)
+					return block.getCenter();
+				else 
+					counter++;
 		}
-	    debug(" no reachable pigs, return a random pig");
-	    return randomPig().getCenter();
+		
+		return randomPoint();
+		
 	}
 
 	/**
@@ -45,7 +50,7 @@ public class NewHitReachablePig extends Strategy {
 	 */
 	@Override
 	public boolean useHighTrajectory() {
-		return reachableByHighTraj;     // return 'true' with 1/6 probability
+		return random(6) == 0;     // return 'true' with 1/6 probability
 	}
 
 	/**
@@ -78,7 +83,10 @@ public class NewHitReachablePig extends Strategy {
 	 */
 	public static void main(String[] args) {
 		boolean useControlPanel = true;
-		runAgent(NewHitReachablePig.class, useControlPanel);
+		runAgent(Hit2ndLeftmostWoodblock.class, useControlPanel);
+		
+		
+		//new HitLeftmostPig().runAgent();
 	}
 
 }

@@ -1,7 +1,9 @@
-package abplayer;
+package example.strategy;
 
 import ab.planner.Strategy;
+import ab.vision.ABObject;
 import ab.vision.ABPoint;
+import ab.vision.ABType;
 
 /**
  * Use this class as a template for writing your own AB strategy.
@@ -11,16 +13,23 @@ import ab.vision.ABPoint;
  */
 
 
-public class HitLeftmostPig extends Strategy {
+public class NewHit2ndLeftmostWoodblock extends Strategy {
 	/**
 	 * @param state The state of the game
 	 * @return a point that identifies the target for the bird
 	 */
 	@Override
 	public ABPoint getTarget() {
-		
-		return leftmostPig().getCenter();
-		
+		int counter = 1;
+		for (ABObject block: findBlocks().sortByX()) {
+			if(block.getType() == ABType.Wood) {
+				if(counter == 2)
+					return block.getCenter();
+				else 
+					counter++;
+			}
+		}
+		return randomPig().getCenter();
 	}
 
 	/**
@@ -64,7 +73,7 @@ public class HitLeftmostPig extends Strategy {
 	 */
 	public static void main(String[] args) {
 		boolean useControlPanel = true;
-		runAgent(HitLeftmostPig.class, useControlPanel);
+		runAgent(NewHit2ndLeftmostWoodblock.class, useControlPanel);
 		
 		
 		//new HitLeftmostPig().runAgent();

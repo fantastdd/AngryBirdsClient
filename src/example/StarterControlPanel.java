@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import example.strategy.HitLeftmostPig;
+
 import ab.demo.other.ActionRobot;
 import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
@@ -22,7 +24,6 @@ import ab.utils.ImageSegFrame;
 import ab.vision.ABState;
 import ab.vision.ABUtil;
 import ab.vision.VisionUtils;
-import abplayer.HitLeftmostPig;
 
 public class StarterControlPanel {
 

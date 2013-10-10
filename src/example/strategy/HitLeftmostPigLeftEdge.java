@@ -1,8 +1,7 @@
-package abplayer;
+package example.strategy;
 
 import ab.planner.Strategy;
-import ab.vision.ABList;
-import ab.vision.ABObject;
+import ab.vision.ABPig;
 import ab.vision.ABPoint;
 
 /**
@@ -13,7 +12,7 @@ import ab.vision.ABPoint;
  */
 
 
-public class HitRandomSupportOfRandomBlock extends Strategy {
+public class HitLeftmostPigLeftEdge extends Strategy {
 	/**
 	 * @param state The state of the game
 	 * @return a point that identifies the target for the bird
@@ -21,20 +20,9 @@ public class HitRandomSupportOfRandomBlock extends Strategy {
 	@Override
 	public ABPoint getTarget() {
 		
-		//Find all building blocks
-		ABList blocks = findBlocks();
-		ABPoint target = randomPoint();
-		if(!blocks.isEmpty())
-		{	
-			//Get a random block
-			ABObject block = blocks.get(random(blocks.size()));
-			target = block.getCenter();
-			//Get a list of the block's support
-			ABList supporters = getSupports(block, blocks);
-			//Get a random support's center point
-			if(!supporters.isEmpty())
-				target = supporters.get(random(supporters.size())).getCenter();
-		}
+		ABPig pig = randomPig();
+		//We manually select a point by using the bounding rectangle.
+		ABPoint target = new ABPoint(pig.x, pig.y + pig.height/2);
 		return target;
 		
 	}
@@ -80,7 +68,7 @@ public class HitRandomSupportOfRandomBlock extends Strategy {
 	 */
 	public static void main(String[] args) {
 		boolean useControlPanel = true;
-		runAgent(HitRandomSupportOfRandomBlock.class, useControlPanel);
+		runAgent(HitLeftmostPigLeftEdge.class, useControlPanel);
 		
 		
 		//new HitLeftmostPig().runAgent();

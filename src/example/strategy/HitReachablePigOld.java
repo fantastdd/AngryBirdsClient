@@ -1,7 +1,8 @@
-package abplayer;
+package example.strategy;
 
 import ab.planner.Strategy;
-import ab.vision.ABBlock;
+import ab.vision.ABList;
+import ab.vision.ABObject;
 import ab.vision.ABPoint;
 
 /**
@@ -12,15 +13,45 @@ import ab.vision.ABPoint;
  */
 
 
-public class NewHitRandomSupportOfRandomBlock extends Strategy {
+public class HitReachablePigOld extends Strategy {
+	
+	boolean reachableByHighTraj = false;
+	
 	/**
 	 * @param state The state of the game
 	 * @return a point that identifies the target for the bird
 	 */
 	@Override
 	public ABPoint getTarget() {
-		ABBlock block = randomBlock();
-		return randomSupport(block).getCenter();		
+		
+	    ABList pigs = findPigs();
+	    ABPoint target = randomPoint();
+	  if(!pigs.isEmpty()){
+		    boolean useHighTraj = true; 
+		    target = randomPig().getCenter();
+		    for (ABObject pig : pigs)
+		    {
+		    	//Test is the pig reachable by a high trajectory;
+		    	if(isReachable(pig.getCenter(), !useHighTraj))
+		    	{
+		    		reachableByHighTraj = false;
+		    		debug(" reachable by the low traj");
+		    		return pig.getCenter();
+		    	}
+		    	else
+		    		if(isReachable(pig.getCenter(), useHighTraj))
+		    		{
+		    				reachableByHighTraj = true;
+		    				debug(" reachable by the high traj");
+		    				return pig.getCenter();
+		    		}
+		    			
+		    }
+		    debug(" no reachable pigs, return a random pig");
+	    }
+	   
+		return target;
+		
 	}
 
 	/**
@@ -31,7 +62,8 @@ public class NewHitRandomSupportOfRandomBlock extends Strategy {
 	 */
 	@Override
 	public boolean useHighTrajectory() {
-		return random(6) == 0;     // return 'true' with 1/6 probability
+		
+		return reachableByHighTraj;     // return 'true' with 1/6 probability
 	}
 
 	/**
@@ -64,7 +96,10 @@ public class NewHitRandomSupportOfRandomBlock extends Strategy {
 	 */
 	public static void main(String[] args) {
 		boolean useControlPanel = true;
-		runAgent(NewHitRandomSupportOfRandomBlock.class, useControlPanel);
+		runAgent(HitReachablePigOld.class, useControlPanel);
+		
+		
+		//new HitLeftmostPig().runAgent();
 	}
 
 }

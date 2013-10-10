@@ -13,6 +13,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
+import example.strategy.HitLeftmostPig;
+
 import ab.demo.other.ActionRobot;
 import ab.demo.other.Shot;
 import ab.demo.util.StateUtil;
@@ -22,7 +24,6 @@ import ab.vision.ABObject;
 import ab.vision.ABState;
 import ab.vision.ABUtil;
 import ab.vision.GameStateExtractor.GameState;
-import abplayer.HitLeftmostPig;
 //An example agent that will loop through 1 - 21 levels. 
 public class ExampleAgent implements Runnable {
 

@@ -1,8 +1,7 @@
-package abplayer;
+package example.strategy;
 
 import ab.planner.Strategy;
-import ab.vision.ABList;
-import ab.vision.ABObject;
+import ab.vision.ABBlock;
 import ab.vision.ABPoint;
 
 /**
@@ -13,45 +12,15 @@ import ab.vision.ABPoint;
  */
 
 
-public class HitReachablePigOld extends Strategy {
-	
-	boolean reachableByHighTraj = false;
-	
+public class NewHitRandomSupportOfRandomBlock extends Strategy {
 	/**
 	 * @param state The state of the game
 	 * @return a point that identifies the target for the bird
 	 */
 	@Override
 	public ABPoint getTarget() {
-		
-	    ABList pigs = findPigs();
-	    ABPoint target = randomPoint();
-	  if(!pigs.isEmpty()){
-		    boolean useHighTraj = true; 
-		    target = randomPig().getCenter();
-		    for (ABObject pig : pigs)
-		    {
-		    	//Test is the pig reachable by a high trajectory;
-		    	if(isReachable(pig.getCenter(), !useHighTraj))
-		    	{
-		    		reachableByHighTraj = false;
-		    		debug(" reachable by the low traj");
-		    		return pig.getCenter();
-		    	}
-		    	else
-		    		if(isReachable(pig.getCenter(), useHighTraj))
-		    		{
-		    				reachableByHighTraj = true;
-		    				debug(" reachable by the high traj");
-		    				return pig.getCenter();
-		    		}
-		    			
-		    }
-		    debug(" no reachable pigs, return a random pig");
-	    }
-	   
-		return target;
-		
+		ABBlock block = randomBlock();
+		return randomSupport(block).getCenter();		
 	}
 
 	/**
@@ -62,8 +31,7 @@ public class HitReachablePigOld extends Strategy {
 	 */
 	@Override
 	public boolean useHighTrajectory() {
-		
-		return reachableByHighTraj;     // return 'true' with 1/6 probability
+		return random(6) == 0;     // return 'true' with 1/6 probability
 	}
 
 	/**
@@ -96,10 +64,7 @@ public class HitReachablePigOld extends Strategy {
 	 */
 	public static void main(String[] args) {
 		boolean useControlPanel = true;
-		runAgent(HitReachablePigOld.class, useControlPanel);
-		
-		
-		//new HitLeftmostPig().runAgent();
+		runAgent(NewHitRandomSupportOfRandomBlock.class, useControlPanel);
 	}
 
 }
