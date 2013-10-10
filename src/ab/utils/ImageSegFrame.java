@@ -244,7 +244,7 @@ public class ImageSegFrame {
   	        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
   	        int x = (int) rect.getMaxX() - frame.getWidth();
   	        int y = 0;
-  	        System.out.println(frame.getWidth());
+  	        //System.out.println(frame.getWidth());
   	        frame.setLocation(x, y);
   	    
   	    }

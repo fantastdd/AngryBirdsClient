@@ -296,15 +296,15 @@ public boolean isReachable(Point target, boolean useHighTraj)
 		Point releasePoint = trajectoryPlanner.getReleasePoint(target, sling, useHighTraj);
 		List<Point> points = trajectoryPlanner.predictTrajectory(sling, releasePoint);
 		
-		int counter = 10;
+		//int counter = 10;
 		for(Point point: points)
 		{
-		  if((counter++)%3 == 0 && point.y < 480 && point.x < 840 && point.y > 100 && point.x > 400)
+		  if(/*(counter++)%3 == 0 &&*/ point.y < 480 && point.x < 840 && point.y > 100 && point.x > 400)
 			for(ABObject ab: findBlocks())
 			{
 				/*System.out.println(point.x + "  " + point.y + "  " + state.vision._scene.length + "  "
-						+ state.vision._scene[1].length);*/
-				/*System.out.println(ab + " " + point + " " + 
+						+ state.vision._scene[1].length);
+				System.out.println(ab + " " + point + " " + 
 						ab.contains(point));*/
 				if( ((ab.contains(point) && !ab.contains(target))||Math.abs(state.vision._scene[point.y][point.x] - 72 ) < 10) 
 						&& point.x < target.x
