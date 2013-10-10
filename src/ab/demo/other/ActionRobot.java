@@ -155,6 +155,7 @@ public class ActionRobot {
 		LinkedList<Shot> shots = new LinkedList<Shot>();
 		shots.add(shot);
 		ss.shoot(proxy, shots);
+		//System.out.println(" tap time : " + shot.getT_tap());
 		System.out.println("Shooting Completed");
 		
 	}
@@ -181,7 +182,7 @@ public class ActionRobot {
 			proxy.send(new ProxyMouseWheelMessage(-1));
 		}
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -193,7 +194,7 @@ public class ActionRobot {
 			proxy.send(new ProxyMouseWheelMessage(1));
 		}
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

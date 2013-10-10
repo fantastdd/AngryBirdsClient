@@ -13,17 +13,16 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
-import example.strategy.HitRandomPig;
-
 import ab.demo.other.ActionRobot;
 import ab.demo.other.Shot;
 import ab.demo.util.StateUtil;
 import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
 import ab.vision.ABObject;
+import ab.vision.ABState;
 import ab.vision.ABUtil;
-import ab.vision.State;
 import ab.vision.GameStateExtractor.GameState;
+import abplayer.HitLeftmostPig;
 //An example agent that will loop through 1 - 21 levels. 
 public class ExampleAgent implements Runnable {
 
@@ -38,7 +37,7 @@ public class ExampleAgent implements Runnable {
 	public ExampleAgent() {
 		aRobot = new ActionRobot();
 		trajectoryPlanner = new ExampleTrajectoryPlanner();
-		strategy = new HitRandomPig();
+		strategy = new HitLeftmostPig();
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
 
@@ -86,18 +85,18 @@ public class ExampleAgent implements Runnable {
 				aRobot.restartLevel();
 			} else if (state == GameState.LEVEL_SELECTION) {
 				System.out
-						.println("unexpected level selection page, go to the lasts current level : "
+						.println("unexpected level selection page, go to the last current level : "
 								+ currentLevel);
 				aRobot.loadLevel(currentLevel);
 			} else if (state == GameState.MAIN_MENU) {
 				System.out
-						.println("unexpected main menu page, go to the lasts current level : "
+						.println("unexpected main menu page, go to the last current level : "
 								+ currentLevel);
 				ActionRobot.GoFromMainMenuToLevelSelection();
 				aRobot.loadLevel(currentLevel);
 			} else if (state == GameState.EPISODE_MENU) {
 				System.out
-						.println("unexpected episode menu page, go to the lasts current level : "
+						.println("unexpected episode menu page, go to the last current level : "
 								+ currentLevel);
 				ActionRobot.GoFromMainMenuToLevelSelection();
 				aRobot.loadLevel(currentLevel);
@@ -113,7 +112,7 @@ public class ExampleAgent implements Runnable {
 	{
 		
 		// get the state of the current game
-		State state = ABUtil.getState();
+		ABState state = ABUtil.getState();
 		
 		// find the sling
 		Rectangle sling = state.findSlingshot();
@@ -135,8 +134,8 @@ public class ExampleAgent implements Runnable {
 				
 				if(target != null) {
 			
-					Shot shot =  trajectoryPlanner.getShot(state, target, strategy.useHighTrajectory(state), strategy.getTapPoint(state));
-			
+					//Shot shot =  trajectoryPlanner.getShot(state, target, strategy.useHighTrajectory(state), strategy.getTapPoint(state));
+					Shot shot = strategy.getShot();
 					// check whether the slingshot is changed. the change of the Slingshot indicates a change in the scale.
 					{
 						ActionRobot.fullyZoomOut();
@@ -156,7 +155,8 @@ public class ExampleAgent implements Runnable {
 							if (state.getGameState() == GameState.PLAYING) 
 							{			
 								List<Point> traj = state.findTrajPoints();
-								trajectoryPlanner.adjustTrajectory(traj, sling);
+								strategy.trajectoryPlanner.adjustTrajectory(traj, sling);
+								//trajectoryPlanner.adjustTrajectory(traj, sling);
 							}
 						} 
 						else

@@ -16,6 +16,7 @@ import java.awt.image.*;
 import java.awt.event.*;
 import javax.imageio.*;
 import javax.swing.*;
+
 import ab.vision.*;
 
 public class ImageSegFrame {
@@ -37,6 +38,7 @@ public class ImageSegFrame {
             addKeyListener(this);
             addMouseListener(this);
             setDoubleBuffered(true);
+         
         }
 
         public void refresh(Image img) {
@@ -223,6 +225,7 @@ public class ImageSegFrame {
          this.img = img;
          this.meta = meta;
   	   	frame = new JFrame(name);
+  	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   	    //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   	    panel = new ImagePanel(frame);
   	   
@@ -234,6 +237,17 @@ public class ImageSegFrame {
   	        img.getHeight(null) + insets.top + insets.bottom);
   	    if(bound_x != -1 && bound_y != -1)
   	    	frame.setBounds(bound_x, bound_y, frame.getSize().width, frame.getSize().height);
+  	    else
+  	    {
+  	    	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+  	        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+  	        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+  	        int x = (int) rect.getMaxX() - frame.getWidth();
+  	        int y = 0;
+  	        System.out.println(frame.getWidth());
+  	        frame.setLocation(x, y);
+  	    
+  	    }
           frame.setVisible(true);
           if(img != null && meta != null)
           	panel.refresh(img, meta);
@@ -255,6 +269,16 @@ public class ImageSegFrame {
 	        img.getHeight(null) + insets.top + insets.bottom);
 	    if(bound_x != -1 && bound_y != -1)
 	    	frame.setBounds(bound_x, bound_y, frame.getSize().width, frame.getSize().height);
+	    else
+  	    {
+	    	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+  	        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+  	        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+  	        int x = (int) rect.getMaxX() - frame.getWidth();
+  	        int y = 0;
+  	        frame.setLocation(x, y);
+  	        
+  	    }
         frame.setVisible(true);
         if(img != null && meta != null)
         	panel.refresh(img, meta);

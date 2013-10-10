@@ -39,7 +39,7 @@ public void shoot(final Proxy proxy,List<Shot> csc)
     		int t_shot = 5000 * count++;
     		shootings.add(new Shot(shot.getX(),shot.getY(),shot.getDx(),shot.getDy(),t_shot));
     		if(shot.getT_tap() > 0)
-        		shootings.add(new  Shot(0,0,0,0,shot.getT_tap() + t_shot));
+        		shootings.add(new  Shot(0,0,0,0, shot.getT_tap() + t_shot));
     	}
     	else
     	{

@@ -2,7 +2,10 @@ package example;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -16,11 +19,10 @@ import ab.demo.other.ActionRobot;
 import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
 import ab.utils.ImageSegFrame;
+import ab.vision.ABState;
 import ab.vision.ABUtil;
-import ab.vision.State;
 import ab.vision.VisionUtils;
-import example.strategy.HitRandomPig;
-import example.strategy.HitRandomSupporter;
+import abplayer.HitLeftmostPig;
 
 public class StarterControlPanel {
 
@@ -29,7 +31,7 @@ public class StarterControlPanel {
 	private ExampleTrajectoryPlanner tp = null;
 	private Strategy exampleStrategy;
 	private ImageSegFrame segFrame = null;
-	private State currentState = null;
+	private ABState currentState = null;
 	private Point target = null;
 	private ActionRobot actionRobot = new ActionRobot();
 	private JButton btnScenarioRecognition;
@@ -61,7 +63,7 @@ public class StarterControlPanel {
 	public StarterControlPanel() {
 		initialize();
 		frmControlPanel.setVisible(true);
-		exampleStrategy = new HitRandomSupporter();
+		exampleStrategy = new HitLeftmostPig();
 	}
 	public StarterControlPanel(Strategy strategy)
 	{
@@ -92,9 +94,17 @@ public class StarterControlPanel {
 		frmControlPanel = new JFrame();
 		frmControlPanel.setTitle("Control Panel");
 		if(panel_x != -1 && panel_y != -1)
-			frmControlPanel.setBounds(panel_x, panel_y, 445, 88);
+			frmControlPanel.setBounds(panel_x, panel_y, 445, 80);
 		else
-			frmControlPanel.setBounds(100, 100, 445, 88);
+			{
+				frmControlPanel.setSize(445, 80);
+				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	  	        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+	  	        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+	  	        int x = (int) rect.getMaxX() - 856 - frmControlPanel.getWidth();
+	  	        int y = 0;
+	  	        frmControlPanel.setLocation(x, y);
+			}
 		frmControlPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmControlPanel.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -148,16 +158,17 @@ public class StarterControlPanel {
 				if(currentState == null)
 					btnScenarioRecognition.doClick();		
 				if(exampleStrategy == null)
-					exampleStrategy = new HitRandomSupporter();
+					exampleStrategy = new HitLeftmostPig();
 				//Get the target point
 				target = exampleStrategy.getTarget(currentState);
-			
+				//System.out.println(target);
 				if(target != null)
 				{
 					segFrame.getFrame().setTitle("Set Target");
 					//draw the point on the image segmentation frame
 					SwingUtilities.invokeLater(new Runnable() {
 					    public void run() {    	
+					    	
 					    	segFrame.highlightTarget(target);
 					    }
 					  });
@@ -177,21 +188,25 @@ public class StarterControlPanel {
 				if (tp == null)
 					tp = new ExampleTrajectoryPlanner();
 				if(exampleStrategy == null)
-					exampleStrategy = new HitRandomSupporter();
+					exampleStrategy = new HitLeftmostPig();
 				if(target != null)
 				{
-					State state = ABUtil.getState();
-				
-				    tp.getShot(state, target, exampleStrategy.useHighTrajectory(state), exampleStrategy.getTapPoint(state));
-			
-					BufferedImage plot = tp.plotTrajectory();
+					//ABState state = ABUtil.getState();
+					exampleStrategy.updateState();
+				    //tp.getShot(state, target, exampleStrategy.useHighTrajectory(state), exampleStrategy.getTapPoint(state));
+				    //System.out.println("Reachable: " + ABUtil.isReachable(state, target, tp.shot));
+					//BufferedImage plot = tp.plotTrajectory();
+					//System.out.println("Reachable: " + ABUtil.isReachable(exampleStrategy.state, target, exampleStrategy.getShot()));
+					//System.out.println("Reachable: " + exampleStrategy.isReachable(target,true));
+					exampleStrategy.getShot(target);
+					BufferedImage plot = exampleStrategy.trajectoryPlanner.plotTrajectory();
 					int[][] meta = VisionUtils.computeMetaInformation(plot);
 			    	segFrame.refresh(plot, meta);
 			    	segFrame.getFrame().setTitle("Plotting the Trajectory");
 			    	
 					SwingUtilities.invokeLater(new Runnable() {
 						    public void run() {    	
-						    	actionRobot.fshoot(tp.shot);	
+						    	actionRobot.fshoot(exampleStrategy.trajectoryPlanner.shot);	
 						    }
 						  });
 					

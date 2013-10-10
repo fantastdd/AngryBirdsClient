@@ -7,12 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ab.demo.other.ActionRobot;
 import ab.demo.other.Shot;
-import ab.vision.ABType;
 import ab.vision.ABUtil;
-import ab.vision.State;
-import ab.vision.Vision;
+import ab.vision.ABState;
 
 public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 
@@ -72,8 +69,20 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 			adjustTrajectory(traj, sling, releasePoint);
 			
 		}
-
-		public Shot getShot(State state, Point target, boolean useHighTraj, int tapInterval)
+		public Point getReleasePoint(Point target, Rectangle sling, boolean useHighTraj)
+		{
+			Point releasePoint = null;
+			ArrayList<Point> pts = estimateLaunchPoint(sling, target);
+			releasePoint = pts.get(0);
+			if (pts.size() > 1)
+				if(useHighTraj)
+					releasePoint = pts.get(1);
+			
+			
+			return releasePoint;
+			
+		}
+		public Shot getShot(ABState state, Point target, boolean useHighTraj, int tapInterval)
 		{
 	
 			Rectangle sling = state.findSlingshot();
@@ -118,10 +127,12 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 				if(interval == 0)
 					System.out.println(" No tapping");
 				else
+				{	
 					System.out.println(" Tap: " + interval + " of the distance");
-				tapPoint.setLocation(new Point((int)(distance * interval + sling.x) , target.y));
-				tap_time = getTimeByDistance(sling, releasePoint, tapPoint);
 				
+					tapPoint.setLocation(new Point((int)(distance * interval + sling.x) , target.y));
+					tap_time = getTimeByDistance(sling, releasePoint, tapPoint);
+				}
 					
 				shot = new Shot( refPoint.x, refPoint.y, 
 						(int) releasePoint
@@ -134,6 +145,7 @@ public class ExampleTrajectoryPlanner extends TrajectoryPlanner {
 			return shot;
 			
 		}
+
 
 
 }

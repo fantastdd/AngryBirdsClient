@@ -146,6 +146,7 @@ public class TrajectoryPlanner {
         
         // calculate relative position of the target (normalised)
         double scale = getSceneScale(slingshot);
+        //System.out.println("scale " + scale);
         Point ref = getReferencePoint(slingshot);
             
         double x = (targetPoint.x - ref.x) / scale;
@@ -303,7 +304,7 @@ public class TrajectoryPlanner {
      * @return  the canvas with trajectory drawn
      */
     public BufferedImage plotTrajectory(BufferedImage canvas, Rectangle slingshot, Point releasePoint) {
-        List<Point> trajectory = predictTrajectory(slingshot, releasePoint, canvas.getWidth(null) - slingshot.x);
+        List<Point> trajectory = predictTrajectory(slingshot, releasePoint);
         
         // draw estimated trajectory
         Graphics2D g2d = canvas.createGraphics();
@@ -374,7 +375,7 @@ public class TrajectoryPlanner {
     }
     
     // predicts a trajectory
-    private List<Point> predictTrajectory(Rectangle slingshot, Point launchPoint, int X_MAX) {
+    public List<Point> predictTrajectory(Rectangle slingshot, Point launchPoint) {
         setTrajectory(slingshot, launchPoint);
 	    return _trajectory;
     }

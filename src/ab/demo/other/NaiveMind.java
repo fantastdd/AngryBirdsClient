@@ -8,11 +8,11 @@ import java.util.Random;
 
 
 import ab.planner.Strategy;
-import ab.vision.State;
+import ab.vision.ABState;
 import ab.vision.Vision;
 
 
-public class NaiveMind extends Strategy {
+public class NaiveMind  {
 
 	/**
 	 * @param args
@@ -91,24 +91,6 @@ public class NaiveMind extends Strategy {
 		return _tpt;
 	}
 
-@Override
-public Point getTarget(State state) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-@Override
-public boolean useHighTrajectory(State state) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public int getTapPoint(State state) {
-	// TODO Auto-generated method stub
-	return 0;
-}
-	
 	
 	
 }

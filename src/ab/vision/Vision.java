@@ -28,7 +28,7 @@ public class Vision {
 
 	private int _nHeight; // height of the scene
 	private int _nWidth; // width of the scene
-	private int _scene[][]; // quantized scene colours
+	public int _scene[][]; // quantized scene colours
 	private int _nSegments; // number of segments
 	private int _segments[][]; // connected components (0 to _nSegments)
 	private int _colours[]; // colour for each segment
@@ -460,7 +460,7 @@ public class Vision {
 
 		return objects;
 	}
-	public ABList findBuildingBlocks(){
+	public ABList findBlocks(){
 		List<Rectangle> stone = findStones();
 		List<Rectangle> wood = findWood();
 		List<Rectangle> ice = findIce();
@@ -497,11 +497,15 @@ public class Vision {
 	{
 	
 		ABList objects = ABList.newList();
-		
-		for(Rectangle rec: mbrs)
-		{
-			objects.add(new ABObject(rec, type));
-		}
+		if(type == ABType.Wood || type == ABType.Ice || type == ABType.Stone || type == ABType.TNT)
+			for(Rectangle rec: mbrs)
+				objects.add(new ABBlock(rec, type));
+		else if(type == ABType.Pig)
+				for(Rectangle rec: mbrs)
+					objects.add(new ABPig(rec, type));
+		else
+			for(Rectangle rec: mbrs)
+				objects.add(new ABObject(rec, type));
 		return objects;
 	}
 	public List<Rectangle> findBlackBirds() {
@@ -1139,6 +1143,7 @@ public class Vision {
 				_scene[y][x] = ((colour & 0x00e00000) >> 15)
 						| ((colour & 0x0000e000) >> 10)
 						| ((colour & 0x000000e0) >> 5);
+				//System.out.println(" x " + x + " y " + y + " 3-bit rgb " + _scene[y][x]);
 			}
 		}
 

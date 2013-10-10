@@ -256,6 +256,7 @@ public class NaiveAgent implements Runnable {
 						shots.add(new Shot(focus_x, focus_y, (int) releasePoint
 								.getX() - focus_x, (int) releasePoint.getY()
 								- focus_y, 0, tap_time));
+						//System.out.println(shots.get(0));
 					} else
 						System.err.println("Out of Knowledge");
 				}

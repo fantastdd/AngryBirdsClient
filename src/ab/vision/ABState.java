@@ -10,35 +10,36 @@ import ab.demo.other.ActionRobot;
 import ab.demo.util.StateUtil;
 import ab.vision.GameStateExtractor.GameState;
 
-public class State {
-	private Vision vision;
+public class ABState {
+	public Vision vision;
 	public BufferedImage image;
-	private ABList buildingBlocks;
+	private ABList blocks;
 	private ABList pigs;
 	private ABList birds;
 	private GameState gameState;
 	private ABObject slingshot;
 	
 	@SuppressWarnings("unused")
-	private State(){}
-	public State(BufferedImage image) {
+	private ABState(){}
+	public ABState(BufferedImage image) {
 		
 		this.image = image;
 		vision = new Vision(image);
-		buildingBlocks = ABList.newList();
+		blocks = ABList.newList();
 		pigs = ABList.newList();
 		birds = ABList.newList();
 		slingshot = null;
 		gameState = GameState.UNKNOWN;
 	}
-	public ABList findBuildingBlocks()
+	public ABList findBlocks()
 	{
-		if(buildingBlocks.isEmpty())
-			buildingBlocks = vision.findBuildingBlocks();
-		return buildingBlocks;
+		if(blocks.isEmpty())
+			blocks = vision.findBlocks();
+		return blocks;
 	}
 	public ABList findPigs()
 	{
+		
 		if(pigs.isEmpty())
 			pigs = vision.findPigs();
 		return pigs;
@@ -73,7 +74,7 @@ public class State {
 	{
 		System.out.println(" Pigs: " + findPigs().size());
 		System.out.println(" Birds: " + findBirds().size());
-		System.out.println(" Buliding Blocks: " + findBuildingBlocks().size());
+		System.out.println(" Blocks: " + findBlocks().size());
 		
 	}
 
@@ -82,7 +83,7 @@ public class State {
 	{
 		ActionRobot.fullyZoomIn();
 
-		State state = ABUtil.getState();
+		ABState state = ABUtil.getState();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -94,9 +95,9 @@ public class State {
 		ABList _birds = state.findBirds();
 		if(_birds.isEmpty())
 			return ABType.Unknown;
-		ABUtil.sortByY(_birds);	
+		_birds.sortByY();
 		
-		return _birds.get(0).type;
+		return _birds.get(0).getType();
 	}
 	
 	
