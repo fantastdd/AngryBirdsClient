@@ -149,7 +149,7 @@ public class StarterControlPanel {
 			
 				
 			}
-		});
+		}); 
 		frmControlPanel.getContentPane().add(btnScenarioRecognition);
 		
 		btnFindTarget = new JButton("Set Target");
@@ -184,7 +184,7 @@ public class StarterControlPanel {
 		btnShoot.addActionListener(new ActionListener() {
 			//Find a release point according the target
 			public void actionPerformed(ActionEvent e) {
-			
+			     
 				//initialize the trajectory planner
 				if (tp == null)
 					tp = new ExampleTrajectoryPlanner();

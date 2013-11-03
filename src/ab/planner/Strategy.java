@@ -259,7 +259,7 @@ public ABList findBirds()
 		
 		int ey_o2 = o2.y + o2.height;
 		if(
-			(Math.abs(ey_o2 - o1.y) < ABUtil.gap)
+			(o1.y - ey_o2 < ABUtil.gap)&&(o1.y - ey_o2 > 0)
 			&& 
  			!( o2.x - ex_o1  > ABUtil.gap || o1.x - ex_o2 > ABUtil.gap )
 		  )
@@ -302,10 +302,6 @@ public boolean isReachable(Point target, boolean useHighTraj)
 		  if(/*(counter++)%3 == 0 &&*/ point.y < 480 && point.x < 840 && point.y > 100 && point.x > 400)
 			for(ABObject ab: findBlocks())
 			{
-				/*System.out.println(point.x + "  " + point.y + "  " + state.vision._scene.length + "  "
-						+ state.vision._scene[1].length);
-				System.out.println(ab + " " + point + " " + 
-						ab.contains(point));*/
 				if( ((ab.contains(point) && !ab.contains(target))||Math.abs(state.vision._scene[point.y][point.x] - 72 ) < 10) 
 						&& point.x < target.x
 						)

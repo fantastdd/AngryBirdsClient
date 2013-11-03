@@ -38,7 +38,7 @@ public boolean loadLevel(int i)
 	    	
 	    	
 	} 
-	System.out.println(StateUtil.checkCurrentState(proxy));
+	//System.out.println(StateUtil.checkCurrentState(proxy));
 	  loadLevel(StateUtil.checkCurrentState(proxy),i);
 
 	  GameState state = StateUtil.checkCurrentState(proxy);

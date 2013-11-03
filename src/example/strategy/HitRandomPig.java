@@ -61,7 +61,7 @@ public class HitRandomPig extends Strategy {
 	 * this code will be executed.
 	 */
 	public static void main(String[] args) {
-		boolean useControlPanel = true;
+		boolean useControlPanel = false;
 		runAgent(HitRandomPig.class, useControlPanel);
 	}
 }

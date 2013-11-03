@@ -11,9 +11,10 @@ package example;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
-
-import example.strategy.HitLeftmostPig;
 
 import ab.demo.other.ActionRobot;
 import ab.demo.other.Shot;
@@ -24,33 +25,36 @@ import ab.vision.ABObject;
 import ab.vision.ABState;
 import ab.vision.ABUtil;
 import ab.vision.GameStateExtractor.GameState;
+import example.strategy.HitRandomPig;
 //An example agent that will loop through 1 - 21 levels. 
 public class ExampleAgent implements Runnable {
 
 
 	private ActionRobot aRobot;
 	public int currentLevel = 1;
+	private HashMap<Integer,Integer> scores = new HashMap<Integer,Integer>();
+
 	
-	private ExampleTrajectoryPlanner trajectoryPlanner;
 	private Strategy strategy;
 
 
 	public ExampleAgent() {
 		aRobot = new ActionRobot();
-		trajectoryPlanner = new ExampleTrajectoryPlanner();
-		strategy = new HitLeftmostPig();
+		
+		strategy = new HitRandomPig();
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
-
+		
+	
 	}
 	public ExampleAgent(Strategy strategy)
 	{
 		aRobot = new ActionRobot();
-		trajectoryPlanner = new ExampleTrajectoryPlanner();
+		
 		this.strategy = strategy;
 		// --- go to the Poached Eggs episode level selection page ---
 		ActionRobot.GoFromMainMenuToLevelSelection();
-
+	
 	}
 
 
@@ -69,15 +73,27 @@ public class ExampleAgent implements Runnable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
+				
 				int score = StateUtil.checkCurrentScoreSafemode(ActionRobot.proxy);
-
-				System.out.println(" Level " + currentLevel
-						+ " Score: " + score + " ");
+				if(!scores.containsKey(currentLevel))
+						scores.put(currentLevel, score);
+				else
+				{
+					if(scores.get(currentLevel) < score)
+						scores.put(currentLevel, score);
+				}
+				int totalScore = 0;
+				for(Integer key: scores.keySet()){
+				
+					totalScore += scores.get(key);
+					System.out.println(" Level " + key
+						+ " Score: " + scores.get(key) + " ");
+				}
+				System.out.println("Total Score: " + totalScore);
 				
 				aRobot.loadLevel(++currentLevel);
 				// make a new trajectory planner whenever a new level is entered
-				trajectoryPlanner = new ExampleTrajectoryPlanner();
+				strategy.trajectoryPlanner = new ExampleTrajectoryPlanner();
 
 				
 		

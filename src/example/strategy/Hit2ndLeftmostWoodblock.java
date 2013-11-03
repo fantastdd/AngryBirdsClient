@@ -33,7 +33,7 @@ public class Hit2ndLeftmostWoodblock extends Strategy {
 		{
 			if(block.getType() == ABType.Wood)
 				if(counter == 2)
-					return block.getCenter();
+					return getSupports(block, findBlocks()).getFirst().getCenter();
 				else 
 					counter++;
 		}
