@@ -18,7 +18,6 @@ import java.util.Random;
 
 import ab.demo.other.ClientActionRobot;
 import ab.demo.other.ClientActionRobotJava;
-import ab.demo.other.Env;
 import ab.demo.other.NaiveMind;
 import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
@@ -237,12 +236,8 @@ public class ClientNaiveAgent implements Runnable {
 					}
 					Point refPoint = tp.getReferencePoint(sling);
 					//Get the center of the active bird as focus point 
-					focus_x = (int) ((Env.getFocuslist()
-							.containsKey(currentLevel)) ? Env.getFocuslist()
-							.get(currentLevel).getX() : refPoint.x);
-					focus_y = (int) ((Env.getFocuslist()
-							.containsKey(currentLevel)) ? Env.getFocuslist()
-							.get(currentLevel).getY() : refPoint.y);
+					focus_x = refPoint.x;
+					focus_y = refPoint.y;
 					System.out.println("the release point is: " + releasePoint);
 
 					// Get the release point from the trajectory prediction module

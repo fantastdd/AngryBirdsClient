@@ -33,8 +33,9 @@ import ab.utils.ImageSegFrame;
 
 /* TestVision ------------------------------------------------------------- */
 
-public class TestVision implements Runnable {
-
+public class ShowSeg implements Runnable {
+	private static List<Rectangle> pigs, redBirds, blueBirds, yellowBirds, blackBirds, whiteBirds, iceBlocks, woodBlocks, stoneBlocks, TNTs;
+	private static List<Point> trajPoints;
 	static public Proxy getGameConnection(int port) {
 		Proxy proxy = null;
 		try {
@@ -81,7 +82,7 @@ public class TestVision implements Runnable {
 	static public BufferedImage analyseScreenShot(BufferedImage screenshot) {
 
 
-		// get game state
+		/*// get game state
 		GameStateExtractor game = new GameStateExtractor();
 		GameStateExtractor.GameState state = game.getGameState(screenshot);
 	//	System.out.println(state.toString());
@@ -91,21 +92,21 @@ public class TestVision implements Runnable {
 			screenshot = VisionUtils.convert2grey(screenshot);
 			return screenshot;
 		}
-
+*/
 		//System.out.println("In game score : " + game.getScoreInGame(screenshot));
 		// process image
 		Vision vision = new Vision(screenshot);
-		List<Rectangle> pigs = vision.findPigsMBR();
-		List<Rectangle> redBirds = vision.findRedBirds();
-		List<Rectangle> blueBirds = vision.findBlueBirds();
-		List<Rectangle> yellowBirds = vision.findYellowBirds();
-		List<Rectangle> woodBlocks = vision.findWood();
-		List<Rectangle> stoneBlocks = vision.findStones();
-		List<Rectangle> iceBlocks = vision.findIce();
-		List<Rectangle> whiteBirds = vision.findWhiteBirds();
-		List<Rectangle> blackBirds = vision.findBlackBirds();
-		List<Rectangle> TNTs = vision.findTNTs();
-		List<Point> trajPoints = vision.findTrajPoints();
+		pigs = vision.findPigsMBR();
+		redBirds = vision.findRedBirds();
+		blueBirds = vision.findBlueBirds();
+		yellowBirds = vision.findYellowBirds();
+		woodBlocks = vision.findWood();
+		stoneBlocks = vision.findStones();
+		 iceBlocks = vision.findIce();
+		whiteBirds = vision.findWhiteBirds();
+		 blackBirds = vision.findBlackBirds();
+		 TNTs = vision.findTNTs();
+		 trajPoints = vision.findTrajPoints();
 
 		Rectangle sling = vision.findSlingshotMBR();
 
@@ -155,7 +156,6 @@ public class TestVision implements Runnable {
 
 		ImageSegFrame frame = null;
 		BufferedImage screenshot = null;
-		StateUtil stateUtil = new StateUtil();
 		// check command line arguments
 		if (args.length > 1) {
 			System.err.println("  USAGE: java TestVision [(<directory> | <image>)]");
@@ -191,7 +191,7 @@ public class TestVision implements Runnable {
 
 				// sleep for 100ms
 				try {
-					Thread.sleep(100);
+					Thread.sleep(50);
 				} catch (InterruptedException e) {
 					// do nothing
 				}

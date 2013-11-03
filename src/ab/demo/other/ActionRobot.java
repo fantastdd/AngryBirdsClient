@@ -36,10 +36,8 @@ public class ActionRobot {
 	public int current_score = 0;
 	private LoadingLevelSchema lls;
 	private RestartLevelSchema rls;
-
-	// A java util class for the standalone version. It provides common
-	// functions an agent would use. E.g. get the screenshot
-	public ActionRobot() {
+	static 
+	{
 		if (proxy == null) {
 			try {
 				proxy = new Proxy(9000) {
@@ -61,14 +59,19 @@ public class ActionRobot {
 				System.out.println("Waiting for client to connect");
 				proxy.waitForClients(1);
 
-				lls = new LoadingLevelSchema(proxy);
-				rls = new RestartLevelSchema(proxy);
+				
 
 			} catch (UnknownHostException e) {
 
 				e.printStackTrace();
 			}
 		}
+	}
+	// A java util class for the standalone version. It provides common
+	// functions an agent would use. E.g. get the screenshot
+	public ActionRobot() {
+		lls = new LoadingLevelSchema(proxy);
+		rls = new RestartLevelSchema(proxy);
 	}
 
 	public void restartLevel() {

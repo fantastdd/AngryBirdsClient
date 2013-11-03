@@ -17,12 +17,10 @@ import java.util.List;
 import java.util.Random;
 
 import ab.demo.other.ActionRobot;
-import ab.demo.other.Env;
 import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
 import ab.demo.util.StateUtil;
 import ab.planner.ExampleTrajectoryPlanner;
-import ab.planner.TrajectoryPlanner;
 import ab.vision.GameStateExtractor.GameState;
 import ab.vision.Vision;
 
@@ -225,12 +223,8 @@ public class NaiveAgentTimeLimit implements Runnable {
 					}
 					Point refPoint = tp.getReferencePoint(sling);
 					/* Get the center of the active bird */
-					focus_x = (int) ((Env.getFocuslist()
-							.containsKey(currentLevel)) ? Env.getFocuslist()
-							.get(currentLevel).getX() : refPoint.x);
-					focus_y = (int) ((Env.getFocuslist()
-							.containsKey(currentLevel)) ? Env.getFocuslist()
-							.get(currentLevel).getY() : refPoint.y);
+					focus_x = refPoint.x;
+					focus_y = refPoint.y;
 					System.out.println("the release point is: " + releasePoint);
 					/*
 					 * =========== Get the release point from the trajectory

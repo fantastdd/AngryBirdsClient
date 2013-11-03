@@ -1,7 +1,7 @@
 package ab.demo;
 
 import ab.utils.GameImageRecorder;
-import ab.vision.TestVision;
+import ab.vision.ShowSeg;
 
 /*****************************************************************************
 ** ANGRYBIRDS AI AGENT FRAMEWORK
@@ -78,7 +78,7 @@ public static void main(String args[])
 									  {
 										  Thread nathre = new Thread(na);
 										   nathre.start();
-										   Thread thre = new Thread(new TestVision());
+										   Thread thre = new Thread(new ShowSeg());
 									      thre.start();
 									  }
 								} 
@@ -96,7 +96,7 @@ public static void main(String args[])
 										na.currentLevel = initialLevel;
 										  Thread nathre = new Thread(na);
 										   nathre.start();
-										   Thread thre = new Thread(new TestVision());
+										   Thread thre = new Thread(new ShowSeg());
 									      thre.start();
 										
 									}
@@ -104,7 +104,7 @@ public static void main(String args[])
 								else if(command.equalsIgnoreCase("-showSeg"))
 								{
 									String[] param = {};
-									TestVision.main(param);
+									ShowSeg.main(param);
 								}
 								else if (command.equalsIgnoreCase("-showTraj"))
 								{
