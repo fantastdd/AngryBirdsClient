@@ -1,15 +1,17 @@
 package ab.objtracking;
 
-public class Tracker {
+import java.awt.Shape;
+import java.util.List;
 
-	private void track()
-	{}
+import ab.vision.ABObject;
+
+public interface Tracker {
+	public boolean isMatch(Shape a, Shape b);
+	public void setInitialObjects(List<ABObject> objs);
 	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+	 * @param objs: a list of ABObjects
+	 * match the objs to the initial objects by setting their IDs;
+	 * */
+	public void matchObjs(List<ABObject> objs);
 
 }

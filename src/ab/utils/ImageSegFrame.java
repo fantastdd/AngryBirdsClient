@@ -21,9 +21,9 @@ import ab.vision.*;
 
 public class ImageSegFrame {
 
-    private static int _saveCount = 0;
+	private static int _saveCount = 0;
 
-    static class ImagePanel extends JPanel implements KeyListener, MouseListener {
+    class ImagePanel extends JPanel implements KeyListener, MouseListener {
         protected JFrame _parent;
         protected Image _img = null;
         protected Popup _tip = null;
@@ -33,6 +33,7 @@ public class ImageSegFrame {
 
         public Boolean bWaitingForKey = false;
 
+      
         public ImagePanel(JFrame parent) {
             _parent = parent;
             addKeyListener(this);
@@ -59,7 +60,6 @@ public class ImageSegFrame {
             if (_img != null) {
                 if ((_meta != null) && (_highlightIndex != -1)) {
                     BufferedImage canvas = VisionUtils.highlightRegions(_img, _meta, _highlightIndex, Color.RED);
-                  
                     g.drawImage(canvas, 0, 0, null);
                 } else {
                 	

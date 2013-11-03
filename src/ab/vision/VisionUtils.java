@@ -31,13 +31,16 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
+import ab.objtracking.Tracker;
+
 import Jama.Matrix;
 
 /* VisionUtils ------------------------------------------------------------ */
 
 public class VisionUtils {
-
-	// crops a bounding box to be within an image
+	public static Color fontColor = Color.blue;
+	public static Color boxesColor = Color.ORANGE;
+      // crops a bounding box to be within an image
 	public static Rectangle cropBoundingBox(Rectangle r, Image img) {
 		return cropBoundingBox(r, img.getWidth(null), img.getHeight(null));
 	}
@@ -455,6 +458,21 @@ public class VisionUtils {
 
 		return canvas;
 	}
+	//draw bounding boxes with IDs onto an image
+	public static BufferedImage drawBoundingBoxesWithID(BufferedImage canvas, List<ABObject>boxes, 
+			Color bgColour)
+	{
+		Graphics2D g2d = canvas.createGraphics();
+		for (ABObject r : boxes) {
+			g2d.setColor(bgColour);
+			g2d.drawRect(r.x - 1, r.y - 1, r.width + 2, r.height + 2);
+			g2d.drawRect(r.x + 1, r.y + 1, r.width - 2, r.height - 2);
+			g2d.setColor(fontColor);
+			g2d.drawRect(r.x, r.y, r.width, r.height);
+			g2d.drawString(r.id + "", (int)r.getCenterX(), (int)r.getCenterY());
+		}
+		return canvas;
+	}
 
 	// draws bounding boxes onto an image
 	public static BufferedImage drawBoundingPolygon(BufferedImage canvas,
@@ -525,7 +543,26 @@ public class VisionUtils {
 
 		return meta;
 	}
+	public static BufferedImage constructImageSegWithTracking(BufferedImage screenshot, Tracker tracker) {
 
+		// process imaged
+		Vision vision = new Vision(screenshot);
+		ABList pigs = vision.findPigs();
+		ABList blocks = vision.findBlocks();
+		if(tracker != null)
+		{
+			tracker.matchObjs(pigs);
+			tracker.matchObjs(blocks);
+		}
+		// draw objects
+		screenshot = VisionUtils.convert2grey(screenshot);
+		VisionUtils.drawBoundingBoxesWithID(screenshot, pigs, Color.GREEN);
+		
+		VisionUtils.drawBoundingBoxesWithID(screenshot, blocks, boxesColor);
+	
+		return screenshot;
+	}
+	
 	 public static BufferedImage analyseScreenShot(BufferedImage screenshot) {
 
 
@@ -557,7 +594,7 @@ public class VisionUtils {
 
 		Rectangle sling = vision.findSlingshotMBR();
 
-
+		
 		// draw objects
 		screenshot = VisionUtils.convert2grey(screenshot);
 		VisionUtils.drawBoundingBoxes(screenshot, pigs, Color.GREEN);
