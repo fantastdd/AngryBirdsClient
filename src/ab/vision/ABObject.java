@@ -23,7 +23,10 @@ public ABObject(ABObject ab)
 	this.type = ab.type;
 	this.id = ab.id;
 }
-
+public ABObject()
+{
+	this.id = counter ++;
+}
 public ABType getType()
 {
 	return type;
