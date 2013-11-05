@@ -5,12 +5,17 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import ab.demo.other.ActionRobot;
+import ab.objtracking.tracker.BasicTracker;
 import ab.utils.ImageSegFrame;
 import ab.vision.VisionUtils;
 
 public class DisplayTracking implements Runnable{
 	
-	
+	public static boolean askForIniScenario = false;
+	public static void flipAskForInitialScenario()
+	{
+		askForIniScenario = !askForIniScenario;
+	}
 	
 	/**
 	 * @param args
@@ -24,6 +29,8 @@ public class DisplayTracking implements Runnable{
 	public void run() {
 		//the display frame;
 		 ImageSegFrame frame = null;
+		//initialize the tracker
+		 Tracker tracker = new BasicTracker();
 		//long screenshot_time = 0l;
 		//long vision_process_time = 0l;
 		while (true) {	
@@ -33,7 +40,8 @@ public class DisplayTracking implements Runnable{
 			// analyse and show image
 			//screenshot_time = System.nanoTime() - current_time;
 			int[][] meta = VisionUtils.computeMetaInformation(screenshot);
-			screenshot = VisionUtils.constructImageSegWithTracking(screenshot, null);
+			screenshot = VisionUtils.constructImageSegWithTracking(screenshot, tracker);
+			screenshot = VisionUtils.resizeImage(screenshot, 800, 1200);
 			//vision_process_time = System.nanoTime() - screenshot_time - current_time;
 			if (frame == null) {
 				frame = new ImageSegFrame("Object Tracking", screenshot,

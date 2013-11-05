@@ -8,7 +8,7 @@
 *or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
 *****************************************************************************/
 
-package ab.demo.util;
+package ab.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

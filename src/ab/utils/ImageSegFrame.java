@@ -9,22 +9,49 @@
 *****************************************************************************/
 package ab.utils;
 
-import java.io.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.*;
-import javax.imageio.*;
-import javax.swing.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-import ab.vision.*;
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JToolTip;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
+import javax.swing.SwingUtilities;
+
+import ab.objtracking.DisplayTracking;
+import ab.vision.VisionUtils;
 
 public class ImageSegFrame {
 
 	private static int _saveCount = 0;
 
     class ImagePanel extends JPanel implements KeyListener, MouseListener {
-        protected JFrame _parent;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -1162922707389749340L;
+		protected JFrame _parent;
         protected Image _img = null;
         protected Popup _tip = null;
         protected int[][] _meta = null;
@@ -39,20 +66,19 @@ public class ImageSegFrame {
             addKeyListener(this);
             addMouseListener(this);
             setDoubleBuffered(true);
-         
+            //set focusable then you can use key listener
+            setFocusable(true);
         }
 
         public void refresh(Image img) {
             refresh(img, null);
         }
 
-        public void refresh(Image img, int[][] meta) {
-        	
+        public void refresh(Image img, int[][] meta) 
+        {        	
             _img = img;
-            _meta = meta;
-           
-            repaint();
-          
+            _meta = meta;   
+            repaint(); 
         }
 
         public void paint(Graphics g) {
@@ -82,16 +108,22 @@ public class ImageSegFrame {
         }
 
         public void keyPressed(KeyEvent key) {
-
             // process key
-            if (key.getKeyCode() == key.VK_ENTER) {
+        	if(key.getKeyCode() == KeyEvent.VK_Q)
+        	{
+        		int option = JOptionPane.showConfirmDialog(null, "Set the current scenario as the initial");
+        		if(option == JOptionPane.YES_OPTION)
+        			DisplayTracking.flipAskForInitialScenario();
+        	}
+        	else
+            if (key.getKeyCode() == KeyEvent.VK_ENTER) {
                 _parent.setVisible(false);
                 _parent.dispose();
 
-            } else if (key.getKeyCode() == key.VK_ESCAPE) {
+            } else if (key.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 System.exit(0);
 
-            } else if (key.getKeyCode() == key.VK_D) {
+            } else if (key.getKeyCode() == KeyEvent.VK_D) {
                 String imgFilename = String.format("img%04d.png", _saveCount);
                 System.out.println("saving image to " + imgFilename);
                 BufferedImage bi = new BufferedImage(_img.getWidth(null), _img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -125,7 +157,7 @@ public class ImageSegFrame {
                 }
                 _saveCount += 1;
 
-            } else if (key.getKeyCode() == key.VK_H) {
+            } else if (key.getKeyCode() == KeyEvent.VK_H) {
                 // toggle highlight mode
                 if (_highlightMode) {
                     _highlightMode = false;
@@ -135,7 +167,7 @@ public class ImageSegFrame {
                     _highlightIndex = -1;
                 }
 
-            } else if (key.getKeyCode() == key.VK_S) {
+            } else if (key.getKeyCode() == KeyEvent.VK_S) {
                 String imgFilename = String.format("img%04d.png", _saveCount);
                 System.out.println("saving image to " + imgFilename);
                 BufferedImage bi = new BufferedImage(_img.getWidth(null), _img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -158,7 +190,9 @@ public class ImageSegFrame {
             }
         }
 
-        public void keyTyped(KeyEvent key) { }
+        public void keyTyped(KeyEvent key) {
+        
+        }
         public void keyReleased(KeyEvent key) { }
 
         public void mousePressed(MouseEvent e) { }
@@ -274,7 +308,8 @@ public class ImageSegFrame {
 	    	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
   	        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
   	        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
-  	        int x = (int) rect.getMaxX() - frame.getWidth();
+  	        //int x = (int) rect.getMaxX() - frame.getWidth();
+  	        int x = 0;
   	        int y = 0;
   	        frame.setLocation(x, y);
   	        

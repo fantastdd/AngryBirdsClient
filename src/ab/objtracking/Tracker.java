@@ -3,6 +3,7 @@ package ab.objtracking;
 import java.awt.Shape;
 import java.util.List;
 
+import ab.vision.ABList;
 import ab.vision.ABObject;
 
 public interface Tracker {
@@ -13,5 +14,7 @@ public interface Tracker {
 	 * match the objs to the initial objects by setting their IDs;
 	 * */
 	public void matchObjs(List<ABObject> objs);
+	public void startTracking();
+	public boolean isTrackingStart();
 
 }

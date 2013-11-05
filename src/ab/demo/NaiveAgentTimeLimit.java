@@ -19,8 +19,8 @@ import java.util.Random;
 import ab.demo.other.ActionRobot;
 import ab.demo.other.NaiveMind;
 import ab.demo.other.Shot;
-import ab.demo.util.StateUtil;
 import ab.planner.ExampleTrajectoryPlanner;
+import ab.utils.StateUtil;
 import ab.vision.GameStateExtractor.GameState;
 import ab.vision.Vision;
 

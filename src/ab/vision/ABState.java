@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ab.demo.other.ActionRobot;
-import ab.demo.util.StateUtil;
+import ab.utils.StateUtil;
 import ab.vision.GameStateExtractor.GameState;
 
 public class ABState {

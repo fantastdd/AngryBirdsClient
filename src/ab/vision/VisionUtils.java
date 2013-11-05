@@ -31,6 +31,7 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
+import ab.objtracking.DisplayTracking;
 import ab.objtracking.Tracker;
 
 import Jama.Matrix;
@@ -549,10 +550,24 @@ public class VisionUtils {
 		Vision vision = new Vision(screenshot);
 		ABList pigs = vision.findPigs();
 		ABList blocks = vision.findBlocks();
-		if(tracker != null)
+		ABList allInterestObjs = ABList.newList();
+		allInterestObjs.addAll(pigs);
+		allInterestObjs.addAll(blocks);
+		if(DisplayTracking.askForIniScenario)
 		{
-			tracker.matchObjs(pigs);
-			tracker.matchObjs(blocks);
+			tracker.setInitialObjects(allInterestObjs);
+			System.out.println(" Initial objects size: " + allInterestObjs.size());
+			DisplayTracking.flipAskForInitialScenario();
+			tracker.startTracking();
+		}
+		else
+		{
+			if(tracker != null && tracker.isTrackingStart())
+			{
+				tracker.matchObjs(allInterestObjs);
+				tracker.setInitialObjects(allInterestObjs);
+				//System.out.println(" match completed");
+			}
 		}
 		// draw objects
 		screenshot = VisionUtils.convert2grey(screenshot);

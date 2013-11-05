@@ -18,12 +18,12 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import ab.demo.util.StateUtil;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyClickMessage;
 import ab.server.proxy.message.ProxyDragMessage;
 import ab.server.proxy.message.ProxyMouseWheelMessage;
 import ab.server.proxy.message.ProxyScreenshotMessage;
+import ab.utils.StateUtil;
 import ab.vision.GameStateExtractor.GameState;
 
 /**

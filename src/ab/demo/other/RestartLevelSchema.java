@@ -9,10 +9,10 @@
 *****************************************************************************/
 package ab.demo.other;
 
-import ab.demo.util.StateUtil;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyClickMessage;
 import ab.server.proxy.message.ProxyMouseWheelMessage;
+import ab.utils.StateUtil;
 import ab.vision.GameStateExtractor.GameState;
 
 public class RestartLevelSchema {

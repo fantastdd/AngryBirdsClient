@@ -26,10 +26,10 @@ import javax.imageio.ImageIO;
 
 import Jama.Matrix;
 import ab.demo.other.ActionRobot;
-import ab.demo.util.StateUtil;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyScreenshotMessage;
 import ab.utils.ImageSegFrame;
+import ab.utils.StateUtil;
 
 /* TestVision ------------------------------------------------------------- */
 

@@ -23,6 +23,13 @@ public class ABList extends LinkedList<ABObject> {
 		else
 			return this.get(r.nextInt(size()));
 	}
+	public ABList(){
+		super();
+	}
+	public ABList(List<ABObject> list)
+	{
+		super(list);
+	}
 
 /**by
  * Sort the ABObjects according their X coordinate (top-left corner)
