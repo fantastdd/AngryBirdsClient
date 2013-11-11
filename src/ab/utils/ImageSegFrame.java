@@ -39,14 +39,16 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 
-import ab.objtracking.DisplayTracking;
+import ab.demo.other.ActionRobot;
+import ab.objtracking.DisplayTracking_NewVision;
 import ab.vision.VisionUtils;
 
 public class ImageSegFrame {
 
 	private static int _saveCount = 0;
-
-    class ImagePanel extends JPanel implements KeyListener, MouseListener {
+	public static String saveFileDir = "";
+	public static boolean recordScreenshot = false;
+    public class ImagePanel extends JPanel implements KeyListener, MouseListener {
         /**
 		 * 
 		 */
@@ -59,7 +61,7 @@ public class ImageSegFrame {
         protected int _highlightIndex = -1;
 
         public Boolean bWaitingForKey = false;
-
+       
       
         public ImagePanel(JFrame parent) {
             _parent = parent;
@@ -113,7 +115,7 @@ public class ImageSegFrame {
         	{
         		int option = JOptionPane.showConfirmDialog(null, "Set the current scenario as the initial");
         		if(option == JOptionPane.YES_OPTION)
-        			DisplayTracking.flipAskForInitialScenario();
+        			DisplayTracking_NewVision.flipAskForInitialScenario();
         	}
         	else
             if (key.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -124,48 +126,53 @@ public class ImageSegFrame {
                 System.exit(0);
 
             } else if (key.getKeyCode() == KeyEvent.VK_D) {
-                String imgFilename = String.format("img%04d.png", _saveCount);
-                System.out.println("saving image to " + imgFilename);
-                BufferedImage bi = new BufferedImage(_img.getWidth(null), _img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g2d = bi.createGraphics();
-                g2d.drawImage(_img, 0, 0, null);
-                g2d.dispose();
-                try {
-                    ImageIO.write(bi, "png", new File(imgFilename));
-                } catch (IOException e) {
-                    System.err.println("failed to save image " + imgFilename);
-                    e.printStackTrace();
-                }
-
-                if (_meta != null) {
-                    String metaFilename = String.format("meta%04d.txt", _saveCount);
-                    System.out.println("saving meta-data to " + metaFilename);
-                    try {
-                        PrintWriter ofs = new PrintWriter(new FileWriter(metaFilename));
-                        for (int i = 0; i < _meta.length; i++) {
-                            for (int j = 0; j < _meta[i].length; j++) {
-                                if (j > 0) ofs.print(' ');
-                                ofs.print(_meta[i][j]);
-                            }
-                            ofs.println();
-                        }
-                        ofs.close();
-                        
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                _saveCount += 1;
-
-            } else if (key.getKeyCode() == KeyEvent.VK_H) {
-                // toggle highlight mode
-                if (_highlightMode) {
-                    _highlightMode = false;
-                    this.repaint();
-                } else {
-                    _highlightMode = true;
-                    _highlightIndex = -1;
-                }
+            	
+            	recordScreenshot = !recordScreenshot;
+            	if(recordScreenshot)
+            	{
+	                String imgFilename = saveFileDir + String.format("img%04d.png", _saveCount);
+	                System.out.println("saving image to " + imgFilename);
+	                BufferedImage bi = new BufferedImage(_img.getWidth(null), _img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+	                Graphics2D g2d = bi.createGraphics();
+	                g2d.drawImage(_img, 0, 0, null);
+	                g2d.dispose();
+	                try {
+	                    ImageIO.write(bi, "png", new File(imgFilename));
+	                } catch (IOException e) {
+	                    System.err.println("failed to save image " + imgFilename);
+	                    e.printStackTrace();
+	                }
+	
+	                if (_meta != null) {
+		                    String metaFilename = String.format("meta%04d.txt", _saveCount);
+		                    System.out.println("saving meta-data to " + metaFilename);
+		                    try {
+		                        PrintWriter ofs = new PrintWriter(new FileWriter(metaFilename));
+		                        for (int i = 0; i < _meta.length; i++) {
+		                            for (int j = 0; j < _meta[i].length; j++) {
+		                                if (j > 0) ofs.print(' ');
+		                                ofs.print(_meta[i][j]);
+		                            }
+		                            ofs.println();
+		                        }
+		                        ofs.close();
+		                        
+		                    } catch (IOException e) {
+		                        e.printStackTrace();
+		                    }
+		                
+		                _saveCount += 1;
+	                }
+	            } else if (key.getKeyCode() == KeyEvent.VK_H) {
+	                // toggle highlight mode
+	                if (_highlightMode) {
+	                    _highlightMode = false;
+	                    this.repaint();
+	                } else {
+	                    _highlightMode = true;
+	                    _highlightIndex = -1;
+	                }
+	            }
 
             } else if (key.getKeyCode() == KeyEvent.VK_S) {
                 String imgFilename = String.format("img%04d.png", _saveCount);
@@ -201,12 +208,16 @@ public class ImageSegFrame {
         public void mouseEntered(MouseEvent e) { }
         public void mouseExited(MouseEvent e) { }
 
-        public void mouseClicked(MouseEvent e) {
-            if (_tip == null) {
+        public void mouseClicked(MouseEvent e) 
+        {
+        	if (_tip == null) {
                 JToolTip toolTip = this.createToolTip();
-                if (_meta == null) {
+                if (_meta == null) 
+                {
                     toolTip.setTipText("(" + e.getX() + ", " + e.getY() + ")");
-                } else {
+                    
+                } 
+                else {
                     toolTip.setTipText("(" + e.getX() + ", " + e.getY() + "): " +
                         _meta[e.getY()][e.getX()]);
 
@@ -292,7 +303,7 @@ public class ImageSegFrame {
        this.img = img;
        this.meta = meta;
 	   	frame = new JFrame(name);
-	    //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    panel = new ImagePanel(frame);
 	   
 	    frame.getContentPane().add(panel);
@@ -360,6 +371,37 @@ public class ImageSegFrame {
             } catch (InterruptedException e) {
             }
         }
+    }
+    public static void main(String args[]) throws InterruptedException, IOException
+    {
+    	long timegap = 0;
+    	if(args.length == 1)
+    		ImageSegFrame.saveFileDir = (args[0]) + "\\";
+    	else
+    		if(args.length == 2)
+    		{
+    			ImageSegFrame.saveFileDir = args[0] + "\\";
+    			timegap = Long.parseLong(args[1]); 
+    		}
+    	File file = new File(ImageSegFrame.saveFileDir);
+    	if(!file.exists())
+    		file.mkdir();
+    	new ActionRobot();
+    	BufferedImage screenshot = null;
+    	ImageSegFrame frame = null;
+    	screenshot = ActionRobot.doScreenShot();
+    	frame = new ImageSegFrame(" Screenshots ", screenshot, null);
+    	while(true)
+    	{
+    		screenshot = ActionRobot.doScreenShot();
+    		frame.refresh(screenshot);
+    		if(recordScreenshot){
+	    		String imgFilename = saveFileDir + String.format("img%04d.png", _saveCount ++);
+	    		ImageIO.write(screenshot, "png", new File(imgFilename));
+	            System.out.println("saving image to " + imgFilename);
+	    		Thread.sleep(timegap);
+    		}
+    	}
     }
 
 

@@ -8,7 +8,7 @@ import java.util.List;
 import ab.objtracking.Tracker;
 import ab.vision.ABObject;
 /**
- * Matching objs using SM algorithm
+ * Assuming the resulting scenarios always have less objects than the initial 
  * */
 public class BasicTracker implements Tracker {
 	List<ABObject> initialObjs = null;
@@ -46,7 +46,7 @@ public class BasicTracker implements Tracker {
 	}
 
 	@Override
-	public void matchObjs(List<ABObject> objs) {
+	public boolean matchObjs(List<ABObject> objs) {
 	/*	if(initialObjs != null)
 			System.out.println(initialObjs.size());*/
 		//Do match
@@ -65,7 +65,7 @@ public class BasicTracker implements Tracker {
 				{
 					ABObject test_obj = freeObjs.remove();
 					double _diff = calDiff(obj, test_obj);
-				/*	if(test_obj.id == 8)
+					/*if(test_obj.id == 13)
 						System.out.println(obj + " new id: " + obj.id +  "  original id: " + test_obj.id + "  " + test_obj + "  " + _diff);*/
 					if(_diff < diff)
 					{	
@@ -82,8 +82,9 @@ public class BasicTracker implements Tracker {
 				if(prefObj != null)
 					obj.id = prefObj.id;
 			}
-			
+			return true;
 		}
+		return false;
 	}
 
 
@@ -91,6 +92,16 @@ public class BasicTracker implements Tracker {
 	public boolean isMatch(Shape a, Shape b) {
 		
 		return false;
+	}
+	@Override
+	public List<ABObject> getMatchedObjects() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<ABObject> getInitialObjects() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

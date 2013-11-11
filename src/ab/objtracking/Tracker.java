@@ -11,9 +11,12 @@ public interface Tracker {
 	public void setInitialObjects(List<ABObject> objs);
 	/**
 	 * @param objs: a list of ABObjects
+	 * @return true: matching has been performed.
 	 * match the objs to the initial objects by setting their IDs;
 	 * */
-	public void matchObjs(List<ABObject> objs);
+	public boolean matchObjs(List<ABObject> objs);
+	public List<ABObject> getMatchedObjects();
+	public List<ABObject> getInitialObjects();
 	public void startTracking();
 	public boolean isTrackingStart();
 

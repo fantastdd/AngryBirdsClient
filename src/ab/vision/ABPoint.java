@@ -8,6 +8,8 @@ public class ABPoint extends  java.awt.Point {
 	public ABPoint(int x, int y) {super(x,y);}
 	public ABPoint(double x, double y)
 	{
-		super((int)(x), (int)(y));
+		super();
+		setLocation(x,y);
 	}
+	
 }

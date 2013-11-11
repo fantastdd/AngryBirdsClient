@@ -5,6 +5,7 @@
 package ab.vision.real;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -55,7 +56,7 @@ public class MyVision
         _height = screenshot.getHeight();
         
         // Reset object counter
-        ABObject.resetCounter();
+         ABObject.resetCounter();
         
         // find ground level and all connected components in scene
         _seg = new ImageSegmenter(screenshot);
@@ -242,7 +243,7 @@ public class MyVision
         Graphics2D g = image.createGraphics();
         
         g.drawImage(VisionUtils.convert2grey(canvas), 0, 0, null);    
-        
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 10)); 
         // draw ground level
         for (int x = 0; x < _width; x++)
         {
@@ -260,7 +261,9 @@ public class MyVision
         	if (b != null)
         	{	
         		b.draw(g, false, Color.RED);
-        		g.drawString(b.id + "", (int)b.centerX, (int)b.centerY);
+        		g.setColor(Color.black);
+        		if(b.id != ABObject.unassigned)
+        		g.drawString(b.id + "", (int)b.centerX - 5, (int)b.centerY + 5);// 10: font size
         	}
             
         canvas.createGraphics().drawImage(image, 0, 0, null);

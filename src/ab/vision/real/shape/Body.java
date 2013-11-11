@@ -40,4 +40,18 @@ public abstract class Body extends ABObject
     {
     	return new ABPoint(centerX, centerY);
     }
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * 17 + vision_type;
+        hash = hash * 31 + id;
+        hash = hash * 13 + (int)centerX;
+        hash = hash * 67 + (int)centerY;
+        return hash;
+    }
+    @Override
+    public boolean equals(Object body)
+    {
+    	return hashCode() == body.hashCode();
+    }
 }

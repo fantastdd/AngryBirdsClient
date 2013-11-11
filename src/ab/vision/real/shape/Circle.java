@@ -7,6 +7,7 @@ package ab.vision.real.shape;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import ab.vision.ABObject;
 import ab.vision.real.ImageSegmenter;
 
 public class Circle extends Body
@@ -26,7 +27,16 @@ public class Circle extends Body
         r = radius;
         vision_type = t;
     }
-    
+    @Override
+    public boolean isSameShape(ABObject ao)
+    {
+    	if (ao instanceof Circle)
+    	{
+    		if (Math.abs(r - ((Circle)ao).r) < sameShapeGap)
+    				return true;
+    	}
+    	return false;
+    }
     public Circle(int box[], int t)
     {
         centerX = (box[0] + box[2]) / 2.0;
@@ -52,6 +62,6 @@ public class Circle extends Body
 	
 	public String toString()
 	{
-		return String.format("Circ: r:%7.3f at x:%5.1f y:5.1f", r, centerX, centerY);
+		return String.format("Circ: id:%d r:%7.3f at x:%5.1f y:5.1f", id, r, centerX, centerY);
 	}
 }

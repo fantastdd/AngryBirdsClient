@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
+import ab.vision.ABObject;
 import ab.vision.real.ImageSegmenter;
 import ab.vision.real.LineSegment;
 /**
@@ -36,7 +37,25 @@ public class Poly extends Body
         centerX = xs;
         centerY = ys;
     }
-    
+    @Override
+    public boolean isSameShape(ABObject ao)
+    {
+    	if (ao instanceof Poly)
+    	{
+    		Polygon _polygon = ((Poly)ao).polygon;
+    		if(
+    				Math.abs( polygon.getBounds().width -
+    						_polygon.getBounds().width) < sameShapeGap
+    						&& 
+    						Math.abs( polygon.getBounds().height -
+    	    						_polygon.getBounds().height) < sameShapeGap
+    	    	)
+    			return true;
+    						
+    			
+    	}
+    	return false;
+    }
     public void draw(Graphics2D g, boolean fill, Color boxColor)
     {
         if (fill) {
@@ -51,6 +70,6 @@ public class Poly extends Body
 	
 	public String toString()
 	{
-		return String.format("Poly: %dpts at x:%5.1f y:%5.1f", polygon.npoints, centerX, centerY);
+		return String.format("Poly: id:%d %dpts at x:%5.1f y:%5.1f", id, polygon.npoints, centerX, centerY);
 	}
 }

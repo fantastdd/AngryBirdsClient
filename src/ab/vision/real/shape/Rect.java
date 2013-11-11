@@ -6,8 +6,10 @@ package ab.vision.real.shape;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 
+import ab.vision.ABObject;
 import ab.vision.real.ImageSegmenter;
 
 public class Rect extends Body
@@ -39,7 +41,21 @@ public class Rect extends Body
         centerY = ys;
         centerX = xs;
     } 
-    
+
+    @Override
+    public boolean isSameShape(ABObject ao)
+    {
+    	if (ao instanceof Rect)
+    	{
+    		Rect _rect = (Rect)ao;
+    		if (Math.abs(width - _rect.width) < sameShapeGap
+    				&&
+    				Math.abs(height - _rect.height) < sameShapeGap
+    				&& Math.abs(angle - _rect.angle) < 0.6 ) //  Math.PI/6 < 0.6 < Math.PI/4
+    				return true;
+    	}
+    	return false;
+    }
     public Rect(int box[], int t)
     {
         centerX = (box[0] + box[2]) / 2.0;
@@ -109,6 +125,6 @@ public class Rect extends Body
 	
 	public String toString()
 	{
-		return String.format("Rect: w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f", width, height, angle, centerX, centerY);
+		return String.format("Rect: id:%d w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f", id, width, height, angle, centerX, centerY);
 	}
 }
