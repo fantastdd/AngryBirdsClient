@@ -167,13 +167,11 @@ public class ImageSegmenter {
     private boolean [][] _edges = null;
     
     // the compressed image
-    private int [][] _image = null;
+    public int [][] _image = null;
     private int [][] _val = null;
     private int [][] _hue = null;
     private int [][] _sat = null;
     
-    // the slingshot
-    private ConnectedComponent _sling = null;
         
     // connected components in the scene
     private ArrayList<ConnectedComponent> _components = null;
@@ -435,7 +433,6 @@ public class ImageSegmenter {
             findComponents();
             
         BufferedImage image = new BufferedImage(_width, _height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = image.createGraphics();
         
         for (int x = 0; x < _width; x++)
         for (int y = 0; y < _height; y++)
@@ -611,7 +608,7 @@ public class ImageSegmenter {
     {
         int type = BACKGROUND;
         int minDist = 999999;
-        double minAngle = Math.PI;
+      
         
         // extract the r,g,b components
         int r = color >> 10;

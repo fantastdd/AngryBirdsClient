@@ -161,6 +161,15 @@ public class MyVision
                 if (b == null || (c.getType() != ImageSegmenter.HILLS && b.centerX < xMin))
                     continue;
                     
+                //Added by Gary: avoid score noises after a pig is destroyed. Check whether a pig is a hollow circle
+               /* if(c.getType() == ImageSegmenter.PIG)
+                {
+                	int[][] image = _seg._image;
+                	for(int i = 0; i < 30; i++)
+                	//System.out.println(image[(int)b.getCenterX()+ i][(int)b.getCenterY() + i]);
+                	if(image[(int)b.getCenterX()][(int)b.getCenterY()] == 262143)
+                		continue;
+                }*/
                 _gameObjects.add(b);
                 _draw.add(c);
                 _drawShape.add(b);

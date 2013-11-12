@@ -4,14 +4,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import ab.objtracking.tracker.SMETracker;
-import ab.utils.ImageSegFrame;
+import ab.objtracking.tracker.SMETracker_2;
 import ab.utils.ImageTrackFrame;
 import ab.vision.VisionUtils;
 import ab.vision.real.MyVisionUtils;
@@ -21,15 +18,25 @@ public class TrackingFrameComparison implements Runnable {
 	String filename;
 	public static volatile boolean goToNextFrame = false;
 	public static volatile boolean goToPrevFrame = false;
+	public static boolean continuous = false;
+	public int index_0 = -1;
+	public int index_1 = -1;
 	public TrackingFrameComparison(String filename)
 	{
 		this.filename = filename;
+	}
+	public TrackingFrameComparison(String filename, int index_0, int index_1)
+	{
+		this.filename = filename;
+		this.index_0 = index_0;
+		this.index_1 = index_1;
 	}
 	/**
 	 * @param args
 	 */
 	static public void main(String[] args) {
-		TrackingFrameComparison tfc = new TrackingFrameComparison("t");
+		TrackingFrameComparison tfc = new TrackingFrameComparison("t14");
+		TrackingFrameComparison.continuous = true;
 		tfc.run();
 	}
 /*	public BufferedImage loadImage(int Pointer)
@@ -41,10 +48,12 @@ public class TrackingFrameComparison implements Runnable {
 		
 		
 			BufferedImage prevScreenshot, nextScreenshot = null;
-			SMETracker tracker = new SMETracker();
+			Tracker tracker = new SMETracker_2();
 			
 			// get list of images to process
 			File[] images = null;
+			//Buffered results
+			BufferedImage[] processedImages;
 			// check if argument is a directory or an image
 			int pointer = 0;
 			if ((new File(filename)).isDirectory()) 
@@ -58,7 +67,15 @@ public class TrackingFrameComparison implements Runnable {
 			
 				// iterate through the images
 				Arrays.sort(images);
-				
+				if(index_0 != -1)
+				{
+					File[] bufferedImages = new File[2];
+					bufferedImages[0] = images[index_0];
+					bufferedImages[1] = images[index_1];
+					images = null;
+					images = bufferedImages;
+				}
+				processedImages = new BufferedImage[images.length];
 				/*for (File file: images)
 				{
 					try {
@@ -71,15 +88,17 @@ public class TrackingFrameComparison implements Runnable {
 				try {
 					prevScreenshot = ImageIO.read(images[pointer]);
 			
-				DisplayTracking_NewVision.flipAskForInitialScenario();
+				RealTimeTracking.flipAskForInitialScenario();
 				prevScreenshot = MyVisionUtils.constructImageSegWithTracking(prevScreenshot, tracker);
 				prevScreenshot = VisionUtils.resizeImage(prevScreenshot, 800, 1200);
+				processedImages[0] = prevScreenshot;
 				
 				nextScreenshot = ImageIO.read(images[pointer + 1]);
 				//long time = System.nanoTime();
-				nextScreenshot = MyVisionUtils.deepCopy(MyVisionUtils.constructImageSegWithTracking(nextScreenshot, tracker));
+				nextScreenshot = MyVisionUtils.constructImageSegWithTracking(nextScreenshot, tracker);
 				//System.out.println("Processing time: " + (System.nanoTime() - time)/1000000);
 				nextScreenshot = VisionUtils.resizeImage(nextScreenshot, 800, 1200);
+				processedImages[1] = nextScreenshot;
 				
 				ImageTrackFrame prevFrame = new ImageTrackFrame(" Prev Frame " + images[pointer].getName(), prevScreenshot, null);
 				prevFrame.setTracker(tracker);
@@ -90,29 +109,50 @@ public class TrackingFrameComparison implements Runnable {
 				nextFrame.setTracker(tracker);
 				nextFrame.refresh(nextScreenshot);
 				
+				int lastProcessed = 1;// the index of the last processed image
 				while(true)
 				{
 					
 					if(goToNextFrame)
 					{
 						goToNextFrame = !goToNextFrame;
-						
 						pointer++;
+						lastProcessed = (lastProcessed == images.length - 1)? lastProcessed : pointer;
 						if(pointer == images.length - 1)
 							pointer = 0;
-					
-					    prevScreenshot = ImageIO.read(images[pointer]);
-						DisplayTracking_NewVision.flipAskForInitialScenario();
-						prevScreenshot = MyVisionUtils.constructImageSegWithTracking(prevScreenshot, tracker);
-						prevScreenshot = VisionUtils.resizeImage(prevScreenshot, 800, 1200);
+													
+						if(pointer <= lastProcessed  && continuous)
+						{
+							prevScreenshot = processedImages[pointer];
+							
+						}
+						else
+						{
+							prevScreenshot = ImageIO.read(images[pointer]);
+							if(!continuous)
+								RealTimeTracking.flipAskForInitialScenario();
+							prevScreenshot = MyVisionUtils.constructImageSegWithTracking(prevScreenshot, tracker);
+							prevScreenshot = VisionUtils.resizeImage(prevScreenshot, 800, 1200);
+							processedImages[pointer] = prevScreenshot;
+						}
 						prevFrame.setTitle(" Prev Frame " + images[pointer].getName());
 						prevFrame.refresh(prevScreenshot);
 						
-						nextScreenshot = ImageIO.read(images[pointer + 1]);;
-						//long time = System.nanoTime();
-						nextScreenshot = MyVisionUtils.constructImageSegWithTracking(nextScreenshot, tracker);
-						//System.out.println("Processing time: " + (System.nanoTime() - time)/1000000);
-						nextScreenshot = VisionUtils.resizeImage(nextScreenshot, 800, 1200);
+						if(pointer + 1 <= lastProcessed  && continuous)
+						{
+							nextScreenshot = processedImages[pointer + 1];
+							nextFrame.setTitle(" Next Frame " + images[pointer + 1].getName());
+						}
+						else
+						{
+							nextScreenshot = ImageIO.read(images[pointer + 1]);;
+							//long time = System.nanoTime();
+							nextScreenshot = MyVisionUtils.constructImageSegWithTracking(nextScreenshot, tracker);
+							//System.out.println("Processing time: " + (System.nanoTime() - time)/1000000);
+							nextScreenshot = VisionUtils.resizeImage(nextScreenshot, 800, 1200);
+							processedImages[pointer + 1] = nextScreenshot;
+						}
+						
 						nextFrame.setTitle(" Next Frame " + images[pointer + 1].getName());
 						nextFrame.refresh(nextScreenshot);
 						
@@ -124,18 +164,35 @@ public class TrackingFrameComparison implements Runnable {
 							pointer--;
 							if(pointer < 0)
 								pointer = images.length - 2;
-							prevScreenshot = ImageIO.read(images[pointer]);
-							DisplayTracking_NewVision.flipAskForInitialScenario();
-							prevScreenshot = MyVisionUtils.constructImageSegWithTracking(prevScreenshot, tracker);
-							prevScreenshot = VisionUtils.resizeImage(prevScreenshot, 800, 1200);
+							if(pointer <= lastProcessed  && continuous)
+							{
+								prevScreenshot = processedImages[pointer];
+								
+							}
+							else
+							{
+								prevScreenshot = ImageIO.read(images[pointer]);
+							   if(!continuous)
+								RealTimeTracking.flipAskForInitialScenario();
+								prevScreenshot = MyVisionUtils.constructImageSegWithTracking(prevScreenshot, tracker);
+								prevScreenshot = VisionUtils.resizeImage(prevScreenshot, 800, 1200);
+							}
 							prevFrame.setTitle(" Prev Frame " + images[pointer].getName());
 							prevFrame.refresh(prevScreenshot);
 							
-							nextScreenshot =ImageIO.read(images[pointer + 1]);
-							//long time = System.nanoTime();
-							nextScreenshot = MyVisionUtils.constructImageSegWithTracking(nextScreenshot, tracker);
-							//System.out.println("Processing time: " + (System.nanoTime() - time)/1000000);
-							nextScreenshot = VisionUtils.resizeImage(nextScreenshot, 800, 1200);
+							if(pointer + 1 <= lastProcessed && continuous)
+							{
+								nextScreenshot = processedImages[pointer + 1];
+								nextFrame.setTitle(" Next Frame " + images[pointer + 1].getName());
+							}
+							else
+							{
+								nextScreenshot =ImageIO.read(images[pointer + 1]);
+								//long time = System.nanoTime();
+								nextScreenshot = MyVisionUtils.constructImageSegWithTracking(nextScreenshot, tracker);
+								//System.out.println("Processing time: " + (System.nanoTime() - time)/1000000);
+								nextScreenshot = VisionUtils.resizeImage(nextScreenshot, 800, 1200);
+							}
 							nextFrame.setTitle(" Next Frame " + images[pointer + 1].getName());
 							nextFrame.refresh(nextScreenshot);
 						} 

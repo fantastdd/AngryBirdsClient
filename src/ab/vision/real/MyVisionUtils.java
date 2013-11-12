@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 
-import ab.objtracking.DisplayTracking_NewVision;
+import ab.objtracking.RealTimeTracking;
 import ab.objtracking.Tracker;
 import ab.vision.ABList;
 
@@ -17,12 +17,12 @@ public class MyVisionUtils {
 		
 		ABList allInterestObjs = ABList.newList();
 		allInterestObjs.addAll(vision.findObjects());
-		if(DisplayTracking_NewVision.askForIniScenario)
+		if(RealTimeTracking.askForIniScenario)
 		{
 			tracker.startTracking();
 			tracker.setInitialObjects(allInterestObjs);
 			System.out.println(" Initial objects size: " + allInterestObjs.size());
-			DisplayTracking_NewVision.flipAskForInitialScenario();
+			RealTimeTracking.flipAskForInitialScenario();
 			
 		}
 		else
@@ -42,7 +42,7 @@ public class MyVisionUtils {
 			}
 		}
 		// draw objects
-		vision.drawObjectsWithID(screenshot, false);
+		vision.drawObjectsWithID(screenshot, true);
 		
 	
 		return screenshot;

@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import ab.vision.ABObject;
+import ab.vision.ABType;
 import ab.vision.real.ImageSegmenter;
 
 public class Circle extends Body
@@ -26,6 +27,7 @@ public class Circle extends Body
         centerY = ys;
         r = radius;
         vision_type = t;
+        assignType(vision_type);
     }
     @Override
     public boolean isSameShape(ABObject ao)
@@ -43,6 +45,7 @@ public class Circle extends Body
         centerY = (box[1] + box[3]) / 2.0;
         r = (box[2] - box[0] + box[3] - box[1]) / 4.0;
         vision_type = t;
+        assignType(vision_type);
     }
     
     /* draw the circle onto canvas */
@@ -62,6 +65,6 @@ public class Circle extends Body
 	
 	public String toString()
 	{
-		return String.format("Circ: id:%d r:%7.3f at x:%5.1f y:5.1f", id, r, centerX, centerY);
+		return String.format("Circ: id:%d type:%s r:%7.3f at x:%5.1f y:%5.1f", id, type, r, centerX, centerY);
 	}
 }

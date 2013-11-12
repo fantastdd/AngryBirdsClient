@@ -3,6 +3,7 @@ package ab.vision;
 import java.awt.Rectangle;
 import java.util.HashMap;
 
+import ab.vision.real.ImageSegmenter;
 import ab.vision.real.shape.Rect;
 
 public class ABObject extends Rectangle {
@@ -31,6 +32,7 @@ public ABObject(ABObject ab)
 public ABObject()
 {
 	this.id = counter ++;
+	this.type = ABType.Unknown;
 }
 public ABType getType()
 {
@@ -41,6 +43,10 @@ public boolean isSameShape(ABObject ao)
 	if (Math.abs(width - ao.width) < sameShapeGap && Math.abs(height - ao.height) < sameShapeGap)
 		return true;
 	return false;
+}
+public boolean isSameSize(ABObject ao)
+{
+	return isSameShape(ao);
 }
 public ABPoint getCenter() {
 	
@@ -53,6 +59,18 @@ public static void resetCounter() {
 	counter = 0;
 	
 }
+public void assignType(int vision_type)
+{
+	switch(vision_type)
+	{
+	case ImageSegmenter.PIG: type = ABType.Pig; break;
+	case ImageSegmenter.STONE: type = ABType.Stone;break;
+	case ImageSegmenter.WOOD: type = ABType.Wood; break;
+	case ImageSegmenter.ICE: type = ABType.Ice; break;
+	default: type = ABType.Unknown;
+	}
+
+	 }
 public static void main(String args[])
 {
 	Rect o1 = new Rect(5, 1, 1, 1, 1, 1);

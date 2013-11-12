@@ -25,7 +25,7 @@ public class Poly extends Body
     {
         polygon = new Polygon();
         vision_type = t;
-        
+        assignType(vision_type);
         if (lines != null)
         {
             for (LineSegment l : lines)

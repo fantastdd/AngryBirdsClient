@@ -12,7 +12,7 @@ import java.util.Map;
 import ab.objtracking.Tracker;
 import ab.vision.ABObject;
 
-public class TrackerTemplate implements Tracker{
+public abstract class TrackerTemplate implements Tracker{
 
 	List<ABObject> initialObjs = null;
 	List<ABObject> lastInitialObjs = null;
@@ -20,10 +20,11 @@ public class TrackerTemplate implements Tracker{
 	Map<ABObject, List<Pair>> iniPrefs;
 	List<ABObject> unmatchedLessObjs;
 	List<ABObject> unmatchedMoreObjs;
-	List<ABObject> matchedObjs;
+	Map<ABObject, ABObject> matchedObjs;
+	List<ABObject> newComingObjs;
 	boolean startTracking = false;
 
-	private static void log(String message) {
+	protected void log(String message) {
 		System.out.println(message);
 	}
 
@@ -31,36 +32,7 @@ public class TrackerTemplate implements Tracker{
 	 * @param: objects in the next frame create preferences based on the mass
 	 *         center shift
 	 * */
-	public void createPrefs(List<ABObject> objs) {
-		// Alternatively, we can choose PriorityQueue to store objs;
-		prefs = new HashMap<ABObject, List<Pair>>();
-		iniPrefs = new HashMap<ABObject, List<Pair>>();
-	
-		for (ABObject obj : objs) {
-			List<Pair> diffs = new LinkedList<Pair>();
-			for (ABObject iniObj : initialObjs) {
-				boolean sameShape = iniObj.isSameShape(obj);
-				diffs.add(new Pair(iniObj, calDiff(obj, iniObj), sameShape));
-				if (!iniPrefs.containsKey(iniObj)) {
-					List<Pair> iniDiffs = new LinkedList<Pair>();
-					iniDiffs.add(new Pair(obj, calDiff(obj, iniObj), sameShape));
-					iniPrefs.put(iniObj, iniDiffs);
-				} else {
-					iniPrefs.get(iniObj).add(
-							new Pair(obj, calDiff(obj, iniObj), sameShape));
-				}
-	
-			}
-			Collections.sort(diffs, new PairComparator());
-			prefs.put(obj, diffs);
-		}
-		for (ABObject iniObj : iniPrefs.keySet()) {
-			Collections.sort(iniPrefs.get(iniObj), new PairComparator());
-		}
-		matchedObjs = objs;
-		//printPrefs(iniPrefs);
-	
-	}
+	public abstract void createPrefs(List<ABObject> objs);
 
 	/**
 	 * @param iniObj
@@ -94,10 +66,10 @@ public class TrackerTemplate implements Tracker{
 		//reset 
 		initialObjs = null;
 		lastInitialObjs = null;
-		matchedObjs = null;
+		newComingObjs = null;
 	}
 
-	private float calDiff(ABObject o1, ABObject o2) {
+	protected float calDiff(ABObject o1, ABObject o2) {
 	
 		Point center1 = o1.getCenter();
 		Point center2 = o2.getCenter();
@@ -120,7 +92,7 @@ public class TrackerTemplate implements Tracker{
 	
 	}
 
-	private HashMap<ABObject, ABObject> matchObjs(List<ABObject> moreObjs, List<ABObject> lessObjs, Map<ABObject, List<Pair>> morePrefs, Map<ABObject, List<Pair>> lessPrefs) {
+	protected Map<ABObject, ABObject> matchObjs(List<ABObject> moreObjs, List<ABObject> lessObjs, Map<ABObject, List<Pair>> morePrefs, Map<ABObject, List<Pair>> lessPrefs) {
 	
 		HashMap<ABObject, ABObject> current = new HashMap<ABObject, ABObject>();
 		LinkedList<ABObject> freeObjs = new LinkedList<ABObject>();
@@ -149,7 +121,7 @@ public class TrackerTemplate implements Tracker{
 			 * next.keySet()) System.out.println(next.get(t));
 			 */
 			List<Pair> pairs = lessPrefs.get(freeObj);
-			if (index == pairs.size())
+			if (pairs == null || index == pairs.size())
 				unmatchedLessObjs.add(freeObj);
 			else {
 					Pair pair = pairs.get(index);
@@ -187,13 +159,14 @@ public class TrackerTemplate implements Tracker{
 		// System.out.println(objs.size());
 		// Do match, assuming initialObjs.size() > objs.size(): no objects will
 		// be created
-		if (initialObjs != null) 
+		matchedObjs = new HashMap<ABObject, ABObject>();
+		if (initialObjs != null /*&& initialObjs.size() >= objs.size()*/) 
 		{
 	
 			lastInitialObjs = initialObjs;
 	
 			boolean lessIni = (objs.size() > initialObjs.size()); // If the num
-																	// of
+																	// of3.d
 																	// initial
 																	// objects >
 																	// next
@@ -210,7 +183,10 @@ public class TrackerTemplate implements Tracker{
 				for (ABObject iniObj : match.keySet()) {
 					ABObject obj = match.get(iniObj);
 					if (obj != null)
+					{
 						obj.id = iniObj.id;
+						matchedObjs.put(obj, iniObj);
+					}
 					else
 						unmatchedMoreObjs.add(iniObj);
 				}
@@ -228,7 +204,10 @@ public class TrackerTemplate implements Tracker{
 				for (ABObject obj : match.keySet()) {
 					ABObject iniObj = match.get(obj);
 					if (iniObj != null)
-						obj.id = iniObj.id;
+					{	
+						obj.id = iniObj.id; 
+						matchedObjs.put(obj, iniObj);
+					}
 					else
 						unmatchedMoreObjs.add(obj);
 				}
@@ -249,60 +228,7 @@ public class TrackerTemplate implements Tracker{
 		super();
 	}
 
-	public void debrisRecognition(List<ABObject> newObjs, List<ABObject> initialObjs) {
-		for (ABObject newObj : newObjs) {
-			// log(" unmatched new object: " + newObj);
-			List<Pair> pairs = prefs.get(newObj);
-			Pair pair = null;
-			int pointer = 0;
-			while (!pairs.isEmpty()&& pointer < pairs.size())
-			{	
-				pair = pairs.get(pointer);
-				if(initialObjs.contains(pair.obj))
-				{	
-					/*for (ABObject _obj : initialObjs)
-						System.out.println(_obj + "  " + _obj.hashCode());
-					System.out.println(pair.obj + "  " + pair.obj.hashCode() + "  " + initialObjs.contains(pair.obj));*/
-					break;
-				}
-				else
-					pointer++;
-			}
-			newObj.id = ABObject.unassigned;
-			
-			/*if(newObj instanceof Rect &&(((Rect)newObj).centerX == 549.5)) 
-			{
-				System.out.println(newObj);
-				System.out.println("====================");
-				for(Pair _pair : pairs) 
-					System.out.println(_pair.obj + "  " + _pair.diff);
-				System.out.println(pair);
-				System.out.println(initialObjs.size());
-			}*/
-	
-			
-			if (pair != null)
-			{
-				//System.out.println(" pair check");
-				for (ABObject initialObj : initialObjs) {
-					//System.out.println(initialObj);
-					//if(pair.obj.id == 2)
-					//	System.out.println(pair.obj + "   " + initialObj + "   " + pair.obj.equals(initialObj));
-					// pair.diff's threshold can be estimated by frame frequency
-					if (pair.obj.equals(initialObj) && pair.diff < 300) {
-						// System.out.println(pair.obj + "  " +
-						// pair.obj.hashCode() + "   " + initialObj + "  " +
-						// initialObj.hashCode() + "   " +
-						// pair.obj.equals(initialObj));
-						newObj.id = initialObj.id;
-						break;
-						// log(" matched initial object: " + initialObjs);
-					}
-	
-				}
-			}
-		}
-	}
+	public abstract void debrisRecognition(List<ABObject> newObjs, List<ABObject> initialObjs);
 
 	@Override
 	public boolean isMatch(Shape a, Shape b) {
@@ -313,7 +239,7 @@ public class TrackerTemplate implements Tracker{
 	@Override
 	public List<ABObject> getMatchedObjects() {
 	
-		return matchedObjs;
+		return newComingObjs;
 	}
 
 	@Override

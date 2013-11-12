@@ -10,7 +10,7 @@ import ab.utils.ImageSegFrame;
 import ab.vision.VisionUtils;
 import ab.vision.real.MyVisionUtils;
 
-public class DisplayTracking_NewVision implements Runnable{
+public class RealTimeTracking implements Runnable{
 	
 	public static boolean askForIniScenario = false;
 	public static void flipAskForInitialScenario()
@@ -22,7 +22,7 @@ public class DisplayTracking_NewVision implements Runnable{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		DisplayTracking_NewVision dt = new DisplayTracking_NewVision();
+		RealTimeTracking dt = new RealTimeTracking();
 		dt.run();
 	}
 
@@ -31,7 +31,7 @@ public class DisplayTracking_NewVision implements Runnable{
 		//the display frame;
 		 ImageSegFrame frame = null;
 		//initialize the tracker
-		 Tracker tracker = new SMETracker();
+		 Tracker tracker = new SMETracker_2();
 		// initialize the new vision moudle
 		 //MyVision myVision = new MyVision();
 		 

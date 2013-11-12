@@ -40,7 +40,7 @@ import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 
 import ab.demo.other.ActionRobot;
-import ab.objtracking.DisplayTracking_NewVision;
+import ab.objtracking.RealTimeTracking;
 import ab.vision.VisionUtils;
 
 public class ImageSegFrame {
@@ -115,7 +115,7 @@ public class ImageSegFrame {
         	{
         		int option = JOptionPane.showConfirmDialog(null, "Set the current scenario as the initial");
         		if(option == JOptionPane.YES_OPTION)
-        			DisplayTracking_NewVision.flipAskForInitialScenario();
+        			RealTimeTracking.flipAskForInitialScenario();
         	}
         	else
             if (key.getKeyCode() == KeyEvent.VK_ENTER) {

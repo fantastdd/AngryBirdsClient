@@ -4,18 +4,26 @@
  
 package ab.vision.real;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.lang.Integer;
-import java.util.List;
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import ab.planner.TrajectoryPlanner;
-import ab.vision.*;
-import ab.vision.GameStateExtractor.GameState;
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+
 import ab.demo.other.ActionRobot;
+import ab.vision.GameStateExtractor;
+import ab.vision.GameStateExtractor.GameState;
 
 public class TestVision extends JFrame implements KeyListener, MouseListener, ActionListener, Runnable {
         
@@ -73,7 +81,15 @@ public class TestVision extends JFrame implements KeyListener, MouseListener, Ac
     // override paint method
     public void paint(Graphics g)
     {
-        screenshot = ActionRobot.doScreenShot();
+       
+    	File file = new File("t\\img0002.png");
+    	try {
+			screenshot = ImageIO.read(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	//screenshot = ActionRobot.doScreenShot();
         
         if (screenshot != null)
         {
@@ -173,6 +189,7 @@ public class TestVision extends JFrame implements KeyListener, MouseListener, Ac
         rgbString = String.format("(%d, %d): {r %d, g %d, b %d}; {hue %d, sat %d, val %d},",
                             e.getX()+264, e.getY()+156, r, g, b, hue, sat, val);
         //System.out.println(rgbString);
+        System.out.println((r << 10) | (g << 5) | b);
     }
     
     
