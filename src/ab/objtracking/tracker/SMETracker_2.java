@@ -7,10 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ab.objtracking.tracker.TrackerTemplate.Pair;
-import ab.objtracking.tracker.TrackerTemplate.PairComparator;
 import ab.vision.ABObject;
 import ab.vision.ABType;
+import ab.vision.real.shape.Circle;
 import ab.vision.real.shape.Rect;
 
 
@@ -56,7 +55,7 @@ public class SMETracker_2 extends TrackerTemplate {
 		}
 		newComingObjs = objs;
 		//printPrefs(iniPrefs);
-		//printPrefs(prefs);
+		printPrefs(prefs);
 	}
 
 	@Override
@@ -73,6 +72,7 @@ public class SMETracker_2 extends TrackerTemplate {
 			while (!pairs.isEmpty()&& pointer < pairs.size() && newObj.type != ABType.Pig)
 			{	
 				pair = pairs.get(pointer);
+				//assuming circles in the initial frame will never turn to rect //TODO robust damage components detection
 				if(initialObjs.contains(pair.obj))
 				{	
 					/*for (ABObject _obj : initialObjs)
@@ -120,7 +120,8 @@ public class SMETracker_2 extends TrackerTemplate {
 				}
 			}
 		}
-		// Damage Recognition
+		// Damage Recognition, call back schema: if an object has been detected as damaged, and only one part of the object has been found, the algo will go back to check for 
+		//the other part, even though that part has been matched
 		for (ABObject debris: debrisList)
 		{
 			ABObject initialObj = matchedObjs.get(debris);
@@ -128,9 +129,9 @@ public class SMETracker_2 extends TrackerTemplate {
 			{
 				Rect _initialObj = (Rect)initialObj;
 				Rect _debris = (Rect)debris;
-				for (ABObject unmatchedDebris : newObjs)
+				for (ABObject newObj : newObjs)
 				{
-					if(unmatchedDebris.id == ABObject.unassigned && unmatchedDebris.type != ABType.Pig)
+					if(/*unmatchedDebris.id == ABObject.unassigned &&*/ newObj.type != ABType.Pig)
 					{
 						//System.out.println(" debris " + _debris);
 						//System.out.println(" unmatched " + unmatchedDebris);
@@ -138,11 +139,11 @@ public class SMETracker_2 extends TrackerTemplate {
 						Rect dummy = _debris.extend(_initialObj.rectType);
 						//System.out.println(" dummy " + dummy);
 						Polygon p = dummy.p;
-						if(p.contains(unmatchedDebris.getCenter()))
+						if(p.contains(newObj.getCenter()) && newObj instanceof Rect)//damage detection only supports rect currently
 						{
-							unmatchedDebris.id = _debris.id;
+							newObj.id = _debris.id;
 							currentOccludedObjs.remove(initialObj);
-							matchedObjs.put(unmatchedDebris, initialObj);
+							matchedObjs.put(newObj, initialObj);
 						}
 					}
 				}

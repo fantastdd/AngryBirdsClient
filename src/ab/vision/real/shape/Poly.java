@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import ab.vision.ABObject;
+import ab.vision.ABShape;
 import ab.vision.real.ImageSegmenter;
 import ab.vision.real.LineSegment;
 /**
@@ -20,12 +23,14 @@ public class Poly extends Body
 	 */
 	private static final long serialVersionUID = -3628493742939819604L;
 	public Polygon polygon = null;
+	
     
     public Poly(ArrayList<LineSegment> lines, int left, int top, int t, double xs, double ys)
     {
         polygon = new Polygon();
         vision_type = t;
         assignType(vision_type);
+        shape = ABShape.Poly;
         if (lines != null)
         {
             for (LineSegment l : lines)
@@ -36,6 +41,21 @@ public class Poly extends Body
         }
         centerX = xs;
         centerY = ys;
+        angle = 0;
+        
+        sectors = new Line2D[8];
+        Rectangle rec = polygon.getBounds();
+        
+        sectors[0] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x + rec.width, rec.y );
+        sectors[1] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x , rec.y );
+        sectors[2] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y );
+        sectors[3] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y + rec.height);
+        sectors[4] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x, rec.y + rec.height);
+        sectors[5] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
+        sectors[6] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
+        sectors[7] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y);
+        
+        
     }
     @Override
     public boolean isSameShape(ABObject ao)
@@ -51,10 +71,15 @@ public class Poly extends Body
     	    						_polygon.getBounds().height) < sameShapeGap
     	    	)
     			return true;
-    						
+    	
     			
     	}
     	return false;
+    }
+    @Override
+    public Rectangle getBounds()
+    {
+    	return polygon.getBounds();
     }
     public void draw(Graphics2D g, boolean fill, Color boxColor)
     {

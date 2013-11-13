@@ -7,9 +7,10 @@ package ab.vision.real.shape;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 
 import ab.vision.ABObject;
-import ab.vision.ABType;
 import ab.vision.real.ImageSegmenter;
 
 public class Rect extends Body
@@ -20,13 +21,12 @@ public class Rect extends Body
     public Polygon p;
     public RectType rectType;
     public int area;
-    // orientation
-    public double angle;
+
     
     public Rect(double xs, double ys,  double w, double h, double theta, int t)
     {
         vision_type = t;
-       
+        
         if (h >= w)
         {
             angle = theta;
@@ -46,10 +46,15 @@ public class Rect extends Body
         area = (int)(width * height);
         
         assignType(vision_type);
-        createPolygon();
+        createPolygonAndSectors();
         calRecType();
     } 
-    
+   /* public static void main(String args[])
+    {
+    	Line2D l = new Line2D.Float(10,10,10,10);
+    	Point p = new Point(10,13);
+    	System.out.println(l.ptSegDist(p));
+    }*/
     private void calRecType()
     {
     	double ratio= height/width;
@@ -58,8 +63,10 @@ public class Rect extends Body
     	
     }
     
-    private void createPolygon()
+    private void createPolygonAndSectors()
     {
+    	 sectors = new Line2D[8];
+    	 
     	 double angle1 = angle;
          double angle2 = perpendicular(angle1);
          
@@ -79,17 +86,50 @@ public class Rect extends Body
          p = new Polygon();
          p.addPoint(round(_xs), round(_ys));
          
+        
+         
          _xs -= Math.cos(angle1) * height;
          _ys -= Math.sin(angle1) * height;
          p.addPoint(round(_xs), round(_ys));
+         
+       
          
          _xs -= Math.cos(angle2) * width;
          _ys -= Math.sin(angle2) * width;
          p.addPoint(round(_xs), round(_ys));
          
+         
+         
          _xs += Math.cos(angle1) * height;
          _ys += Math.sin(angle1) * height;
          p.addPoint(round(_xs), round(_ys));
+   
+         if(angle > Math.PI/2)
+         {
+        	 sectors[4] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[0], p.ypoints[0]);
+        	 sectors[5] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[1], p.ypoints[1]);
+             sectors[6] = new Line2D.Float(p.xpoints[1], p.ypoints[1], p.xpoints[1], p.ypoints[1]);
+             sectors[7] = new Line2D.Float(p.xpoints[1], p.ypoints[1], p.xpoints[2], p.ypoints[2]);
+             sectors[0] = new Line2D.Float(p.xpoints[2], p.ypoints[2], p.xpoints[2], p.ypoints[2]);
+             sectors[1] = new Line2D.Float(p.xpoints[2], p.ypoints[2], p.xpoints[3], p.ypoints[3]);
+             sectors[2] = new Line2D.Float(p.xpoints[3], p.ypoints[3], p.xpoints[3], p.ypoints[3]);
+             sectors[3] = new Line2D.Float(p.xpoints[3], p.ypoints[3], p.xpoints[0], p.ypoints[0]);
+         } else
+         {
+        	 sectors[4] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[0], p.ypoints[0]);
+        	 sectors[3] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[1], p.ypoints[1]);
+             sectors[2] = new Line2D.Float(p.xpoints[1], p.ypoints[1], p.xpoints[1], p.ypoints[1]);
+             sectors[1] = new Line2D.Float(p.xpoints[1], p.ypoints[1], p.xpoints[2], p.ypoints[2]);
+             sectors[0] = new Line2D.Float(p.xpoints[2], p.ypoints[2], p.xpoints[2], p.ypoints[2]);
+             sectors[7] = new Line2D.Float(p.xpoints[2], p.ypoints[2], p.xpoints[3], p.ypoints[3]);
+             sectors[6] = new Line2D.Float(p.xpoints[3], p.ypoints[3], p.xpoints[3], p.ypoints[3]);
+             sectors[5] = new Line2D.Float(p.xpoints[3], p.ypoints[3], p.xpoints[0], p.ypoints[0]);
+         }
+    }
+    @Override
+    public Rectangle getBounds()
+    {
+    	return p.getBounds();
     }
     @Override
     public boolean isSameShape(ABObject ao)
@@ -135,7 +175,7 @@ public class Rect extends Body
         vision_type = t;
         assignType(vision_type);
         area = (int)(width * height);
-        createPolygon();
+        createPolygonAndSectors();
         calRecType();
     }
     public Rect(double centerX, double centerY, double width, double height, double angle, int vision_type, int area)
@@ -147,15 +187,16 @@ public class Rect extends Body
     	  this.angle = angle;
     	  this.vision_type = vision_type;
     	  this.area = area;
-    	  createPolygon();
+    	  createPolygonAndSectors();
           calRecType();    	
     }
     
     public Rect extend(RectType rectType)
     {
     	assert(rectType.id > this.rectType.id);
+   
     	double extensionDegree = (double)rectType.id / this.rectType.id - 1;
-    	double height = this.height * extensionDegree * 2 + this.height;
+    	double height = this.height * extensionDegree * 2.2 + this.height;
     	//System.out.println(" height: " + height + " extensionDegree: " + extensionDegree + " rectType" + rectType + " id ");
     	int area = (int)(this.width * height);
     	return new Rect(this.centerX, this.centerY, this.width, height, this.angle, this.vision_type, area);
@@ -163,7 +204,12 @@ public class Rect extends Body
     }
     
     
-    
+    public static void main(String args[])
+    {
+    	Line2D line = new Line2D.Float(10,10,10,10);
+    	Line2D _line = new Line2D.Float(10,11,10,12);
+    	System.out.println(_line.ptSegDist(line.getP1()));
+    }
     
     /* draw the rectangle onto canvas */
     public void draw(Graphics2D g, boolean fill, Color boxColor)

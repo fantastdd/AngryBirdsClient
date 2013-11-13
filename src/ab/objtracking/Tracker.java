@@ -17,7 +17,7 @@ public interface Tracker {
 	public boolean matchObjs(List<ABObject> objs);
 	public List<ABObject> getMatchedObjects();
 	public List<ABObject> getInitialObjects();
-	public void startTracking();
+	public void startTracking(List<ABObject> initialObjs);
 	public boolean isTrackingStart();
 
 }

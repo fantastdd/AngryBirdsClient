@@ -23,9 +23,10 @@ public class BasicTracker implements Tracker {
 		return startTracking;
 	}
 	@Override
-	public void startTracking()
+	public void startTracking(List<ABObject> initialObjs)
 	{
 		startTracking = true;
+		this.initialObjs = initialObjs;
 	}
 	private double calDiff(ABObject o1, ABObject o2)
 	{

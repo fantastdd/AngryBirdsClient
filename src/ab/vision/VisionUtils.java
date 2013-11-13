@@ -555,10 +555,10 @@ public class VisionUtils {
 		allInterestObjs.addAll(blocks);
 		if(DisplayTracking.askForIniScenario)
 		{
-			tracker.setInitialObjects(allInterestObjs);
+		
 			System.out.println(" Initial objects size: " + allInterestObjs.size());
 			DisplayTracking.flipAskForInitialScenario();
-			tracker.startTracking();
+			tracker.startTracking(allInterestObjs);
 		}
 		else
 		{

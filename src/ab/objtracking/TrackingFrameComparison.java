@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
-import ab.objtracking.tracker.SMETracker_2;
+import ab.objtracking.tracker.*;
 import ab.utils.ImageTrackFrame;
 import ab.vision.VisionUtils;
 import ab.vision.real.MyVisionUtils;
@@ -35,7 +35,7 @@ public class TrackingFrameComparison implements Runnable {
 	 * @param args
 	 */
 	static public void main(String[] args) {
-		TrackingFrameComparison tfc = new TrackingFrameComparison("t14");
+		TrackingFrameComparison tfc = new TrackingFrameComparison("t15", 0, 1);
 		TrackingFrameComparison.continuous = true;
 		tfc.run();
 	}
@@ -48,7 +48,7 @@ public class TrackingFrameComparison implements Runnable {
 		
 		
 			BufferedImage prevScreenshot, nextScreenshot = null;
-			Tracker tracker = new SMETracker_2();
+			Tracker tracker = new SMDownwardsTracker_2();
 			
 			// get list of images to process
 			File[] images = null;

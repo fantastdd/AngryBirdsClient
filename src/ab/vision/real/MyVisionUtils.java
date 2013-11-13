@@ -19,8 +19,8 @@ public class MyVisionUtils {
 		allInterestObjs.addAll(vision.findObjects());
 		if(RealTimeTracking.askForIniScenario)
 		{
-			tracker.startTracking();
-			tracker.setInitialObjects(allInterestObjs);
+			tracker.startTracking(allInterestObjs);
+		
 			System.out.println(" Initial objects size: " + allInterestObjs.size());
 			RealTimeTracking.flipAskForInitialScenario();
 			

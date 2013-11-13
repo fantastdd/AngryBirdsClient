@@ -1,6 +1,7 @@
 package ab.vision;
 
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.util.HashMap;
 
 import ab.vision.real.ImageSegmenter;
@@ -13,6 +14,12 @@ public class ABObject extends Rectangle {
  protected final int sameShapeGap = 4;
  public final static int unassigned = -1;
  public int id;
+ public ABShape shape = ABShape.Rect;
+ 
+ //====== attributes added to comply with new vision
+ public double angle;
+ public Line2D[] sectors;
+ 
 public ABObject(Rectangle mbr, ABType type) {
 	super(mbr);
 	this.type = type;
@@ -67,10 +74,13 @@ public void assignType(int vision_type)
 	case ImageSegmenter.STONE: type = ABType.Stone;break;
 	case ImageSegmenter.WOOD: type = ABType.Wood; break;
 	case ImageSegmenter.ICE: type = ABType.Ice; break;
+	case ImageSegmenter.HILLS: type = ABType.Hill; break;
 	default: type = ABType.Unknown;
 	}
+}
 
-	 }
+
+
 public static void main(String args[])
 {
 	Rect o1 = new Rect(5, 1, 1, 1, 1, 1);

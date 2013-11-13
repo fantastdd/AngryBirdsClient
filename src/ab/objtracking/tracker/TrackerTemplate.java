@@ -61,10 +61,10 @@ public abstract class TrackerTemplate implements Tracker{
 	}
 
 	@Override
-	public void startTracking() {
+	public void startTracking(List<ABObject> initialObjs) {
 		startTracking = true;
 		//reset 
-		initialObjs = null;
+		this.initialObjs = initialObjs;
 		lastInitialObjs = null;
 		newComingObjs = null;
 	}
@@ -73,7 +73,7 @@ public abstract class TrackerTemplate implements Tracker{
 	
 		Point center1 = o1.getCenter();
 		Point center2 = o2.getCenter();
-	;
+	
 		double diff = (center1.getX() - center2.getX())
 				* (center1.getX() - center2.getX())
 				+ (center1.getY() - center2.getY())
@@ -127,7 +127,7 @@ public abstract class TrackerTemplate implements Tracker{
 					Pair pair = pairs.get(index);
 					ABObject moreObj = pair.obj;
 					next.put(freeObj, ++index);
-					if(pair.sameShape)
+					if(pair.sameShape && pair.diff < 1000)
 					{
 						if (current.get(moreObj) == null)
 							current.put(moreObj, freeObj);
