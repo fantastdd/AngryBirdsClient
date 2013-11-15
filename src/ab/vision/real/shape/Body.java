@@ -39,16 +39,6 @@ public abstract class Body extends ABObject
     	return new ABPoint(centerX, centerY);
     }
     @Override
-    public double getCenterX()
-    {
-    	return centerX;
-    }
-    @Override 
-    public double getCenterY()
-    {
-    	return centerY;
-    }
-    @Override
     public int hashCode() {
         int hash = 1;
         hash = hash * 17 + vision_type;

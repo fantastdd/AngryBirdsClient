@@ -1,0 +1,4 @@
+1. Rect.extend(), relaxation
+2. SameShapeGap
+3. diff < 1000
+4. GSRConstructor degreeTolerance

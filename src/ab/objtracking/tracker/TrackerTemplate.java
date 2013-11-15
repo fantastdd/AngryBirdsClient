@@ -69,7 +69,7 @@ public abstract class TrackerTemplate implements Tracker{
 		newComingObjs = null;
 	}
 
-	protected float calMassShift(ABObject o1, ABObject o2) {
+	protected float calDiff(ABObject o1, ABObject o2) {
 	
 		Point center1 = o1.getCenter();
 		Point center2 = o2.getCenter();
@@ -123,8 +123,7 @@ public abstract class TrackerTemplate implements Tracker{
 			List<Pair> pairs = lessPrefs.get(freeObj);
 			if (pairs == null || index == pairs.size())
 				unmatchedLessObjs.add(freeObj);
-			else 
-			{
+			else {
 					Pair pair = pairs.get(index);
 					ABObject moreObj = pair.obj;
 					next.put(freeObj, ++index);

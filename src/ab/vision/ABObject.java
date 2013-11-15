@@ -3,40 +3,19 @@ package ab.vision;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
-import ab.objtracking.MagicParams;
 import ab.vision.real.ImageSegmenter;
 import ab.vision.real.shape.Rect;
-import ab.vision.real.shape.RectType;
 
 public class ABObject extends Rectangle {
  
- private static final long serialVersionUID = 737741268251922637L;
  public ABType type;
  private static int counter = 0;
+ protected final int sameShapeGap = 4;
  public final static int unassigned = -1;
  public int id;
  public ABShape shape = ABShape.Rect;
- public RectType rectType = RectType.rec1x1;
- public boolean isFat = true;
- public boolean isLevel = true;
- public boolean isDebris = false;
- // ======= Precise Width/Height =======
- protected double preciseWidth = -1, preciseHeight = -1;
- public double getPreciseWidth()
- {
-	 if(preciseWidth != -1)
-		 return preciseWidth;
-	 return getBounds().width;
- }
- public double getPreciseHeight()
- {
-	 if(preciseHeight != -1)
-		 return preciseHeight;
-	 return getBounds().height;
- }
+ 
  //====== attributes added to comply with new vision
  public double angle;
  public Line2D[] sectors;
@@ -68,7 +47,7 @@ public ABType getType()
 }
 public boolean isSameShape(ABObject ao)
 {
-	if (Math.abs(width - ao.width) < MagicParams.VisionGap && Math.abs(height - ao.height) < MagicParams.VisionGap)
+	if (Math.abs(width - ao.width) < sameShapeGap && Math.abs(height - ao.height) < sameShapeGap)
 		return true;
 	return false;
 }
@@ -81,24 +60,6 @@ public ABPoint getCenter() {
    return new ABPoint(getCenterX(), getCenterY());
 }
 
-/**
- * @param rectType: the target rect Type
- * Extend this rectangle of a rect Type to the target. Return the original rectangle when the target rect type is smaller
- * By default, all the shape has rec1x1 recTye
- */
-public Rect extend(RectType rectType)
-{
-	double extensionDegree = (double)rectType.id  - 1;
-	Rectangle bounds = getBounds();
-	double height = bounds.height * extensionDegree * 2.2 + bounds.height;
-	//System.out.println(" height: " + height + " extensionDegree: " + extensionDegree + " rectType" + rectType + " id ");
-	int area = (int)(bounds.width * height);
-	return new Rect(bounds.getCenterX(), bounds.getCenterY(), bounds.width, height, this.angle, -1 , area);	
-}
-
-
-
-
 
 public static void resetCounter() {
 	
@@ -109,35 +70,30 @@ public void assignType(int vision_type)
 {
 	switch(vision_type)
 	{
-		case ImageSegmenter.PIG: type = ABType.Pig; break;
-		case ImageSegmenter.STONE: type = ABType.Stone;break;
-		case ImageSegmenter.WOOD: type = ABType.Wood; break;
-		case ImageSegmenter.ICE: type = ABType.Ice; break;
-		case ImageSegmenter.HILLS: type = ABType.Hill; break;
-		default: type = ABType.Unknown;
+	case ImageSegmenter.PIG: type = ABType.Pig; break;
+	case ImageSegmenter.STONE: type = ABType.Stone;break;
+	case ImageSegmenter.WOOD: type = ABType.Wood; break;
+	case ImageSegmenter.ICE: type = ABType.Ice; break;
+	case ImageSegmenter.HILLS: type = ABType.Hill; break;
+	default: type = ABType.Unknown;
 	}
 }
-protected void createSectors(Rectangle rec)
+
+
+
+public static void main(String args[])
 {
-	sectors = new Line2D[8]; 
-    sectors[6] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x + rec.width, rec.y );
-    sectors[7] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x , rec.y );
-    sectors[0] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y );
-    sectors[1] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y + rec.height);
-    sectors[2] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x, rec.y + rec.height);
-    sectors[3] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
-    sectors[4] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
-    sectors[5] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y);
-    
+	Rect o1 = new Rect(5, 1, 1, 1, 1, 1);
+	
+	Rect o2 = new Rect(5, 2, 1, 1, 1, 1);
+	HashMap<ABObject, Integer> map = new HashMap<ABObject, Integer>();
+	System.out.println(o1.equals(o2));
+	map.put(o1, 0);
+	map.put(o2, 2);
+	int index = map.get(o1);
+	map.put(o1, ++index);
+	System.out.println(map.get(o1));
 }
-
-
-
-public boolean isLevel()
-{
-	return isLevel;
-}
-
 @Override
 public boolean equals(Object body) {
 

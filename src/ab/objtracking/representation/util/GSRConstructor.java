@@ -6,13 +6,10 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.Graph;
 import org.jgrapht.graph.ClassBasedEdgeFactory;
-import org.jgrapht.graph.SimpleDirectedGraph;
+import org.jgrapht.graph.DirectedMultigraph;
 
 import ab.demo.other.ActionRobot;
-import ab.objtracking.MagicParams;
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
 import ab.utils.ImageSegFrame;
@@ -21,15 +18,14 @@ import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.VisionUtils;
 import ab.vision.real.MyVision;
-import ab.vision.real.shape.Rect;
 
 public class GSRConstructor {
 	
-	
+	final static float AngleTolerance = 0.25f; //15 degree
 	//Construct Constraint network (directed-graph)
-	public static DirectedGraph<ABObject, ConstraintEdge> constructFullNetwork(List<ABObject> objs)
+	public static DirectedMultigraph<ABObject, ConstraintEdge> constructNetwork(List<ABObject> objs)
 	{
-		DirectedGraph<ABObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		DirectedMultigraph<ABObject, ConstraintEdge> graph = new DirectedMultigraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
 		//Create Node
 		for (ABObject obj : objs)
 		{
@@ -50,43 +46,13 @@ public class GSRConstructor {
 		}
 		return graph;
 	}
-	public static DirectedGraph<ABObject, ConstraintEdge> constructGRNetwork(List<ABObject> objs)
-	{
-		
-		DirectedGraph<ABObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
-		//Create Node
-		for (ABObject obj : objs)
-		{
-			graph.addVertex(obj);
-		}
-		
-		for ( int i = 0; i < objs.size() - 1; i++ )
-		{
-			ABObject sourceVertex = objs.get(i);
-			for (int j = i + 1; j < objs.size(); j++ )
-			{
-				ABObject targetVertex = objs.get(j);
-				Relation r = computeRelation(sourceVertex, targetVertex);
-				if(r.toString().contains("S"))
-				{
-					//Relation ri = Relation.inverseRelation(r);
-					//System.out.println(sourceVertex + "  " + targetVertex);
-					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
-					//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
-				}
-			}
-		}
-		return graph;
-		
-		
-	}
 	private static Relation computeRelation(ABObject source, ABObject target)
 	{
 	
 		   return computeRectToRectRelation(source, target);
 	}
 	
-	public static Relation computeRectToRectRelation(ABObject source, ABObject target)
+	private static Relation computeRectToRectRelation(ABObject source, ABObject target)
 	{
 		Rectangle mbr_1 = source.getBounds();
 		Rectangle mbr_2 = target.getBounds();
@@ -103,14 +69,15 @@ public class GSRConstructor {
 	{
 		if (source.type == ABType.Hill)
 		{
-			return Relation.BOTTOM;
+			return Relation.Under;
 		} 
 		else
 			if(target.type == ABType.Hill)
-				return Relation.TOP;
+				return Relation.Above;
 		Line2D[] sourceSectors = source.sectors;
 		Line2D[] targetSectors = target.sectors;
 		double distance;
+		double minDistance = Integer.MAX_VALUE;
 		int sIndex = -1;
 		int tIndex = -1;
 		/*if(sourceSectors == null)
@@ -134,16 +101,22 @@ public class GSRConstructor {
 						EdgeSumDist[(i - 1)/2] += distance;
 					}
 				
+				if (distance <= minDistance)
+				{
+					minDistance = distance;
+					sIndex = i;
+					tIndex = j;
+				}
 			}
 		}
 		// check edge-edge relation, relaxation here
 		double angleDiff;
 		double _sourceAngle, _targetAngle;
-		_sourceAngle =  (source.angle >= Math.PI/2)? source.angle - Math.PI/2: source.angle;
-		_targetAngle =  (target.angle >= Math.PI/2)? target.angle - Math.PI/2: target.angle;
+		_sourceAngle =  (source.angle > Math.PI/2)? Math.PI - source.angle: source.angle;
+		_targetAngle =  (target.angle > Math.PI/2)? Math.PI - target.angle: target.angle;
 		
 		angleDiff = Math.abs(_sourceAngle - _targetAngle);
-		if (angleDiff < MagicParams.AngleTolerance || angleDiff > Math.PI/2 - MagicParams.AngleTolerance)
+		if (angleDiff < AngleTolerance)
 		{
 			//edge touch
 			double sMin = Integer.MAX_VALUE;
@@ -245,30 +218,30 @@ public class GSRConstructor {
 		if (horizontal_intersect)
 		{
 			if(above)
-				return Relation.TOP;
+				return Relation.Above;
 			else
-				return Relation.BOTTOM;
+				return Relation.Under;
 		}
 		else
 			if(vertical_intersect)
 			{
 				if(left)
-					return Relation.LEFT;
+					return Relation.Left;
 				else
-					return Relation.RIGHT;
+					return Relation.Right;
 			}
 			else 
 			{
-				if(above && left)
-					return Relation.TOP_LEFT;
+				if(above&&left)
+					return Relation.Above_Left;
 				else
 					if(above)
-						return Relation.TOP_RIGHT;
+						return Relation.Above_Right;
 					else
 						if(left)
-							return Relation.BOTTOM_LEFT;
+							return Relation.Under_Left;
 						else
-							return Relation.BOTTOM_RIGHT;
+							return Relation.Under_Right;
 			}
 		
 				
@@ -284,24 +257,13 @@ public class GSRConstructor {
 	}*/
 	private static boolean isIntervalIntersect(int s1, int e1, int s2, int e2)
 	{
-		if( (s1 > e2 + MagicParams.VisionGap || s2 > e1 + MagicParams.VisionGap))
+		if( (s1 > e2 || s2 > e1))
 			return false;
 		return true;
 	}
-	public static void printNetwork(Graph<ABObject, ConstraintEdge> network){
+	
+	public static void main(String[] args) {
 		
-		for (ABObject vertex: network.vertexSet())
-		{
-			System.out.println(" vertex: " + vertex);
-			for (ConstraintEdge edge: network.edgesOf(vertex))
-			{
-				System.out.println(edge);
-			}
-			System.out.println("------------------------------");
-		}
-	}
-	public static void performanceTesting()
-	{
 		new ActionRobot();
 		BufferedImage screenshot = ActionRobot.doScreenShot();
 		screenshot = VisionUtils.resizeImage(screenshot, 800, 1200);
@@ -316,8 +278,7 @@ public class GSRConstructor {
 		screenshot = VisionUtils.resizeImage(screenshot, 800, 1200);
 		frame.refresh(screenshot);
 		long time = System.nanoTime();
-		DirectedGraph<ABObject, ConstraintEdge> network = GSRConstructor.constructGRNetwork(allInterestObjs);
-		System.out.println(" Time: " + (System.nanoTime() - time) + " nanos ");
+		DirectedMultigraph<ABObject, ConstraintEdge> network = GSRConstructor.constructNetwork(allInterestObjs);
 		for (ABObject vertex: network.vertexSet())
 		{
 			System.out.println(" vertex: " + vertex);
@@ -328,17 +289,8 @@ public class GSRConstructor {
 			System.out.println("------------------------------");
 		}
 		
-	}
-	public static void main(String[] args) {
-	
-		Rect rec1 = new Rect(569.5, 340.5, 6.689,12.957, 2.953, -1, 72);
-		Rect rec2 = new Rect(591.0,349.5,5.927,53.140,2.953,-1,265);
-		System.out.println(rec1.isLevel);
-		for (Line2D line : rec1.sectors)
-		{
-			System.out.println(line.getP1() + "  " + line.getP2());
-		}
-		System.out.println(GSRConstructor.computeRectToRectRelation(rec1, rec2));
+		System.out.println(" Time: " + (System.nanoTime() - time));
+
 	}
 
 }

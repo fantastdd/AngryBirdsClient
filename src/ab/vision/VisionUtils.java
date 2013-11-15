@@ -31,9 +31,10 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
-import Jama.Matrix;
-import ab.objtracking.RealTimeTracking;
+import ab.objtracking.DisplayTracking;
 import ab.objtracking.Tracker;
+
+import Jama.Matrix;
 
 /* VisionUtils ------------------------------------------------------------ */
 
@@ -552,11 +553,11 @@ public class VisionUtils {
 		ABList allInterestObjs = ABList.newList();
 		allInterestObjs.addAll(pigs);
 		allInterestObjs.addAll(blocks);
-		if(RealTimeTracking.askForIniScenario)
+		if(DisplayTracking.askForIniScenario)
 		{
 		
 			System.out.println(" Initial objects size: " + allInterestObjs.size());
-			RealTimeTracking.flipAskForInitialScenario();
+			DisplayTracking.flipAskForInitialScenario();
 			tracker.startTracking(allInterestObjs);
 		}
 		else

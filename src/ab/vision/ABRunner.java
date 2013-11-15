@@ -3,14 +3,15 @@ package ab.vision;
 import javax.swing.JOptionPane;
 
 import ab.planner.Strategy;
+import ab.vision.ABUtil;
 import example.ExampleAgent;
 import example.StarterControlPanel;
 
 public class ABRunner {
-	public static void runAgent(Class<? extends Strategy> strategy) {
+	public static void runAgent(Class strategy) {
 		(new ExampleAgent(getStrategy(strategy.getName()))).run();
 	}
-	public static void runControlPanel(Class<? extends Strategy> strategy) {
+	public static void runControlPanel(Class strategy) {
 		new StarterControlPanel(getStrategy(strategy.getName()));
 	}
 
