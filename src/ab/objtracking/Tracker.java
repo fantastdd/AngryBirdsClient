@@ -3,6 +3,7 @@ package ab.objtracking;
 import java.awt.Shape;
 import java.util.List;
 
+import ab.vision.ABList;
 import ab.vision.ABObject;
 
 public interface Tracker {

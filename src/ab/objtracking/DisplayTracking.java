@@ -5,12 +5,11 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import ab.demo.other.ActionRobot;
-import ab.objtracking.tracker.*;
+import ab.objtracking.tracker.BasicTracker;
 import ab.utils.ImageSegFrame;
 import ab.vision.VisionUtils;
-import ab.vision.real.MyVisionUtils;
 
-public class RealTimeTracking implements Runnable{
+public class DisplayTracking implements Runnable{
 	
 	public static boolean askForIniScenario = false;
 	public static void flipAskForInitialScenario()
@@ -22,7 +21,7 @@ public class RealTimeTracking implements Runnable{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		RealTimeTracking dt = new RealTimeTracking();
+		DisplayTracking dt = new DisplayTracking();
 		dt.run();
 	}
 
@@ -31,12 +30,7 @@ public class RealTimeTracking implements Runnable{
 		//the display frame;
 		 ImageSegFrame frame = null;
 		//initialize the tracker
-		 Tracker tracker = new SMETracker_2();
-		// initialize the new vision moudle
-		 //MyVision myVision = new MyVision();
-		 
-		 
-		 
+		 Tracker tracker = new BasicTracker();
 		//long screenshot_time = 0l;
 		//long vision_process_time = 0l;
 		while (true) {	
@@ -45,17 +39,17 @@ public class RealTimeTracking implements Runnable{
 			BufferedImage screenshot = ActionRobot.doScreenShot();
 			// analyse and show image
 			//screenshot_time = System.nanoTime() - current_time;
-			
-			screenshot = MyVisionUtils.constructImageSegWithTracking(screenshot, tracker);
+			int[][] meta = VisionUtils.computeMetaInformation(screenshot);
+			screenshot = VisionUtils.constructImageSegWithTracking(screenshot, tracker);
 			screenshot = VisionUtils.resizeImage(screenshot, 800, 1200);
 			//vision_process_time = System.nanoTime() - screenshot_time - current_time;
 			if (frame == null) {
 				frame = new ImageSegFrame("Object Tracking", screenshot,
-						null);
+						meta);
 				
 				 frame.getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			} else {
-				frame.refresh(screenshot, null);
+				frame.refresh(screenshot, meta);
 			}
 			//System.out.println(" screenshot time : " + screenshot_time + " vision process time " + vision_process_time);
 		}

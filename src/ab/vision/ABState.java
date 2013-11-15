@@ -3,6 +3,7 @@ package ab.vision;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 import ab.demo.other.ActionRobot;
