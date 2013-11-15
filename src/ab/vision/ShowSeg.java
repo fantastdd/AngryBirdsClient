@@ -29,7 +29,6 @@ import ab.demo.other.ActionRobot;
 import ab.server.Proxy;
 import ab.server.proxy.message.ProxyScreenshotMessage;
 import ab.utils.ImageSegFrame;
-import ab.utils.StateUtil;
 
 /* TestVision ------------------------------------------------------------- */
 

@@ -8,7 +8,7 @@ public class ConstraintEdge extends DefaultEdge {
 
 	 private ABObject source;
      private ABObject target;
-     private Relation label;
+     public Relation label;
 
      public ConstraintEdge(ABObject source, ABObject target, Relation label) {
          

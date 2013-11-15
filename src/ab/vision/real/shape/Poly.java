@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
+import ab.objtracking.MagicParams;
 import ab.vision.ABObject;
 import ab.vision.ABShape;
 import ab.vision.real.ImageSegmenter;
@@ -42,19 +43,7 @@ public class Poly extends Body
         centerX = xs;
         centerY = ys;
         angle = 0;
-        
-        sectors = new Line2D[8];
-        Rectangle rec = polygon.getBounds();
-        
-        sectors[0] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x + rec.width, rec.y );
-        sectors[1] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x , rec.y );
-        sectors[2] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y );
-        sectors[3] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y + rec.height);
-        sectors[4] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x, rec.y + rec.height);
-        sectors[5] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
-        sectors[6] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
-        sectors[7] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y);
-        
+        createSectors(getBounds());
         
     }
     @Override
@@ -65,10 +54,10 @@ public class Poly extends Body
     		Polygon _polygon = ((Poly)ao).polygon;
     		if(
     				Math.abs( polygon.getBounds().width -
-    						_polygon.getBounds().width) < sameShapeGap
+    						_polygon.getBounds().width) < MagicParams.VisionGap 
     						&& 
     						Math.abs( polygon.getBounds().height -
-    	    						_polygon.getBounds().height) < sameShapeGap
+    	    						_polygon.getBounds().height) < MagicParams.VisionGap
     	    	)
     			return true;
     	

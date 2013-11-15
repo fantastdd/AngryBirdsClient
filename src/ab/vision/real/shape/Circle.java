@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 
+import ab.objtracking.MagicParams;
 import ab.vision.ABObject;
 import ab.vision.ABShape;
 import ab.vision.real.ImageSegmenter;
@@ -33,28 +34,18 @@ public class Circle extends Body
         //int diameter = (int)(2 * r);
         //bounds = new Rectangle((int)(xs - r), (int)(ys - r), diameter, diameter);
         bounds = new Rectangle((int)(xs - r * Math.sin(Math.PI/4)), (int)(ys - r * Math.sin(Math.PI/4)), 
-        		(int)(2 * r * Math.sin(Math.PI/4)), (int)(r * Math.sin(Math.PI/4))); 
+        		(int)(2 * r * Math.sin(Math.PI/4)), (int)(2 * r * Math.sin(Math.PI/4))); 
         assignType(vision_type);
         
         angle = 0;
-        sectors = new Line2D[8];
-        Rectangle rec = bounds;
-        
-        sectors[0] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x + rec.width, rec.y );
-        sectors[1] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x , rec.y );
-        sectors[2] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y );
-        sectors[3] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y + rec.height);
-        sectors[4] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x, rec.y + rec.height);
-        sectors[5] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
-        sectors[6] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
-        sectors[7] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y);
+        createSectors(bounds);
     }
     @Override
     public boolean isSameShape(ABObject ao)
     {
     	if (ao instanceof Circle)
     	{
-    		if (Math.abs(r - ((Circle)ao).r) < sameShapeGap)
+    		if (Math.abs(r - ((Circle)ao).r) < MagicParams.VisionGap)
     				return true;
     	}
     	return false;
@@ -64,6 +55,18 @@ public class Circle extends Body
     {
     	return bounds;
     }
+    @Override
+    public Rect extend(RectType rectType)
+    {
+    	double extensionDegree = (double)rectType.id  - 1;
+    	Rectangle bounds = getBounds();
+    	double height = bounds.height * extensionDegree * 2.2 + bounds.height;
+    	//System.out.println(" height: " + height + " extensionDegree: " + extensionDegree + " rectType" + rectType + " id ");
+    	int area = (int)(bounds.width * height);
+    	return new Rect(bounds.getCenterX(), bounds.getCenterY(), 2 * height, 2 * height, this.angle, -1 , area);	
+    }
+
+
     public Circle(int box[], int t)
     {
         centerX = (box[0] + box[2]) / 2.0;
@@ -72,19 +75,9 @@ public class Circle extends Body
         //int diameter = (int)(2 * r);
         //bounds = new Rectangle((int)box[0], (int)box[1], diameter , diameter );
         bounds = new Rectangle((int)(centerX - r * Math.sin(Math.PI/4)), (int)(centerY - r * Math.sin(Math.PI/4)), 
-        		(int)(2 * r * Math.sin(Math.PI/4)), (int)(r * Math.sin(Math.PI/4))); 
+        		(int)(2 * r * Math.sin(Math.PI/4)), (int)(2 * r * Math.sin(Math.PI/4))); 
         angle = 0;
-        sectors = new Line2D[8];
-        Rectangle rec = bounds;
-        
-        sectors[0] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x + rec.width, rec.y );
-        sectors[1] = new Line2D.Float(rec.x + rec.width, rec.y, rec.x , rec.y );
-        sectors[2] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y );
-        sectors[3] = new Line2D.Float(rec.x, rec.y, rec.x , rec.y + rec.height);
-        sectors[4] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x, rec.y + rec.height);
-        sectors[5] = new Line2D.Float(rec.x, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
-        sectors[6] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y + rec.height);
-        sectors[7] = new Line2D.Float(rec.x + rec.width, rec.y + rec.height, rec.x + rec.width, rec.y);
+        createSectors(bounds);
         vision_type = t;
         assignType(vision_type);
     }
