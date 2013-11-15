@@ -21,34 +21,24 @@ public class TrackingFrameComparison implements Runnable {
 	public static boolean continuous = false;
 	public int index_0 = -1;
 	public int index_1 = -1;
-	public Tracker tracker;
-	
-	
-	
-	
-	public static void main(String[] args) {
-		
-		Tracker tracker = new KnowledgeTracker();
-		TrackingFrameComparison tfc = new TrackingFrameComparison("t14", tracker);//t11
-		
-		TrackingFrameComparison.continuous = true;
-		tfc.run();
-	}
-	
-	
-	public TrackingFrameComparison(String filename, Tracker tracker)
+	public TrackingFrameComparison(String filename)
 	{
 		this.filename = filename;
-		this.tracker = tracker;
 	}
-	public TrackingFrameComparison(String filename, Tracker tracker, int index_0, int index_1)
+	public TrackingFrameComparison(String filename, int index_0, int index_1)
 	{
 		this.filename = filename;
-		this.tracker = tracker;
 		this.index_0 = index_0;
 		this.index_1 = index_1;
 	}
-	
+	/**
+	 * @param args
+	 */
+	static public void main(String[] args) {
+		TrackingFrameComparison tfc = new TrackingFrameComparison("t15", 0, 1);
+		TrackingFrameComparison.continuous = true;
+		tfc.run();
+	}
 /*	public BufferedImage loadImage(int Pointer)
 	{
 		return ImageIO.read(new File(filename + "image"))
@@ -58,7 +48,7 @@ public class TrackingFrameComparison implements Runnable {
 		
 		
 			BufferedImage prevScreenshot, nextScreenshot = null;
-			
+			Tracker tracker = new SMDownwardsTracker_2();
 			
 			// get list of images to process
 			File[] images = null;
