@@ -31,7 +31,7 @@ public class RealTimeTracking implements Runnable{
 		//the display frame;
 		 ImageSegFrame frame = null;
 		//initialize the tracker
-		 Tracker tracker = new SMETracker_2();
+		 Tracker tracker = new SMETracker();
 		// initialize the new vision moudle
 		 //MyVision myVision = new MyVision();
 		 
