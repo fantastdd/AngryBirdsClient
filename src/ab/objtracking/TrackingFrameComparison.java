@@ -28,8 +28,13 @@ public class TrackingFrameComparison implements Runnable {
 	
 	public static void main(String[] args) {
 		
+<<<<<<< HEAD
 		Tracker tracker = new KnowledgeTracker();
 		TrackingFrameComparison tfc = new TrackingFrameComparison("t14", tracker);//t11
+=======
+		Tracker tracker = new KnowledgeTracker_2();
+		TrackingFrameComparison tfc = new TrackingFrameComparison("t11", tracker);//t11,t14
+>>>>>>> parent of 3eeab8a... Revert "update"
 		
 		TrackingFrameComparison.continuous = true;
 		tfc.run();

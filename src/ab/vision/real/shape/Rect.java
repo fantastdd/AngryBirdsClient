@@ -10,16 +10,14 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 
+import ab.objtracking.MagicParams;
 import ab.vision.ABObject;
 import ab.vision.real.ImageSegmenter;
 
 public class Rect extends Body
 {
     // width and height of the rectangle
-    public double width = 0;
-    public double height = 0;
     public Polygon p;
-    public RectType rectType;
     public int area;
 
     
@@ -30,21 +28,24 @@ public class Rect extends Body
         if (h >= w)
         {
             angle = theta;
-            width = w;
-            height = h;
+            preciseWidth = w;
+            preciseHeight = h;
         }
         else
         {
             angle = theta + Math.PI / 2;
-            width = h;
-            height = w;
+            preciseWidth = h;
+            preciseHeight = w;
         }
         
         centerY = ys;
         centerX = xs;
         
-        area = (int)(width * height);
+        width = (int)preciseWidth;
+        height = (int)preciseHeight;
         
+        area = width * height;
+     
         assignType(vision_type);
         createPolygonAndSectors();
         calRecType();
@@ -57,10 +58,16 @@ public class Rect extends Body
     }*/
     private void calRecType()
     {
-    	double ratio= height/width;
+    	double ratio= preciseHeight/preciseWidth;
     	int round =  (int)Math.round(ratio);
     	rectType = RectType.getType(round);
+    	if (rectType != RectType.rec1x1)
+    		isFat = false;
+    	if( !(Math.abs(angle - Math.PI/2) < MagicParams.AngleTolerance/2) && !(Math.abs(angle - Math.PI) < MagicParams.AngleTolerance/2)
+    			&& !(angle < MagicParams.AngleTolerance))
+    		isLevel = false;
     	
+    		
     }
     
     private void createPolygonAndSectors()
@@ -72,38 +79,43 @@ public class Rect extends Body
          
          // starting point for drawing
          double _xs, _ys;
-         _ys = centerY + Math.sin(angle) * height / 2 + 
-              Math.sin(Math.abs(Math.PI/2 - angle)) * width / 2;
+         _ys = centerY + Math.sin(angle) * preciseHeight / 2 + 
+              Math.sin(Math.abs(Math.PI/2 - angle)) * preciseWidth / 2;
          if (angle < Math.PI / 2)
-             _xs = centerX + Math.cos(angle) * height / 2 -
-                 Math.sin(angle) * width / 2;
+             _xs = centerX + Math.cos(angle) * preciseHeight / 2 -
+                 Math.sin(angle) * preciseWidth / 2;
          else if (angle > Math.PI / 2)
-             _xs = centerX + Math.cos(angle) * height / 2 +
-                 Math.sin(angle) * width / 2;
+             _xs = centerX + Math.cos(angle) * preciseHeight / 2 +
+                 Math.sin(angle) * preciseWidth / 2;
          else
-             _xs = centerX - width / 2;
+             _xs = centerX - preciseWidth / 2;
              
          p = new Polygon();
          p.addPoint(round(_xs), round(_ys));
          
         
          
-         _xs -= Math.cos(angle1) * height;
-         _ys -= Math.sin(angle1) * height;
+         _xs -= Math.cos(angle1) * preciseHeight;
+         _ys -= Math.sin(angle1) * preciseHeight;
          p.addPoint(round(_xs), round(_ys));
          
        
          
-         _xs -= Math.cos(angle2) * width;
-         _ys -= Math.sin(angle2) * width;
+         _xs -= Math.cos(angle2) * preciseWidth;
+         _ys -= Math.sin(angle2) * preciseWidth;
          p.addPoint(round(_xs), round(_ys));
          
          
          
-         _xs += Math.cos(angle1) * height;
-         _ys += Math.sin(angle1) * height;
+         _xs += Math.cos(angle1) * preciseHeight;
+         _ys += Math.sin(angle1) * preciseHeight;
          p.addPoint(round(_xs), round(_ys));
    
+         if (isLevel || Math.abs(angle) < MagicParams.AngleTolerance/2)
+         {
+        	 createSectors(getBounds());
+         }
+         else
          if(angle > Math.PI/2)
          {
         	 sectors[4] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[0], p.ypoints[0]);
@@ -114,7 +126,8 @@ public class Rect extends Body
              sectors[1] = new Line2D.Float(p.xpoints[2], p.ypoints[2], p.xpoints[3], p.ypoints[3]);
              sectors[2] = new Line2D.Float(p.xpoints[3], p.ypoints[3], p.xpoints[3], p.ypoints[3]);
              sectors[3] = new Line2D.Float(p.xpoints[3], p.ypoints[3], p.xpoints[0], p.ypoints[0]);
-         } else
+         } 
+         else
          {
         	 sectors[4] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[0], p.ypoints[0]);
         	 sectors[3] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[1], p.ypoints[1]);
@@ -162,19 +175,23 @@ public class Rect extends Body
     {
         centerX = (box[0] + box[2]) / 2.0;
         centerY = (box[3] + box[1]) / 2.0;
-        width = box[2] - box[0];
-        height = box[3] - box[1];
+        preciseWidth = box[2] - box[0];
+        preciseHeight = box[3] - box[1];
         angle = Math.PI / 2;
         
-        if (height < width)
+        if (preciseHeight < preciseWidth)
         {
-            width = height;
-            height = box[2] - box[0];
+            preciseWidth = preciseHeight;
+            preciseHeight = box[2] - box[0];
             angle = 0;
         }
         vision_type = t;
         assignType(vision_type);
-        area = (int)(width * height);
+        
+        width = (int)preciseWidth;
+        height = (int)preciseHeight;
+        
+        area = width * height;
         createPolygonAndSectors();
         calRecType();
     }
@@ -182,25 +199,27 @@ public class Rect extends Body
     {
     	  this.centerX = centerX;
     	  this.centerY = centerY;
-    	  this.width = width;
-    	  this.height = height;
+    	  this.preciseWidth = width;
+    	  this.preciseHeight = height;
+    	  this.width = (int)width;
+    	  this.height = (int)height;
     	  this.angle = angle;
     	  this.vision_type = vision_type;
     	  this.area = area;
     	  createPolygonAndSectors();
           calRecType();    	
     }
-    
+    @Override
     public Rect extend(RectType rectType)
     {
-    	assert(rectType.id > this.rectType.id);
-   
+    	if(rectType.id <= this.rectType.id)
+    	 return this;
+    	 
     	double extensionDegree = (double)rectType.id / this.rectType.id - 1;
-    	double height = this.height * extensionDegree * 2.2 + this.height;
+    	double height = this.preciseHeight * extensionDegree * 2.2 + this.preciseHeight;
     	//System.out.println(" height: " + height + " extensionDegree: " + extensionDegree + " rectType" + rectType + " id ");
-    	int area = (int)(this.width * height);
-    	return new Rect(this.centerX, this.centerY, this.width, height, this.angle, this.vision_type, area);
-    	
+    	int area = (int)(this.preciseWidth * height);
+    	return new Rect(this.centerX, this.centerY, this.preciseWidth, height, this.angle, this.vision_type, area);	
     }
     
     
@@ -234,6 +253,6 @@ public class Rect extends Body
 	
 	public String toString()
 	{
-		return String.format("Rect: id:%d type:%s area:%d w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f", id, rectType, area, width, height, angle, centerX, centerY);
+		return String.format("Rect: id:%d type:%s area:%d w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f", id, rectType, area, preciseWidth, preciseHeight, angle, centerX, centerY);
 	}
 }

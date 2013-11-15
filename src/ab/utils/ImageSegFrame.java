@@ -272,6 +272,7 @@ public class ImageSegFrame {
   	   	frame = new JFrame(name);
   	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   	    //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  	    frame.setResizable(false);
   	    panel = new ImagePanel(frame);
   	   
   	    frame.getContentPane().add(panel);
@@ -326,6 +327,7 @@ public class ImageSegFrame {
   	        
   	    }
         frame.setVisible(true);
+    	frame.setResizable(false);
         if(img != null && meta != null)
         	panel.refresh(img, meta);
        

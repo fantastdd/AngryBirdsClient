@@ -21,7 +21,7 @@ public enum RectType {
 			case 7: return rec7x1;
 			case 8: return rec8x1;
 			default: return rec8x1;
-		}
+		} 
 		
 	}
 	

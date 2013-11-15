@@ -79,6 +79,7 @@ public class ImageTrackFrame {
 			setDoubleBuffered(true);
 			// set focusable then you can use key listener
 			setFocusable(true);
+			
 		}
 
 		public void refresh(Image img) {
@@ -334,6 +335,7 @@ public class ImageTrackFrame {
 		this.meta = meta;
 		frame = new JFrame(name);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
 		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel = new ImagePanel(frame);
 
@@ -397,6 +399,7 @@ public class ImageTrackFrame {
 
 		}
 		frame.setVisible(true);
+		frame.setResizable(false);
 		if (img != null && meta != null)
 			panel.refresh(img, meta);
 
