@@ -23,6 +23,16 @@ public class MovementPredictor {
 		//obj is stable : Level: S3-S5. Fat: S3-S7, >PI/2 S6-S7, < PI/2 S3-S4
 		int count = -1;
 		Set<ConstraintEdge> edges = network.edgesOf(obj);
+		if(edges.isEmpty())
+		{
+			movement.setAllowedYDirection(Movement.POSITIVE, Movement.MAX_SCOPE);
+			if(obj.angle > Math.PI/2 && movement.getAllowedXDirection(Movement.POSITIVE) == Movement.NOT_ALLOWED)
+				movement.setAllowedXDirection(Movement.POSITIVE, Movement.BOUNDING_SCOPE);
+				else
+					if(obj.angle < Math.PI/2 && movement.getAllowedXDirection(Movement.NEGATIVE) == Movement.NOT_ALLOWED){
+						movement.setAllowedXDirection(Movement.NEGATIVE, Movement.BOUNDING_SCOPE);
+			}
+		}
 		for (ConstraintEdge edge: edges)
 		{
 			count ++;
@@ -67,8 +77,15 @@ public class MovementPredictor {
 						break;
 				}
 			if(count == edges.size() - 1)
-				movement.allowedYDirection[Movement.POSITIVE + 1] =  Movement.MAX_SCOPE;
-			   
+			{	
+				movement.setAllowedYDirection(Movement.POSITIVE, Movement.MAX_SCOPE);
+				if(obj.angle > Math.PI/2 && movement.getAllowedXDirection(Movement.POSITIVE) == Movement.NOT_ALLOWED)
+					movement.setAllowedXDirection(Movement.POSITIVE, Movement.BOUNDING_SCOPE);
+					else
+						if(obj.angle < Math.PI/2 &&  movement.getAllowedXDirection(Movement.NEGATIVE) == Movement.NOT_ALLOWED){
+							movement.setAllowedXDirection(Movement.NEGATIVE, Movement.BOUNDING_SCOPE);
+				}
+			}
 		}
 				
 		return movement;
@@ -96,10 +113,10 @@ public class MovementPredictor {
 							r = Relation.inverseRelation(r);
 						}
 						//Leveler effect
-						String r_str = r.toString().substring(0, 2);
-						if (r_str.contains(Relation.S8.toString())||
-								r_str.contains(Relation.S7.toString())
-								|| r_str.contains(Relation.S6.toString())) 
+						Relation left = Relation.getLeftpart(r);
+						if (left == Relation.S8||
+								left == Relation.S7
+								|| left == Relation.S6) 
 						{
 							movement.setAllowedXDirection(Movement.MAX_SCOPE, Movement.BOUNDING_SCOPE, Movement.MAX_SCOPE);
 							break;
@@ -122,10 +139,8 @@ public class MovementPredictor {
 								r = Relation.inverseRelation(r);
 							}
 							//Leveler effect
-							String r_str = r.toString().substring(0, 2);
-							if (r_str.contains(Relation.S2.toString()) ||
-									r_str.contains(Relation.S3.toString())
-									|| r_str.contains(Relation.S4.toString())) 
+							Relation left = Relation.getLeftpart(r);
+							if ( left == Relation.S2 || left == Relation.S3 || left == Relation.S4) 
 							{
 								movement.setAllowedXDirection(Movement.BOUNDING_SCOPE, Movement.MAX_SCOPE, Movement.MAX_SCOPE);
 								break;

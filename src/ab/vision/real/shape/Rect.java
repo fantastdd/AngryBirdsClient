@@ -20,7 +20,7 @@ public class Rect extends Body
     public Polygon p;
     public int area;
 
-    
+    //Note Rect's width is not always the Rectangle's width 
     public Rect(double xs, double ys,  double w, double h, double theta, int t)
     {
         vision_type = t;
@@ -63,9 +63,7 @@ public class Rect extends Body
     	rectType = RectType.getType(round);
     	if (rectType != RectType.rec1x1)
     		isFat = false;
-    	if( !(Math.abs(angle - Math.PI/2) < MagicParams.AngleTolerance/2) && !(Math.abs(angle - Math.PI) < MagicParams.AngleTolerance/2)
-    			&& !(angle < MagicParams.AngleTolerance))
-    		isLevel = false;
+    	
     	
     		
     }
@@ -111,7 +109,11 @@ public class Rect extends Body
          _ys += Math.sin(angle1) * preciseHeight;
          p.addPoint(round(_xs), round(_ys));
    
-         if (isLevel || Math.abs(angle) < MagicParams.AngleTolerance/2)
+         if( !(Math.abs(angle - Math.PI/2) < MagicParams.AngleTolerance/2) && !(Math.abs(angle - Math.PI) < MagicParams.AngleTolerance/2)
+     			&& !(angle < MagicParams.AngleTolerance))
+     		isLevel = false;
+         
+         if (isLevel)
          {
         	 createSectors(getBounds());
          }
@@ -234,7 +236,6 @@ public class Rect extends Body
     public void draw(Graphics2D g, boolean fill, Color boxColor)
     {        
     
-        
         
         if (fill) {
             g.setColor(ImageSegmenter._colors[vision_type]);

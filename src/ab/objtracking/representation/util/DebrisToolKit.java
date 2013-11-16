@@ -63,6 +63,7 @@ public class DebrisToolKit {
 			/*	System.out.println(o1);
 				System.out.println(String.format("centerX: %.2f centerY: %.2f width: %.2f height: %.2f", centerX, centerY, width, height));*/
 				debris = new DebrisGroup(centerX, centerY, width, height, angle, -1,area);
+				debris.type = o1.type;
 				debris.addMember(o1);
 				debris.addMember(o2);
 				return debris;
@@ -79,6 +80,7 @@ public class DebrisToolKit {
 				double angle = o2.angle;
 				int area = (int)(width * height);
 				debris = new DebrisGroup(centerX, centerY, width, height, angle, -1,area);
+				debris.type = o2.type;
 				debris.addMember(o1);
 				debris.addMember(o2);
 				return debris;
@@ -137,7 +139,10 @@ public class DebrisToolKit {
 						diff = Math.abs(angle - newObj.angle);
 						
 					}
-					orientationDiff = Math.abs(debris.angle - newObj.angle);
+					if(debris.shape == ABShape.Circle || newObj.shape == ABShape.Circle)
+						orientationDiff = 0;
+					else
+						orientationDiff = Math.abs(debris.angle - newObj.angle);
 					/*if(debris.id == 2)
 					{
 						System.out.println(" debris " + debris + " newObj " + newObj + " angle " + angle + " diff " + diff );

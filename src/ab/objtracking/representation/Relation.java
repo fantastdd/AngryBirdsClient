@@ -42,10 +42,14 @@ public enum Relation {
 	
 	public static Relation getLeftpart(Relation relation)
 	{
+		if(relation.left == null)
+			return relation;
 		return relation.left;
 	}
 	public static Relation getRightpart(Relation relation)
 	{
+		if(relation.right == null)
+			return relation;
 		return relation.right;
 	}
 	public static Relation inverseRelation(Relation relation)
@@ -195,5 +199,9 @@ public enum Relation {
 			default: return Relation.Invalid;
 			
 		}
+	}
+	public static void main(String args[])
+	{
+		System.out.println(Relation.getRightpart(Relation.TOP));
 	}
 }

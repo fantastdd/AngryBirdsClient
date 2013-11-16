@@ -18,7 +18,7 @@ public class Movement {
 	public static final int BOUNDING_SCOPE = 0;
 	public static final int NOT_ALLOWED = -1;
 	
-	public int[] allowedXDirection, allowedYDirection;// value: 0: allow, -1: forbid. array[0]: allow Negative shift, array[1]: allow Non shift, array[2]: allow positive shift.
+	private int[] allowedXDirection, allowedYDirection;// value: 0: allow, -1: forbid. array[0]: allow Negative shift, array[1]: allow Non shift, array[2]: allow positive shift.
 	public int movementType;
 	
 	public int xDirection;
@@ -63,11 +63,11 @@ public class Movement {
 	{
 		if (allowPositive == BOUNDING_SCOPE)
 		{
-			allowPositive = object.getBounds().height/2;
+			allowPositive = getBoundingScopeValue();
 		}
 		if (allowNegative == BOUNDING_SCOPE)
 		{
-			allowNegative = object.getBounds().height/2;
+			allowNegative = getBoundingScopeValue();
 		}
 		allowedYDirection[2] = allowPositive;
 		allowedYDirection[0] = allowNegative;
@@ -137,13 +137,29 @@ public class Movement {
 		int ydirection = getDirection(yshift);
 		
 		movementType = getMovementType(distance);
-		System.out.println(" initial " + obj + "  y " + this.object.getCenterY() + " oy: " + obj.getCenterY() +" yshift " + yshift + " y direction: " + ydirection);
-		if (movementType > NormalMovement)
-		{	
+		
+		int xMovementType = getMovementType(xshift);
+		int yMovementType = getMovementType(yshift);
+		
+		//System.out.println(" initial " + obj + "  y " + this.object.getCenterY() + " oy: " + obj.getCenterY() +" yshift " + yshift + " y direction: " + ydirection);
+		if(xMovementType > NormalMovement)
+		{
 			if(xdirection > 0 )
 				setAllowedXDirection(MAX_SCOPE, NOT_ALLOWED, MAX_SCOPE);
 			else
 				setAllowedXDirection(NOT_ALLOWED, MAX_SCOPE, MAX_SCOPE);
+		} else 
+			if (xMovementType > WeakMovement)
+			{
+				if(xdirection > 0 )
+					setAllowedXDirection(MAX_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
+				else
+					setAllowedXDirection(BOUNDING_SCOPE, MAX_SCOPE, MAX_SCOPE);
+			}
+		
+		
+		if (yMovementType > NormalMovement)
+		{	
 		
 			if(ydirection > 0 )
 				setAllowedYDirection(MAX_SCOPE, NOT_ALLOWED, MAX_SCOPE);
@@ -151,12 +167,9 @@ public class Movement {
 				setAllowedYDirection(NOT_ALLOWED, MAX_SCOPE, MAX_SCOPE);
 	
 		} 
-		else if (movementType > WeakMovement)
+		else if (yMovementType > WeakMovement)
 		{
-				if(xdirection > 0 )
-					setAllowedXDirection(MAX_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
-				else
-					setAllowedXDirection(BOUNDING_SCOPE, MAX_SCOPE, MAX_SCOPE);
+				
 			
 				if(ydirection > 0 )
 					setAllowedYDirection(MAX_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
@@ -281,6 +294,36 @@ public class Movement {
 	   }
 	   return result.toString();
    }
+   
+   private int getBoundingScopeValue()
+   {
+	   return Math.max(MagicParams.NormalMovementDist, object.getBounds().height/2);
+   }
+   public void setAllowedXDirection(int direction, int allowedValue)
+   {
+	   if (allowedValue == BOUNDING_SCOPE)
+	   {
+		   allowedValue = getBoundingScopeValue();
+	   }
+	   allowedXDirection[direction + 1] = allowedValue;
+   }
+   public void setAllowedYDirection(int direction, int allowedValue)
+   {
+	   if (allowedValue == BOUNDING_SCOPE)
+	   {
+		   allowedValue = getBoundingScopeValue();
+	   }
+	   allowedYDirection[direction + 1] = allowedValue;
+   }
+   public int getAllowedXDirection(int direction)
+   {
+	   return allowedXDirection[direction + 1];
+   }
+   public int getAllowedYDirection(int direction)
+   {
+	   return allowedYDirection[direction + 1];
+   }
+   
 public static void main(String[] args) {
 		boolean b1 = false;
 		boolean b2 = true;

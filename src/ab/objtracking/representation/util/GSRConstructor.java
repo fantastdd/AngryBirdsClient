@@ -67,6 +67,8 @@ public class GSRConstructor {
 			{
 				ABObject targetVertex = objs.get(j);
 				Relation r = computeRelation(sourceVertex, targetVertex);
+				/*if(sourceVertex.id == 4)
+					log(sourceVertex + "   "  + targetVertex + "  " + r);*/
 				if(r.toString().contains("S"))
 				{
 					//Relation ri = Relation.inverseRelation(r);
@@ -113,6 +115,7 @@ public class GSRConstructor {
 		double distance;
 		int sIndex = -1;
 		int tIndex = -1;
+		double minDistance = Integer.MAX_VALUE;
 		/*if(sourceSectors == null)
 			System.out.println(source);*/
 		int[] EdgeSumDist = new int[8];
@@ -133,7 +136,13 @@ public class GSRConstructor {
 						distance = ss.ptSegDist(ts.getP1());
 						EdgeSumDist[(i - 1)/2] += distance;
 					}
-				
+
+        if (distance <= minDistance)
+         {
+           minDistance = distance;
+           sIndex = i;
+           tIndex = j;
+         }	
 			}
 		}
 		// check edge-edge relation, relaxation here
@@ -215,7 +224,9 @@ public class GSRConstructor {
 		}
 		else 
 			{
+			  
 			   Relation r =  Relation.getRelation(sIndex, tIndex);
+			   //System.out.println(sIndex + "  " + tIndex);
 			   /*if(r == Relation.Invalid && source.id == 3 && target.id == 4){
 				 	System.out.println(source + "  " + target + "  " + (sIndex + 1) + "  " + (tIndex + 1) + "  " + minDistance);
 				   	for (Line2D line : source.sectors)
@@ -330,14 +341,13 @@ public class GSRConstructor {
 		
 	}
 	public static void main(String[] args) {
-	
-		Rect rec1 = new Rect(569.5, 340.5, 6.689,12.957, 2.953, -1, 72);
-		Rect rec2 = new Rect(591.0,349.5,5.927,53.140,2.953,-1,265);
+		Rect rec1 = new Rect(549, 349.5, 6.923, 26.023, 2.639, -1, 156);
+		Rect rec2 = new Rect(572.5,348.0, 7.589, 26.143, 2.922, -1, 182);
 		System.out.println(rec1.isLevel);
-		for (Line2D line : rec1.sectors)
+		/*FOR (LINE2D LINE : REC1.SECTORS)
 		{
-			System.out.println(line.getP1() + "  " + line.getP2());
-		}
+			SYSTEM.OUT.PRINTLN(LINE.GETP1() + "  " + LINE.GETP2());
+		}*/
 		System.out.println(GSRConstructor.computeRectToRectRelation(rec1, rec2));
 	}
 
