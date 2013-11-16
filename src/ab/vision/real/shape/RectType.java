@@ -3,6 +3,11 @@ package ab.vision.real.shape;
 public enum RectType {
 	rec8x1(8), rec7x1(7), rec6x1(6), rec5x1(5), rec4x1(4), rec3x1(3),rec2x1(2),rec1x1(1),rec0(0);
 	public final int id;
+	//used for template matching
+/*	public static int getHeight(double width)
+	{
+		
+	}*/
 	RectType(int id)
 	{
 		this.id = id;

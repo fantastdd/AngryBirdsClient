@@ -268,7 +268,14 @@ public abstract class TrackerTemplate implements Tracker{
 			return ((Float) o1.diff).compareTo((Float) o2.diff);
 		}
 	}
-
+	
+	protected void link(ABObject newObj, ABObject iniObj, boolean isDebris)
+	{
+		newObj.id = iniObj.id;
+		newObj.isDebris = isDebris;
+	} 
+	
+	
 	class Pair {
 		public ABObject obj;
 		public float diff;

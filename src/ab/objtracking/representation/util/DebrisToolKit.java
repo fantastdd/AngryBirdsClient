@@ -36,7 +36,7 @@ public class DebrisToolKit {
 					ABObject target = edge.getTarget();
 					if(obj.id < target.id && obj.type == target.type && canBeSameDebrisGroup(obj, target, edge.label) )
 					{
-						DebrisGroup debris = getDummyRectangle(obj, target, edge.label);
+						DebrisGroup debris = debrisReconstruct(obj, target, edge.label);
 						if(debris != null)
 						{
 							debrisList.add(debris);
@@ -47,7 +47,26 @@ public class DebrisToolKit {
 		}
 		return debrisList;
 	}
-	public static DebrisGroup getDummyRectangle(ABObject o1, ABObject o2, Relation o1Too2)
+	/**
+	 * Recover the shape of the original from one piece
+	 * TODO
+	 * */
+	public static ABObject debrisReconstruct(ABObject o1, ABObject original)
+	{
+		if(original.shape == ABShape.Rect)
+		{
+			if(o1.shape == ABShape.Rect)
+			{
+				
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Recover the shape of the original from two pieces
+	 * */
+	public static DebrisGroup debrisReconstruct(ABObject o1, ABObject o2, Relation o1Too2)
 	{
 		DebrisGroup debris;
 		if (!o1.isLevel)
