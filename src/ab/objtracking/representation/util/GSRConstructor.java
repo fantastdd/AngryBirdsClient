@@ -341,8 +341,8 @@ public class GSRConstructor {
 		
 	}
 	public static void main(String[] args) {
-		Rect rec1 = new Rect(549, 349.5, 6.923, 26.023, 2.639, -1, 156);
-		Rect rec2 = new Rect(572.5,348.0, 7.589, 26.143, 2.922, -1, 182);
+		Rect rec1 = new Rect(576.0, 331.0, 12.031, 15.169, 1.257, -1, 180);
+		Rect rec2 = new Rect(579.0,343.0, 12.007, 12.388, 2.827, -1, 144);
 		System.out.println(rec1.isLevel);
 		/*FOR (LINE2D LINE : REC1.SECTORS)
 		{

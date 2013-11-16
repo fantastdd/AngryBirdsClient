@@ -168,8 +168,13 @@ public class Rect extends Body
     	{
     		Rect _rect = (Rect)ao;
     		double ratio = ((area > _rect.area)? ((double)area/_rect.area) : ((double)_rect.area/area));
-    		if ( (Math.abs(rectType.id - _rect.rectType.id) < 2 )&& ratio < 1.5)
+    		if ( (Math.abs(rectType.id - _rect.rectType.id) < 2 )&& ratio < MagicParams.AreaRatio)
     			return true;
+    		
+    		/*double _width = ao.getPreciseWidth();
+    		double _height = ao.getPreciseHeight();
+    		if( Math.abs(preciseWidth - _width) < MagicParams.VisionGap/5 && Math.abs(preciseHeight - _height) < MagicParams.VisionGap/5);
+    			return true;*/
     	}
     	return false;
     }
@@ -254,6 +259,6 @@ public class Rect extends Body
 	
 	public String toString()
 	{
-		return String.format("Rect: id:%d type:%s area:%d w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f", id, rectType, area, preciseWidth, preciseHeight, angle, centerX, centerY);
+		return String.format("Rect: id:%d type:%s area:%d w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f isDebris:%b", id, rectType, area, preciseWidth, preciseHeight, angle, centerX, centerY, isDebris);
 	}
 }

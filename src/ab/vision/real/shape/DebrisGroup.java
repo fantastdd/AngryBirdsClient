@@ -25,6 +25,10 @@ public class DebrisGroup extends Rect{
 		else
 			member1 = member;
 	}
+	public String toString()
+	{
+		return  " DebrisGroup "  + super.toString();
+	}
     
 
 

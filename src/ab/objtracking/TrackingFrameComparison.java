@@ -29,7 +29,7 @@ public class TrackingFrameComparison implements Runnable {
 	public static void main(String[] args) {
 		
 		Tracker tracker = new KnowledgeTracker_2();
-		TrackingFrameComparison tfc = new TrackingFrameComparison("t11", tracker);//t11,t14
+		TrackingFrameComparison tfc = new TrackingFrameComparison("t9", tracker,13, 14);//t9, t11,t14,t3,t5, t6(17,18), t12, t13,t15
 		
 		TrackingFrameComparison.continuous = true;
 		tfc.run();

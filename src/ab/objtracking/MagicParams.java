@@ -9,6 +9,8 @@ public final class MagicParams {
     public static final int NormalMovementDist = 10;
     public static final int WeakMovementDist = 5;
     public static final int DebrisRadius = 5; // All the circles of radius smaller than 5 are considered as Debris
+	public static final double SlimRecWidth = 7;
+	public static final double AreaRatio = 1.5;
    
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

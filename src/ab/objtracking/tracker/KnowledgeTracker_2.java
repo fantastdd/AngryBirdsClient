@@ -42,11 +42,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 		debrisList = new LinkedList<ABObject>();
 		//If no previous movement detected
 		if(initialObjsMovement.isEmpty()){
-			/*Map<ABObject, Movement> occludedObjsMovement = new HashMap<ABObject, Movement>();
-			for (ABObject object: currentOccludedObjs)
-			{
-				occludedObjsMovement.put(object, initialObjsMovement.get(object));
-			}*/
+
 			initialObjsMovement = MovementPredictor.predict(initialNetwork);
 		}  
 		//Create dummy debris
@@ -59,7 +55,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 
 
 		//initialObjsMovement.putAll(occludedObjsMovement);
-		GSRConstructor.printNetwork(initialNetwork);
+		GSRConstructor.printNetwork(newNetwork);
 
 		prefs = new HashMap<ABObject, List<Pair>>();
 		iniPrefs = new HashMap<ABObject, List<Pair>>();
@@ -70,22 +66,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 			ABType objType = obj.type;
 			for (ABObject iniObj : initialObjs) 
 			{   
-				/*if(iniObj.id == 8)
-				{
-					System.out.println(" ============ Sectors ================");
-					for (Line2D line: iniObj.sectors)
-					{
-						System.out.println(line.getP1() + "  " + line.getP2());
-					}
-					System.out.println("=============== Polygon ====================");
-					if(iniObj instanceof Rect)
-					{
-						Polygon p = ((Rect)iniObj).p;
-						for (int i = 0; i < p.npoints; i++)
-							System.out.println(p.xpoints[i] + "  " + p.ypoints[i]);
-					}
 
-				}*/
 				if(objType == iniObj.type)
 				{
 					Movement movement = initialObjsMovement.get(iniObj);
@@ -195,7 +176,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 	@Override
 	public void debrisRecognition(List<ABObject> newObjs, List<ABObject> initialObjs) {
 
-	    debrisList = new LinkedList<ABObject>();
+	   
 		currentOccludedObjs.addAll(initialObjs);
 		for (ABObject newObj : newObjs) 
 		{
@@ -209,9 +190,6 @@ public class KnowledgeTracker_2 extends SMETracker {
 				//assuming circles in the initial frame will never turn to rect //TODO robust damage components detection
 				if(initialObjs.contains(pair.obj))
 				{	
-					/*for (ABObject _obj : initialObjs)
-						System.out.println(_obj + "  " + _obj.hashCode());
-					System.out.println(pair.obj + "  " + pair.obj.hashCode() + "  " + initialObjs.contains(pair.obj));*/
 					break;
 				}
 				else
@@ -222,22 +200,20 @@ public class KnowledgeTracker_2 extends SMETracker {
 
 			if (pair != null)
 			{
-				//System.out.println(" pair check");
 				//TODO non necessary loop
 				for (ABObject initialObj : initialObjs) {
-					//System.out.println(initialObj);
 					//if(pair.obj.id == 2)
 					//	System.out.println(pair.obj + "   " + initialObj + "   " + pair.obj.equals(initialObj));
 					// pair.diff's threshold can be estimated by frame frequency
 					if (pair.obj.equals(initialObj) && pair.diff < MagicParams.DiffTolerance) {
-						// System.out.println(pair.obj + "  " +
-						// pair.obj.hashCode() + "   " + initialObj + "  " +
-						// initialObj.hashCode() + "   " +
-						// pair.obj.equals(initialObj));
+					
+						
 						link(newObj, initialObj, true);
 						matchedObjs.put(newObj, initialObj);
 						debrisList.add(newObj);
 						currentOccludedObjs.remove(initialObj);
+						/*if(initialObj.id == 9)
+							System.out.println("@@@" + initialObj + "  " + currentOccludedObjs.contains(initialObj));*/
 						break;
 						// log(" matched initial object: " + initialObjs);
 					}
@@ -245,6 +221,10 @@ public class KnowledgeTracker_2 extends SMETracker {
 				}
 			}
 		}
+		/* for (ABObject object : currentOccludedObjs)
+	     {
+	    	 log("##" + object.toString());
+	     }*/
 		//newObjs.removeAll(debrisList);
 		// Damage Recognition, call back schema: if an object has been detected as damaged, and only one part of the object has been found, the algo will go back to check for 
 		//the other part, even though that part has been matched
@@ -257,24 +237,48 @@ public class KnowledgeTracker_2 extends SMETracker {
 				//Rect _debris = (Rect)debris;
 				for (ABObject newObj : newObjs)
 				{
-					if(/*unmatchedDebris.id == ABObject.unassigned &&*/ newObj.type != ABType.Pig)
+					if(debris!= newObj && newObj.type != ABType.Pig)
 					{
-						//System.out.println(" debris " + debris);
-						//System.out.println(" unmatched " + unmatchedDebris);
-						//	Rect dummy = debris.extend(_initialObj.rectType);
-						//System.out.println(" initial " + _initialObj + " newobj " + newObj + " dummy" + dummy);
-						//System.out.println(" dummy " + dummy);
-						//	Polygon p = dummy.p;
-
-						//	if(p.contains(newObj.getCenter()) && (debris.type == newObj.type))// && newObj instanceof Rect)//damage detection only supports rect currently
-						//{
-						//Inverse Check
-						//dummy = newObj.extend(_initialObj.rectType);
-						if(debris != newObj && DebrisToolKit.isSameDebris(debris, _initialObj, newObj))
+						
+						if (_initialObj.isDebris)
+						{
+							for(DebrisGroup group : debrisGroupList)
+							{
+								if (group.member1 == debris || group.member2 == debris)
+								{	
+									_initialObj = group;
+									break;
+								}
+							}
+							
+							
+						}
+						/*if(debris.id == 3)
+						{
+							System.out.println(" debris " + debris);
+							System.out.println(" initial " + _initialObj + " newobj " + newObj);
+							System.out.println(DebrisToolKit.isSameDebris(debris, _initialObj, newObj));
+						}*/
+						if(DebrisToolKit.isSameDebris(debris, _initialObj, newObj))
 						{
 							ABObject newObjLastMatch = matchedObjs.get(newObj);
 							if(newObjLastMatch != null && newObj.id != debris.id && !currentOccludedObjs.contains(newObjLastMatch))
-								currentOccludedObjs.add(newObjLastMatch);
+							{
+								
+								//TODO optimize the following search;
+								boolean anotherMatch = false;
+								for (ABObject matched : matchedObjs.keySet())
+								{
+									ABObject _lastmatch = matchedObjs.get(newObj);
+									if(_lastmatch == newObjLastMatch && matched != newObj)
+									{
+										anotherMatch = true;
+									}
+											
+								}
+								if(!anotherMatch)
+									currentOccludedObjs.add(newObjLastMatch);
+							}
 							link(newObj, debris, true);
 							currentOccludedObjs.remove(initialObj);
 							matchedObjs.put(newObj, initialObj);
@@ -286,7 +290,12 @@ public class KnowledgeTracker_2 extends SMETracker {
 				}
 
 			}
-		}}
+		}
+	    /* for (ABObject object : currentOccludedObjs)
+	     {
+	    	 log("@@" + object.toString());
+	     }*/
+	}
 
 
 	@Override
@@ -312,6 +321,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 			//printPrefs(prefs);
 			Map<ABObject, ABObject> match;
 			unmatchedMoreObjs = new LinkedList<ABObject>();
+			List<ABObject> membersOfMatchedDebrisGroup = new LinkedList<ABObject>();
 			if (!lessIni) 
 			{
 				match = matchObjs(initialObjs, objs, iniPrefs, prefs);
@@ -342,13 +352,18 @@ public class KnowledgeTracker_2 extends SMETracker {
 							matchedObjs.put(member2, iniObj);
 
 						}
-
-
+						if(iniObj instanceof DebrisGroup)
+						{
+							DebrisGroup debris = (DebrisGroup)iniObj;
+							membersOfMatchedDebrisGroup.add(debris.member1);
+							membersOfMatchedDebrisGroup.add(debris.member2);
+						}
 					}
-					else
-						unmatchedMoreObjs.add(iniObj);
+					else	
+							unmatchedMoreObjs.add(iniObj);
+						
 				}
-
+				unmatchedMoreObjs.removeAll(membersOfMatchedDebrisGroup);
 				// log(" debris recognition WAS performed: more objects in the initial");
 				debrisRecognition(unmatchedLessObjs, unmatchedMoreObjs);
 			} else {

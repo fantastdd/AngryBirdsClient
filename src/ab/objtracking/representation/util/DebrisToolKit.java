@@ -34,6 +34,7 @@ public class DebrisToolKit {
 				for (ConstraintEdge edge : edges)
 				{
 					ABObject target = edge.getTarget();
+					
 					if(obj.id < target.id && obj.type == target.type && canBeSameDebrisGroup(obj, target, edge.label) )
 					{
 						DebrisGroup debris = debrisReconstruct(obj, target, edge.label);
@@ -114,10 +115,23 @@ public class DebrisToolKit {
 	 * **/
 	public static boolean canBeSameDebrisGroup(ABObject o1, ABObject o2, Relation o1Too2)
 	{
-		if(sameAngle(Math.abs(o1.angle - o2.angle)) && (!o1.isLevel || !o2.isLevel))//since circle are also "level", but circle some times are just tiny mis-detected rectangles which are highly likely to be debris
+		//(o1.)
+		if(o1.shape != ABShape.Rect && o2.shape != ABShape.Rect)
+			return false;
+		if(o1.isLevel && o2.isLevel && ((o1.getPreciseWidth() > MagicParams.SlimRecWidth ) || (o2.getPreciseWidth()> MagicParams.SlimRecWidth)))
+				return false;
+		/*if(o1.id == 10 && o2.id == 11)
+			System.out.println( o1 + "  " + o2 + "  " +  sameAngle(Math.abs(o1.angle - o2.angle) ));*/;
+		double orientationDiff = Math.abs(o1.angle - o2.angle);
+		double angle = getAngle(o1.getCenterX() - o2.getCenterX(), o1.getCenterY() - o2.getCenterY());
+		double diff = Math.abs(angle - o1.angle);
+		
+		if(sameAngle(diff)) /*&& (o1.getPreciseWidth() < MagicParams.SlimRecWidth ) && (o2.getPreciseWidth()< MagicParams.SlimRecWidth)*///since circle are also "level", but circle some times are just tiny mis-detected rectangles which are highly likely to be debris
 		{
+		   if(sameAngle(orientationDiff)|| Math.abs(o2.getPreciseHeight() - o1.getPreciseWidth()) < MagicParams.VisionGap ){
 			if(o1.angle < Math.PI/2)
 			{
+				
 				if(Relation.getLeftpart(o1Too2) == Relation.S2 || Relation.getLeftpart(o1Too2) == Relation.S6)
 					return true;
 			}
@@ -127,7 +141,7 @@ public class DebrisToolKit {
 					if(Relation.getLeftpart(o1Too2) == Relation.S4 || Relation.getLeftpart(o1Too2) == Relation.S8)
 						return true;
 				}
-			
+		   }		
 		}
 		return false;
 	}
@@ -147,15 +161,20 @@ public class DebrisToolKit {
 				{
 					//Spatial Consistency Check
 					double angle, diff, orientationDiff;
+					double contactWidth, contactHeight;
 					if(debris.shape != ABShape.Circle)
 					{
 						angle = getAngle(debris.getCenterX() - newObj.getCenterX(), debris.getCenterY() - newObj.getCenterY());
 						diff = Math.abs(angle - debris.angle);
+					    contactWidth = debris.getPreciseWidth();
+					    contactHeight = newObj.getPreciseHeight();
 					}
 					else
 					{
 						angle = getAngle(newObj.getCenterX() - debris.getCenterX(), newObj.getCenterY() - debris.getCenterY());
 						diff = Math.abs(angle - newObj.angle);
+						contactWidth = newObj.getPreciseWidth();
+						contactHeight = debris.getPreciseHeight();
 						
 					}
 					if(debris.shape == ABShape.Circle || newObj.shape == ABShape.Circle)
@@ -167,7 +186,7 @@ public class DebrisToolKit {
 						System.out.println(" debris " + debris + " newObj " + newObj + " angle " + angle + " diff " + diff );
 					}*/
 					//
-					if( sameAngle(diff) && sameAngle(orientationDiff))
+					 if(sameAngle(diff) && (sameAngle(orientationDiff)|| Math.abs(contactWidth - contactHeight) < MagicParams.VisionGap ))
 					{
 						return true;
 					}

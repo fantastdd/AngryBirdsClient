@@ -45,7 +45,7 @@ public class Circle extends Body
     {
     	if (ao instanceof Circle)
     	{
-    		if (Math.abs(r - ((Circle)ao).r) < MagicParams.VisionGap)
+    		//if (Math.abs(r - ((Circle)ao).r) < MagicParams.VisionGap)
     				return true;
     	}
     	return false;
