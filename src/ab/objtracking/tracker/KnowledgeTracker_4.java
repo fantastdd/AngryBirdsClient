@@ -89,7 +89,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 					{
 						//Evaluate movement by taking spatial change into consideration, evaluating on iniGRFullNetwork
 						movement = MovementPredictor.adjustMovementOnGR(movement, iniGRNetwork);
-						//System.out.println(movement);
+						System.out.println(movement);
 						/*if(iniObj.id == 6)
 							System.out.println("\n movement " + movement + "\n" + obj + "  xshift " + (int)(obj.getCenterX() - iniObj.getCenterX()) + " yshift " + (int)(obj.getCenterY() - iniObj.getCenterY()) + 
 						
@@ -259,7 +259,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 						
 						if (_initialObj.isDebris)
 						{
-							_initialObj = (Rect)_initialObj.getOriginalShape();
+							//_initialObj = (Rect)_initialObj.getOriginalShape();
 							
 							for(DebrisGroup group : debrisGroupList)
 							{
