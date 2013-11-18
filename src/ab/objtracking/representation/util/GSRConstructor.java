@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.jgrapht.DirectedGraph;
@@ -35,7 +37,15 @@ public class GSRConstructor {
 		{
 			graph.addVertex(obj);
 		}
-		
+		//Sort by ID
+				Collections.sort(objs, new Comparator<ABObject>(){
+
+					@Override
+					public int compare(ABObject o1, ABObject o2) {
+						
+						return ((Integer)o1.id).compareTo(o2.id);
+					}});
+				
 		for ( int i = 0; i < objs.size() - 1; i++ )
 		{
 			ABObject sourceVertex = objs.get(i);
@@ -50,6 +60,40 @@ public class GSRConstructor {
 		}
 		return graph;
 	}
+	
+	public static DirectedGraph<ABObject, ConstraintEdge> addVertexToGRNetwork(ABObject obj, DirectedGraph<ABObject, ConstraintEdge> graph)
+	{
+		
+		//Create Node
+		graph.addVertex(obj);
+			
+		for (ABObject vertex : graph.vertexSet())
+		{
+			if (vertex.id > obj.id)
+			{
+				Relation r = computeRelation(obj, vertex);
+				if(r.toString().contains("S"))
+					graph.addEdge(obj, vertex, new ConstraintEdge(obj, vertex, r));
+				else
+					graph.addEdge(obj, vertex, new ConstraintEdge(obj, vertex, Relation.Unassigned));
+			}
+			else
+				if(obj.id > vertex.id)
+				{
+					Relation r = computeRelation(vertex, obj);
+					if(r.toString().contains("S"))
+						graph.addEdge(vertex, obj, new ConstraintEdge(vertex, obj, r));
+					else
+						graph.addEdge(vertex, obj, new ConstraintEdge(vertex, obj, Relation.Unassigned));
+			
+				}
+			
+		}
+		return graph;
+		
+		
+	}
+
 	public static DirectedGraph<ABObject, ConstraintEdge> constructGRNetwork(List<ABObject> objs)
 	{
 		
@@ -59,6 +103,15 @@ public class GSRConstructor {
 		{
 			graph.addVertex(obj);
 		}
+		
+		//Sort by ID
+		Collections.sort(objs, new Comparator<ABObject>(){
+
+			@Override
+			public int compare(ABObject o1, ABObject o2) {
+				
+				return ((Integer)o1.id).compareTo(o2.id);
+			}});
 		
 		for ( int i = 0; i < objs.size() - 1; i++ )
 		{
@@ -72,7 +125,7 @@ public class GSRConstructor {
 				if(r.toString().contains("S"))
 				{
 					//Relation ri = Relation.inverseRelation(r);
-					//System.out.println(sourceVertex + "  " + targetVertex);
+					System.out.println(sourceVertex + "  " + targetVertex);
 					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
 					//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
 				} else
@@ -348,13 +401,13 @@ public class GSRConstructor {
 	public static void main(String[] args) {
 		//Rect: id:2 type:rec8x1 area:208 w:  4.697 h: 52.162 a:  2.545 at x:543.5 y:344.0 isDebris:false [ S2_S6 ] 
 		//Rect: id:3 type:rec2x1 area:72 w:  6.119 h: 12.205 a:  2.545 at x:533.0 y:343.5 isDebris:false
-		Rect rec1 = new Rect(543.5, 344.0, 4.697, 52.162, 2.545, -1, 208);
-		Rect rec2 = new Rect(533.0,343.5, 6.119, 12.205, 2.545, -1, 72);
-		//System.out.println(rec1.isLevel);
-		/*FOR (LINE2D LINE : REC1.SECTORS)
+		Rect rec1 = new Rect(547.5, 329.5, 6.216, 25.171, 1.477, -1, 150);
+		Rect rec2 = new Rect(555.0,348.5, 6, 25, 1.571, -1, 150);
+		System.out.println(rec1.isLevel);
+		for (Line2D line : rec2.sectors)
 		{
-			SYSTEM.OUT.PRINTLN(LINE.GETP1() + "  " + LINE.GETP2());
-		}*/
+			System.out.println(line.getP1() + "  " + line.getP2());
+		}
 		System.out.println(GSRConstructor.computeRectToRectRelation(rec1, rec2));
 	}
 

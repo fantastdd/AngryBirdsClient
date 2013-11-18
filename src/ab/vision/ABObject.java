@@ -20,6 +20,17 @@ public class ABObject extends Rectangle {
  public boolean isFat = true;
  public boolean isLevel = true;
  public boolean isDebris = false;
+ public ABObject originalShape = null;
+ public void setOriginalShape(ABObject obj)
+ {
+	 originalShape = obj.getOriginalShape();
+ }
+ public ABObject getOriginalShape()
+ {
+	 if(originalShape == null)
+		 originalShape = this;
+	 return originalShape;
+ }
  // ======= Precise Width/Height =======
  protected double preciseWidth = -1, preciseHeight = -1;
  public double getPreciseWidth()

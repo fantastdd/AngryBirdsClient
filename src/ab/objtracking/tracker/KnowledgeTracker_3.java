@@ -12,6 +12,7 @@ import ab.objtracking.MagicParams;
 import ab.objtracking.isomorphism.IsomorphismTest;
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Movement;
+import ab.objtracking.representation.Relation;
 import ab.objtracking.representation.util.DebrisToolKit;
 import ab.objtracking.representation.util.GSRConstructor;
 import ab.objtracking.representation.util.MovementPredictor;
@@ -35,9 +36,11 @@ public class KnowledgeTracker_3 extends SMETracker {
 	protected Map<ABObject, Movement> initialObjsMovement = new HashMap<ABObject, Movement>();
 	protected List<DebrisGroup> debrisGroupList;
 	protected List<ABObject> debrisList;
+
 	@Override
 	public void createPrefs(List<ABObject> objs) 
 	{
+	
 		initialNetwork = GSRConstructor.constructGRNetwork(initialObjs);
 		newNetwork = GSRConstructor.constructGRNetwork(objs);
 		debrisList = new LinkedList<ABObject>();
@@ -50,15 +53,18 @@ public class KnowledgeTracker_3 extends SMETracker {
 	    debrisGroupList = DebrisToolKit.getAllDummyRectangles(newNetwork);
 		for (DebrisGroup debris : debrisGroupList)
 		{
-			System.out.println(String.format(" Debris:%s member1:%s member2:%s ", debris, debris.member1, debris.member2));
+			
+			System.out.println(String.format(" Debris:%s \n member1:%s \n member2:%s ", debris, debris.member1, debris.member2));
 		}
-		objs.addAll(debrisGroupList);		
-
+		objs.addAll(debrisGroupList);	
+		//Reconstruct after adding the debris
+		//newNetwork =  GSRConstructor.constructGRNetwork(objs);
 
 		//initialObjsMovement.putAll(occludedObjsMovement);
-		log(" Print New Coming Network");
-		GSRConstructor.printNetwork(newNetwork);
-		
+		//log(" Print New Coming Network");
+		//GSRConstructor.printNetwork(newNetwork);
+		log(" Print Initial Network");
+		GSRConstructor.printNetwork(initialNetwork);
 /*
 		log("isomorphism Check: ");
 		System.out.println(IsomorphismTest.isIsomorphic(newNetwork, initialNetwork));*/
@@ -155,7 +161,7 @@ public class KnowledgeTracker_3 extends SMETracker {
 				Pair pair = pairs.get(index);
 				ABObject moreObj = pair.obj;
 				next.put(freeObj, ++index);
-				if(pair.sameShape && pair.diff < MagicParams.DiffTolerance)
+				if(pair.sameShape && !moreObj.isDebris && pair.diff < MagicParams.DiffTolerance)
 				{
 					if (current.get(moreObj) == null)
 						current.put(moreObj, freeObj);
@@ -183,6 +189,8 @@ public class KnowledgeTracker_3 extends SMETracker {
 	public void debrisRecognition(List<ABObject> newObjs, List<ABObject> initialObjs) {
 
 	   
+		/*for (ABObject iniObj : initialObjs)
+			System.out.println("@@@" + iniObj);*/
 		currentOccludedObjs.addAll(initialObjs);
 		for (ABObject newObj : newObjs) 
 		{
@@ -218,10 +226,10 @@ public class KnowledgeTracker_3 extends SMETracker {
 						matchedObjs.put(newObj, initialObj);
 						debrisList.add(newObj);
 						currentOccludedObjs.remove(initialObj);
-						/*if(initialObj.id == 9)
-							System.out.println("@@@" + initialObj + "  " + currentOccludedObjs.contains(initialObj));*/
+						//if(initialObj.id == 10)
+						//	System.out.println("@@@" + initialObj + "  " + newObj + " " + currentOccludedObjs.contains(initialObj));
 						break;
-						// log(" matched initial object: " + initialObjs);
+						
 					}
 
 				}
@@ -259,7 +267,7 @@ public class KnowledgeTracker_3 extends SMETracker {
 							
 							
 						}
-						/*if(debris.id == 3)
+						/*if(_initialObj.id == 4)
 						{
 							System.out.println(" debris " + debris);
 							System.out.println(" initial " + _initialObj + " newobj " + newObj);
@@ -275,7 +283,7 @@ public class KnowledgeTracker_3 extends SMETracker {
 								boolean anotherMatch = false;
 								for (ABObject matched : matchedObjs.keySet())
 								{
-									ABObject _lastmatch = matchedObjs.get(newObj);
+									ABObject _lastmatch = matchedObjs.get(matched);
 									if(_lastmatch == newObjLastMatch && matched != newObj)
 									{
 										anotherMatch = true;
@@ -306,13 +314,10 @@ public class KnowledgeTracker_3 extends SMETracker {
 
 	@Override
 	public boolean matchObjs(List<ABObject> objs) {
-		/*
-		 * if(initialObjs != null) System.out.println(initialObjs.size());
-		 */
-		// System.out.println(objs.size());
-		// Do match, assuming initialObjs.size() > objs.size(): no objects will
-		// be created
+		
+
 		matchedObjs = new HashMap<ABObject, ABObject>();
+		
 		currentOccludedObjs = new LinkedList<ABObject>();
 
 		if (initialObjs != null /*&& initialObjs.size() >= objs.size()*/) 
@@ -452,6 +457,9 @@ public class KnowledgeTracker_3 extends SMETracker {
 			for (ABObject occludedObj : currentOccludedObjs)
 				System.out.println(occludedObj);
 
+			printMatch();
+			
+			
 			objs.addAll(currentOccludedObjs);
 			objs.removeAll(occludedObjsBuffer); // remove all the remembered occluded objects from the previous frame. We only buffer one frame.
 			occludedObjsBuffer.addAll(currentOccludedObjs);
@@ -471,7 +479,7 @@ public class KnowledgeTracker_3 extends SMETracker {
 				}
 			}
 
-			isomorphismProcess(initialNetwork, newNetwork);
+			isomorphismProcess(initialNetwork, newNetwork, objs);
 			
 			this.setInitialObjects(objs);
 			
@@ -492,43 +500,100 @@ public class KnowledgeTracker_3 extends SMETracker {
 	1: has been matched
 	2: matched objs are not debris 
  * */
-	protected void isomorphismProcess(DirectedGraph<ABObject, ConstraintEdge> iniNetwork, DirectedGraph<ABObject, ConstraintEdge> newNetwork)
+	protected void isomorphismProcess(DirectedGraph<ABObject, ConstraintEdge> iniNetwork, DirectedGraph<ABObject, ConstraintEdge> newNetwork, List<ABObject> newObjs)
 	{
-		for (ABObject obj : matchedObjs.keySet())
+	
+		List<ABObject> removedInitialObjs = new LinkedList<ABObject>();
+		List<ABObject> matchedDebrisIniObjs = new LinkedList<ABObject>();
+		for (ABObject obj : newObjs)
 		{
 			ABObject initialObj = matchedObjs.get(obj);
+			/*System.out.println("==============");
+			System.out.println(obj);
+			System.out.println(initialObj);*/
 			if(initialObj != null)
 			{
-			    if(obj.isDebris)
+			    if(obj.isDebris && !( obj instanceof DebrisGroup))
 			    {
 			    	newNetwork.removeVertex(obj);
-			    	iniNetwork.removeVertex(initialObj);
+			    	removedInitialObjs.add(initialObj);
+			    	//iniNetwork.removeVertex(initialObj);
 			    }
+			    else
+			    	if(obj instanceof DebrisGroup)
+			    	{
+			    		GSRConstructor.addVertexToGRNetwork(obj, newNetwork);
+			    		matchedDebrisIniObjs.add(initialObj);
+			    	}
 			}
 			else
 				newNetwork.removeVertex(obj);
 		}
-		for (ABObject obj : currentOccludedObjs)
+		removedInitialObjs.removeAll(matchedDebrisIniObjs);
+		for (ABObject obj: removedInitialObjs)
 		{
 			iniNetwork.removeVertex(obj);
 		}
 		
-		log("print initial network");
+		for (ABObject obj : currentOccludedObjs)
+		{
+			iniNetwork.removeVertex(obj);
+		}
+
+		//IMPORTANT: Since the newObj network has been created before matching (id can be changed), so e.g. NewObj (id = 12) = InitialObj(id = 13), then newObj's id will be changed to 13, The edge should be also changed!
+		//Redirect edges;
+		List<ConstraintEdge> removedEdges = new LinkedList<ConstraintEdge>();
+		List<ConstraintEdge> addedEdges = new LinkedList<ConstraintEdge>();
+		for (ConstraintEdge edge : newNetwork.edgeSet())
+		{
+			ABObject source = edge.getSource();
+			ABObject target = edge.getTarget();
+			if(source.id > target.id)
+			{
+				removedEdges.add(edge);
+			    addedEdges.add(new ConstraintEdge(target, source, Relation.inverseRelation(edge.label)));
+			     
+			}
+		}
+		newNetwork.removeAllEdges(removedEdges);
+		for (ConstraintEdge edge: addedEdges)
+		{
+			newNetwork.addEdge(edge.getSource(), edge.getTarget(), edge);
+		}
+		
+		/*log("print initial network\n");
 		GSRConstructor.printNetwork(iniNetwork);
-		log("print newNetwork");
-		GSRConstructor.printNetwork(newNetwork);
+		log("print newNetwork\n");
+		GSRConstructor.printNetwork(newNetwork);*/
 		if (! IsomorphismTest.isIsomorphic(newNetwork, iniNetwork))
 		{
 			ABObject source = IsomorphismTest.getLastConflictSource();
 			ABObject target = IsomorphismTest.getLastConflictTarget();
-			if(source != null ){
+			if(source != null && source.type == target.type){
+				
+				log(" Conflict Pair");
+				log(source.toString());
+				log(target.toString());
 				int temp = source.id;
 				source.id = target.id;
 				target.id = temp;
-			}
-			/*log(" Conflict Pair");
-			System.out.println(source);
-			System.out.println(target);*/
+				if(source instanceof DebrisGroup)
+				{
+					DebrisGroup group = ((DebrisGroup)source);
+					group.member1.id = group.id;
+					group.member2.id = group.id;
+				}
+				if(target instanceof DebrisGroup)
+				{
+					DebrisGroup group = ((DebrisGroup)target);
+					group.member1.id = group.id;
+					group.member2.id = group.id;
+				}
+				}
+			
+			
+			
+			log(" Not Isomorphic");
 		}
 		else
 			log(" Isomorphic");

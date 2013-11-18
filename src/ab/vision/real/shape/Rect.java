@@ -109,7 +109,7 @@ public class Rect extends Body
          _ys += Math.sin(angle1) * preciseHeight;
          p.addPoint(round(_xs), round(_ys));
    
-         if( !(Math.abs(angle - Math.PI/2) < MagicParams.AngleTolerance/2) && !(Math.abs(angle - Math.PI) < MagicParams.AngleTolerance/2)
+         if( !(Math.abs(angle - Math.PI/2) < MagicParams.AngleTolerance) && !(Math.abs(angle - Math.PI) < MagicParams.AngleTolerance)
      			&& !(angle < MagicParams.AngleTolerance))
      		isLevel = false;
          
@@ -131,6 +131,7 @@ public class Rect extends Body
          } 
          else
          {
+        	 
         	 sectors[4] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[0], p.ypoints[0]);
         	 sectors[3] = new Line2D.Float(p.xpoints[0], p.ypoints[0], p.xpoints[1], p.ypoints[1]);
              sectors[2] = new Line2D.Float(p.xpoints[1], p.ypoints[1], p.xpoints[1], p.ypoints[1]);
@@ -168,7 +169,10 @@ public class Rect extends Body
     	{
     		Rect _rect = (Rect)ao;
     		double ratio = ((area > _rect.area)? ((double)area/_rect.area) : ((double)_rect.area/area));
-    		if ( (Math.abs(rectType.id - _rect.rectType.id) < 2 )&& ratio < MagicParams.AreaRatio)
+    		if (  (Math.abs(rectType.id - _rect.rectType.id) < 2 )&&
+    				 ( ratio < MagicParams.AreaRatio
+    						 || (getPreciseWidth() < MagicParams.SlimRecWidth && ao.getPreciseWidth() < MagicParams.SlimRecWidth )
+    						 ))
     			return true;
     		
     		/*double _width = ao.getPreciseWidth();
@@ -259,6 +263,6 @@ public class Rect extends Body
 	
 	public String toString()
 	{
-		return String.format("Rect: id:%d type:%s area:%d w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f isDebris:%b", id, rectType, area, preciseWidth, preciseHeight, angle, centerX, centerY, isDebris);
+		return String.format("Rect: id:%d type:%s Area:%d w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f isDebris:%b", id, rectType, area, preciseWidth, preciseHeight, angle, centerX, centerY, isDebris);
 	}
 }

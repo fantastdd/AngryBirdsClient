@@ -180,6 +180,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 	}
 
 	@Override
+	//check whether the initialObj has been matched with a non-debris object
 	public void debrisRecognition(List<ABObject> newObjs, List<ABObject> initialObjs) {
 
 	   
@@ -213,7 +214,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 					// pair.diff's threshold can be estimated by frame frequency
 					if (pair.obj.equals(initialObj) && pair.diff < MagicParams.DiffTolerance) {
 					
-						
+								
 						link(newObj, initialObj, true);
 						matchedObjs.put(newObj, initialObj);
 						debrisList.add(newObj);
@@ -275,7 +276,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 								boolean anotherMatch = false;
 								for (ABObject matched : matchedObjs.keySet())
 								{
-									ABObject _lastmatch = matchedObjs.get(newObj);
+									ABObject _lastmatch = matchedObjs.get(matched);
 									if(_lastmatch == newObjLastMatch && matched != newObj)
 									{
 										anotherMatch = true;

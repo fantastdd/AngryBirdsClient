@@ -198,7 +198,7 @@ public class DebrisToolKit {
 	}
 	private static boolean sameAngle(double diff)
 	{
-		return Math.abs(diff - Math.PI) < MagicParams.AngleTolerance || diff < MagicParams.AngleTolerance;
+		return Math.abs(diff - Math.PI) < MagicParams.AngleTolerance * 2 || diff < MagicParams.AngleTolerance * 2;
 	}
 	private static double getAngle(double x, double y)
 	{

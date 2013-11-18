@@ -272,8 +272,24 @@ public abstract class TrackerTemplate implements Tracker{
 	protected void link(ABObject newObj, ABObject iniObj, boolean isDebris)
 	{
 		newObj.id = iniObj.id;
-		newObj.isDebris = isDebris;
+		if(isDebris && !iniObj.getOriginalShape().isSameShape(newObj))
+		{	
+			newObj.setOriginalShape(iniObj.getOriginalShape());
+			newObj.isDebris = true;
+		}
+		else 
+			newObj.isDebris = false;
 	} 
+	protected void printMatch()
+	{
+		log(" ===========  Print Match ============= ");
+		for (ABObject newObj : matchedObjs.keySet())
+		{
+			System.out.println(" newObj: " + newObj);
+			System.out.println(" initial Obj" + matchedObjs.get(newObj));
+			System.out.println("==========");
+		}
+	}
 	
 	
 	class Pair {

@@ -1,7 +1,7 @@
 package ab.objtracking;
 
 public final class MagicParams {
-	public static final float AngleTolerance = 0.1f; // 15 degree
+	public static final float AngleTolerance = 0.15f; // 5 degree
 	public static final int VisionGap = 3;
 	public static final int DiffTolerance = Integer.MAX_VALUE;
     public static final int MovementTolearance = 5; // within this value considered as static

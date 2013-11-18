@@ -47,11 +47,11 @@ public class Movement {
 	{
 		if (allowPositive == BOUNDING_SCOPE)
 		{
-			allowPositive = object.getBounds().width/2;
+			allowPositive = getBoundingScopeValue();
 		}
 		if (allowNegative == BOUNDING_SCOPE)
 		{
-			allowNegative = object.getBounds().width/2;
+			allowNegative = getBoundingScopeValue();
 		}
 
 		allowedXDirection[2] = allowPositive;
