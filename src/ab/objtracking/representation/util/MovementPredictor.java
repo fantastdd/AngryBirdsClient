@@ -43,37 +43,28 @@ public class MovementPredictor {
 				target = edge.getSource();
 				r = Relation.inverseRelation(r);
 			}
-			String r_str = r.toString().substring(0, 2);
-			
+			Relation left = Relation.getLeftpart(r);
 			if(obj.isLevel)
 			{
-				if (r_str.contains(Relation.S3.toString())||
-						r_str.contains(Relation.S4.toString())
-						|| r_str.contains(Relation.S5.toString()))
+				if( left == Relation.S3 || left == Relation.S4 || left == Relation.S5)
 					break;
 			}
 			else
 				if(obj.isFat)
 				{
-
-					if (r_str.contains(Relation.S3.toString())||
-							r_str.contains(Relation.S4.toString())
-							|| r_str.contains(Relation.S5.toString())
-							|| r_str.contains(Relation.S6.toString())
-							|| r_str.contains(Relation.S7.toString()))
+					if( left == Relation.S3 || left == Relation.S4 || left == Relation.S5
+							|| left == Relation.S6 || left == Relation.S7)
 						break;
+				
 				}
 				else if (obj.angle > Math.PI/2)
 				{
-					if (  r_str.contains(Relation.S6.toString())
-							|| r_str.contains(Relation.S7.toString()))
+					if( left == Relation.S6 || left == Relation.S7)
 						break;
 				} 
 				else if (obj.angle < Math.PI/2)
 				{
-					if ( r_str.contains(Relation.S3.toString())
-							|| r_str.contains(Relation.S4.toString())
-							)
+					if( left == Relation.S3 || left == Relation.S4)
 						break;
 				}
 			if(count == edges.size() - 1)
@@ -179,10 +170,10 @@ public class MovementPredictor {
 					}
 					else
 					if (landmark.angle > Math.PI / 2) {
-						String r_str = r.toString().substring(0, 2);
-						if (r_str.contains(Relation.S1.toString())
-								|| r_str.contains(Relation.S8.toString())
-								|| r_str.contains(Relation.S7.toString())) {
+						Relation left = Relation.getLeftpart(r);
+						if ( left == Relation.S1
+								|| left == Relation.S8
+								|| left == Relation.S7) {
 							Movement movement = new Movement(landmarkMovement,
 									target);
 							movements.put(target, movement);
@@ -192,10 +183,10 @@ public class MovementPredictor {
 					}
 					else if (landmark.angle < Math.PI / 2) 
 					{
-						String r_str = r.toString().substring(0, 2);
-						if (r_str.contains(Relation.S1.toString())
-								|| r_str.contains(Relation.S2.toString())
-								|| r_str.contains(Relation.S3.toString())) {
+						Relation left = Relation.getLeftpart(r);
+						if ( left == Relation.S1
+								|| left == Relation.S2
+								|| left == Relation.S3) {
 							Movement movement = new Movement(landmarkMovement,
 									target);
 							movements.put(target, movement);

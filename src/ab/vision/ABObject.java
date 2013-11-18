@@ -2,9 +2,6 @@ package ab.vision;
 
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 import ab.objtracking.MagicParams;
 import ab.vision.real.ImageSegmenter;
@@ -137,7 +134,16 @@ public boolean isLevel()
 {
 	return isLevel;
 }
-
+@Override 
+public int hashCode()
+{
+	 int hash = 1;
+     hash = hash * 17 + type.hashCode();
+     //hash = hash * 31 + id;
+     hash = hash * 13 + (int)getCenterX();
+     hash = hash * 67 + (int)getCenterY();
+     return hash;
+}
 @Override
 public boolean equals(Object body) {
 

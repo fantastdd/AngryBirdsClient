@@ -75,8 +75,12 @@ public class GSRConstructor {
 					//System.out.println(sourceVertex + "  " + targetVertex);
 					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
 					//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
-				}
+				} else
+					{
+						graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, Relation.Unassigned));
+						//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, Relation.Unassigned));
 			}
+				}
 		}
 		return graph;
 		
@@ -301,6 +305,7 @@ public class GSRConstructor {
 	}
 	public static void printNetwork(Graph<ABObject, ConstraintEdge> network){
 		
+		//System.out.println(network);
 		for (ABObject vertex: network.vertexSet())
 		{
 			System.out.println(" vertex: " + vertex);
@@ -341,9 +346,11 @@ public class GSRConstructor {
 		
 	}
 	public static void main(String[] args) {
-		Rect rec1 = new Rect(576.0, 331.0, 12.031, 15.169, 1.257, -1, 180);
-		Rect rec2 = new Rect(579.0,343.0, 12.007, 12.388, 2.827, -1, 144);
-		System.out.println(rec1.isLevel);
+		//Rect: id:2 type:rec8x1 area:208 w:  4.697 h: 52.162 a:  2.545 at x:543.5 y:344.0 isDebris:false [ S2_S6 ] 
+		//Rect: id:3 type:rec2x1 area:72 w:  6.119 h: 12.205 a:  2.545 at x:533.0 y:343.5 isDebris:false
+		Rect rec1 = new Rect(543.5, 344.0, 4.697, 52.162, 2.545, -1, 208);
+		Rect rec2 = new Rect(533.0,343.5, 6.119, 12.205, 2.545, -1, 72);
+		//System.out.println(rec1.isLevel);
 		/*FOR (LINE2D LINE : REC1.SECTORS)
 		{
 			SYSTEM.OUT.PRINTLN(LINE.GETP1() + "  " + LINE.GETP2());

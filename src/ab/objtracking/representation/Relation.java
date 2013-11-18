@@ -1,6 +1,12 @@
 package ab.objtracking.representation;
 
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.DijkstraShortestPath;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
+
 public enum Relation {
+	
 	Invalid,Invalid_1, Invalid_2,
 	Unknown,
 	Unassigned,
@@ -34,6 +40,89 @@ public enum Relation {
 	private  Relation left;
 	private  Relation right;
 	private Relation(){}
+	private static UndirectedGraph<Relation,DefaultEdge> graph; //neighbor graph
+	private static DijkstraShortestPath<Relation, DefaultEdge> shortestPath;
+	public static boolean isNeighbor(Relation r1, Relation r2)
+	{
+		if(r1 == r2)
+			return true;
+		if(graph.getEdge(r1, r2) == null)
+			return false;
+		return true;
+	}
+	
+	public static boolean isNeighbor(Relation r1, Relation r2, int dis)
+	{
+		if(r1 == r2)
+			return true;
+		shortestPath = new DijkstraShortestPath<Relation, DefaultEdge>(graph, r1, r2);
+		
+		//System.out.println(shortestPath.getPathLength());
+		if(shortestPath.getPathLength() < dis)
+			return true;
+		return false;
+	}
+	
+    static 
+    {
+    	System.out.println(" Generate Neighborhood graph ");
+    	graph = new SimpleGraph<Relation, DefaultEdge>(DefaultEdge.class);
+    	//Serialize later;
+    	for (Relation relation : Relation.values())
+    	{
+    		 graph.addVertex(relation);
+    	}
+    	
+    	for (Relation relation: Relation.values()){
+    		
+    		/*if(relation != Relation.Unassigned)
+    			graph.addEdge(relation, Relation.Unassigned);*/
+    		switch(relation)
+    		{
+	    		case S1_S3: graph.addEdge(S1_S3, S1_S4); graph.addEdge(S1_S3, S8_S3); break;
+	    		case S1_S4: graph.addEdge(S1_S4, S1_S3); graph.addEdge(S1_S4, S1_S5); graph.addEdge(S1_S4, S8_S4); break;
+	    		case S1_S5: graph.addEdge(S1_S5, S1_S6); graph.addEdge(S1_S5, S1_S4); graph.addEdge(S1_S5, S2_S5); graph.addEdge(S1_S5, S8_S5); break;
+	    		case S1_S6: graph.addEdge(S1_S6, S1_S7); graph.addEdge(S1_S6, S1_S5); graph.addEdge(S1_S6, S2_S6); break;
+	    		case S1_S7: graph.addEdge(S1_S7, S1_S6); graph.addEdge(S1_S7, S2_S7); break;
+	    		
+	    		case S2_S5: graph.addEdge(S2_S5, S2_S6); graph.addEdge(S2_S5, S1_S5); graph.addEdge(S2_S5, S3_S5); break;
+	    		case S2_S6: graph.addEdge(S2_S6, S2_S7); graph.addEdge(S2_S6, S2_S5); graph.addEdge(S2_S6, S1_S6); graph.addEdge(S2_S6, S3_S6); graph.addEdge(S2_S6, S3_S7); graph.addEdge(S2_S6, S1_S5);break;
+	    		case S2_S7: graph.addEdge(S2_S7, S2_S6); graph.addEdge(S2_S7, S1_S7); graph.addEdge(S2_S7, S3_S7); break;
+	    		
+	    		case S3_S1: graph.addEdge(S3_S1, S3_S8); graph.addEdge(S3_S1, S4_S1); break; 
+	    		case S3_S5: graph.addEdge(S3_S5, S3_S6); graph.addEdge(S3_S5, S2_S5); break;
+	    		case S3_S6: graph.addEdge(S3_S6, S3_S7); graph.addEdge(S3_S6, S3_S5); graph.addEdge(S3_S6, S2_S6); break;
+	    		case S3_S7: graph.addEdge(S3_S7, S3_S8); graph.addEdge(S3_S7, S3_S6); graph.addEdge(S3_S7, S2_S7); graph.addEdge(S3_S7,S4_S7); break;
+	    		case S3_S8: graph.addEdge(S3_S8, S3_S7); graph.addEdge(S3_S8, S3_S1); graph.addEdge(S3_S8, S4_S8); break;
+	    		
+	    		case S4_S7: graph.addEdge(S4_S7, S4_S8); graph.addEdge(S4_S7, S3_S7); graph.addEdge(S4_S7, S5_S7); break;
+	    		case S4_S8: graph.addEdge(S4_S8, S4_S1); graph.addEdge(S4_S8, S4_S7); graph.addEdge(S4_S8, S3_S8); graph.addEdge(S4_S8, S5_S8); graph.addEdge(S4_S8, S5_S1); graph.addEdge(S4_S8, S7_S3);break;
+	    		case S4_S1: graph.addEdge(S4_S1, S4_S8); graph.addEdge(S4_S1, S3_S1); graph.addEdge(S4_S1, S5_S1); break;
+	    		
+	    		case S5_S1: graph.addEdge(S5_S1, S5_S2); graph.addEdge(S5_S1, S5_S8); graph.addEdge(S5_S1, S4_S1); graph.addEdge(S5_S1, S6_S1); break;
+	    		case S5_S2: graph.addEdge(S5_S2, S5_S1); graph.addEdge(S5_S2, S5_S3); graph.addEdge(S5_S2, S6_S2); break;
+	    		case S5_S3: graph.addEdge(S5_S3, S5_S2); graph.addEdge(S5_S3, S6_S3); break; 
+	    		case S5_S7: graph.addEdge(S5_S7, S5_S8); graph.addEdge(S5_S7, S4_S7); break;
+	    		case S5_S8: graph.addEdge(S5_S8, S5_S1); graph.addEdge(S5_S8, S5_S7); graph.addEdge(S5_S8, S4_S8); break;
+	    		
+	    		case S6_S1: graph.addEdge(S6_S1, S6_S2); graph.addEdge(S6_S1, S5_S1); graph.addEdge(S6_S1, S7_S1); break;
+	    		case S6_S2: graph.addEdge(S6_S2, S6_S3); graph.addEdge(S6_S2, S6_S1); graph.addEdge(S6_S2, S5_S2); graph.addEdge(S6_S2, S7_S2); graph.addEdge(S6_S2, S7_S3); graph.addEdge(S6_S2, S5_S1);break;
+	    		case S6_S3: graph.addEdge(S6_S3, S6_S2); graph.addEdge(S6_S3, S5_S3); graph.addEdge(S6_S3, S7_S3); break;
+	    		
+	    		case S7_S1: graph.addEdge(S7_S1, S7_S2); graph.addEdge(S7_S1, S6_S1); break;
+	    		case S7_S2: graph.addEdge(S7_S2, S7_S3); graph.addEdge(S7_S2, S7_S1); graph.addEdge(S7_S2, S6_S2); break;
+	    		case S7_S3: graph.addEdge(S7_S3, S7_S2); graph.addEdge(S7_S3, S7_S4); graph.addEdge(S7_S3, S6_S3); graph.addEdge(S7_S3, S8_S3); break;
+	    		case S7_S4: graph.addEdge(S7_S4, S7_S3); graph.addEdge(S7_S4, S7_S5); graph.addEdge(S7_S4, S8_S4); break; 
+	    		case S7_S5: graph.addEdge(S7_S5, S7_S4); graph.addEdge(S7_S5, S8_S5); break;
+	    		
+	    		case S8_S3: graph.addEdge(S8_S3, S8_S4); graph.addEdge(S8_S3, S7_S3); graph.addEdge(S8_S3, S1_S3); break;
+	    		case S8_S4: graph.addEdge(S8_S4, S8_S3); graph.addEdge(S8_S4, S8_S5); graph.addEdge(S8_S4, S7_S4); graph.addEdge(S8_S4, S1_S4); graph.addEdge(S8_S4, S1_S5); graph.addEdge(S8_S4, S3_S7); break;
+	    		case S8_S5: graph.addEdge(S8_S5, S8_S4); graph.addEdge(S8_S5, S7_S5); graph.addEdge(S8_S5, S1_S5);
+	    		
+	    		default: break;
+		}
+    	}
+    }
 	private Relation(Relation left, Relation right)
 	{
 		this.left = left;
@@ -201,7 +290,7 @@ public enum Relation {
 		}
 	}
 	public static void main(String args[])
-	{
-		System.out.println(Relation.getRightpart(Relation.TOP));
+	{ 
+		System.out.println(Relation.isNeighbor(Relation.S6_S2, Relation.S4_S8, 3));
 	}
 }

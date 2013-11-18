@@ -50,12 +50,12 @@ public abstract class Body extends ABObject
     }
     @Override
     public int hashCode() {
-        int hash = 1;
-        hash = hash * 17 + vision_type;
-        hash = hash * 31 + id;
-        hash = hash * 13 + (int)centerX;
-        hash = hash * 67 + (int)centerY;
-        return hash;
+    	 int hash = 1;
+         hash = hash * 17 + type.hashCode();
+         //hash = hash * 31 + id;
+         hash = hash * 13 + (int)getCenterX();
+         hash = hash * 67 + (int)getCenterY();
+         return hash;
     }
     @Override
     public boolean equals(Object body)

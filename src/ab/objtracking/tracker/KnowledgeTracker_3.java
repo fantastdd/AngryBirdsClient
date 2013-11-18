@@ -26,9 +26,9 @@ import ab.vision.real.shape.Rect;
  * Create Prefs by taking object categories into consideration
  * Detects explosion/debris
  * Analyze neighbor movement trend, Neighbor: which hold GR relations
- * 
+ * Do isomorphic check
  * */
-public class KnowledgeTracker_2 extends SMETracker {
+public class KnowledgeTracker_3 extends SMETracker {
 
 
 	public DirectedGraph<ABObject, ConstraintEdge> initialNetwork, newNetwork;
@@ -56,12 +56,12 @@ public class KnowledgeTracker_2 extends SMETracker {
 
 
 		//initialObjsMovement.putAll(occludedObjsMovement);
-		/*log(" Print New Coming Network");
-		GSRConstructor.printNetwork(newNetwork);*/
+		log(" Print New Coming Network");
+		GSRConstructor.printNetwork(newNetwork);
 		
-
+/*
 		log("isomorphism Check: ");
-		System.out.println(IsomorphismTest.isIsomorphic(newNetwork, initialNetwork));
+		System.out.println(IsomorphismTest.isIsomorphic(newNetwork, initialNetwork));*/
 		
 		prefs = new HashMap<ABObject, List<Pair>>();
 		iniPrefs = new HashMap<ABObject, List<Pair>>();
@@ -471,9 +471,11 @@ public class KnowledgeTracker_2 extends SMETracker {
 				}
 			}
 
-
+			isomorphismProcess(initialNetwork, newNetwork);
+			
 			this.setInitialObjects(objs);
 			
+			//GSRConstructor.printNetwork(newNetwork);
 			//printPrefs(prefs);
 			/*log(" Print all Objects (next frame) after matching");
 			for (ABObject obj : objs)
@@ -485,8 +487,54 @@ public class KnowledgeTracker_2 extends SMETracker {
 		return false;
 	}
 
-
-
+/**
+ * Retain only those iniObjs:
+	1: has been matched
+	2: matched objs are not debris 
+ * */
+	protected void isomorphismProcess(DirectedGraph<ABObject, ConstraintEdge> iniNetwork, DirectedGraph<ABObject, ConstraintEdge> newNetwork)
+	{
+		for (ABObject obj : matchedObjs.keySet())
+		{
+			ABObject initialObj = matchedObjs.get(obj);
+			if(initialObj != null)
+			{
+			    if(obj.isDebris)
+			    {
+			    	newNetwork.removeVertex(obj);
+			    	iniNetwork.removeVertex(initialObj);
+			    }
+			}
+			else
+				newNetwork.removeVertex(obj);
+		}
+		for (ABObject obj : currentOccludedObjs)
+		{
+			iniNetwork.removeVertex(obj);
+		}
+		
+		log("print initial network");
+		GSRConstructor.printNetwork(iniNetwork);
+		log("print newNetwork");
+		GSRConstructor.printNetwork(newNetwork);
+		if (! IsomorphismTest.isIsomorphic(newNetwork, iniNetwork))
+		{
+			ABObject source = IsomorphismTest.getLastConflictSource();
+			ABObject target = IsomorphismTest.getLastConflictTarget();
+			if(source != null ){
+				int temp = source.id;
+				source.id = target.id;
+				target.id = temp;
+			}
+			/*log(" Conflict Pair");
+			System.out.println(source);
+			System.out.println(target);*/
+		}
+		else
+			log(" Isomorphic");
+		
+		
+	}
 
 	public static void main(String args[])
 	{
