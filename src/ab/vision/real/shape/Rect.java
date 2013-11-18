@@ -162,8 +162,9 @@ public class Rect extends Body
     	}
     	return false;
     }
-    @Override
-    public boolean isSameSize(ABObject ao)
+   
+    
+    protected boolean isSameSize(ABObject ao)
     {
     	if (ao instanceof Rect)
     	{
@@ -263,6 +264,6 @@ public class Rect extends Body
 	
 	public String toString()
 	{
-		return String.format("Rect: id:%d type:%s Area:%d w:%7.3f h:%7.3f a:%7.3f at x:%5.1f y:%5.1f isDebris:%b", id, rectType, area, preciseWidth, preciseHeight, angle, centerX, centerY, isDebris);
+		return String.format("Rect: id:%d type:%s Area:%d w:%7.3f h:%7.3f a:%3.3f at x:%3.1f y:%3.1f isDebris:%b", id, rectType, area, preciseWidth, preciseHeight, angle, centerX, centerY, isDebris);
 	}
 }

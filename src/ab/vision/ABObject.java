@@ -80,10 +80,7 @@ public boolean isSameShape(ABObject ao)
 		return true;
 	return false;
 }
-public boolean isSameSize(ABObject ao)
-{
-	return isSameShape(ao);
-}
+
 public ABPoint getCenter() {
 	
    return new ABPoint(getCenterX(), getCenterY());
