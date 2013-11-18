@@ -1,4 +1,4 @@
-package ab.objtracking.representation.util;
+package ab.objtracking.dynamic;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,15 +8,88 @@ import java.util.Set;
 import org.jgrapht.DirectedGraph;
 
 import ab.objtracking.representation.ConstraintEdge;
-import ab.objtracking.representation.Movement;
 import ab.objtracking.representation.Relation;
 import ab.vision.ABObject;
 
 public class MovementPredictor {
 	
+	/**
+	 * 
+	 * Adjust movement on GRFullNetwork
+	 * 
+	 * */
 	
+	public static Movement adjustMovementOnAll(Movement movement, DirectedGraph<ABObject, ConstraintEdge> network)
+	{
+		ABObject obj = movement.object;
+		int count = -1;
+		Set<ConstraintEdge> edges = network.edgesOf(obj);
+		if(edges.isEmpty())
+		{
+			movement.setAllowedYDirection(Movement.POSITIVE, Movement.MAX_SCOPE);
+			if(obj.angle > Math.PI/2 && movement.getAllowedXDirection(Movement.POSITIVE) == Movement.NOT_ALLOWED)
+				movement.setAllowedXDirection(Movement.POSITIVE, Movement.BOUNDING_SCOPE);
+				else
+					if(obj.angle < Math.PI/2 && movement.getAllowedXDirection(Movement.NEGATIVE) == Movement.NOT_ALLOWED){
+						movement.setAllowedXDirection(Movement.NEGATIVE, Movement.BOUNDING_SCOPE);
+			}
+		}
+		for (ConstraintEdge edge: edges)
+		{
+			count ++;
+			ABObject target = edge.getTarget();
+			Relation r = edge.label;
+			// Note, debris all have the same ID.
+			if (target.id == obj.id) {
+				target = edge.getSource();
+				r = Relation.inverseRelation(r);
+			}
+			Relation left = Relation.getLeftpart(r);
+			if(obj.isLevel)
+			{
+				if( left == Relation.S3 || left == Relation.S4 || left == Relation.S5)
+					break;
+			}
+			else
+				if(obj.isFat)
+				{
+					if( left == Relation.S3 || left == Relation.S4 || left == Relation.S5
+							|| left == Relation.S6 || left == Relation.S7)
+						break;
+				
+				}
+				else if (obj.angle > Math.PI/2)
+				{
+					if( left == Relation.S6 || left == Relation.S7)
+						break;
+				} 
+				else if (obj.angle < Math.PI/2)
+				{
+					if( left == Relation.S3 || left == Relation.S4)
+						break;
+				}
+			
+			if(count == edges.size() - 1)
+			{	
+				movement.setAllowedYDirection(Movement.POSITIVE, Movement.MAX_SCOPE);
+				if(obj.angle > Math.PI/2 && movement.getAllowedXDirection(Movement.POSITIVE) == Movement.NOT_ALLOWED)
+					movement.setAllowedXDirection(Movement.POSITIVE, Movement.BOUNDING_SCOPE);
+					else
+						if(obj.angle < Math.PI/2 &&  movement.getAllowedXDirection(Movement.NEGATIVE) == Movement.NOT_ALLOWED){
+							movement.setAllowedXDirection(Movement.NEGATIVE, Movement.BOUNDING_SCOPE);
+				}
+			}
+		}
+		
+		return movement;
+	}
 	
-	public static Movement adjustMovement(Movement movement, DirectedGraph<ABObject, ConstraintEdge> network)
+	/**
+	 * 
+	 * Adjust movement on GRNetwork
+	 * 
+	 * */
+	public static Movement adjustMovementOnGR(Movement movement, DirectedGraph<ABObject, ConstraintEdge> network)
 	{
 		ABObject obj = movement.object;
 		//check whether the obj is supported

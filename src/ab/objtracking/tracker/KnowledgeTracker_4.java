@@ -28,13 +28,15 @@ import ab.vision.real.shape.Rect;
  * Detects explosion/debris
  * Analyze neighbor movement trend, Neighbor: which hold GR relations
  * Do isomorphic check
+ * 
  * Solve Dynamic Problems
+ * Add Debris Collector
  * */
 public class KnowledgeTracker_4 extends SMETracker {
 
 
-	public DirectedGraph<ABObject, ConstraintEdge> initialNetwork, newNetwork;
-	protected Map<ABObject, Movement> initialObjsMovement = new HashMap<ABObject, Movement>();
+	public DirectedGraph<ABObject, ConstraintEdge> iniGRNetwork, newGRNetwork, iniGRFullNetwork;
+	protected Map<ABObject, Movement> iniObjsMovement = new HashMap<ABObject, Movement>();
 	protected List<DebrisGroup> debrisGroupList;
 	protected List<ABObject> debrisList;
 
@@ -42,16 +44,17 @@ public class KnowledgeTracker_4 extends SMETracker {
 	public void createPrefs(List<ABObject> objs) 
 	{
 	
-		initialNetwork = GSRConstructor.constructGRNetwork(initialObjs);
-		newNetwork = GSRConstructor.constructGRNetwork(objs);
+		iniGRNetwork = GSRConstructor.constructGRNetwork(initialObjs);
+		//iniGRFullNetwork = GSRConstructor.constructFullNetwork(initialObjs);
+		newGRNetwork = GSRConstructor.constructGRNetwork(objs);
 		debrisList = new LinkedList<ABObject>();
 		//If no previous movement detected
-		if(initialObjsMovement.isEmpty()){
+		if(iniObjsMovement.isEmpty()){
 
-			initialObjsMovement = MovementPredictor.predict(initialNetwork);
+			iniObjsMovement = MovementPredictor.predict(iniGRNetwork);
 		}  
 		//Create dummy debris
-	    debrisGroupList = DebrisToolKit.getAllDummyRectangles(newNetwork);
+	    debrisGroupList = DebrisToolKit.getAllDummyRectangles(newGRNetwork);
 		for (DebrisGroup debris : debrisGroupList)
 		{
 			
@@ -64,8 +67,9 @@ public class KnowledgeTracker_4 extends SMETracker {
 		//initialObjsMovement.putAll(occludedObjsMovement);
 		//log(" Print New Coming Network");
 		//GSRConstructor.printNetwork(newNetwork);
-		log(" Print Initial Network");
-		GSRConstructor.printNetwork(initialNetwork);
+		
+		//log(" Print Initial Network");
+		//GSRConstructor.printNetwork(iniGRNetwork);
 
 		prefs = new HashMap<ABObject, List<Pair>>();
 		iniPrefs = new HashMap<ABObject, List<Pair>>();
@@ -79,13 +83,13 @@ public class KnowledgeTracker_4 extends SMETracker {
 
 				if(objType == iniObj.type)
 				{
-					Movement movement = initialObjsMovement.get(iniObj);
+					Movement movement = iniObjsMovement.get(iniObj);
 					
 					if( movement != null)
 					{
-						//Evaluate movement by taking spatial change into consideration
-						movement = MovementPredictor.adjustMovement(movement, initialNetwork);
-						System.out.println(movement);
+						//Evaluate movement by taking spatial change into consideration, evaluating on iniGRFullNetwork
+						movement = MovementPredictor.adjustMovementOnGR(movement, iniGRNetwork);
+						//System.out.println(movement);
 						/*if(iniObj.id == 6)
 							System.out.println("\n movement " + movement + "\n" + obj + "  xshift " + (int)(obj.getCenterX() - iniObj.getCenterX()) + " yshift " + (int)(obj.getCenterY() - iniObj.getCenterY()) + 
 						
@@ -119,7 +123,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 			Collections.sort(iniPrefs.get(iniObj), new PairComparator());
 		}
 		newComingObjs = objs;
-		initialObjsMovement.clear();
+		iniObjsMovement.clear();
 		printPrefs(iniPrefs);
 		//printPrefs(prefs);
 	}
@@ -265,7 +269,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 									break;
 								}
 							}
-							System.out.println(" Original Shape: " + _initialObj);
+							//System.out.println(" Original Shape: " + _initialObj);
 							
 						}
 						/*if(_initialObj.id == 4)
@@ -464,23 +468,32 @@ public class KnowledgeTracker_4 extends SMETracker {
 			objs.addAll(currentOccludedObjs);
 			objs.removeAll(occludedObjsBuffer); // remove all the remembered occluded objects from the previous frame. We only buffer one frame.
 			occludedObjsBuffer.addAll(currentOccludedObjs);
-			//Those who has the same id and has rectangular shape 
-
+			
+			//Remove unused Debris Group
+			for (DebrisGroup group : debrisGroupList)
+			{
+				if(!group.member1.isDebris || !group.member2.isDebris )
+					objs.remove(group);
+			}
+			
+			
+			
+			
 			//Set Initial Objs Movements
-			initialObjsMovement.clear();
+			iniObjsMovement.clear();
 			for (ABObject obj : matchedObjs.keySet())
 			{
 				ABObject initial = matchedObjs.get(obj);
 				if(initial != null){
 					Movement movement = new Movement(obj);
 					movement.generateInertia(initial);
-					initialObjsMovement.put(obj, movement);
+					iniObjsMovement.put(obj, movement);
 					/*if(obj.id == 7)
 						System.out.println(" Generate Initial " + " obj " + obj + " initial " + initial + " " +movement);*/
 				}
 			}
 
-			isomorphismProcess(initialNetwork, newNetwork, objs);
+			isomorphismProcess(iniGRNetwork, newGRNetwork, objs);
 			
 			this.setInitialObjects(objs);
 			

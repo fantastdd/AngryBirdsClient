@@ -145,11 +145,18 @@ public class DebrisToolKit {
 		}
 		return false;
 	}
-	
+	/*
+	 * Return true if debris and newObj can form initialObj
+	 * 
+	 * If debris and newObj can form a bigger shape, but the shape is bigger than initialObj, then return true;
+	 * **/
 	public static boolean isSameDebris(ABObject debris, Rect initialObj, ABObject newObj)
 	{
 		if(debris.type == newObj.type)
 		{
+			if(debris.isSameShape(initialObj))
+				return false;
+			
 			Rect dummy = debris.extend(initialObj.rectType);
 			//Relation r = GSRConstructor.computeRectToRectRelation(debris, initialObj);
 			Polygon p = dummy.p;

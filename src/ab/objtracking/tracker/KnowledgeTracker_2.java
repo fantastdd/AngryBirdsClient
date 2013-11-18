@@ -9,12 +9,12 @@ import java.util.Map;
 import org.jgrapht.DirectedGraph;
 
 import ab.objtracking.MagicParams;
+import ab.objtracking.dynamic.Movement;
+import ab.objtracking.dynamic.MovementPredictor;
 import ab.objtracking.isomorphism.IsomorphismTest;
 import ab.objtracking.representation.ConstraintEdge;
-import ab.objtracking.representation.Movement;
 import ab.objtracking.representation.util.DebrisToolKit;
 import ab.objtracking.representation.util.GSRConstructor;
-import ab.objtracking.representation.util.MovementPredictor;
 import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.real.shape.DebrisGroup;
@@ -79,7 +79,7 @@ public class KnowledgeTracker_2 extends SMETracker {
 					if( movement != null)
 					{
 						//Evaluate movement by taking spatial change into consideration
-						movement = MovementPredictor.adjustMovement(movement, initialNetwork);
+						movement = MovementPredictor.adjustMovementOnGR(movement, initialNetwork);
 						
 						/*if(iniObj.id == 6)
 							System.out.println("\n movement " + movement + "\n" + obj + "  xshift " + (int)(obj.getCenterX() - iniObj.getCenterX()) + " yshift " + (int)(obj.getCenterY() - iniObj.getCenterY()) + 

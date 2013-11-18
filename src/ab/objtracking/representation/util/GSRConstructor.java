@@ -53,9 +53,7 @@ public class GSRConstructor {
 			{
 				ABObject targetVertex = objs.get(j);
 				Relation r = computeRelation(sourceVertex, targetVertex);
-				Relation ri = Relation.inverseRelation(r);
-				graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
-				graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
+				graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));	
 			}
 		}
 		return graph;
@@ -125,7 +123,7 @@ public class GSRConstructor {
 				if(r.toString().contains("S"))
 				{
 					//Relation ri = Relation.inverseRelation(r);
-					System.out.println(sourceVertex + "  " + targetVertex);
+					//System.out.println(sourceVertex + "  " + targetVertex);
 					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
 					//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
 				} else

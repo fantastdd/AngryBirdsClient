@@ -1,4 +1,4 @@
-package ab.objtracking.representation;
+package ab.objtracking.dynamic;
 
 import ab.objtracking.MagicParams;
 import ab.vision.ABObject;
@@ -14,7 +14,7 @@ public class Movement {
 	public static final int WeakMovement = 1;
 	public static final int NoMovement = 0;
 	
-	public static final int MAX_SCOPE = Integer.MAX_VALUE;
+	public static final int MAX_SCOPE = 1200;
 	public static final int BOUNDING_SCOPE = 0;
 	public static final int NOT_ALLOWED = -1;
 	
@@ -140,7 +140,8 @@ public class Movement {
 		
 		int xMovementType = getMovementType(xshift);
 		int yMovementType = getMovementType(yshift);
-		
+		/*if(obj.id == 15)
+			System.out.println(yMovementType);*/
 		//System.out.println(" initial " + obj + "  y " + this.object.getCenterY() + " oy: " + obj.getCenterY() +" yshift " + yshift + " y direction: " + ydirection);
 		if(xMovementType > NormalMovement)
 		{
@@ -168,15 +169,16 @@ public class Movement {
 	
 		} 
 		else if (yMovementType > WeakMovement)
-		{
-				
-			
+		{		
 				if(ydirection > 0 )
 					setAllowedYDirection(MAX_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
 				else
 					setAllowedYDirection(BOUNDING_SCOPE, MAX_SCOPE, MAX_SCOPE);
-		
 			
+		} 
+		else
+		{
+			setAllowedYDirection(BOUNDING_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
 		}
 	}
 	public void setDirectionAndType(int xshift, int yshift)
@@ -256,40 +258,24 @@ public class Movement {
 	   StringBuilder result = new StringBuilder();
 	   result.append(object);
 
-		   if(allowedXDirection[0] == -1)
-			   result.append(" Unallowed Negative X ");
-		   else
-			   result.append(" Allowed Negative X: " + allowedXDirection[0]);
+	    result.append("  X[-] : " + allowedXDirection[0]);
+		
+	    result.append("	 X[o] : " + allowedXDirection[1] );
 		   
-		   if(allowedXDirection[1] == -1)
-				   result.append(" Unallowed Static X ");
-		   else
-			   result.append(" Allowed Static X" );
-		   
-		   if(allowedXDirection[2] == -1)
-			   		result.append(" Unallowed Positive X ");
-		   else
-			   result.append(" Allowed Positive X: " + allowedXDirection[2]);
+	    result.append("  X[+] : " + allowedXDirection[2]);
 	
-		   if(allowedYDirection[0] == -1)
-			   result.append(" Unallowed Negative Y ");
-		   else
-			   result.append(" Allowed Negative Y: " + allowedYDirection[0]);
-		   if(allowedYDirection[1] == -1)
-				   result.append(" Unallowed Static Y ");
-		   else
-			   result.append(" Allowed Static Y: ");
+	    result.append("  Y[-] : " + allowedYDirection[0]);
+		
+		result.append("  Y[o] : " + allowedYDirection[1]);
 		   
-		   if(allowedYDirection[2] == -1)
-			   		result.append(" Unallowed Positive Y ");
-		   else
-			   result.append(" Allowed Positive Y: " + allowedYDirection[2]);
+        result.append("  Y[+] : " + allowedYDirection[2]);
 	
 	   switch (movementType)
 	   {
 		   case StrongMovement: result.append(" Strong Movement");break;
 		   case NormalMovement: result.append(" Normal Movement"); break;
 		   case WeakMovement: result.append(" Weak Movement"); break;
+		   case NoMovement: result.append(" NO Movement"); break;
 		   default: result.append(" Unclear Movement "); break;
 	   }
 	   return result.toString();

@@ -63,6 +63,14 @@ public class Poly extends Body
     	
     			
     	}
+    	else
+    	{
+    		if(isDebris)
+    			{
+    				return ao.isSameShape(getOriginalShape());
+    			}
+    		
+    	}
     	return false;
     }
     @Override

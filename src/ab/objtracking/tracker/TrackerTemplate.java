@@ -51,7 +51,7 @@ public abstract class TrackerTemplate implements Tracker{
 			if (pair.obj.equals(rivalObject))
 				return false;
 		}
-		System.out.println("Error in prefers ");
+		System.out.println("Error in prefs ");
 		return false;
 	}
 

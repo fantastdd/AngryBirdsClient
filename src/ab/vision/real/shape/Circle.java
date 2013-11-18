@@ -47,6 +47,14 @@ public class Circle extends Body
     	{
     		//if (Math.abs(r - ((Circle)ao).r) < MagicParams.VisionGap)
     				return true;
+    	}  
+    	else
+    	{
+    		if(isDebris)
+    			{
+    				return ao.isSameShape(getOriginalShape());
+    			}
+    		
     	}
     	return false;
     }
@@ -99,6 +107,6 @@ public class Circle extends Body
 	
 	public String toString()
 	{
-		return String.format("Circ: id:%d type:%s r:%7.3f at x:%5.1f y:%5.1f", id, type, r, centerX, centerY);
+		return String.format("Circ: id:%d type:%s r:%7.3f at x:%5.1f y:%5.1f isDebris: %b", id, type, r, centerX, centerY, isDebris);
 	}
 }

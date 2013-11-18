@@ -166,11 +166,10 @@ public class Rect extends Body
     
     protected boolean isSameSize(ABObject ao)
     {
-    	if (ao instanceof Rect)
-    	{
-    		Rect _rect = (Rect)ao;
-    		double ratio = ((area > _rect.area)? ((double)area/_rect.area) : ((double)_rect.area/area));
-    		if (  (Math.abs(rectType.id - _rect.rectType.id) < 2 )&&
+    
+    	Rect _rect = (Rect)ao;
+    	double ratio = ((area > _rect.area)? ((double)area/_rect.area) : ((double)_rect.area/area));
+    	if (  (Math.abs(rectType.id - _rect.rectType.id) < 2 )&&
     				 ( ratio < MagicParams.AreaRatio
     						 || (getPreciseWidth() < MagicParams.SlimRecWidth && ao.getPreciseWidth() < MagicParams.SlimRecWidth )
     						 ))
@@ -180,7 +179,7 @@ public class Rect extends Body
     		double _height = ao.getPreciseHeight();
     		if( Math.abs(preciseWidth - _width) < MagicParams.VisionGap/5 && Math.abs(preciseHeight - _height) < MagicParams.VisionGap/5);
     			return true;*/
-    	}
+    	
     	return false;
     }
     public Rect(int box[], int t)
