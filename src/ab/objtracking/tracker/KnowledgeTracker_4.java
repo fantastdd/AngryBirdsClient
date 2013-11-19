@@ -65,8 +65,8 @@ public class KnowledgeTracker_4 extends SMETracker {
 		//newNetwork =  GSRConstructor.constructGRNetwork(objs);
 
 		//initialObjsMovement.putAll(occludedObjsMovement);
-		//log(" Print New Coming Network");
-		//GSRConstructor.printNetwork(newNetwork);
+		log(" Print New Coming Network");
+		GSRConstructor.printNetwork(newGRNetwork);
 		
 		//log(" Print Initial Network");
 		//GSRConstructor.printNetwork(iniGRNetwork);
@@ -89,7 +89,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 					{
 						//Evaluate movement by taking spatial change into consideration, evaluating on iniGRFullNetwork
 						movement = MovementPredictor.adjustMovementOnGR(movement, iniGRNetwork);
-						System.out.println(movement);
+						//System.out.println(movement);
 						/*if(iniObj.id == 6)
 							System.out.println("\n movement " + movement + "\n" + obj + "  xshift " + (int)(obj.getCenterX() - iniObj.getCenterX()) + " yshift " + (int)(obj.getCenterY() - iniObj.getCenterY()) + 
 						
@@ -195,6 +195,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 		/*for (ABObject iniObj : initialObjs)
 			System.out.println("@@@" + iniObj);*/
 		currentOccludedObjs.addAll(initialObjs);
+		
 		for (ABObject newObj : newObjs) 
 		{
 			
@@ -213,7 +214,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 					pointer++;
 			}
 			newObj.id = ABObject.unassigned;
-			// log(" unmatched new object: " + newObj + "  " + (newObj.type != ABType.Pig) + " " + pair);
+			 //log(" unmatched new object: " + newObj);
 
 			if (pair != null)
 			{
@@ -462,19 +463,28 @@ public class KnowledgeTracker_4 extends SMETracker {
 			for (ABObject occludedObj : currentOccludedObjs)
 				System.out.println(occludedObj);
 
-			//printMatch();
+			printMatch();
 			
+			/*log("Print Occlude Objects Buffer");
+			for (ABObject obj : occludedObjsBuffer)
+				System.out.println(obj);*/
 			
 			objs.addAll(currentOccludedObjs);
+			
+			// remove all the matched objs from occludedObjsBuffer (the pre of the pre frame may contain an occluded obj that is matched now)
+			occludedObjsBuffer.removeAll(matchedObjs.keySet());
+			// only retain those which have been matched;
+			//objs.retainAll(matchedObjs.keySet());
+			
 			objs.removeAll(occludedObjsBuffer); // remove all the remembered occluded objects from the previous frame. We only buffer one frame.
 			occludedObjsBuffer.addAll(currentOccludedObjs);
 			
 			//Remove unused Debris Group
-			for (DebrisGroup group : debrisGroupList)
+			/*for (DebrisGroup group : debrisGroupList)
 			{
 				if(!group.member1.isDebris || !group.member2.isDebris )
 					objs.remove(group);
-			}
+			}*/
 			
 			
 			

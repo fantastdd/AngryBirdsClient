@@ -52,6 +52,8 @@ public abstract class Body extends ABObject
     public int hashCode() {
     	 int hash = 1;
          hash = hash * 17 + type.hashCode();
+         hash = hash * 31 + shape.hashCode();
+         hash = hash * 93 + (int)(angle * 1000);
          //hash = hash * 31 + id;
          hash = hash * 13 + (int)getCenterX();
          hash = hash * 67 + (int)getCenterY();

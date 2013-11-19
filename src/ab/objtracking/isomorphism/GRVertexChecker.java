@@ -12,9 +12,7 @@ public class GRVertexChecker<V extends ABObject, E extends ConstraintEdge> imple
 	@Override
 	public boolean equivalenceCompare(V arg1, V arg2, Graph<V, E> context1,
 			Graph<V, E> context2) {
-		/*if(arg1.id == arg2.id)
-			return true;
-		return false;*/
+		
 		/*System.out.println(" ==== Vertex Check ==== ");
 		System.out.println(arg1);
 		System.out.println(arg2);*/

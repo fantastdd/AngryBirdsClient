@@ -178,7 +178,7 @@ public class Movement {
 		} 
 		else
 		{
-			setAllowedYDirection(BOUNDING_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
+			//setAllowedYDirection(BOUNDING_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
 		}
 	}
 	public void setDirectionAndType(int xshift, int yshift)

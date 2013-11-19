@@ -28,7 +28,7 @@ public class GREdgeChecker<V extends ABObject, E extends ConstraintEdge> impleme
 				r2 = Relation.inverseRelation(r2);
 			}
 		
-		/*System.out.println(" ============ ");
+	/*	System.out.println(" ============ ");
 		System.out.println(arg1);
 		System.out.println(arg2);
 		System.out.println(Relation.isNeighbor(arg1.label, arg2.label));*/

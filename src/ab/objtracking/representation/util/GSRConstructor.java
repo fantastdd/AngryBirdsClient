@@ -120,6 +120,7 @@ public class GSRConstructor {
 				Relation r = computeRelation(sourceVertex, targetVertex);
 				/*if(sourceVertex.id == 4)
 					log(sourceVertex + "   "  + targetVertex + "  " + r);*/
+			if(!sourceVertex.isLevel && !targetVertex.isLevel)
 				if(r.toString().contains("S"))
 				{
 					//Relation ri = Relation.inverseRelation(r);

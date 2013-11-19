@@ -154,8 +154,8 @@ public class DebrisToolKit {
 	{
 		if(debris.type == newObj.type)
 		{
-			if(debris.isSameShape(initialObj))
-				return false;
+			/*if(debris.isSameShape(initialObj))
+				return false;*/
 			
 			Rect dummy = debris.extend(initialObj.rectType);
 			//Relation r = GSRConstructor.computeRectToRectRelation(debris, initialObj);
