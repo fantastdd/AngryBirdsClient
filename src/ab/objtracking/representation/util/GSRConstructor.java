@@ -120,18 +120,23 @@ public class GSRConstructor {
 				Relation r = computeRelation(sourceVertex, targetVertex);
 				/*if(sourceVertex.id == 4)
 					log(sourceVertex + "   "  + targetVertex + "  " + r);*/
-			if(!sourceVertex.isLevel && !targetVertex.isLevel)
-				if(r.toString().contains("S"))
+			//if(!sourceVertex.isLevel && !targetVertex.isLevel)
+				String str = r.toString();
+			    if(str.length() > 3)
 				{
-					//Relation ri = Relation.inverseRelation(r);
-					//System.out.println(sourceVertex + "  " + targetVertex);
-					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
-					//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
-				} else
+			    	str = str.substring(0,3);
+					if(str.contains("_"))
 					{
-						graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, Relation.Unassigned));
-						//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, Relation.Unassigned));
-			}
+						//Relation ri = Relation.inverseRelation(r);
+						//System.out.println(sourceVertex + "  " + targetVertex);
+						graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
+						//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
+					} else
+						{
+							graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, Relation.Unassigned));
+							//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, Relation.Unassigned));
+				}
+							}
 				}
 		}
 		return graph;
@@ -226,27 +231,57 @@ public class GSRConstructor {
 			if (index < 4)
 			{
 				index = index * 2 + 1;
-				switch(index)
-				{
-					case 1: return Relation.getRelation(1, 5);
-					case 3: return Relation.getRelation(3, 7);
-					case 5: return Relation.getRelation(5, 1);
-					case 7: return Relation.getRelation(7, 3);
-					default: return Relation.Invalid_1;
-				}
+				if(!source.isLevel && !target.isLevel)
+					switch(index)
+					{
+						case 1: return Relation.getRelation(1, false, 5, false);
+						case 3: return Relation.getRelation(3, false, 7, false);
+						case 5: return Relation.getRelation(5, false, 1, false);
+						case 7: return Relation.getRelation(7, false, 3, false);
+						default: return Relation.Invalid_1;
+					}
+				else
+					if(source.isLevel && target.isLevel)
+					{
+						switch(index)
+						{
+							case 1: return Relation.getRelation(1, true, 5, true);
+							case 3: return Relation.getRelation(3, true, 7, true);
+							case 5: return Relation.getRelation(5, true, 1, true);
+							case 7: return Relation.getRelation(7, true, 3, true);
+							default: return Relation.Invalid_1;
+						}
+					}
+					else
+						return Relation.Invalid_2;
 			} 
 			else
 			{
 				index -= 4;	
 				index = index * 2 + 1;
-				switch(index)
-				{
-					case 1: return Relation.getRelation(5, 1);
-					case 3: return Relation.getRelation(7, 3);
-					case 5: return Relation.getRelation(1, 5);
-					case 7: return Relation.getRelation(3, 7);
-					default: return Relation.Invalid_1;
-				}
+				if(!source.isLevel && !target.isLevel)
+					switch(index)
+					{
+						case 1: return Relation.getRelation(5, false, 1, false);
+						case 3: return Relation.getRelation(7, false, 3, false);
+						case 5: return Relation.getRelation(1, false, 5, false);
+						case 7: return Relation.getRelation(3, false, 7, false);
+						default: return Relation.Invalid_1;
+					}
+				else
+					if(source.isLevel && target.isLevel)
+					{
+						switch(index)
+						{
+							case 1: return Relation.getRelation(5, true, 1, true);
+							case 3: return Relation.getRelation(7, true, 3, true);
+							case 5: return Relation.getRelation(1, true, 5, true);
+							case 7: return Relation.getRelation(3, true, 7, true);
+							default: return Relation.Invalid_1;
+						}
+					}
+					else
+						return Relation.Invalid_2;
 			}
 			
 	/*		if(sIndex%2 == 1)
@@ -281,7 +316,7 @@ public class GSRConstructor {
 		else 
 			{
 			  
-			   Relation r =  Relation.getRelation(sIndex, tIndex);
+			   Relation r =  Relation.getRelation(sIndex, source.isLevel, tIndex, target.isLevel);
 			   //System.out.println(sIndex + "  " + tIndex);
 			   /*if(r == Relation.Invalid && source.id == 3 && target.id == 4){
 				 	System.out.println(source + "  " + target + "  " + (sIndex + 1) + "  " + (tIndex + 1) + "  " + minDistance);
