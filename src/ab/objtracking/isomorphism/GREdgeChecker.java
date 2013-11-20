@@ -28,7 +28,7 @@ public class GREdgeChecker<V extends ABObject, E extends ConstraintEdge> impleme
 				r2 = Relation.inverseRelation(r2);
 			}
 		
-	/*	System.out.println(" ============ ");
+		/*System.out.println(" ============ ");
 		System.out.println(arg1);
 		System.out.println(arg2);
 		System.out.println(Relation.isNeighbor(arg1.label, arg2.label));*/
@@ -36,7 +36,7 @@ public class GREdgeChecker<V extends ABObject, E extends ConstraintEdge> impleme
 		
 	/*	Relation r1 = (arg1.getSource().id == arg2.getSource().id)? arg1.label : Relation.inverseRelation(arg1.label);
 		Relation r2 = (arg1.getSource().id == arg2.getSource().id)? arg2.label : Relation.inverseRelation(arg2.label);*/
-		if((r1 == Relation.Unassigned || r2 == Relation.Unassigned) || Relation.isNeighbor(r1, r2, 3))
+		if((r1 == Relation.Unassigned || r2 == Relation.Unassigned) || Relation.isNeighbor(r1, r2, 2))
 			return true;
 		
 		lastConflictSource = arg1.getSource();

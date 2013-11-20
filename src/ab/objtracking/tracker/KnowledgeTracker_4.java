@@ -55,18 +55,18 @@ public class KnowledgeTracker_4 extends SMETracker {
 		}  
 		//Create dummy debris
 	    debrisGroupList = DebrisToolKit.getAllDummyRectangles(newGRNetwork);
-		for (DebrisGroup debris : debrisGroupList)
+		/*for (DebrisGroup debris : debrisGroupList)
 		{
 			
 			System.out.println(String.format(" Debris:%s \n member1:%s \n member2:%s ", debris, debris.member1, debris.member2));
-		}
+		}*/
 		objs.addAll(debrisGroupList);	
 		//Reconstruct after adding the debris
 		//newNetwork =  GSRConstructor.constructGRNetwork(objs);
 
 		//initialObjsMovement.putAll(occludedObjsMovement);
-		log(" Print New Coming Network");
-		GSRConstructor.printNetwork(newGRNetwork);
+		//log(" Print New Coming Network");
+		//GSRConstructor.printNetwork(newGRNetwork);
 		
 		//log(" Print Initial Network");
 		//GSRConstructor.printNetwork(iniGRNetwork);
@@ -96,7 +96,9 @@ public class KnowledgeTracker_4 extends SMETracker {
 									movement.isValidMovement((int)(obj.getCenterX() - iniObj.getCenterX()), (int)(obj.getCenterY() - iniObj.getCenterY()), false));*/
 					
 					}
-					if(movement == null || movement.isValidMovement((int)(obj.getCenterX() - iniObj.getCenterX()), (int)(obj.getCenterY() - iniObj.getCenterY()), false) )
+					if(movement == null ||
+					movement.isValidMovement((int)(obj.getCenterX() - iniObj.getCenterX()), (int)(obj.getCenterY() - iniObj.getCenterY()), false)
+				)
 					{
 						float squareShift = calMassShift(obj, iniObj);
 						boolean sameShape = iniObj.isSameShape(obj);
@@ -124,7 +126,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 		}
 		newComingObjs = objs;
 		iniObjsMovement.clear();
-		printPrefs(iniPrefs);
+		//printPrefs(iniPrefs);
 		//printPrefs(prefs);
 	}
 
@@ -463,7 +465,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 			for (ABObject occludedObj : currentOccludedObjs)
 				System.out.println(occludedObj);
 
-			printMatch();
+			//printMatch();
 			
 			/*log("Print Occlude Objects Buffer");
 			for (ABObject obj : occludedObjsBuffer)
@@ -532,6 +534,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 		for (ABObject obj : newObjs)
 		{
 			ABObject initialObj = matchedObjs.get(obj);
+		
 			/*System.out.println("==============");
 			System.out.println(obj);
 			System.out.println(initialObj);*/
@@ -551,7 +554,9 @@ public class KnowledgeTracker_4 extends SMETracker {
 			    	}
 			}
 			else
-				newNetwork.removeVertex(obj);
+				{
+					newNetwork.removeVertex(obj);
+				}
 		}
 		removedInitialObjs.removeAll(matchedDebrisIniObjs);
 		for (ABObject obj: removedInitialObjs)

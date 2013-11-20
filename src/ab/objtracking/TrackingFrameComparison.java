@@ -56,10 +56,7 @@ public class TrackingFrameComparison implements Runnable {
 	@Override
 	public void run() {
 		
-		
-			BufferedImage prevScreenshot, nextScreenshot = null;
-			
-			
+		    BufferedImage prevScreenshot, nextScreenshot = null;
 			// get list of images to process
 			File[] images = null;
 			//Buffered results

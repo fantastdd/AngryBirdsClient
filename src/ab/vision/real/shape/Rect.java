@@ -154,10 +154,6 @@ public class Rect extends Body
     	{
     		//Rect _rect = (Rect)ao;
     		if (isSameSize(ao))
-    				/*&&( Math.abs((Math.PI - angle - _rect.angle)) < 0.5 ||(
-    					Math.abs(angle - _rect.angle) < 0.5 || (rectType == RectType.rec1x1)*///)
-    						/*( ( Math.abs(height/width) - 1)  < 0.01 
-    					&& ( Math.PI/2 - Math.abs(angle - _rect.angle) < 0.1))*///)))//  Math.PI/6 < 0.6 < Math.PI/4
     				return true;
     	}
     	return false;

@@ -129,6 +129,8 @@ public class GSRConstructor {
 					{
 						//Relation ri = Relation.inverseRelation(r);
 						//System.out.println(sourceVertex + "  " + targetVertex);
+						/*if(targetVertex.id == 15 && sourceVertex.id == 14)
+							System.out.println("@@@" + r);*/
 						graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
 						//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
 					} else
@@ -231,6 +233,7 @@ public class GSRConstructor {
 			if (index < 4)
 			{
 				index = index * 2 + 1;
+				//System.out.println(" tIndex" + tIndex + " sIndex " + sIndex + index);
 				if(!source.isLevel && !target.isLevel)
 					switch(index)
 					{
@@ -253,7 +256,30 @@ public class GSRConstructor {
 						}
 					}
 					else
-						return Relation.Invalid_2;
+					{
+						if(source.isLevel)
+						{
+							switch(index)
+							{
+								case 1: return Relation.getRelation(1, true, 6, false);
+								case 3: return Relation.getRelation(3, true, 0, false);
+								case 5: return Relation.getRelation(5, true, 2, false);
+								case 7: return Relation.getRelation(7, true, 4, false);
+								default: return Relation.Invalid_1;
+							}
+						} 
+						else
+							switch(index)
+							{
+							
+								case 1: return Relation.getRelation(6, false, 1, true);
+								case 3: return Relation.getRelation(0, false, 3, true);
+								case 5: return Relation.getRelation(2, false, 5, true);
+								case 7: return Relation.getRelation(4, false, 7, true);
+								default: return Relation.Invalid_1;
+							}
+					}
+						
 			} 
 			else
 			{
@@ -281,53 +307,89 @@ public class GSRConstructor {
 						}
 					}
 					else
-						return Relation.Invalid_2;
+					{
+						if(source.isLevel)
+						{
+							switch(index)
+							{
+								case 1: return Relation.getRelation(6, true, 1, false);
+								case 3: return Relation.getRelation(0, true, 3, false);
+								case 5: return Relation.getRelation(2, true, 5, false);
+								case 7: return Relation.getRelation(4, true, 7, false);
+								default: return Relation.Invalid_1;
+							}
+						} 
+						else
+							switch(index)
+							{
+								case 1: return Relation.getRelation(1, false, 6, true);
+								case 3: return Relation.getRelation(3, false, 0, true);
+								case 5: return Relation.getRelation(5, false, 2, true);
+								case 7: return Relation.getRelation(7, false, 4, true);
+								default: return Relation.Invalid_1;
+							}
+					}
 			}
 			
-	/*		if(sIndex%2 == 1)
-			{
-				
-				switch(sIndex)
-				{
-					case 1: return Relation.getRelation(1, 5);
-					case 3: return Relation.getRelation(3, 7);
-					case 5: return Relation.getRelation(5, 1);
-					case 7: return Relation.getRelation(7, 3);
-					default: return Relation.Invalid_1;
-				}
-			} else
-				if(tIndex%2 == 1)
-				{
-					switch(tIndex)
-					{
-						case 1: return Relation.getRelation(5, 1);
-						case 3: return Relation.getRelation(7, 3);
-						case 5: return Relation.getRelation(1, 5);
-						case 7: return Relation.getRelation(3, 7);
-						default: return Relation.Invalid_1;
-					}
-				}
-				else
-					{
-						//System.out.println(sIndex + "  " + tIndex + "  " + source + "  " + target);
-						log(" Error in  computeRectToRectContactRelation");
-					}*/
 		}
 		else 
 			{
-			  
-			   Relation r =  Relation.getRelation(sIndex, source.isLevel, tIndex, target.isLevel);
-			   //System.out.println(sIndex + "  " + tIndex);
-			   /*if(r == Relation.Invalid && source.id == 3 && target.id == 4){
-				 	System.out.println(source + "  " + target + "  " + (sIndex + 1) + "  " + (tIndex + 1) + "  " + minDistance);
-				   	for (Line2D line : source.sectors)
-				   		System.out.println(line.getP1() + "  " + line.getP2());
-				   	System.out.println("--------------------");
-				   	for (Line2D line : target.sectors)
-				   		System.out.println(line.getP1() + "  " + line.getP2());
-				   	System.out.println("--------------------");
-				  
-				   }*/
+			//System.out.println(sIndex + "  "+ tIndex);
+			  boolean sameDir = (source.angle - Math.PI/2) * (target.angle - Math.PI/2) > 0;
+			// Corner Scenario: S5 -> S2 is possible only when the two rects have the same leaning direction
+			if (sIndex == 4 && tIndex == 1 )
+			{
+				if ( sameDir)	
+					tIndex = 7;
+			
+			} 
+			else 
+				if (sIndex == 1 && tIndex == 4 )
+				{
+					if ( sameDir)	
+					sIndex = 7;
+			
+				} 
+				
+			else
+				if(sIndex == 0 && tIndex == 3)
+				{
+					if(sameDir)
+						tIndex = 5; 
+				}
+			
+				else
+					if(sIndex == 3 && tIndex == 0)
+					{
+						if(sameDir)
+							sIndex = 5; 
+					}
+				else
+				if(sIndex == 2 && tIndex == 7)
+				{
+					if( sameDir)
+						tIndex = 5; 
+				}
+				else
+			if(sIndex == 7 && tIndex == 2)
+			{
+				if( sameDir)
+					sIndex = 5; 
+			}
+				else if(sIndex == 6 && tIndex == 1)
+				{
+					if( sameDir)
+						tIndex = 3; 
+				}
+				else
+			if(sIndex == 1 && tIndex == 6)
+			{
+				if( sameDir)
+					sIndex = 3; 
+			}
+		
+			Relation r =  Relation.getRelation(sIndex, source.isLevel, tIndex, target.isLevel);
+			
 			   return r;
 			}
 		
@@ -435,10 +497,10 @@ public class GSRConstructor {
 	public static void main(String[] args) {
 		//Rect: id:2 type:rec8x1 area:208 w:  4.697 h: 52.162 a:  2.545 at x:543.5 y:344.0 isDebris:false [ S2_S6 ] 
 		//Rect: id:3 type:rec2x1 area:72 w:  6.119 h: 12.205 a:  2.545 at x:533.0 y:343.5 isDebris:false
-		Rect rec1 = new Rect(547.5, 329.5, 6.216, 25.171, 1.477, -1, 150);
-		Rect rec2 = new Rect(555.0,348.5, 6, 25, 1.571, -1, 150);
-		System.out.println(rec1.isLevel);
-		for (Line2D line : rec2.sectors)
+		Rect rec2 = new Rect(607.5, 327.5, 4.995, 25.206, 0.597, -1, 100);
+		Rect rec1 = new Rect(600,348.5, 6.181, 25.474, 1.728, -1, 150);
+		System.out.println(rec1.isLevel + "  " + rec2.isLevel);
+		for (Line2D line : rec1.sectors)
 		{
 			System.out.println(line.getP1() + "  " + line.getP2());
 		}

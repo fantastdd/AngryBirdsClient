@@ -22,8 +22,7 @@ public abstract class TrackerTemplate implements Tracker{
 	List<ABObject> unmatchedMoreObjs;
 	Map<ABObject, ABObject> matchedObjs;
 	List<ABObject> newComingObjs;
-	boolean startTracking = false;
-
+	private boolean startTracking = false;
 	protected void log(String message) {
 		System.out.println(message);
 	}

@@ -119,7 +119,7 @@ public class MovementPredictor {
 			Relation left = Relation.getLeftpart(r);
 			if(obj.isLevel)
 			{
-				if( left == Relation.S3 || left == Relation.S4 || left == Relation.S5)
+				if( left == Relation.R3 || left == Relation.R4 || left == Relation.R5)
 					break;
 			}
 			else
