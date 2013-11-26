@@ -39,7 +39,7 @@ public class GSRConstructor {
 	public static List<Set<ABObject>> getAllKinematicsGroup(DirectedGraph<ABObject, ConstraintEdge> grnetwork)
 	{
 
-		//printNetwork(grnetwork);
+		
 
 		List<Set<ABObject>> allGroups = new LinkedList<Set<ABObject>>();
 
@@ -63,6 +63,8 @@ public class GSRConstructor {
 			//System.out.println("======== print o1 ======");
 			for (ConstraintEdge edge : o1set)
 			{
+				if(edge.distance > MagicParams.VisionGap)
+					continue;
 				ABObject vertex = edge.getTarget();
 				if(vertex != o1)
 					v1set.add(vertex);
@@ -93,6 +95,8 @@ public class GSRConstructor {
 					Set<ABObject> sameLabelSet = new HashSet<ABObject>();
 					for (ConstraintEdge edge : o2set)
 					{
+						if(edge.distance > MagicParams.VisionGap)
+							continue;
 						ABObject vertex = edge.getTarget();
 						int vertexDegree = grnetwork.inDegreeOf(vertex) + grnetwork.outDegreeOf(vertex);
 						Relation _r = edge.label;
@@ -169,17 +173,12 @@ public class GSRConstructor {
 		}
 		allGroups.removeAll(subsets);
 
+		//printNetwork(grnetwork);
 		//printGroup(allGroups);
 		
 		return allGroups;
 		
-		/*Map<ABObject, Set<ABObject>> groupMap = new HashMap<ABObject, Set<ABObject>>();
-		for (Set<ABObject> objs : allGroups)
-		{
-			for (ABObject obj : objs)
-				groupMap.put(obj, objs);
-		}
-		return groupMap;*/
+	
 	}
 	
 	private static void printGroup(List<Set<ABObject>> allGroups)
@@ -232,12 +231,13 @@ public class GSRConstructor {
 			for (int j = i + 1; j < objs.size(); j++ )
 			{
 				ABObject targetVertex = objs.get(j);
-				Relation r = computeRelation(sourceVertex, targetVertex);
+				RelationPair pair = computeRelation(sourceVertex, targetVertex);
 				if (sourceVertex.equals(targetVertex))
 					System.out.println(" Duplicate: " + sourceVertex + "  " + sourceVertex.hashCode() + "  " + targetVertex + "  " + targetVertex.hashCode());
-				fullGraph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));	
-				if(Relation.isGRRelation(r))
-					grGraph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
+				
+				fullGraph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, pair.r, pair.distance));	
+				if(Relation.isGRRelation(pair.r))
+					grGraph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, pair.r, pair.distance));
 			}
 		}
 		graphs.add(fullGraph);
@@ -270,8 +270,8 @@ public class GSRConstructor {
 			for (int j = i + 1; j < objs.size(); j++ )
 			{
 				ABObject targetVertex = objs.get(j);
-				Relation r = computeRelation(sourceVertex, targetVertex);
-				graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));	
+				RelationPair pair = computeRelation(sourceVertex, targetVertex);
+				graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, pair.r, pair.distance));	
 			}
 		}
 		return graph;
@@ -287,21 +287,21 @@ public class GSRConstructor {
 		{
 			if (vertex.id > obj.id)
 			{
-				Relation r = computeRelation(obj, vertex);
+				RelationPair pair = computeRelation(obj, vertex);
 
-				if(Relation.isGRRelation(r))
-					graph.addEdge(obj, vertex, new ConstraintEdge(obj, vertex, r));
+				if(Relation.isGRRelation(pair.r))
+					graph.addEdge(obj, vertex, new ConstraintEdge(obj, vertex, pair.r, pair.distance));
 				else
-					graph.addEdge(obj, vertex, new ConstraintEdge(obj, vertex, Relation.Unassigned));
+					graph.addEdge(obj, vertex, new ConstraintEdge(obj, vertex, Relation.Unassigned, 0));
 			}
 			else
 				if(obj.id > vertex.id)
 				{
-					Relation r = computeRelation(vertex, obj);
-					if(Relation.isGRRelation(r))
-						graph.addEdge(vertex, obj, new ConstraintEdge(vertex, obj, r));
+					RelationPair pair = computeRelation(vertex, obj);
+					if(Relation.isGRRelation(pair.r))
+						graph.addEdge(vertex, obj, new ConstraintEdge(vertex, obj, pair.r, pair.distance));
 					else
-						graph.addEdge(vertex, obj, new ConstraintEdge(vertex, obj, Relation.Unassigned));
+						graph.addEdge(vertex, obj, new ConstraintEdge(vertex, obj, Relation.Unassigned, 0));
 
 				}
 
@@ -336,13 +336,13 @@ public class GSRConstructor {
 			for (int j = i + 1; j < objs.size(); j++ )
 			{
 				ABObject targetVertex = objs.get(j);
-				Relation r = computeRelation(sourceVertex, targetVertex);
+				RelationPair pair = computeRelation(sourceVertex, targetVertex);
 
 
-				if(Relation.isGRRelation(r))
-					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));	
+				if(Relation.isGRRelation(pair.r))
+					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, pair.r, pair.distance));	
 				else
-					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, Relation.Unassigned));
+					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, Relation.Unassigned, 0));
 
 
 			}
@@ -377,9 +377,9 @@ public class GSRConstructor {
 			for (int j = i + 1; j < objs.size(); j++ )
 			{
 				ABObject targetVertex = objs.get(j);
-				Relation r = computeRelation(sourceVertex, targetVertex);
-				if(Relation.isGRRelation(r))
-					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));	
+				RelationPair pair = computeRelation(sourceVertex, targetVertex);
+				if(Relation.isGRRelation(pair.r))
+					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, pair.r, pair.distance));	
 
 
 			}
@@ -389,13 +389,13 @@ public class GSRConstructor {
 
 
 	}
-	private static Relation computeRelation(ABObject source, ABObject target)
+	private static RelationPair computeRelation(ABObject source, ABObject target)
 	{
 
 		return computeRectToRectRelation(source, target);
 	}
 
-	public static Relation computeRectToRectRelation(ABObject source, ABObject target)
+	public static RelationPair computeRectToRectRelation(ABObject source, ABObject target)
 	{
 		Rectangle mbr_1 = source.getBounds();
 		Rectangle mbr_2 = target.getBounds();
@@ -408,15 +408,15 @@ public class GSRConstructor {
 
 	}
 
-	private static Relation computeRectToRectContactRelation(ABObject source, ABObject target)
+	private static RelationPair computeRectToRectContactRelation(ABObject source, ABObject target)
 	{
 		if (source.type == ABType.Hill)
 		{
-			return Relation.BOTTOM;
+			return new RelationPair(Relation.BOTTOM, 0);
 		} 
 		else
 			if(target.type == ABType.Hill)
-				return Relation.TOP;
+				return new RelationPair(Relation.TOP, 0);
 		Line2D[] sourceSectors = source.sectors;
 		Line2D[] targetSectors = target.sectors;
 		double distance;
@@ -452,6 +452,7 @@ public class GSRConstructor {
 				}	
 			}
 		}
+	
 		// check edge-edge relation, relaxation here
 		double angleDiff;
 		double _sourceAngle, _targetAngle;
@@ -481,22 +482,22 @@ public class GSRConstructor {
 				if(!source.isLevel && !target.isLevel)
 					switch(index)
 					{
-					case 1: return Relation.getRelation(1, false, 5, false);
-					case 3: return Relation.getRelation(3, false, 7, false);
-					case 5: return Relation.getRelation(5, false, 1, false);
-					case 7: return Relation.getRelation(7, false, 3, false);
-					default: return Relation.Invalid_1;
+					case 1: return new RelationPair( Relation.getRelation(1, false, 5, false), minDistance);
+					case 3: return new RelationPair( Relation.getRelation(3, false, 7, false), minDistance);
+					case 5: return new RelationPair( Relation.getRelation(5, false, 1, false), minDistance);
+					case 7: return new RelationPair( Relation.getRelation(7, false, 3, false), minDistance);
+					default: return new RelationPair( Relation.Invalid_1, 0);
 					}
 				else
 					if(source.isLevel && target.isLevel)
 					{
 						switch(index)
 						{
-						case 1: return Relation.getRelation(1, true, 5, true);
-						case 3: return Relation.getRelation(3, true, 7, true);
-						case 5: return Relation.getRelation(5, true, 1, true);
-						case 7: return Relation.getRelation(7, true, 3, true);
-						default: return Relation.Invalid_1;
+						case 1: return new RelationPair( Relation.getRelation(1, true, 5, true), minDistance);
+						case 3: return new RelationPair( Relation.getRelation(3, true, 7, true), minDistance);
+						case 5: return new RelationPair( Relation.getRelation(5, true, 1, true), minDistance);
+						case 7: return new RelationPair( Relation.getRelation(7, true, 3, true), minDistance);
+						default: return new RelationPair( Relation.Invalid_1, 0);
 						}
 					}
 					else
@@ -505,22 +506,22 @@ public class GSRConstructor {
 						{
 							switch(index)
 							{
-							case 1: return Relation.getRelation(1, true, 6, false);
-							case 3: return Relation.getRelation(3, true, 0, false);
-							case 5: return Relation.getRelation(5, true, 2, false);
-							case 7: return Relation.getRelation(7, true, 4, false);
-							default: return Relation.Invalid_1;
+							case 1: return new RelationPair( Relation.getRelation(1, true, 6, false), minDistance);
+							case 3: return new RelationPair( Relation.getRelation(3, true, 0, false), minDistance);
+							case 5: return new RelationPair( Relation.getRelation(5, true, 2, false), minDistance);
+							case 7: return new RelationPair( Relation.getRelation(7, true, 4, false), minDistance);
+							default: return new RelationPair( Relation.Invalid_1, 0);
 							}
 						} 
 						else
 							switch(index)
 							{
 
-							case 1: return Relation.getRelation(6, false, 1, true);
-							case 3: return Relation.getRelation(0, false, 3, true);
-							case 5: return Relation.getRelation(2, false, 5, true);
-							case 7: return Relation.getRelation(4, false, 7, true);
-							default: return Relation.Invalid_1;
+							case 1: return new RelationPair( Relation.getRelation(6, false, 1, true), minDistance);
+							case 3: return new RelationPair( Relation.getRelation(0, false, 3, true), minDistance);
+							case 5: return new RelationPair( Relation.getRelation(2, false, 5, true), minDistance);
+							case 7: return new RelationPair( Relation.getRelation(4, false, 7, true), minDistance);
+							default: return new RelationPair( Relation.Invalid_1, 0);
 							}
 					}
 
@@ -532,22 +533,22 @@ public class GSRConstructor {
 				if(!source.isLevel && !target.isLevel)
 					switch(index)
 					{
-					case 1: return Relation.getRelation(5, false, 1, false);
-					case 3: return Relation.getRelation(7, false, 3, false);
-					case 5: return Relation.getRelation(1, false, 5, false);
-					case 7: return Relation.getRelation(3, false, 7, false);
-					default: return Relation.Invalid_1;
+					case 1: return new RelationPair( Relation.getRelation(5, false, 1, false), minDistance);
+					case 3: return new RelationPair( Relation.getRelation(7, false, 3, false), minDistance);
+					case 5: return new RelationPair( Relation.getRelation(1, false, 5, false), minDistance);
+					case 7: return new RelationPair( Relation.getRelation(3, false, 7, false), minDistance);
+					default: return new RelationPair( Relation.Invalid_1, 0);
 					}
 				else
 					if(source.isLevel && target.isLevel)
 					{
 						switch(index)
 						{
-						case 1: return Relation.getRelation(5, true, 1, true);
-						case 3: return Relation.getRelation(7, true, 3, true);
-						case 5: return Relation.getRelation(1, true, 5, true);
-						case 7: return Relation.getRelation(3, true, 7, true);
-						default: return Relation.Invalid_1;
+						case 1: return new RelationPair( Relation.getRelation(5, true, 1, true), minDistance);
+						case 3: return new RelationPair( Relation.getRelation(7, true, 3, true), minDistance);
+						case 5: return new RelationPair( Relation.getRelation(1, true, 5, true), minDistance);
+						case 7: return new RelationPair( Relation.getRelation(3, true, 7, true), minDistance);
+						default: return new RelationPair( Relation.Invalid_1, 0);
 						}
 					}
 					else
@@ -556,21 +557,21 @@ public class GSRConstructor {
 						{
 							switch(index)
 							{
-							case 1: return Relation.getRelation(6, true, 1, false);
-							case 3: return Relation.getRelation(0, true, 3, false);
-							case 5: return Relation.getRelation(2, true, 5, false);
-							case 7: return Relation.getRelation(4, true, 7, false);
-							default: return Relation.Invalid_1;
+							case 1: return new RelationPair( Relation.getRelation(6, true, 1, false), minDistance);
+							case 3: return new RelationPair( Relation.getRelation(0, true, 3, false), minDistance);
+							case 5: return new RelationPair( Relation.getRelation(2, true, 5, false), minDistance);
+							case 7: return new RelationPair( Relation.getRelation(4, true, 7, false), minDistance);
+							default: return new RelationPair( Relation.Invalid_1, 0);
 							}
 						} 
 						else
 							switch(index)
 							{
-							case 1: return Relation.getRelation(1, false, 6, true);
-							case 3: return Relation.getRelation(3, false, 0, true);
-							case 5: return Relation.getRelation(5, false, 2, true);
-							case 7: return Relation.getRelation(7, false, 4, true);
-							default: return Relation.Invalid_1;
+							case 1: return new RelationPair( Relation.getRelation(1, false, 6, true), minDistance);
+							case 3: return new RelationPair( Relation.getRelation(3, false, 0, true), minDistance);
+							case 5: return new RelationPair( Relation.getRelation(5, false, 2, true), minDistance);
+							case 7: return new RelationPair( Relation.getRelation(7, false, 4, true), minDistance);
+							default: return new RelationPair( Relation.Invalid_1, 0);
 							}
 					}
 			}
@@ -588,8 +589,8 @@ public class GSRConstructor {
 				sIndex = getCorrectSectorIndex(target, source, tIndex, sIndex);
 		}
 		Relation r =  Relation.getRelation(sIndex, source.isLevel, tIndex, target.isLevel);
-
-		return r;
+		RelationPair pair = new RelationPair(r, minDistance);
+		return pair;
 	}
 	private static int getCorrectSectorIndex(ABObject source, ABObject target, int sIndex, int tIndex)
 	{
@@ -688,45 +689,78 @@ public class GSRConstructor {
 		System.out.println(message);
 	}
 	//TODO Perform some relaxiaion here
-	private static Relation computeNonContactRelation(ABObject source, ABObject target, boolean vertical_intersect, boolean horizontal_intersect)
+	private static RelationPair computeNonContactRelation(ABObject source, ABObject target, boolean vertical_intersect, boolean horizontal_intersect)
 	{
 		Point source_center = source.getCenter();
 		Point target_center = target.getCenter();
 		boolean above = source_center.getY() < target_center.getY();
 		boolean left = 	source_center.getX() < target_center.getX();
+		double distance = 0;
 		if (horizontal_intersect)
 		{
+			
 			if(above)
-				return Relation.TOP;
+			{	
+				distance = target.getBounds().getMinY() - source.getBounds().getMaxY();
+				return new RelationPair(Relation.TOP, distance);
+			}
 			else
-				return Relation.BOTTOM;
+			{
+				distance = source.getBounds().getMinY() - target.getBounds().getMaxY();
+				return new RelationPair(Relation.BOTTOM, distance);
+			}
 		}
 		else
 			if(vertical_intersect)
 			{
 				if(left)
-					return Relation.LEFT;
+				{
+					distance = target.getBounds().getMinX() - source.getBounds().getMaxX();
+					return new RelationPair(Relation.LEFT, distance);
+				}
 				else
-					return Relation.RIGHT;
+				{
+					distance = source.getBounds().getMinX() - target.getBounds().getMaxX();
+					return new RelationPair(Relation.RIGHT, distance);
+				}
 			}
 			else 
 			{
 				if(above && left)
-					return Relation.TOP_LEFT;
+				{
+					distance = getDistance(source.getBounds().getMaxX(), source.getBounds().getMaxY(), target.getBounds().getMinX(), target.getBounds().getMinY()); 
+					return new RelationPair(Relation.TOP_LEFT, distance);
+				}
 				else
 					if(above)
-						return Relation.TOP_RIGHT;
+					{	
+						distance = getDistance(source.getBounds().getMinX(), source.getBounds().getMaxY(), target.getBounds().getMaxX(), target.getBounds().getMinY()); 
+						return new RelationPair(Relation.TOP_RIGHT, distance);
+					}
 					else
 						if(left)
-							return Relation.BOTTOM_LEFT;
+						{	
+							distance = getDistance(source.getBounds().getMaxX(), source.getBounds().getMinY(), target.getBounds().getMinX(), target.getBounds().getMaxY()); 
+							return new RelationPair(Relation.BOTTOM_LEFT, distance);
+						}
 						else
-							return Relation.BOTTOM_RIGHT;
+						{
+							distance = getDistance(source.getBounds().getMinX(), source.getBounds().getMinY(), target.getBounds().getMaxX(), target.getBounds().getMaxY());
+							return new RelationPair(Relation.BOTTOM_RIGHT, distance);
+						}
 			}
 
 
 
 	}
-
+	private static double getDistance(double x1, double y1, double x2, double y2)
+	{
+		return Math.sqrt( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+	}
+	private static double getDistance(Point p1, Point p2)
+	{
+		return Math.sqrt( (p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) + (p1.getY() - p2.getY()) * (p1.getY() - p2.getY()));
+	}
 	/*	private static boolean isMBRIntersect(Rectangle mbr_1, Rectangle mbr_2)
 	{
 		if( isIntervalIntersect(mbr_1.x, mbr_1.x + mbr_1.width, mbr_2.x, mbr_2.x + mbr_2.width)
@@ -782,6 +816,7 @@ public class GSRConstructor {
 		}
 
 	}
+
 	public static void main(String[] args) {
 
 
@@ -818,3 +853,4 @@ public class GSRConstructor {
 	}
 
 }
+
