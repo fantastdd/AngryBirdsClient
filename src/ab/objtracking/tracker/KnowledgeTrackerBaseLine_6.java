@@ -630,7 +630,7 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 		if(filename.contains("_"))
 			timegap = Integer.parseInt(filename.substring(filename.indexOf("_") + 1));
 		Tracker tracker = new KnowledgeTrackerBaseLine_6(timegap);
-		TrackingFrameComparison tfc = new TrackingFrameComparison(filename, tracker);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
+		TrackingFrameComparison tfc = new TrackingFrameComparison(filename, tracker, 12, 13);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
 		TrackingFrameComparison.continuous = true;
 		tfc.run();
 	}
