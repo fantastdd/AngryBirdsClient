@@ -241,7 +241,7 @@ public class DebrisToolKit {
 		
 		Rect rect1 = new Rect(578.0, 306.5, 5.691, 31.382, 1.696, -1, 155);
 		Rect rect2 = new Rect(575.0, 328.0, 5.587, 12.281, 1.696, -1, 60);
-		System.out.println(canBeSameDebrisGroup(rect1, rect2, GSRConstructor.computeRectToRectRelation(rect1, rect2)));
+		System.out.println(canBeSameDebrisGroup(rect1, rect2, GSRConstructor.computeRectToRectRelation(rect1, rect2).r));
 	}
 
 }

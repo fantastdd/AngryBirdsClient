@@ -184,41 +184,73 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 			 List<ABObject> list = new ArrayList<ABObject>();
 			 list.addAll(kg);
 			 int n = list.size();
-			 int newn = 0;
-			 while( n > 0)
+			 if( n == 2)
 			 {
-				 newn = 0;
-				 for (int i = 1; i < n - 1; i++ )
-				 {
-					 ABObject o1 = list.get(i - 1);
-					 ABObject newO1 = iniToNewMatch.get(o1);
-					 if(newO1 != null)
+				 ABObject _o1 = list.get(0);
+				 ABObject _newO1 = iniToNewMatch.get(_o1);
+				 if(_newO1 != null){
+					 ABObject _o2 = list.get(1);
+					 ConstraintEdge e;
+					 Relation r;
+					 e = iniFullNetwork.getEdge(_o1, _o2);
+					 if( e == null)
 					 {
-						 ABObject o2 = list.get(i);
-						 ConstraintEdge e;
-						 Relation r;
-						 e = iniFullNetwork.getEdge(o1, o2);
-						 if( e == null)
+						 e = iniFullNetwork.getEdge(_o2, _o1);
+						 r = Relation.inverse(e.label);
+					 }
+					 else
+						  r = e.label;
+					
+					 ABObject _newO2 = iniToNewMatch.get(_o2);
+					 if(_newO2 != null)
+					 {
+						 Relation _r = (GSRConstructor.computeRectToRectRelation(_newO1, _newO2)).r;
+						 //System.out.println(newO1 + "  " + newO2 + "  " + _r + "   " + r);
+						 if ( _r == Relation.inverse(r)) 
 						 {
-							 e = iniFullNetwork.getEdge(o2, o1);
-							 r = Relation.inverse(e.label);
-						 }
-						 else
-							  r = e.label;
-						
-						 ABObject newO2 = iniToNewMatch.get(o2);
-						 if(newO2 != null)
-						 {
-							 Relation _r = GSRConstructor.computeRectToRectRelation(newO1, newO2);
-							 if ( _r == Relation.inverse(r)) 
-							 {
-								 swap( iniToNewMatch, NewToIniMatch, o1, o2, newO1, newO2 );
-								 newn = i;
-							 }
-						 }
-					 }		 
+							 swap( iniToNewMatch, NewToIniMatch, _o1, _o2, _newO1, _newO2 );
+					 }
+					 }
 				 }
-				 n = newn;
+			 }
+			 else{
+				 int newn = 0;
+				 while( n > 0)
+				 {
+					 newn = 0;
+					 for (int i = 1; i < n - 1; i++ )
+					 {
+						 ABObject o1 = list.get(i - 1);
+						 ABObject newO1 = iniToNewMatch.get(o1);
+						 if(newO1 != null)
+						 {
+							 ABObject o2 = list.get(i);
+							 ConstraintEdge e;
+							 Relation r;
+							 e = iniFullNetwork.getEdge(o1, o2);
+							 if( e == null)
+							 {
+								 e = iniFullNetwork.getEdge(o2, o1);
+								 r = Relation.inverse(e.label);
+							 }
+							 else
+								  r = e.label;
+							
+							 ABObject newO2 = iniToNewMatch.get(o2);
+							 if(newO2 != null)
+							 {
+								 Relation _r = (GSRConstructor.computeRectToRectRelation(newO1, newO2)).r;
+								 //System.out.println(newO1 + "  " + newO2 + "  " + _r + "   " + r);
+								 if ( _r == Relation.inverse(r)) 
+								 {
+									 swap( iniToNewMatch, NewToIniMatch, o1, o2, newO1, newO2 );
+									 newn = i;
+								 }
+							 }
+						 }		 
+					 }
+					 n = newn;
+				 }
 			 }
 			 
 		 }
@@ -625,12 +657,12 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 	public static void main(String args[])
 	{
 		//String filename = "speedTest_48";
-		String filename = "e1l6_365";//"e2l6_56";
+		String filename = "e2l3_65";//"e2l6_56";
 		int timegap = 200;
 		if(filename.contains("_"))
 			timegap = Integer.parseInt(filename.substring(filename.indexOf("_") + 1));
 		Tracker tracker = new KnowledgeTrackerBaseLine_6(timegap);
-		TrackingFrameComparison tfc = new TrackingFrameComparison(filename, tracker, 12, 13);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
+		TrackingFrameComparison tfc = new TrackingFrameComparison(filename, tracker);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
 		TrackingFrameComparison.continuous = true;
 		tfc.run();
 	}

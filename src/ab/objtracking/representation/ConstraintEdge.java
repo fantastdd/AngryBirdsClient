@@ -9,12 +9,22 @@ public class ConstraintEdge extends DefaultEdge {
 	 private ABObject source;
      private ABObject target;
      public Relation label;
+     public double distance = 0;
 
+     public ConstraintEdge(ABObject source, ABObject target, Relation label, double distance) {
+         
+         this.source = source;
+         this.target = target;
+         this.label = label;
+         this.distance = distance;
+     }
+     //Just for compatibility;
      public ConstraintEdge(ABObject source, ABObject target, Relation label) {
          
          this.source = source;
          this.target = target;
          this.label = label;
+      
      }
 
      public ABObject getSource() {
