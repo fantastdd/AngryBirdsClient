@@ -31,19 +31,23 @@ public class RealTimeTracking implements Runnable{
 		//the display frame;
 		 ImageSegFrame frame = null;
 		//initialize the tracker
-		 Tracker tracker = new KnowledgeTracker_4();
+		 
+		 Tracker tracker = new KnowledgeTrackerBaseLine_6(300);
 		// initialize the new vision moudle
 		 //MyVision myVision = new MyVision();
 		 
 		 
 		 
-		//long screenshot_time = 0l;
+		//long screenshot_time = System.nanoTime();
+		//long timeGap = 0l;
 		//long vision_process_time = 0l;
 		while (true) {	
 			//long current_time = System.nanoTime();
 			// capture an image
 			BufferedImage screenshot = ActionRobot.doScreenShot();
-			// analyse and show image
+			//timeGap = System.nanoTime() - screenshot_time;
+			//screenshot_time = System.nanoTime();
+			// analyze and show image
 			//screenshot_time = System.nanoTime() - current_time;
 			
 			screenshot = MyVisionUtils.constructImageSegWithTracking(screenshot, tracker);
@@ -58,6 +62,8 @@ public class RealTimeTracking implements Runnable{
 				frame.refresh(screenshot, null);
 			}
 			//System.out.println(" screenshot time : " + screenshot_time + " vision process time " + vision_process_time);
+			
+			//System.out.println(" time gap " + timeGap);
 		}
 	}
 

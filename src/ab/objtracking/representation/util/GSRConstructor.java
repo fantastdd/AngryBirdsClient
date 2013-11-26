@@ -3,10 +3,15 @@ package ab.objtracking.representation.util;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graph;
@@ -26,26 +31,239 @@ import ab.vision.real.MyVision;
 import ab.vision.real.shape.Rect;
 
 public class GSRConstructor {
+
+	/**
+	 * @param grnetwork: network with GR relations
+	 * @return a list of all possible set of objects that have the same kinematics configurations (evaluating by GR relations)
+	 * */
+	public static List<Set<ABObject>> getAllKinematicsGroup(DirectedGraph<ABObject, ConstraintEdge> grnetwork)
+	{
+
+		//printNetwork(grnetwork);
+
+		List<Set<ABObject>> allGroups = new LinkedList<Set<ABObject>>();
+
+		Set<ABObject> vertices = grnetwork.vertexSet();
+
+		ArrayList<ABObject> vlist = new ArrayList<ABObject>();
+		vlist.addAll(vertices);
+		//Sort by ID
+		Collections.sort(vlist, new Comparator<ABObject>(){
+
+			@Override
+			public int compare(ABObject o1, ABObject o2) {
+
+				return ((Integer)o1.id).compareTo(o2.id);
+			}});
+		for (int i = 0; i < vlist.size(); i++)
+		{
+			ABObject o1 = vlist.get(i);
+			Set<ConstraintEdge> o1set = grnetwork.edgesOf(o1);//get all edges;
+			Set<ABObject> v1set = new HashSet<ABObject>();//get neighbor objs: those objects will potentially give force
+			//System.out.println("======== print o1 ======");
+			for (ConstraintEdge edge : o1set)
+			{
+				ABObject vertex = edge.getTarget();
+				if(vertex != o1)
+					v1set.add(vertex);
+				else
+					v1set.add(edge.getSource());
+				//System.out.println(edge);
+			}
+			Set<ABObject> sameGroup = new HashSet<ABObject>();
+			int o1Degree = grnetwork.inDegreeOf(o1) + grnetwork.outDegreeOf(o1);
+			for (int j = 0; j < vlist.size(); j++)
+			{
+				ABObject o2 = vlist.get(j);
+
+				if(v1set.contains(o2))
+				{					
+					ConstraintEdge e;
+					Relation r;
+					e = grnetwork.getEdge(o2, o1);
+					if(e == null)
+					{	
+						e = grnetwork.getEdge(o1, o2);
+						r = Relation.inverse(e.label);
+					}
+					else
+						r = e.label;
+
+					Set<ConstraintEdge> o2set = grnetwork.edgesOf(o2);
+					Set<ABObject> sameLabelSet = new HashSet<ABObject>();
+					for (ConstraintEdge edge : o2set)
+					{
+						ABObject vertex = edge.getTarget();
+						int vertexDegree = grnetwork.inDegreeOf(vertex) + grnetwork.outDegreeOf(vertex);
+						Relation _r = edge.label;
+						if(vertex == o2)
+						{	
+							vertex = edge.getSource();
+							_r = Relation.inverse(_r);
+						}
+						if ( r == _r)
+						{
+							if(vertex != o1 && o1Degree == vertexDegree && vertex.type == o1.type)
+								sameLabelSet.add(vertex);
+						}
+
+					}
+					
+				/*	log("print same group " + o1);
+					if(sameGroup.isEmpty())
+						log("empty group size ");
+					for (ABObject obj : sameGroup)
+					{
+						log(obj + "");
+					}
+					log("\n print same label set " + o2);
+					if(sameLabelSet.isEmpty())
+						log("empty label set size");
+					else
+						for (ABObject obj : sameLabelSet)
+							log(obj + "");
+					 */
+
+					if(sameGroup.isEmpty())
+						sameGroup.addAll(sameLabelSet);
+					else
+						sameGroup.retainAll(sameLabelSet);	
+
+				}
+
+			}
+			sameGroup.add(o1);
+			/*log("\nprint same group before adding " + o1);
+			if(sameGroup.isEmpty())
+				log("\nempty group size ");
+			for (ABObject obj : sameGroup)
+			{
+				log(obj + "");
+			}*/
+
+		/*	log(" add to all groups " + o1);
+			log(allGroups.contains(sameGroup) + "");*/
+
+			if(!allGroups.contains(sameGroup) && sameGroup.size() > 1)
+				allGroups.add(sameGroup);
+
+		}
+
+		//Remove subset stuff
+		List<Set<ABObject>> subsets = new LinkedList<Set<ABObject>>();
+		for (int i = 0; i < allGroups.size() - 1; i++)
+		{
+			Set<ABObject> set1 = allGroups.get(i);
+			for (int j = i + 1; j < allGroups.size(); j++)
+			{
+				Set<ABObject> set2 = allGroups.get(j);
+				if(set1.containsAll(set2))
+					subsets.add(set2);
+				else
+					if(set2.containsAll(set1))
+					{
+						subsets.add(set1);
+						break;
+					}
+			}
+		}
+		allGroups.removeAll(subsets);
+
+		//printGroup(allGroups);
+		
+		return allGroups;
+		
+		/*Map<ABObject, Set<ABObject>> groupMap = new HashMap<ABObject, Set<ABObject>>();
+		for (Set<ABObject> objs : allGroups)
+		{
+			for (ABObject obj : objs)
+				groupMap.put(obj, objs);
+		}
+		return groupMap;*/
+	}
+	
+	private static void printGroup(List<Set<ABObject>> allGroups)
+	{
+		log("\nPrint Group");
+		int count = 0;
+		for (Set<ABObject> objs : allGroups)
+		{
+			System.out.println("======== Group " + ++count + "=========");
+			for (ABObject obj : objs)
+			{
+				System.out.println(obj);
+			}
+
+		}
+		
+	}
 	
 	
+	/***
+	 * @return graphs[]: graphs[0]: Full network, graph[1]: GR network
+	 * Construct two Constraint network: Full and GR
+	 */
+	public static List<DirectedGraph<ABObject, ConstraintEdge>> contructNetworks(List<ABObject> objs)
+	{
+		DirectedGraph<ABObject, ConstraintEdge> fullGraph,grGraph;
+
+		fullGraph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		grGraph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+
+		List<DirectedGraph<ABObject, ConstraintEdge>> graphs = new ArrayList<DirectedGraph<ABObject, ConstraintEdge>>();
+
+		//Sort by ID
+		Collections.sort(objs, new Comparator<ABObject>(){
+
+			@Override
+			public int compare(ABObject o1, ABObject o2) {
+
+				return ((Integer)o1.id).compareTo(o2.id);
+			}});
+		//Create Node
+		for (ABObject obj : objs)
+		{
+			fullGraph.addVertex(obj);
+			grGraph.addVertex(obj);
+		}
+		for ( int i = 0; i < objs.size() - 1; i++ )
+		{
+			ABObject sourceVertex = objs.get(i);
+			for (int j = i + 1; j < objs.size(); j++ )
+			{
+				ABObject targetVertex = objs.get(j);
+				Relation r = computeRelation(sourceVertex, targetVertex);
+				if (sourceVertex.equals(targetVertex))
+					System.out.println(" Duplicate: " + sourceVertex + "  " + sourceVertex.hashCode() + "  " + targetVertex + "  " + targetVertex.hashCode());
+				fullGraph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));	
+				if(Relation.isGRRelation(r))
+					grGraph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
+			}
+		}
+		graphs.add(fullGraph);
+		graphs.add(grGraph);
+		return graphs;
+	}
 	//Construct Constraint network (directed-graph)
 	public static DirectedGraph<ABObject, ConstraintEdge> constructFullNetwork(List<ABObject> objs)
 	{
 		DirectedGraph<ABObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+
+		//Sort by ID
+		Collections.sort(objs, new Comparator<ABObject>(){
+
+			@Override
+			public int compare(ABObject o1, ABObject o2) {
+
+				return ((Integer)o1.id).compareTo(o2.id);
+			}});
+
 		//Create Node
 		for (ABObject obj : objs)
 		{
 			graph.addVertex(obj);
 		}
-		//Sort by ID
-				Collections.sort(objs, new Comparator<ABObject>(){
 
-					@Override
-					public int compare(ABObject o1, ABObject o2) {
-						
-						return ((Integer)o1.id).compareTo(o2.id);
-					}});
-				
 		for ( int i = 0; i < objs.size() - 1; i++ )
 		{
 			ABObject sourceVertex = objs.get(i);
@@ -58,19 +276,20 @@ public class GSRConstructor {
 		}
 		return graph;
 	}
-	
+
 	public static DirectedGraph<ABObject, ConstraintEdge> addVertexToGRNetwork(ABObject obj, DirectedGraph<ABObject, ConstraintEdge> graph)
 	{
-		
+
 		//Create Node
 		graph.addVertex(obj);
-			
+
 		for (ABObject vertex : graph.vertexSet())
 		{
 			if (vertex.id > obj.id)
 			{
 				Relation r = computeRelation(obj, vertex);
-				if(r.toString().contains("S"))
+
+				if(Relation.isGRRelation(r))
 					graph.addEdge(obj, vertex, new ConstraintEdge(obj, vertex, r));
 				else
 					graph.addEdge(obj, vertex, new ConstraintEdge(obj, vertex, Relation.Unassigned));
@@ -79,38 +298,38 @@ public class GSRConstructor {
 				if(obj.id > vertex.id)
 				{
 					Relation r = computeRelation(vertex, obj);
-					if(r.toString().contains("S"))
+					if(Relation.isGRRelation(r))
 						graph.addEdge(vertex, obj, new ConstraintEdge(vertex, obj, r));
 					else
 						graph.addEdge(vertex, obj, new ConstraintEdge(vertex, obj, Relation.Unassigned));
-			
+
 				}
-			
+
 		}
 		return graph;
-		
-		
+
+
 	}
 
 	public static DirectedGraph<ABObject, ConstraintEdge> constructGRNetwork(List<ABObject> objs)
 	{
-		
+
 		DirectedGraph<ABObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
-		//Create Node
-		for (ABObject obj : objs)
-		{
-			graph.addVertex(obj);
-		}
-		
+
+
 		//Sort by ID
 		Collections.sort(objs, new Comparator<ABObject>(){
 
 			@Override
 			public int compare(ABObject o1, ABObject o2) {
-				
+
 				return ((Integer)o1.id).compareTo(o2.id);
 			}});
-		
+		//Create Node
+		for (ABObject obj : objs)
+		{
+			graph.addVertex(obj);
+		}
 		for ( int i = 0; i < objs.size() - 1; i++ )
 		{
 			ABObject sourceVertex = objs.get(i);
@@ -118,39 +337,64 @@ public class GSRConstructor {
 			{
 				ABObject targetVertex = objs.get(j);
 				Relation r = computeRelation(sourceVertex, targetVertex);
-				/*if(sourceVertex.id == 4)
-					log(sourceVertex + "   "  + targetVertex + "  " + r);*/
-			//if(!sourceVertex.isLevel && !targetVertex.isLevel)
-				String str = r.toString();
-			    if(str.length() > 3)
-				{
-			    	str = str.substring(0,3);
-					if(str.contains("_"))
-					{
-						//Relation ri = Relation.inverseRelation(r);
-						//System.out.println(sourceVertex + "  " + targetVertex);
-						/*if(targetVertex.id == 15 && sourceVertex.id == 14)
-							System.out.println("@@@" + r);*/
-						graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));
-						//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, ri));
-					} else
-						{
-							graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, Relation.Unassigned));
-							//graph.addEdge(targetVertex, sourceVertex, new ConstraintEdge(targetVertex, sourceVertex, Relation.Unassigned));
-				}
-							}
-				}
+
+
+				if(Relation.isGRRelation(r))
+					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));	
+				else
+					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, Relation.Unassigned));
+
+
+			}
+
 		}
 		return graph;
-		
-		
+
+
+	}
+	public static DirectedGraph<ABObject, ConstraintEdge> constructGRNetworkWithoutUnassignedRelations(List<ABObject> objs)
+	{
+
+		DirectedGraph<ABObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		//Create Node
+		for (ABObject obj : objs)
+		{
+			graph.addVertex(obj);
+		}
+
+		//Sort by ID
+		Collections.sort(objs, new Comparator<ABObject>(){
+
+			@Override
+			public int compare(ABObject o1, ABObject o2) {
+
+				return ((Integer)o1.id).compareTo(o2.id);
+			}});
+
+		for ( int i = 0; i < objs.size() - 1; i++ )
+		{
+			ABObject sourceVertex = objs.get(i);
+			for (int j = i + 1; j < objs.size(); j++ )
+			{
+				ABObject targetVertex = objs.get(j);
+				Relation r = computeRelation(sourceVertex, targetVertex);
+				if(Relation.isGRRelation(r))
+					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, r));	
+
+
+			}
+
+		}
+		return graph;
+
+
 	}
 	private static Relation computeRelation(ABObject source, ABObject target)
 	{
-	
-		   return computeRectToRectRelation(source, target);
+
+		return computeRectToRectRelation(source, target);
 	}
-	
+
 	public static Relation computeRectToRectRelation(ABObject source, ABObject target)
 	{
 		Rectangle mbr_1 = source.getBounds();
@@ -161,9 +405,9 @@ public class GSRConstructor {
 			return computeRectToRectContactRelation(source, target);
 		else 
 			return computeNonContactRelation(source, target, vertical_intersect, horizontal_intersect);
-		
+
 	}
-	
+
 	private static Relation computeRectToRectContactRelation(ABObject source, ABObject target)
 	{
 		if (source.type == ABType.Hill)
@@ -182,7 +426,7 @@ public class GSRConstructor {
 		/*if(sourceSectors == null)
 			System.out.println(source);*/
 		int[] EdgeSumDist = new int[8];
-	
+
 		for (int i = 0; i < sourceSectors.length; i ++)
 		{
 			Line2D ss = sourceSectors[i];
@@ -195,17 +439,17 @@ public class GSRConstructor {
 					EdgeSumDist[4 + (j - 1)/2] += distance; 
 				}
 				else
-					{
-						distance = ss.ptSegDist(ts.getP1());
-						EdgeSumDist[(i - 1)/2] += distance;
-					}
+				{
+					distance = ss.ptSegDist(ts.getP1());
+					EdgeSumDist[(i - 1)/2] += distance;
+				}
 
-        if (distance <= minDistance)
-         {
-           minDistance = distance;
-           sIndex = i;
-           tIndex = j;
-         }	
+				if (distance <= minDistance)
+				{
+					minDistance = distance;
+					sIndex = i;
+					tIndex = j;
+				}	
 			}
 		}
 		// check edge-edge relation, relaxation here
@@ -213,7 +457,7 @@ public class GSRConstructor {
 		double _sourceAngle, _targetAngle;
 		_sourceAngle =  (source.angle >= Math.PI/2)? source.angle - Math.PI/2: source.angle;
 		_targetAngle =  (target.angle >= Math.PI/2)? target.angle - Math.PI/2: target.angle;
-		
+
 		angleDiff = Math.abs(_sourceAngle - _targetAngle);
 		if (angleDiff < MagicParams.AngleTolerance || angleDiff > Math.PI/2 - MagicParams.AngleTolerance)
 		{
@@ -237,22 +481,22 @@ public class GSRConstructor {
 				if(!source.isLevel && !target.isLevel)
 					switch(index)
 					{
-						case 1: return Relation.getRelation(1, false, 5, false);
-						case 3: return Relation.getRelation(3, false, 7, false);
-						case 5: return Relation.getRelation(5, false, 1, false);
-						case 7: return Relation.getRelation(7, false, 3, false);
-						default: return Relation.Invalid_1;
+					case 1: return Relation.getRelation(1, false, 5, false);
+					case 3: return Relation.getRelation(3, false, 7, false);
+					case 5: return Relation.getRelation(5, false, 1, false);
+					case 7: return Relation.getRelation(7, false, 3, false);
+					default: return Relation.Invalid_1;
 					}
 				else
 					if(source.isLevel && target.isLevel)
 					{
 						switch(index)
 						{
-							case 1: return Relation.getRelation(1, true, 5, true);
-							case 3: return Relation.getRelation(3, true, 7, true);
-							case 5: return Relation.getRelation(5, true, 1, true);
-							case 7: return Relation.getRelation(7, true, 3, true);
-							default: return Relation.Invalid_1;
+						case 1: return Relation.getRelation(1, true, 5, true);
+						case 3: return Relation.getRelation(3, true, 7, true);
+						case 5: return Relation.getRelation(5, true, 1, true);
+						case 7: return Relation.getRelation(7, true, 3, true);
+						default: return Relation.Invalid_1;
 						}
 					}
 					else
@@ -261,25 +505,25 @@ public class GSRConstructor {
 						{
 							switch(index)
 							{
-								case 1: return Relation.getRelation(1, true, 6, false);
-								case 3: return Relation.getRelation(3, true, 0, false);
-								case 5: return Relation.getRelation(5, true, 2, false);
-								case 7: return Relation.getRelation(7, true, 4, false);
-								default: return Relation.Invalid_1;
+							case 1: return Relation.getRelation(1, true, 6, false);
+							case 3: return Relation.getRelation(3, true, 0, false);
+							case 5: return Relation.getRelation(5, true, 2, false);
+							case 7: return Relation.getRelation(7, true, 4, false);
+							default: return Relation.Invalid_1;
 							}
 						} 
 						else
 							switch(index)
 							{
-							
-								case 1: return Relation.getRelation(6, false, 1, true);
-								case 3: return Relation.getRelation(0, false, 3, true);
-								case 5: return Relation.getRelation(2, false, 5, true);
-								case 7: return Relation.getRelation(4, false, 7, true);
-								default: return Relation.Invalid_1;
+
+							case 1: return Relation.getRelation(6, false, 1, true);
+							case 3: return Relation.getRelation(0, false, 3, true);
+							case 5: return Relation.getRelation(2, false, 5, true);
+							case 7: return Relation.getRelation(4, false, 7, true);
+							default: return Relation.Invalid_1;
 							}
 					}
-						
+
 			} 
 			else
 			{
@@ -288,22 +532,22 @@ public class GSRConstructor {
 				if(!source.isLevel && !target.isLevel)
 					switch(index)
 					{
-						case 1: return Relation.getRelation(5, false, 1, false);
-						case 3: return Relation.getRelation(7, false, 3, false);
-						case 5: return Relation.getRelation(1, false, 5, false);
-						case 7: return Relation.getRelation(3, false, 7, false);
-						default: return Relation.Invalid_1;
+					case 1: return Relation.getRelation(5, false, 1, false);
+					case 3: return Relation.getRelation(7, false, 3, false);
+					case 5: return Relation.getRelation(1, false, 5, false);
+					case 7: return Relation.getRelation(3, false, 7, false);
+					default: return Relation.Invalid_1;
 					}
 				else
 					if(source.isLevel && target.isLevel)
 					{
 						switch(index)
 						{
-							case 1: return Relation.getRelation(5, true, 1, true);
-							case 3: return Relation.getRelation(7, true, 3, true);
-							case 5: return Relation.getRelation(1, true, 5, true);
-							case 7: return Relation.getRelation(3, true, 7, true);
-							default: return Relation.Invalid_1;
+						case 1: return Relation.getRelation(5, true, 1, true);
+						case 3: return Relation.getRelation(7, true, 3, true);
+						case 5: return Relation.getRelation(1, true, 5, true);
+						case 7: return Relation.getRelation(3, true, 7, true);
+						default: return Relation.Invalid_1;
 						}
 					}
 					else
@@ -312,88 +556,132 @@ public class GSRConstructor {
 						{
 							switch(index)
 							{
-								case 1: return Relation.getRelation(6, true, 1, false);
-								case 3: return Relation.getRelation(0, true, 3, false);
-								case 5: return Relation.getRelation(2, true, 5, false);
-								case 7: return Relation.getRelation(4, true, 7, false);
-								default: return Relation.Invalid_1;
+							case 1: return Relation.getRelation(6, true, 1, false);
+							case 3: return Relation.getRelation(0, true, 3, false);
+							case 5: return Relation.getRelation(2, true, 5, false);
+							case 7: return Relation.getRelation(4, true, 7, false);
+							default: return Relation.Invalid_1;
 							}
 						} 
 						else
 							switch(index)
 							{
-								case 1: return Relation.getRelation(1, false, 6, true);
-								case 3: return Relation.getRelation(3, false, 0, true);
-								case 5: return Relation.getRelation(5, false, 2, true);
-								case 7: return Relation.getRelation(7, false, 4, true);
-								default: return Relation.Invalid_1;
+							case 1: return Relation.getRelation(1, false, 6, true);
+							case 3: return Relation.getRelation(3, false, 0, true);
+							case 5: return Relation.getRelation(5, false, 2, true);
+							case 7: return Relation.getRelation(7, false, 4, true);
+							default: return Relation.Invalid_1;
 							}
 					}
 			}
-			
+
 		}
 		else 
+		{
+
+			//Find corner
+			if(sIndex%2 == 0)
 			{
-			//System.out.println(sIndex + "  "+ tIndex);
-			  boolean sameDir = (source.angle - Math.PI/2) * (target.angle - Math.PI/2) > 0;
-			// Corner Scenario: S5 -> S2 is possible only when the two rects have the same leaning direction
-			if (sIndex == 4 && tIndex == 1 )
-			{
-				if ( sameDir)	
-					tIndex = 7;
-			
-			} 
-			else 
-				if (sIndex == 1 && tIndex == 4 )
-				{
-					if ( sameDir)	
-					sIndex = 7;
-			
-				} 
-				
+				tIndex = getCorrectSectorIndex(source, target, sIndex, tIndex);						
+			}
 			else
-				if(sIndex == 0 && tIndex == 3)
-				{
-					if(sameDir)
-						tIndex = 5; 
-				}
-			
-				else
-					if(sIndex == 3 && tIndex == 0)
-					{
-						if(sameDir)
-							sIndex = 5; 
-					}
-				else
-				if(sIndex == 2 && tIndex == 7)
-				{
-					if( sameDir)
-						tIndex = 5; 
-				}
-				else
-			if(sIndex == 7 && tIndex == 2)
+				sIndex = getCorrectSectorIndex(target, source, tIndex, sIndex);
+		}
+		Relation r =  Relation.getRelation(sIndex, source.isLevel, tIndex, target.isLevel);
+
+		return r;
+	}
+	private static int getCorrectSectorIndex(ABObject source, ABObject target, int sIndex, int tIndex)
+	{
+		int sIndex1 = (sIndex == 0)? 7 : sIndex - 1;
+		int sIndex2 = sIndex + 1;
+
+		Line2D sector1 = source.sectors[sIndex1];
+		Line2D sector2 = source.sectors[sIndex2];
+		Line2D tsector = target.sectors[tIndex];
+		/*System.out.println(
+		String.format("%d %s %s %d %s %s %b", sIndex1, sector1.getP1(), sector1.getP2(), sIndex2, sector2.getP1(), sector2.getP2(), (sector1.getP1().equals(sector2.getP2()))));*/
+		if(!sectorsTouchPossible(sector1, sector2, tsector))
+		{
+			if(sIndex == 4 && tIndex == 7)
+				tIndex = 1;
+			else if(sIndex == 4 && tIndex == 1 )
+				tIndex = 7;
+			else if(sIndex == 0 && tIndex == 5 )
+				tIndex = 3;
+			else if(sIndex == 0 && tIndex == 3 )
+				tIndex = 5;
+			else if(sIndex == 2 && tIndex == 5 )
+				tIndex = 7;
+			else if(sIndex == 2 && tIndex == 7 )
+				tIndex = 5;
+			else if(sIndex == 6 && tIndex == 1 )
+				tIndex = 3;
+			else if(sIndex == 6 && tIndex == 3 )
+				tIndex = 1;
+		}
+		return tIndex;
+	}
+	/**
+	 * Test whether sector3 can touch the corner of sector1 and sector2 without penetrating.
+	 * */
+	private static boolean sectorsTouchPossible(Line2D sector1, Line2D sector2, Line2D sector3)
+	{
+		double angle1, angle2;
+		Point2D commonCorner = null, corner1 = null, corner2 = null;
+		if (sector1.getP1().equals(sector2.getP1()))
+		{
+			commonCorner = sector1.getP1();
+			corner1 = sector1.getP2();
+			corner2 = sector2.getP2();
+		}
+		else
+			if (sector1.getP1().equals(sector2.getP2()))
 			{
-				if( sameDir)
-					sIndex = 5; 
+				commonCorner = sector1.getP1();
+				corner1 = sector1.getP2();
+				corner2 = sector2.getP1();
 			}
-				else if(sIndex == 6 && tIndex == 1)
+			else
+				if (sector1.getP2().equals(sector2.getP1()))
 				{
-					if( sameDir)
-						tIndex = 3; 
+					commonCorner = sector1.getP2();
+					corner1 = sector1.getP1();
+					corner2 = sector2.getP2();
+				}
+				else if (sector1.getP2().equals(sector2.getP2()))
+				{
+					commonCorner = sector1.getP2();
+					corner1 = sector1.getP1();
+					corner2 = sector2.getP1();
 				}
 				else
-			if(sIndex == 1 && tIndex == 6)
-			{
-				if( sameDir)
-					sIndex = 3; 
-			}
-		
-			Relation r =  Relation.getRelation(sIndex, source.isLevel, tIndex, target.isLevel);
-			
-			   return r;
-			}
-		
-	
+					log("Error in GSRConstructor: sectorsTouchPossible Method");
+
+		angle1 = divide( corner1.getY() - commonCorner.getY(), corner1.getX() - commonCorner.getX());
+		angle2 = divide( corner2.getY() - commonCorner.getY(), corner2.getX() - commonCorner.getX());
+		double angle3 = divide( (sector3.getY1() - sector3.getY2()), (sector3.getX1() - sector3.getX2()));
+		if(angle1 > angle2)
+		{
+			if(angle3 >= angle1 || angle3 <= angle2)
+				return true;
+			else
+				return false;
+		}
+		else
+		{
+			if(angle3 >= angle2 || angle3 <= angle1)
+				return true;
+			else
+				return false;
+		}
+	}
+	private static double divide(double x, double y)
+	{
+		if ( y == 0)
+			return Double.MAX_VALUE;
+		else
+			return x/y;
 	}
 	private static void log(String message)
 	{
@@ -434,12 +722,12 @@ public class GSRConstructor {
 						else
 							return Relation.BOTTOM_RIGHT;
 			}
-		
-				
-		
+
+
+
 	}
-	
-/*	private static boolean isMBRIntersect(Rectangle mbr_1, Rectangle mbr_2)
+
+	/*	private static boolean isMBRIntersect(Rectangle mbr_1, Rectangle mbr_2)
 	{
 		if( isIntervalIntersect(mbr_1.x, mbr_1.x + mbr_1.width, mbr_2.x, mbr_2.x + mbr_2.width)
 				&& isIntervalIntersect(mbr_1.y, mbr_1.y + mbr_1.height, mbr_2.y, mbr_2.y + mbr_2.height))
@@ -453,7 +741,7 @@ public class GSRConstructor {
 		return true;
 	}
 	public static void printNetwork(Graph<ABObject, ConstraintEdge> network){
-		
+
 		//System.out.println(network);
 		for (ABObject vertex: network.vertexSet())
 		{
@@ -470,10 +758,10 @@ public class GSRConstructor {
 		new ActionRobot();
 		BufferedImage screenshot = ActionRobot.doScreenShot();
 		screenshot = VisionUtils.resizeImage(screenshot, 800, 1200);
-		
+
 		MyVision vision = new MyVision(screenshot);
-		
-		
+
+
 		ABList allInterestObjs = ABList.newList();
 		allInterestObjs.addAll(vision.findObjects());
 		vision.drawObjectsWithID(screenshot, true);
@@ -492,13 +780,35 @@ public class GSRConstructor {
 			}
 			System.out.println("------------------------------");
 		}
-		
+
 	}
 	public static void main(String[] args) {
+
+
+		log(Math.atan(Integer.MAX_VALUE) + "");
 		//Rect: id:2 type:rec8x1 area:208 w:  4.697 h: 52.162 a:  2.545 at x:543.5 y:344.0 isDebris:false [ S2_S6 ] 
 		//Rect: id:3 type:rec2x1 area:72 w:  6.119 h: 12.205 a:  2.545 at x:533.0 y:343.5 isDebris:false
-		Rect rec2 = new Rect(607.5, 327.5, 4.995, 25.206, 0.597, -1, 100);
-		Rect rec1 = new Rect(600,348.5, 6.181, 25.474, 1.728, -1, 150);
+		Rect rec2 = new Rect(574.0, 311.0, 11.314, 12.021, 0.785, -1, 132);
+		Rect rec1 = new Rect(557.5,320.5, 10.953, 12.571, 0.942, -1, 120);
+
+		Set<ABObject> set1 = new HashSet<ABObject>();
+
+		Set<ABObject> set2 = new HashSet<ABObject>();
+
+		set1.add(rec1);
+		set1.add(rec2);
+
+		set2.add(rec1);
+		set2.add(rec2);
+
+		List<Set<ABObject>> sets = new LinkedList<Set<ABObject>>();
+		sets.add(set1);
+		if(!sets.contains(set2))
+			sets.add(set2);
+		System.out.println(sets.size());
+		System.out.println(set1.equals(set2));
+
+
 		System.out.println(rec1.isLevel + "  " + rec2.isLevel);
 		for (Line2D line : rec1.sectors)
 		{

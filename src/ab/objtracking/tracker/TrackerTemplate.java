@@ -2,7 +2,6 @@ package ab.objtracking.tracker;
 
 import java.awt.Point;
 import java.awt.Shape;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,17 +10,31 @@ import java.util.Map;
 
 import ab.objtracking.Tracker;
 import ab.vision.ABObject;
+import ab.vision.real.shape.RectType;
 
 public abstract class TrackerTemplate implements Tracker{
 
-	List<ABObject> initialObjs = null;
+	List<ABObject> iniObjs = null;
 	List<ABObject> lastInitialObjs = null;
 	Map<ABObject, List<Pair>> prefs;
 	Map<ABObject, List<Pair>> iniPrefs;
-	List<ABObject> unmatchedLessObjs;
-	List<ABObject> unmatchedMoreObjs;
+	List<ABObject> unmatchedIniObjs;
+	List<ABObject> unmatchedNewObjs;
 	Map<ABObject, ABObject> matchedObjs;
 	List<ABObject> newComingObjs;
+	long maximum_distance;
+	int timegap;
+	
+	public TrackerTemplate(int timegap)
+	{
+		this.timegap = timegap;
+		maximum_distance = (timegap/3 + 1) * (timegap/3 + 1);
+	}
+	public void setTimeGap(int timegap)
+	{
+		this.timegap = timegap;
+		maximum_distance = (timegap/3 + 1) * (timegap/3 + 1);
+	}
 	private boolean startTracking = false;
 	protected void log(String message) {
 		System.out.println(message);
@@ -34,25 +47,16 @@ public abstract class TrackerTemplate implements Tracker{
 	public abstract void createPrefs(List<ABObject> objs);
 
 	/**
-	 * @param iniObj
-	 *            : the object in the initial scenario
-	 * @param oldObject
-	 *            : the last matched object in the next frame
-	 * @param rivalObject
-	 *            : a new coming object
-	 * @return true: if iniObj prefers oldObject over rivalObject¡£ Compare the
-	 *         mass center
+	 * @param targetObj
+	 *            : the object 
+	 * @param lastObj
+	 *            : the last matched object of targetObj
+	 * @param rivalObj
+	 *            : a new coming object that maybe more suitable for targetObj
+	 * @return true: if targetObj prefers lastMatchedObj over rivalObject.
+	 *       
 	 * */
-	public boolean prefers(ABObject oldObj, ABObject lastMatchedObject, ABObject rivalObject, Map<ABObject, List<Pair>> prefs) {
-		for (Pair pair : prefs.get(oldObj)) {
-			if (pair.obj.equals(lastMatchedObject))
-				return true;
-			if (pair.obj.equals(rivalObject))
-				return false;
-		}
-		System.out.println("Error in prefs ");
-		return false;
-	}
+	public abstract boolean prefers(ABObject targetObj, ABObject lastObj, ABObject rivalObj, Map<ABObject, List<Pair>> prefs);
 
 	@Override
 	public boolean isTrackingStart() {
@@ -63,7 +67,7 @@ public abstract class TrackerTemplate implements Tracker{
 	public void startTracking(List<ABObject> initialObjs) {
 		startTracking = true;
 		//reset 
-		this.initialObjs = initialObjs;
+		this.iniObjs = initialObjs;
 		lastInitialObjs = null;
 		newComingObjs = null;
 	}
@@ -87,7 +91,7 @@ public abstract class TrackerTemplate implements Tracker{
 	@Override
 	public void setInitialObjects(List<ABObject> objs) {
 	
-		initialObjs = objs;
+		iniObjs = objs;
 	
 	}
 
@@ -109,7 +113,7 @@ public abstract class TrackerTemplate implements Tracker{
 		// System.out.println(" key size: " + next.keySet().size());
 		// while there are no free objects or all the original objects have been
 		// assigned.
-		unmatchedLessObjs = new LinkedList<ABObject>();
+		unmatchedIniObjs = new LinkedList<ABObject>();
 	
 		while (!freeObjs.isEmpty()) {
 	
@@ -121,7 +125,7 @@ public abstract class TrackerTemplate implements Tracker{
 			 */
 			List<Pair> pairs = lessPrefs.get(freeObj);
 			if (pairs == null || index == pairs.size())
-				unmatchedLessObjs.add(freeObj);
+				unmatchedIniObjs.add(freeObj);
 			else 
 			{
 					Pair pair = pairs.get(index);
@@ -160,12 +164,12 @@ public abstract class TrackerTemplate implements Tracker{
 		// Do match, assuming initialObjs.size() > objs.size(): no objects will
 		// be created
 		matchedObjs = new HashMap<ABObject, ABObject>();
-		if (initialObjs != null /*&& initialObjs.size() >= objs.size()*/) 
+		if (iniObjs != null /*&& initialObjs.size() >= objs.size()*/) 
 		{
 	
-			lastInitialObjs = initialObjs;
+			lastInitialObjs = iniObjs;
 	
-			boolean lessIni = (objs.size() > initialObjs.size()); // If the num
+			boolean lessIni = (objs.size() > iniObjs.size()); // If the num
 																	// of3.d
 																	// initial
 																	// objects >
@@ -175,9 +179,9 @@ public abstract class TrackerTemplate implements Tracker{
 			createPrefs(objs);
 			//printPrefs(prefs);
 			Map<ABObject, ABObject> match;
-			unmatchedMoreObjs = new LinkedList<ABObject>();
+			unmatchedNewObjs = new LinkedList<ABObject>();
 			if (!lessIni) {
-				match = matchObjs(initialObjs, objs, iniPrefs, prefs);
+				match = matchObjs(iniObjs, objs, iniPrefs, prefs);
 	
 				// Assign Id
 				for (ABObject iniObj : match.keySet()) {
@@ -188,18 +192,18 @@ public abstract class TrackerTemplate implements Tracker{
 						matchedObjs.put(obj, iniObj);
 					}
 					else
-						unmatchedMoreObjs.add(iniObj);
+						unmatchedNewObjs.add(iniObj);
 				}
 	
 				// log(" debris recognition WAS performed: more objects in the initial");
-				debrisRecognition(unmatchedLessObjs, unmatchedMoreObjs);
+				debrisRecognition(unmatchedIniObjs, unmatchedNewObjs);
 			} else {
 				log(" more objs in next frame");
 				/*
 				 * Map<ABObject, List<Pair>> temp; temp = iniPrefs; iniPrefs =
 				 * prefs; prefs = temp;
 				 */
-				match = matchObjs(objs, initialObjs, prefs, iniPrefs);
+				match = matchObjs(objs, iniObjs, prefs, iniPrefs);
 				// Assign Id
 				for (ABObject obj : match.keySet()) {
 					ABObject iniObj = match.get(obj);
@@ -209,11 +213,11 @@ public abstract class TrackerTemplate implements Tracker{
 						matchedObjs.put(obj, iniObj);
 					}
 					else
-						unmatchedMoreObjs.add(obj);
+						unmatchedNewObjs.add(obj);
 				}
 				// Process unassigned objs
 				// log("debris recognition WAS performed");
-				debrisRecognition(unmatchedMoreObjs, unmatchedLessObjs);
+				debrisRecognition(unmatchedNewObjs, unmatchedIniObjs);
 	
 			}
 	
@@ -250,15 +254,16 @@ public abstract class TrackerTemplate implements Tracker{
 
 	public void printPrefs(Map<ABObject, List<Pair>> prefs) {
 		
+		log("  ====================  Print Prefs =========================\n  ");
 		for (ABObject ao : prefs.keySet()) {
 			System.out.println(ao);
 			List<Pair> pairs = prefs.get(ao);
 			for (Pair pair : pairs) {
-				System.out.println(pair);
+				log(pair.toString());
 			}
-			System.out.println("----------------------");
+			log("----------------------");
 		}
-		System.out.println("============ Prefs End ============");
+		log("============ Prefs End ============\n");
 	
 	}
 	class PairComparator implements Comparator<Pair> {
@@ -271,21 +276,27 @@ public abstract class TrackerTemplate implements Tracker{
 	protected void link(ABObject newObj, ABObject iniObj, boolean isDebris)
 	{
 		newObj.id = iniObj.id;
-		if(isDebris && !iniObj.getOriginalShape().isSameShape(newObj))
+		if(isDebris && (! (iniObj.getOriginalShape().isSameShape(newObj) || newObj.rectType == RectType.rec8x1)))
 		{	
 			newObj.setOriginalShape(iniObj.getOriginalShape());
 			newObj.isDebris = true;
 		}
 		else 
-			newObj.isDebris = false;
+			/*if(isDebris && (iniObj instanceof DebrisGroup))
+			{
+				newObj.isDebris = true;
+			}
+			else*/
+				newObj.isDebris = false;
+	
 	} 
-	protected void printMatch()
+	protected void printNewToIniMatch(Map<ABObject, ABObject> newToIniMatch)
 	{
 		log(" ===========  Print Match ============= ");
-		for (ABObject newObj : matchedObjs.keySet())
+		for (ABObject newObj : newToIniMatch.keySet())
 		{
 			System.out.println(" newObj: " + newObj);
-			System.out.println(" initial Obj" + matchedObjs.get(newObj));
+			System.out.println(" initial Obj" + newToIniMatch.get(newObj));
 			System.out.println("==========");
 		}
 	}

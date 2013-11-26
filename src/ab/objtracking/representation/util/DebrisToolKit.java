@@ -38,8 +38,10 @@ public class DebrisToolKit {
 					if(obj.id < target.id && obj.type == target.type && canBeSameDebrisGroup(obj, target, edge.label) )
 					{
 						DebrisGroup debris = debrisReconstruct(obj, target, edge.label);
+						
 						if(debris != null)
 						{
+							if(debris.p.contains(obj.getCenter()) && debris.p.contains(target.getCenter()))
 							debrisList.add(debris);
 						}
 					}
@@ -80,6 +82,14 @@ public class DebrisToolKit {
 				double height = o1.getPreciseHeight() + o2.getPreciseHeight();
 				double angle = o1.angle;
 				int area = (int)(width * height);
+			/*	if( o2 instanceof Rect)
+				{
+					if( area < ((Rect)o2).area )
+					{	System.out.println("Error : " + o1 + "  " + o2);
+						System.exit(0);
+					}
+				}*/
+					
 			/*	System.out.println(o1);
 				System.out.println(String.format("centerX: %.2f centerY: %.2f width: %.2f height: %.2f", centerX, centerY, width, height));*/
 				debris = new DebrisGroup(centerX, centerY, width, height, angle, -1,area);
@@ -109,7 +119,7 @@ public class DebrisToolKit {
 		
 	}
 	
-	
+	protected static void log(String message){ System.out.println(message);}
 	/*
 	 * Determine whether two objects are likely to be of the same debris group. Only consider rotated rectangles otherwise most of stacked leveled objects will be considered as debris
 	 * **/
@@ -128,17 +138,24 @@ public class DebrisToolKit {
 		
 		if(sameAngle(diff)) /*&& (o1.getPreciseWidth() < MagicParams.SlimRecWidth ) && (o2.getPreciseWidth()< MagicParams.SlimRecWidth)*///since circle are also "level", but circle some times are just tiny mis-detected rectangles which are highly likely to be debris
 		{
+		
+		   
 		   if(sameAngle(orientationDiff)|| Math.abs(o2.getPreciseHeight() - o1.getPreciseWidth()) < MagicParams.VisionGap ){
+			
+			   Relation left = Relation.getLeftpart(o1Too2);
 			if(o1.angle < Math.PI/2)
 			{
 				
-				if(Relation.getLeftpart(o1Too2) == Relation.S2 || Relation.getLeftpart(o1Too2) == Relation.S6)
+				if(left == Relation.S2 || left == Relation.S6
+						||  left == Relation.R2 || left == Relation.R6)
 					return true;
 			}
 			else
 				if(o1.angle > Math.PI/2)
 				{
-					if(Relation.getLeftpart(o1Too2) == Relation.S4 || Relation.getLeftpart(o1Too2) == Relation.S8)
+					
+					if(left == Relation.S4 || left == Relation.S8
+							||  left == Relation.R4 || left == Relation.R8)
 						return true;
 				}
 		   }		
@@ -221,8 +238,10 @@ public class DebrisToolKit {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println(Math.atan2(12, -1));
+		
+		Rect rect1 = new Rect(578.0, 306.5, 5.691, 31.382, 1.696, -1, 155);
+		Rect rect2 = new Rect(575.0, 328.0, 5.587, 12.281, 1.696, -1, 60);
+		System.out.println(canBeSameDebrisGroup(rect1, rect2, GSRConstructor.computeRectToRectRelation(rect1, rect2)));
 	}
 
 }

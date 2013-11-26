@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -47,7 +49,8 @@ public class ImageSegFrame {
 
 	private static int _saveCount = 0;
 	public static String saveFileDir = "";
-	public static boolean recordScreenshot = false;
+	public static volatile boolean recordScreenshot = false;
+	public static volatile boolean saveAndExit = false;
     public class ImagePanel extends JPanel implements KeyListener, MouseListener {
         /**
 		 * 
@@ -123,13 +126,20 @@ public class ImageSegFrame {
                 _parent.dispose();
 
             } else if (key.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                System.exit(0);
-
-            } else if (key.getKeyCode() == KeyEvent.VK_D) {
             	
+            	saveAndExit = true;
+                //System.exit(0);
+
+            }
+            else if(key.getKeyCode() == KeyEvent.VK_E)
+            {
             	recordScreenshot = !recordScreenshot;
-            	if(recordScreenshot)
-            	{
+            	System.out.println("Start to record");
+            	
+            }
+            
+            else if (key.getKeyCode() == KeyEvent.VK_D) {
+            	
 	                String imgFilename = saveFileDir + String.format("img%04d.png", _saveCount);
 	                System.out.println("saving image to " + imgFilename);
 	                BufferedImage bi = new BufferedImage(_img.getWidth(null), _img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -172,9 +182,10 @@ public class ImageSegFrame {
 	                    _highlightMode = true;
 	                    _highlightIndex = -1;
 	                }
-	            }
 
-            } else if (key.getKeyCode() == KeyEvent.VK_S) {
+
+            } else if (key.getKeyCode() == KeyEvent.VK_S) 
+            {
                 String imgFilename = String.format("img%04d.png", _saveCount);
                 System.out.println("saving image to " + imgFilename);
                 BufferedImage bi = new BufferedImage(_img.getWidth(null), _img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -378,33 +389,64 @@ public class ImageSegFrame {
     {
     	long timegap = 0;
     	if(args.length == 1)
-    		ImageSegFrame.saveFileDir = (args[0]) + "\\";
+    		ImageSegFrame.saveFileDir = (args[0]) + "";
     	else
     		if(args.length == 2)
     		{
-    			ImageSegFrame.saveFileDir = args[0] + "\\";
+    			ImageSegFrame.saveFileDir = args[0] + "";
     			timegap = Long.parseLong(args[1]); 
     		}
-    	File file = new File(ImageSegFrame.saveFileDir);
-    	if(!file.exists())
-    		file.mkdir();
+    
     	new ActionRobot();
     	BufferedImage screenshot = null;
     	ImageSegFrame frame = null;
     	screenshot = ActionRobot.doScreenShot();
     	frame = new ImageSegFrame(" Screenshots ", screenshot, null);
+    	List<BufferedImage> images = new LinkedList<BufferedImage>();
+    	long time;   
+    	long avg = 0;
     	while(true)
     	{
-    		screenshot = ActionRobot.doScreenShot();
-    		frame.refresh(screenshot);
     		if(recordScreenshot){
-	    		String imgFilename = saveFileDir + String.format("img%04d.png", _saveCount ++);
-	    		ImageIO.write(screenshot, "png", new File(imgFilename));
-	            System.out.println("saving image to " + imgFilename);
+    			time = System.nanoTime();
+    			screenshot = ActionRobot.doScreenShot();
+    			images.add(screenshot);
+    			//String imgFilename = saveFileDir + String.format("img%04d.png", _saveCount ++);
+	    		//ImageIO.write(screenshot, "png", new File(imgFilename));
+	            //System.out.println("saving image to " + imgFilename + " Time: " + (System.nanoTime() - time) + "");
 	    		Thread.sleep(timegap);
+	    		avg += (System.nanoTime() - time);
+    		} 
+    		else
+    		{
+    			screenshot = ActionRobot.doScreenShot();
+    		}
+    		frame.refresh(screenshot);
+    		if(saveAndExit)
+    		{
+    			saveFileDir += "_" + (avg/images.size()/1000000) + "\\";
+    			File file = new File(ImageSegFrame.saveFileDir);
+    	    	if(!file.exists())
+    	    		file.mkdir();
+    		  for (BufferedImage image : images)
+    		  {
+    			  String imgFilename = saveFileDir + String.format("img%04d.png", _saveCount ++);
+    			  System.out.println("saving image to " + imgFilename);
+      			  ImageIO.write(image, "png", new File(imgFilename));
+    		  }
+    		  System.exit(0);
     		}
     	}
+    	
+/*    	if(recordScreenshot)
+    		for (BufferedImage image : images)
+    		{
+    			String imgFilename = saveFileDir + String.format("img%04d.png", _saveCount ++);
+    			ImageIO.write(image, "png", new File(imgFilename));
+    		}
+    	*/
+    
+    
     }
-
 
 }

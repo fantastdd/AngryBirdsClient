@@ -1,7 +1,10 @@
 package ab.objtracking.representation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
@@ -143,12 +146,10 @@ public enum Relation {
     	
     	for (Relation relation: Relation.values())
     	{
-    		String str = relation.toString();
-    		if(str.length() > 3)
-    			str = str.substring(0,3);
-    		else
+    	
+    		if(!isGRRelation(relation))
     			continue;
-    		if(str.contains("_") && (str.contains("S") || str.contains("R")))
+    	
     		{
     			Relation left = relation.left;
     			Relation right = relation.right;
@@ -179,6 +180,35 @@ public enum Relation {
     			
     		}
     	}
+    	//Process Graph, the v-v relations connecting two edge-edge relations and can be removed.
+    	for (Relation r : graph.vertexSet())
+    	{
+    		if(isGRRelation(r) && r.left.atomicRelationIndex%2 == 0 && r.right.atomicRelationIndex%2 == 0)
+    		{
+    			Set<DefaultWeightedEdge> edges = graph.edgesOf(r);
+    			List<Relation> connectedVertices = new ArrayList<Relation>();
+    			for (DefaultWeightedEdge edge : edges)
+    			{
+    				Relation _r = graph.getEdgeTarget(edge);
+    				if( r == _r)
+    					_r = graph.getEdgeSource(edge);
+    				
+    				connectedVertices.add(_r);
+    			}
+    			for (int i = 0; i < connectedVertices.size() - 1; i++)
+    			{
+    				Relation _r = connectedVertices.get(i);
+    				for (int j = i + 1; j < connectedVertices.size(); j++)
+    				{
+    					/*if(_r == R4_S1 && connectedVertices.get(j) == S8_S4 )
+    						System.out.println(" saboteur: " + r);*/
+    					graph.addEdge(_r, connectedVertices.get(j));
+    				}
+    			}
+    		    
+    		
+    		}
+    	}
     	
 
     }
@@ -187,7 +217,15 @@ public enum Relation {
 		this.left = left;
 		this.right = right;
 	}
-	
+	public static boolean isGRRelation(Relation relation)
+	{
+		if(relation.left == null)
+			return false;
+		String str = relation.left.toString();
+		if(str.contains("S") || str.contains("R"))
+			return true;
+		return false;
+	}
 	public static Relation getLeftpart(Relation relation)
 	{
 		if(relation.left == null)
@@ -200,7 +238,7 @@ public enum Relation {
 			return relation;
 		return relation.right;
 	}
-	public static Relation inverseRelation(Relation relation)
+	public static Relation inverse(Relation relation)
 	{
 		switch(relation)
 		{
@@ -597,8 +635,8 @@ public enum Relation {
 	
 	public static void main(String args[])
 	{ 
-		System.out.println(Relation.isNeighbor(Relation.R6_R2, Relation.S6_R1, 2));
-		for (DefaultEdge edge : graph.edgesOf(Relation.R6_R2))
+		System.out.println(Relation.isNeighbor(Relation.R4_S1, Relation.S8_S4, 2));
+		for (DefaultEdge edge : graph.edgesOf(Relation.R4_S1))
 		{
 			System.out.println(edge);
 		}

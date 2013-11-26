@@ -2,13 +2,17 @@ package ab.objtracking.tracker;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jgrapht.DirectedGraph;
 
 import ab.objtracking.MagicParams;
+import ab.objtracking.Tracker;
+import ab.objtracking.TrackingFrameComparison;
 import ab.objtracking.dynamic.Movement;
 import ab.objtracking.dynamic.MovementPredictor;
 import ab.objtracking.isomorphism.IsomorphismTest;
@@ -16,6 +20,7 @@ import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
 import ab.objtracking.representation.util.DebrisToolKit;
 import ab.objtracking.representation.util.GSRConstructor;
+import ab.objtracking.representation.util.ShapeToolKit;
 import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.real.shape.DebrisGroup;
@@ -35,16 +40,20 @@ import ab.vision.real.shape.Rect;
 public class KnowledgeTracker_4 extends SMETracker {
 
 
+	public KnowledgeTracker_4(int timegap) {
+		super(timegap);
+	}
+
 	public DirectedGraph<ABObject, ConstraintEdge> iniGRNetwork, newGRNetwork, iniGRFullNetwork;
 	protected Map<ABObject, Movement> iniObjsMovement = new HashMap<ABObject, Movement>();
 	protected List<DebrisGroup> debrisGroupList;
 	protected List<ABObject> debrisList;
-
+	protected boolean lessIniObjs = false;
 	@Override
 	public void createPrefs(List<ABObject> objs) 
 	{
 	
-		iniGRNetwork = GSRConstructor.constructGRNetwork(initialObjs);
+		iniGRNetwork = GSRConstructor.constructGRNetwork(iniObjs);
 		//iniGRFullNetwork = GSRConstructor.constructFullNetwork(initialObjs);
 		newGRNetwork = GSRConstructor.constructGRNetwork(objs);
 		debrisList = new LinkedList<ABObject>();
@@ -55,11 +64,9 @@ public class KnowledgeTracker_4 extends SMETracker {
 		}  
 		//Create dummy debris
 	    debrisGroupList = DebrisToolKit.getAllDummyRectangles(newGRNetwork);
-		/*for (DebrisGroup debris : debrisGroupList)
-		{
-			
+		for (DebrisGroup debris : debrisGroupList)	
 			System.out.println(String.format(" Debris:%s \n member1:%s \n member2:%s ", debris, debris.member1, debris.member2));
-		}*/
+		
 		objs.addAll(debrisGroupList);	
 		//Reconstruct after adding the debris
 		//newNetwork =  GSRConstructor.constructGRNetwork(objs);
@@ -78,7 +85,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 		{	
 			List<Pair> diffs = new LinkedList<Pair>();
 			ABType objType = obj.type;
-			for (ABObject iniObj : initialObjs) 
+			for (ABObject iniObj : iniObjs) 
 			{   
 
 				if(objType == iniObj.type)
@@ -90,6 +97,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 						//Evaluate movement by taking spatial change into consideration, evaluating on iniGRFullNetwork
 						movement = MovementPredictor.adjustMovementOnGR(movement, iniGRNetwork);
 						//System.out.println(movement);
+						//System.out.println(movement.isValidMovement((int)(obj.getCenterX() - iniObj.getCenterX()), (int)(obj.getCenterY() - iniObj.getCenterY()), false));
 						/*if(iniObj.id == 6)
 							System.out.println("\n movement " + movement + "\n" + obj + "  xshift " + (int)(obj.getCenterX() - iniObj.getCenterX()) + " yshift " + (int)(obj.getCenterY() - iniObj.getCenterY()) + 
 						
@@ -125,7 +133,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 			Collections.sort(iniPrefs.get(iniObj), new PairComparator());
 		}
 		newComingObjs = objs;
-		iniObjsMovement.clear();
+		
 		//printPrefs(iniPrefs);
 		//printPrefs(prefs);
 	}
@@ -148,7 +156,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 		// System.out.println(" key size: " + next.keySet().size());
 		// while there are no free objects or all the original objects have been
 		// assigned.
-		unmatchedLessObjs = new LinkedList<ABObject>();
+		unmatchedIniObjs = new LinkedList<ABObject>();
 
 		while (!freeObjs.isEmpty()) {
 
@@ -160,7 +168,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 			 */
 			List<Pair> pairs = lessPrefs.get(freeObj);
 			if (pairs == null || index == pairs.size())
-				unmatchedLessObjs.add(freeObj);
+				unmatchedIniObjs.add(freeObj);
 			else 
 			{
 				Pair pair = pairs.get(index);
@@ -189,7 +197,45 @@ public class KnowledgeTracker_4 extends SMETracker {
 
 		return current;
 	}
-
+	protected boolean isValidMovement(ABObject obj, ABObject iniObj, boolean compareMovementType)
+	{
+		Movement movement = iniObjsMovement.get(iniObj);
+		if(movement == null ||
+				movement.isValidMovement((int)(obj.getCenterX() - iniObj.getCenterX()), (int)(obj.getCenterY() - iniObj.getCenterY()), false))
+				return true;
+		return false;
+	}
+	
+	@Override
+	public boolean prefers(ABObject targetObj, ABObject lastObj, ABObject rivalObj, Map<ABObject, List<Pair>> prefs){
+	 
+	/*boolean lastObjValid, rivalObjValid;
+	 if(lessIniObjs)
+	  {
+		lastObjValid = isValidMovement(targetObj, lastObj, false);
+		rivalObjValid = isValidMovement(targetObj, rivalObj, false);
+	  }
+	  else 
+	  {
+		  lastObjValid = isValidMovement(lastObj, targetObj, false);
+		  rivalObjValid = isValidMovement(rivalObj, targetObj, false);
+	  }
+		if(lastObjValid && !rivalObjValid )
+			return true;
+		else
+			if(!lastObjValid && rivalObjValid)
+				return false;*/
+		
+		for (Pair pair : prefs.get(targetObj)) {
+			if (pair.obj.equals(lastObj))
+				return true;
+			if (pair.obj.equals(rivalObj))
+				return false;
+		}
+		System.out.println("Error in prefs ");
+		return false;
+	}
+	
 	@Override
 	public void debrisRecognition(List<ABObject> newObjs, List<ABObject> initialObjs) {
 
@@ -328,22 +374,23 @@ public class KnowledgeTracker_4 extends SMETracker {
 		
 		currentOccludedObjs = new LinkedList<ABObject>();
 
-		if (initialObjs != null /*&& initialObjs.size() >= objs.size()*/) 
+		if (iniObjs != null /*&& initialObjs.size() >= objs.size()*/) 
 		{
 
-			lastInitialObjs = initialObjs;
+			lastInitialObjs = iniObjs;
 
-			boolean lessIni = (objs.size() > initialObjs.size()); // If the num of initial objects > the next
+			boolean lessIni = (objs.size() > iniObjs.size()); // If the num of initial objects > the next
 			
 			// log(" " + initialObjs.size() + "  " + objs.size());
 			createPrefs(objs);
 			//printPrefs(prefs);
 			Map<ABObject, ABObject> match;
-			unmatchedMoreObjs = new LinkedList<ABObject>();
+			unmatchedNewObjs = new LinkedList<ABObject>();
 			List<ABObject> membersOfMatchedDebrisGroup = new LinkedList<ABObject>();
 			if (!lessIni) 
 			{
-				match = matchObjs(initialObjs, objs, iniPrefs, prefs);
+				
+				match = matchObjs(iniObjs, objs, iniPrefs, prefs);
 
 				// Assign Id
 				for (ABObject iniObj : match.keySet()) {
@@ -361,8 +408,8 @@ public class KnowledgeTracker_4 extends SMETracker {
 							ABObject member1 = debris.member1;
 							ABObject member2 = debris.member2;
 							//assign id after debris recognition, otherwise unmatchedLessObjs cannot remove 
-							unmatchedLessObjs.remove(member1);
-							unmatchedLessObjs.remove(member2);
+							unmatchedIniObjs.remove(member1);
+							unmatchedIniObjs.remove(member2);
 							matchedObjs.remove(member1);
 							matchedObjs.remove(member2);
 							link(member1, obj, true);
@@ -379,19 +426,20 @@ public class KnowledgeTracker_4 extends SMETracker {
 						}
 					}
 					else	
-							unmatchedMoreObjs.add(iniObj);
+							unmatchedNewObjs.add(iniObj);
 						
 				}
-				unmatchedMoreObjs.removeAll(membersOfMatchedDebrisGroup);
+				unmatchedNewObjs.removeAll(membersOfMatchedDebrisGroup);
 				// log(" debris recognition WAS performed: more objects in the initial");
-				debrisRecognition(unmatchedLessObjs, unmatchedMoreObjs);
+				debrisRecognition(unmatchedIniObjs, unmatchedNewObjs);
 			} else {
 				log(" Next frame has more objs");
+				lessIniObjs = true;
 				/*
 				 * Map<ABObject, List<Pair>> temp; temp = iniPrefs; iniPrefs =
 				 * prefs; prefs = temp;
 				 */
-				match = matchObjs(objs, initialObjs, prefs, iniPrefs);
+				match = matchObjs(objs, iniObjs, prefs, iniPrefs);
 				// Assign Id
 				for (ABObject obj : match.keySet()) {
 
@@ -414,8 +462,8 @@ public class KnowledgeTracker_4 extends SMETracker {
 								ABObject member1 = debris.member1;
 								ABObject member2 = debris.member2;
 
-								unmatchedMoreObjs.remove(member1);
-								unmatchedMoreObjs.remove(member2);
+								unmatchedNewObjs.remove(member1);
+								unmatchedNewObjs.remove(member2);
 								/*   if (obj.id == 7)
 						    {
 						    	System.out.println(String.format("member1: %s %s member2: %s %s ", 
@@ -434,9 +482,15 @@ public class KnowledgeTracker_4 extends SMETracker {
 								matchedObjs.put(member2, iniObj);
 
 							}
+							if(iniObj instanceof DebrisGroup)
+							{
+								DebrisGroup debris = (DebrisGroup)iniObj;
+								membersOfMatchedDebrisGroup.add(debris.member1);
+								membersOfMatchedDebrisGroup.add(debris.member2);
+							}
 						}
 						else
-							unmatchedMoreObjs.add(obj);
+							unmatchedNewObjs.add(obj);
 					}
 				}
 				// Process unassigned objs
@@ -445,7 +499,9 @@ public class KnowledgeTracker_4 extends SMETracker {
 				{
 					log(obj.tostring());
 				}*/
-				debrisRecognition(unmatchedMoreObjs, unmatchedLessObjs);
+				//New edit
+				unmatchedIniObjs.removeAll(membersOfMatchedDebrisGroup);
+				debrisRecognition(unmatchedNewObjs, unmatchedIniObjs);
 
 			}
 
@@ -459,7 +515,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 			{
 
 			}*/
-
+			iniObjsMovement.clear();
 
 			log("Print Occluded Objects");
 			for (ABObject occludedObj : currentOccludedObjs)
@@ -471,12 +527,15 @@ public class KnowledgeTracker_4 extends SMETracker {
 			for (ABObject obj : occludedObjsBuffer)
 				System.out.println(obj);*/
 			
+			// only retain those which have been matched;
+			objs.retainAll(matchedObjs.keySet());
+			
 			objs.addAll(currentOccludedObjs);
 			
 			// remove all the matched objs from occludedObjsBuffer (the pre of the pre frame may contain an occluded obj that is matched now)
 			occludedObjsBuffer.removeAll(matchedObjs.keySet());
-			// only retain those which have been matched;
-			//objs.retainAll(matchedObjs.keySet());
+			
+			
 			
 			objs.removeAll(occludedObjsBuffer); // remove all the remembered occluded objects from the previous frame. We only buffer one frame.
 			occludedObjsBuffer.addAll(currentOccludedObjs);
@@ -493,18 +552,29 @@ public class KnowledgeTracker_4 extends SMETracker {
 			
 			//Set Initial Objs Movements
 			iniObjsMovement.clear();
+			
+			//new edit remove on unmatched new objs. since they all have -1 id, which we do not want to use.
+			
 			for (ABObject obj : matchedObjs.keySet())
 			{
 				ABObject initial = matchedObjs.get(obj);
+				
 				if(initial != null){
+					/*if(initial.id == -1)
+						log("Error Detected " + initial);*/
+					
 					Movement movement = new Movement(obj);
 					movement.generateInertia(initial);
 					iniObjsMovement.put(obj, movement);
 					/*if(obj.id == 7)
 						System.out.println(" Generate Initial " + " obj " + obj + " initial " + initial + " " +movement);*/
 				}
+				
 			}
-
+			
+			
+			
+			
 			isomorphismProcess(iniGRNetwork, newGRNetwork, objs);
 			
 			this.setInitialObjects(objs);
@@ -531,32 +601,38 @@ public class KnowledgeTracker_4 extends SMETracker {
 	
 		List<ABObject> removedInitialObjs = new LinkedList<ABObject>();
 		List<ABObject> matchedDebrisIniObjs = new LinkedList<ABObject>();
+		
+		Set<ABObject> verticesSet = newNetwork.vertexSet();
+		Set<ABObject> vertices = new HashSet<ABObject>();
+		vertices.addAll(verticesSet);
+		vertices.removeAll(newObjs);
+		newNetwork.removeAllVertices(vertices);
+		//printMatch();
 		for (ABObject obj : newObjs)
 		{
-			ABObject initialObj = matchedObjs.get(obj);
+
 		
-			/*System.out.println("==============");
-			System.out.println(obj);
-			System.out.println(initialObj);*/
+			ABObject initialObj = matchedObjs.get(obj);
 			if(initialObj != null)
-			{
-			    if(obj.isDebris && !( obj instanceof DebrisGroup))
-			    {
-			    	newNetwork.removeVertex(obj);
-			    	removedInitialObjs.add(initialObj);
-			    	//iniNetwork.removeVertex(initialObj);
-			    }
-			    else
-			    	if(obj instanceof DebrisGroup)
-			    	{
-			    		GSRConstructor.addVertexToGRNetwork(obj, newNetwork);
-			    		matchedDebrisIniObjs.add(initialObj);
-			    	}
-			}
-			else
-				{
-					newNetwork.removeVertex(obj);
-				}
+					{
+					    if(obj.isDebris && !( obj instanceof DebrisGroup))
+					    {
+					    	newNetwork.removeVertex(obj);
+					    	removedInitialObjs.add(initialObj);
+					    	//iniNetwork.removeVertex(initialObj);
+					    }
+					    else
+					    	if(obj instanceof DebrisGroup)
+					    	{
+					    		GSRConstructor.addVertexToGRNetwork(obj, newNetwork);
+					    		matchedDebrisIniObjs.add(initialObj);
+					    	}
+					}
+					else
+						{
+							newNetwork.removeVertex(obj);
+						}
+			
 		}
 		removedInitialObjs.removeAll(matchedDebrisIniObjs);
 		for (ABObject obj: removedInitialObjs)
@@ -568,7 +644,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 		{
 			iniNetwork.removeVertex(obj);
 		}
-
+		
 		//IMPORTANT: Since the newObj network has been created before matching (id can be changed), so e.g. NewObj (id = 12) = InitialObj(id = 13), then newObj's id will be changed to 13, The edge should be also changed!
 		//Redirect edges;
 		List<ConstraintEdge> removedEdges = new LinkedList<ConstraintEdge>();
@@ -580,7 +656,7 @@ public class KnowledgeTracker_4 extends SMETracker {
 			if(source.id > target.id)
 			{
 				removedEdges.add(edge);
-			    addedEdges.add(new ConstraintEdge(target, source, Relation.inverseRelation(edge.label)));
+			    addedEdges.add(new ConstraintEdge(target, source, Relation.inverse(edge.label)));
 			     
 			}
 		}
@@ -590,33 +666,55 @@ public class KnowledgeTracker_4 extends SMETracker {
 			newNetwork.addEdge(edge.getSource(), edge.getTarget(), edge);
 		}
 		
-		/*log("print initial network\n");
+		/*log("################ print initial network ###############\n");
 		GSRConstructor.printNetwork(iniNetwork);
-		log("print newNetwork\n");
+		
+		log("################ print newNetwork ####################\n");
 		GSRConstructor.printNetwork(newNetwork);*/
+		
+	/*	log("################ debug ###############################\n");
+		Set<ABObject> iniVertices = iniNetwork.vertexSet();
+		Set<ABObject> newVertices = newNetwork.vertexSet();
+		for (ABObject obj : iniVertices)
+		{
+			for (ABObject _obj: newVertices)
+			{
+				if(obj.id == _obj.id)
+				{
+					if(iniNetwork.inDegreeOf(obj) != newNetwork.inDegreeOf(_obj)
+						|| iniNetwork.outDegreeOf(obj) != newNetwork.outDegreeOf(_obj))
+						log("  Vertices Conflict " + obj + " \n " + _obj);
+				}
+			}
+		}*/
+		
 		if (! IsomorphismTest.isIsomorphic(newNetwork, iniNetwork))
 		{
 			ABObject source = IsomorphismTest.getLastConflictSource();
 			ABObject target = IsomorphismTest.getLastConflictTarget();
-			if(source != null && source.type == target.type){
+			if(source != null){
 				
 				log(" Conflict Pair");
 				log(source.toString());
 				log(target.toString());
-				int temp = source.id;
-				source.id = target.id;
-				target.id = temp;
-				if(source instanceof DebrisGroup)
+				if(source.type == target.type && !ShapeToolKit.isDifferentShape(source, target))
 				{
-					DebrisGroup group = ((DebrisGroup)source);
-					group.member1.id = group.id;
-					group.member2.id = group.id;
-				}
-				if(target instanceof DebrisGroup)
-				{
-					DebrisGroup group = ((DebrisGroup)target);
-					group.member1.id = group.id;
-					group.member2.id = group.id;
+					int temp = source.id;
+					source.id = target.id;
+					target.id = temp;
+					
+					if(source instanceof DebrisGroup)
+					{
+						DebrisGroup group = ((DebrisGroup)source);
+						group.member1.id = group.id;
+						group.member2.id = group.id;
+					}
+					if(target instanceof DebrisGroup)
+					{
+						DebrisGroup group = ((DebrisGroup)target);
+						group.member1.id = group.id;
+						group.member2.id = group.id;
+					}
 				}
 				}
 			
@@ -632,12 +730,10 @@ public class KnowledgeTracker_4 extends SMETracker {
 
 	public static void main(String args[])
 	{
-		double x = 644;
-		double y = 346.5;
-		double _x = 636.5;
-		double _y = 340;
-		float r = (float)(((x - _x)*(x - _x) + (y - _y) * (y - _y)));
-		assert(_y < 0);
-		System.out.println(r);
+		Tracker tracker = new KnowledgeTracker_4(48);
+		TrackingFrameComparison tfc = new TrackingFrameComparison("speedTest_48", tracker);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
+		
+		TrackingFrameComparison.continuous = true;
+		tfc.run();
 	}
 }

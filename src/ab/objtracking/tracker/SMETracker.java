@@ -23,6 +23,10 @@ public class SMETracker extends TrackerTemplate {
 
 	public List<ABObject> currentOccludedObjs; //intended for realtime tracking. stored the potential occluded objs, and add them to the next intial objs
 	public List<ABObject> occludedObjsBuffer = new LinkedList<ABObject>();
+	public SMETracker(int timegap) {
+		super(timegap);
+	}
+
 	@Override
 	public void createPrefs(List<ABObject> objs) 
 	{
@@ -33,7 +37,7 @@ public class SMETracker extends TrackerTemplate {
 		{	
 			List<Pair> diffs = new LinkedList<Pair>();
 			ABType objType = obj.type;
-			for (ABObject iniObj : initialObjs) {
+			for (ABObject iniObj : iniObjs) {
 				if(objType == iniObj.type)
 				{
 					boolean sameShape = iniObj.isSameShape(obj);
@@ -155,12 +159,12 @@ public class SMETracker extends TrackerTemplate {
 		matchedObjs = new HashMap<ABObject, ABObject>();
 		currentOccludedObjs = new LinkedList<ABObject>();
 		
-		if (initialObjs != null /*&& initialObjs.size() >= objs.size()*/) 
+		if (iniObjs != null /*&& initialObjs.size() >= objs.size()*/) 
 		{
 	
-			lastInitialObjs = initialObjs;
+			lastInitialObjs = iniObjs;
 	
-			boolean lessIni = (objs.size() > initialObjs.size()); // If the num
+			boolean lessIni = (objs.size() > iniObjs.size()); // If the num
 																	// of3.d
 																	// initial
 																	// objects >
@@ -170,9 +174,9 @@ public class SMETracker extends TrackerTemplate {
 			createPrefs(objs);
 			//printPrefs(prefs);
 			Map<ABObject, ABObject> match;
-			unmatchedMoreObjs = new LinkedList<ABObject>();
+			unmatchedNewObjs = new LinkedList<ABObject>();
 			if (!lessIni) {
-				match = matchObjs(initialObjs, objs, iniPrefs, prefs);
+				match = matchObjs(iniObjs, objs, iniPrefs, prefs);
 	
 				// Assign Id
 				for (ABObject iniObj : match.keySet()) {
@@ -183,18 +187,18 @@ public class SMETracker extends TrackerTemplate {
 						matchedObjs.put(obj, iniObj);
 					}
 					else
-						unmatchedMoreObjs.add(iniObj);
+						unmatchedNewObjs.add(iniObj);
 				}
 	
 				// log(" debris recognition WAS performed: more objects in the initial");
-				debrisRecognition(unmatchedLessObjs, unmatchedMoreObjs);
+				debrisRecognition(unmatchedIniObjs, unmatchedNewObjs);
 			} else {
 				log(" more objs in next frame");
 				/*
 				 * Map<ABObject, List<Pair>> temp; temp = iniPrefs; iniPrefs =
 				 * prefs; prefs = temp;
 				 */
-				match = matchObjs(objs, initialObjs, prefs, iniPrefs);
+				match = matchObjs(objs, iniObjs, prefs, iniPrefs);
 				// Assign Id
 				for (ABObject obj : match.keySet()) {
 					ABObject iniObj = match.get(obj);
@@ -204,11 +208,11 @@ public class SMETracker extends TrackerTemplate {
 						matchedObjs.put(obj, iniObj);
 					}
 					else
-						unmatchedMoreObjs.add(obj);
+						unmatchedNewObjs.add(obj);
 				}
 				// Process unassigned objs
 				// log("debris recognition WAS performed");
-				debrisRecognition(unmatchedMoreObjs, unmatchedLessObjs);
+				debrisRecognition(unmatchedNewObjs, unmatchedIniObjs);
 	
 			}
 			for (ABObject occludedObj : currentOccludedObjs)
@@ -224,6 +228,20 @@ public class SMETracker extends TrackerTemplate {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean prefers(ABObject targetObj, ABObject lastObj, ABObject rivalObj, Map<ABObject, List<Pair>> prefs){
+	 	
+		for (Pair pair : prefs.get(targetObj)) {
+			if (pair.obj.equals(lastObj))
+				return true;
+			if (pair.obj.equals(rivalObj))
+				return false;
+		}
+		System.out.println("Error in prefs ");
+		return false;
+	}
+	
 	public static void main(String args[])
 	{
 		double x = 644;
@@ -232,5 +250,11 @@ public class SMETracker extends TrackerTemplate {
 		double _y = 340;
 		float r = (float)(((x - _x)*(x - _x) + (y - _y) * (y - _y)));
 		System.out.println(r);
+	}
+
+	@Override
+	public Map<ABObject, ABObject> getLastMatch() {
+		
+		return matchedObjs;
 	}
 }

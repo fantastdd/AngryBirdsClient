@@ -51,17 +51,28 @@ public abstract class Body extends ABObject
     @Override
     public int hashCode() {
     	 int hash = 1;
-         hash = hash * 17 + type.hashCode();
-         hash = hash * 31 + shape.hashCode();
-         hash = hash * 93 + (int)(angle * 1000);
+         hash += shape.hashCode();
+         hash += hash * 3 + type.hashCode();
+         hash = hash * 7 + (int)(angle * 1000);
          //hash = hash * 31 + id;
-         hash = hash * 13 + (int)getCenterX();
-         hash = hash * 67 + (int)getCenterY();
+         hash = hash * 13 + (int)(getCenterX() * 10);
+         hash = hash * 29 + (int)(getCenterY() * 10);
+        //System.out.println(String.format("%d %d %d %d", (int)(angle * 1000), (int)(getCenterX()*10), (int)(getCenterY()*10), hash));
          return hash;
     }
     @Override
     public boolean equals(Object body)
     {
-    	return hashCode() == body.hashCode();
+//    	/System.out.println(hashCode() + "  " + body.hashCode());
+    	if ( body instanceof Body)
+    	{
+    		Body b = (Body)body;
+    		if(getPreciseWidth() == b.getPreciseWidth() && getPreciseHeight() == b.getPreciseHeight() 
+    				&& shape == b.shape && type == b.type && getCenterX() == b.getCenterX() && getCenterY() == b.getCenterY())
+    			return true;
+    		return false;
+    	}
+    	else
+    		return hashCode() == body.hashCode();
     }
 }

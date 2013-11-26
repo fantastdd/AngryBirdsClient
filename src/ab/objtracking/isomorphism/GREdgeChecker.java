@@ -20,18 +20,18 @@ public class GREdgeChecker<V extends ABObject, E extends ConstraintEdge> impleme
 		Relation r1 = arg1.label;
 		Relation r2 = arg2.label;
 		if(arg1.getSource().id == arg2.getTarget().id)
-			r1 = Relation.inverseRelation(r1);
+			r1 = Relation.inverse(r1);
 		else
 			if(arg1.getTarget().id == arg2.getTarget().id)
 			{
-				r1 = Relation.inverseRelation(r1);
-				r2 = Relation.inverseRelation(r2);
+				r1 = Relation.inverse(r1);
+				r2 = Relation.inverse(r2);
 			}
 		
-		/*System.out.println(" ============ ");
+	/*	System.out.println(" ======  Edge Check ====== ");
 		System.out.println(arg1);
 		System.out.println(arg2);
-		System.out.println(Relation.isNeighbor(arg1.label, arg2.label));*/
+		System.out.println(Relation.isNeighbor(r1, r2, 2));*/
 		
 		
 	/*	Relation r1 = (arg1.getSource().id == arg2.getSource().id)? arg1.label : Relation.inverseRelation(arg1.label);

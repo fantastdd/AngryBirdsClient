@@ -16,10 +16,14 @@ import ab.vision.real.ImageSegmenter;
 
 public class Rect extends Body
 {
-    // width and height of the rectangle
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	// width and height of the rectangle
     public Polygon p;
     public int area;
-
+    public int widthType;
     //Note Rect's width is not always the Rectangle's width 
     public Rect(double xs, double ys,  double w, double h, double theta, int t)
     {
@@ -44,12 +48,16 @@ public class Rect extends Body
         width = (int)preciseWidth;
         height = (int)preciseHeight;
         
+        
+        
+        
         area = width * height;
      
         assignType(vision_type);
         createPolygonAndSectors();
         calRecType();
     } 
+    
    /* public static void main(String args[])
     {
     	Line2D l = new Line2D.Float(10,10,10,10);
@@ -63,7 +71,15 @@ public class Rect extends Body
     	rectType = RectType.getType(round);
     	if (rectType != RectType.rec1x1)
     		isFat = false;
-    	
+    		
+    	double _pw = getPreciseWidth();
+    		if(_pw < MagicParams.SlimRecWidth)
+    			widthType = MagicParams.SlimRecWidth;
+    		else
+    			if(_pw < MagicParams.NormalRecWidth)
+    				widthType = MagicParams.NormalRecWidth;
+    			else
+    				widthType = MagicParams.FatRecWidth;
     	
     		
     }
@@ -165,6 +181,8 @@ public class Rect extends Body
     
     	Rect _rect = (Rect)ao;
     	double ratio = ((area > _rect.area)? ((double)area/_rect.area) : ((double)_rect.area/area));
+    	if (ao.rectType == RectType.rec8x1 && rectType == ao.rectType /*&& ao.getPreciseWidth() < MagicParams.SlimRecWidth && getPreciseWidth() < MagicParams.SlimRecWidth*/ )
+    		return true;
     	if (  (Math.abs(rectType.id - _rect.rectType.id) < 2 )&&
     				 ( ratio < MagicParams.AreaRatio
     						 || (getPreciseWidth() < MagicParams.SlimRecWidth && ao.getPreciseWidth() < MagicParams.SlimRecWidth )

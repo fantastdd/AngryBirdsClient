@@ -30,6 +30,13 @@ import ab.vision.real.shape.Rect;
 public class KnowledgeTracker extends SMETracker {
 
 
+	public KnowledgeTracker(int timegap) {
+		super(timegap);
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public DirectedGraph<ABObject, ConstraintEdge> initialNetwork;
 	protected Map<ABObject, Movement> initialObjsMovement = new HashMap<ABObject, Movement>();
 	
@@ -37,7 +44,7 @@ public class KnowledgeTracker extends SMETracker {
 	@Override
 	public void createPrefs(List<ABObject> objs) 
 	{
-		initialNetwork = GSRConstructor.constructGRNetwork(initialObjs);
+		initialNetwork = GSRConstructor.constructGRNetwork(iniObjs);
 		//If no previous movement detected
 		if(initialObjsMovement.isEmpty()){
 			/*Map<ABObject, Movement> occludedObjsMovement = new HashMap<ABObject, Movement>();
@@ -62,7 +69,7 @@ public class KnowledgeTracker extends SMETracker {
 		{	
 			List<Pair> diffs = new LinkedList<Pair>();
 			ABType objType = obj.type;
-			for (ABObject iniObj : initialObjs) {
+			for (ABObject iniObj : iniObjs) {
 				if(objType == iniObj.type)
 				{
 					Movement movement = initialObjsMovement.get(iniObj);
@@ -214,12 +221,12 @@ public class KnowledgeTracker extends SMETracker {
 		matchedObjs = new HashMap<ABObject, ABObject>();
 		currentOccludedObjs = new LinkedList<ABObject>();
 		
-		if (initialObjs != null /*&& initialObjs.size() >= objs.size()*/) 
+		if (iniObjs != null /*&& initialObjs.size() >= objs.size()*/) 
 		{
 	
-			lastInitialObjs = initialObjs;
+			lastInitialObjs = iniObjs;
 	
-			boolean lessIni = (objs.size() > initialObjs.size()); // If the num
+			boolean lessIni = (objs.size() > iniObjs.size()); // If the num
 																	// of3.d
 																	// initial
 																	// objects >
@@ -229,10 +236,10 @@ public class KnowledgeTracker extends SMETracker {
 			createPrefs(objs);
 			//printPrefs(prefs);
 			Map<ABObject, ABObject> match;
-			unmatchedMoreObjs = new LinkedList<ABObject>();
+			unmatchedNewObjs = new LinkedList<ABObject>();
 			if (!lessIni) 
 			{
-				match = matchObjs(initialObjs, objs, iniPrefs, prefs);
+				match = matchObjs(iniObjs, objs, iniPrefs, prefs);
 	
 				// Assign Id
 				for (ABObject iniObj : match.keySet()) {
@@ -243,18 +250,18 @@ public class KnowledgeTracker extends SMETracker {
 						matchedObjs.put(obj, iniObj);
 					}
 					else
-						unmatchedMoreObjs.add(iniObj);
+						unmatchedNewObjs.add(iniObj);
 				}
 	
 				// log(" debris recognition WAS performed: more objects in the initial");
-				debrisRecognition(unmatchedLessObjs, unmatchedMoreObjs);
+				debrisRecognition(unmatchedIniObjs, unmatchedNewObjs);
 			} else {
 				log(" more objs in next frame");
 				/*
 				 * Map<ABObject, List<Pair>> temp; temp = iniPrefs; iniPrefs =
 				 * prefs; prefs = temp;
 				 */
-				match = matchObjs(objs, initialObjs, prefs, iniPrefs);
+				match = matchObjs(objs, iniObjs, prefs, iniPrefs);
 				// Assign Id
 				for (ABObject obj : match.keySet()) {
 					ABObject iniObj = match.get(obj);
@@ -264,11 +271,11 @@ public class KnowledgeTracker extends SMETracker {
 						matchedObjs.put(obj, iniObj);
 					}
 					else
-						unmatchedMoreObjs.add(obj);
+						unmatchedNewObjs.add(obj);
 				}
 				// Process unassigned objs
 				// log("debris recognition WAS performed");
-				debrisRecognition(unmatchedMoreObjs, unmatchedLessObjs);
+				debrisRecognition(unmatchedNewObjs, unmatchedIniObjs);
 	
 			}
 			

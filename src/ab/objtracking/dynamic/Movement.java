@@ -18,6 +18,10 @@ public class Movement {
 	public static final int BOUNDING_SCOPE = 0;
 	public static final int NOT_ALLOWED = -1;
 	
+	public int lastXshift = MAX_SCOPE;
+	public int lastYshift = MAX_SCOPE;
+	public double lastDistance =  MagicParams.NormalMovementDist;
+	
 	private int[] allowedXDirection, allowedYDirection;// value: 0: allow, -1: forbid. array[0]: allow Negative shift, array[1]: allow Non shift, array[2]: allow positive shift.
 	public int movementType;
 	
@@ -48,11 +52,17 @@ public class Movement {
 		if (allowPositive == BOUNDING_SCOPE)
 		{
 			allowPositive = getBoundingScopeValue();
-		}
+		} else
+			if (allowPositive == MAX_SCOPE)
+				allowPositive = getMaxXScope();
+		
 		if (allowNegative == BOUNDING_SCOPE)
 		{
 			allowNegative = getBoundingScopeValue();
-		}
+		}  
+		else
+			if (allowNegative == MAX_SCOPE)
+				allowNegative = getMaxXScope();
 
 		allowedXDirection[2] = allowPositive;
 		allowedXDirection[0] = allowNegative;
@@ -64,11 +74,18 @@ public class Movement {
 		if (allowPositive == BOUNDING_SCOPE)
 		{
 			allowPositive = getBoundingScopeValue();
-		}
+		} 
+		else if(allowPositive == MAX_SCOPE)
+			allowPositive = getMaxYScope();
+		
 		if (allowNegative == BOUNDING_SCOPE)
 		{
 			allowNegative = getBoundingScopeValue();
 		}
+		 else  if(allowNegative ==  MAX_SCOPE)
+				allowNegative = getMaxYScope();
+		
+		
 		allowedYDirection[2] = allowPositive;
 		allowedYDirection[0] = allowNegative;
 		allowedYDirection[1] = allowStatic;
@@ -132,14 +149,26 @@ public class Movement {
 	{
 		int xshift = (int) (this.object.getCenterX() - obj.getCenterX());
 		int yshift = (int) (this.object.getCenterY() - obj.getCenterY());
+		int xMovementType = getMovementType(xshift);
+		int yMovementType = getMovementType(yshift);
+		
+		xshift = Math.abs(xshift);
+		yshift = Math.abs(yshift);
 		double distance = Math.sqrt(xshift * xshift + yshift * yshift);
 		int xdirection = getDirection(xshift);
 		int ydirection = getDirection(yshift);
 		
 		movementType = getMovementType(distance);
 		
-		int xMovementType = getMovementType(xshift);
-		int yMovementType = getMovementType(yshift);
+		
+		lastXshift = (xshift < getBoundingScopeValue())? NoMovement: Math.abs(xshift);
+		lastYshift = (yshift < getBoundingScopeValue())? NoMovement: Math.abs(yshift);
+		lastDistance = (distance < getBoundingScopeValue()) ? MagicParams.NormalMovementDist : distance;
+		
+		
+		
+		setAllowedXDirection(MAX_SCOPE, MAX_SCOPE, MAX_SCOPE);
+		setAllowedYDirection(MAX_SCOPE, MAX_SCOPE, MAX_SCOPE);
 		/*if(obj.id == 15)
 			System.out.println(yMovementType);*/
 		//System.out.println(" initial " + obj + "  y " + this.object.getCenterY() + " oy: " + obj.getCenterY() +" yshift " + yshift + " y direction: " + ydirection);
@@ -149,14 +178,15 @@ public class Movement {
 				setAllowedXDirection(MAX_SCOPE, NOT_ALLOWED, MAX_SCOPE);
 			else
 				setAllowedXDirection(NOT_ALLOWED, MAX_SCOPE, MAX_SCOPE);
-		} else 
+		}
+		/*else 
 			if (xMovementType > WeakMovement)
 			{
 				if(xdirection > 0 )
 					setAllowedXDirection(MAX_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
 				else
 					setAllowedXDirection(BOUNDING_SCOPE, MAX_SCOPE, MAX_SCOPE);
-			}
+			}*/
 		
 		
 		if (yMovementType > NormalMovement)
@@ -168,18 +198,17 @@ public class Movement {
 				setAllowedYDirection(NOT_ALLOWED, MAX_SCOPE, MAX_SCOPE);
 	
 		} 
-		else if (yMovementType > WeakMovement)
+		/*else if (yMovementType > WeakMovement)
 		{		
 				if(ydirection > 0 )
 					setAllowedYDirection(MAX_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
 				else
 					setAllowedYDirection(BOUNDING_SCOPE, MAX_SCOPE, MAX_SCOPE);
 			
-		} 
-		else
-		{
-			//setAllowedYDirection(BOUNDING_SCOPE, BOUNDING_SCOPE, MAX_SCOPE);
-		}
+		} */
+		
+			
+		
 	}
 	public void setDirectionAndType(int xshift, int yshift)
 	{
@@ -226,8 +255,8 @@ public class Movement {
 		xDirection = getDirection(xshift);
 		yDirection = getDirection(yshift);
 		//System.out.println(" shift " + xshift + " " +xDirection + "  " + allowedXDirection[xDirection + 1]);
-		int distance = (int) Math.sqrt(xshift * xshift + yshift * yshift);
-		if(allowedXDirection[xDirection + 1] > Math.abs(xshift) && allowedYDirection[yDirection + 1] > Math.abs(yshift) && (!checkMovementType || getMovementType(distance) == movementType))
+		double distance =  Math.sqrt(xshift * xshift + yshift * yshift);
+		if(distance < lastDistance * MagicParams.maxIncreaseRatio && allowedXDirection[xDirection + 1] > Math.abs(xshift) && allowedYDirection[yDirection + 1] > Math.abs(yshift) && (!checkMovementType || getMovementType(distance) == movementType))
 			return true;
 		else
 			return false;
@@ -283,7 +312,27 @@ public class Movement {
    
    private int getBoundingScopeValue()
    {
-	   return Math.max(MagicParams.NormalMovementDist, object.getBounds().height/2);
+	   //return Math.max(MagicParams.NormalMovementDist, object.getBounds().height/2);
+	   return object.getBounds().height/2;
+   }
+   public int getMaxYScope()
+   {
+	   if (lastYshift != NoMovement)
+	   {
+		   return lastYshift * MagicParams.maxIncreaseRatio + MagicParams.WeakMovementDist;
+	   } else
+		   return MagicParams.NormalMovementDist;
+	   
+   }
+   public int getMaxXScope()
+   {
+	   if (lastXshift != NoMovement)
+	   {
+		   return lastXshift * MagicParams.maxIncreaseRatio + MagicParams.WeakMovementDist;
+	   } 
+	   else
+		   return MagicParams.NormalMovementDist;
+	  
    }
    public void setAllowedXDirection(int direction, int allowedValue)
    {
@@ -291,6 +340,9 @@ public class Movement {
 	   {
 		   allowedValue = getBoundingScopeValue();
 	   }
+	   else
+		   if (allowedValue == MAX_SCOPE)
+			   allowedValue = getMaxXScope();
 	   allowedXDirection[direction + 1] = allowedValue;
    }
    public void setAllowedYDirection(int direction, int allowedValue)
@@ -299,8 +351,14 @@ public class Movement {
 	   {
 		   allowedValue = getBoundingScopeValue();
 	   }
+	   else
+		   if(allowedValue == MAX_SCOPE)
+		   {
+			   allowedValue = getMaxYScope();
+		   }
 	   allowedYDirection[direction + 1] = allowedValue;
    }
+   
    public int getAllowedXDirection(int direction)
    {
 	   return allowedXDirection[direction + 1];

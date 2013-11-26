@@ -42,7 +42,7 @@ public class MovementPredictor {
 			// Note, debris all have the same ID.
 			if (target.id == obj.id) {
 				target = edge.getSource();
-				r = Relation.inverseRelation(r);
+				r = Relation.inverse(r);
 			}
 			Relation left = Relation.getLeftpart(r);
 			if(obj.isLevel)
@@ -96,7 +96,8 @@ public class MovementPredictor {
 		//obj is stable : Level: S3-S5. Fat: S3-S7, >PI/2 S6-S7, < PI/2 S3-S4
 		int count = -1;
 		Set<ConstraintEdge> edges = network.edgesOf(obj);
-		if(edges.isEmpty())
+		//All edges will have the UNASSIGNED relation
+		/*		if(edges.isEmpty())
 		{
 			movement.setAllowedYDirection(Movement.POSITIVE, Movement.MAX_SCOPE);
 			if(obj.angle > Math.PI/2 && movement.getAllowedXDirection(Movement.POSITIVE) == Movement.NOT_ALLOWED)
@@ -105,7 +106,7 @@ public class MovementPredictor {
 					if(obj.angle < Math.PI/2 && movement.getAllowedXDirection(Movement.NEGATIVE) == Movement.NOT_ALLOWED){
 						movement.setAllowedXDirection(Movement.NEGATIVE, Movement.BOUNDING_SCOPE);
 			}
-		}
+		}*/
 		for (ConstraintEdge edge: edges)
 		{
 			count ++;
@@ -114,7 +115,7 @@ public class MovementPredictor {
 			// Note, debris all have the same ID.
 			if (target.id == obj.id) {
 				target = edge.getSource();
-				r = Relation.inverseRelation(r);
+				r = Relation.inverse(r);
 			}
 			Relation left = Relation.getLeftpart(r);
 			if(obj.isLevel)
@@ -142,6 +143,7 @@ public class MovementPredictor {
 				}
 			if(count == edges.size() - 1)
 			{	
+				//System.out.println("@@@@  " + obj);
 				movement.setAllowedYDirection(Movement.POSITIVE, Movement.MAX_SCOPE);
 				if(obj.angle > Math.PI/2 && movement.getAllowedXDirection(Movement.POSITIVE) == Movement.NOT_ALLOWED)
 					movement.setAllowedXDirection(Movement.POSITIVE, Movement.BOUNDING_SCOPE);
@@ -165,8 +167,8 @@ public class MovementPredictor {
 				Movement movement = new Movement(obj);
 				
 				if (obj.angle > Math.PI / 2) {
-					movement.setAllowedXDirection(Movement.MAX_SCOPE, Movement.NOT_ALLOWED, Movement.MAX_SCOPE);
-					Set<ConstraintEdge> edges = network.edgesOf(obj);
+					movement.setAllowedXDirection(Movement.MAX_SCOPE, Movement.BOUNDING_SCOPE, Movement.MAX_SCOPE);
+					/*Set<ConstraintEdge> edges = network.edgesOf(obj);
 					for (ConstraintEdge edge: edges)
 					{
 						ABObject target = edge.getTarget();
@@ -174,7 +176,7 @@ public class MovementPredictor {
 						// Note, debris all have the same ID.
 						if (target.id == obj.id) {
 							target = edge.getSource();
-							r = Relation.inverseRelation(r);
+							r = Relation.inverse(r);
 						}
 						//Leveler effect
 						Relation left = Relation.getLeftpart(r);
@@ -187,12 +189,12 @@ public class MovementPredictor {
 						}
 						
 						
-					}
+					}*/
 					
 				} else{
 					
-						movement.setAllowedXDirection(Movement.NOT_ALLOWED, Movement.MAX_SCOPE, Movement.MAX_SCOPE);
-						Set<ConstraintEdge> edges = network.edgesOf(obj);
+						movement.setAllowedXDirection(Movement.BOUNDING_SCOPE, Movement.MAX_SCOPE, Movement.MAX_SCOPE);
+				/*		Set<ConstraintEdge> edges = network.edgesOf(obj);
 						for (ConstraintEdge edge: edges)
 						{
 							ABObject target = edge.getTarget();
@@ -200,7 +202,7 @@ public class MovementPredictor {
 							// Note, debris all have the same ID.
 							if (target.id == obj.id) {
 								target = edge.getSource();
-								r = Relation.inverseRelation(r);
+								r = Relation.inverse(r);
 							}
 							//Leveler effect
 							Relation left = Relation.getLeftpart(r);
@@ -211,7 +213,7 @@ public class MovementPredictor {
 							}
 							
 							
-						}
+						}*/
 					}
 				movements.put(obj, movement);
 			}
@@ -231,7 +233,7 @@ public class MovementPredictor {
 				// Note, debris all have the same ID.
 				if (target.id == landmark.id) {
 					target = edge.getSource();
-					r = Relation.inverseRelation(r);
+					r = Relation.inverse(r);
 				}
 				if (!movements.containsKey(target))
 					if (landmark.isLevel)

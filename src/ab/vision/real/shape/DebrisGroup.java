@@ -17,9 +17,10 @@ public class DebrisGroup extends Rect{
 	}
     public ABObject member1;
     public ABObject member2;
-
+    public final boolean isDebris = false;
 	public void addMember(ABObject member)
 	{
+		member.isDebris = true;
 		if (member1 != null)
 			member2 = member;
 		else
@@ -29,7 +30,6 @@ public class DebrisGroup extends Rect{
 	{
 		return  " DebrisGroup "  + super.toString();
 	}
-    
 
 
 }

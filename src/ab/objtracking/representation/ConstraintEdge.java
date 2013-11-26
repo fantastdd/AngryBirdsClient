@@ -26,7 +26,7 @@ public class ConstraintEdge extends DefaultEdge {
     	 ABObject temp = source;
     	 source = target;
     	 target = temp;
-    	 label = Relation.inverseRelation(label);
+    	 label = Relation.inverse(label);
      }
      public ABObject getTarget() {
          return target;

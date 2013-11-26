@@ -2,13 +2,14 @@ package ab.vision;
 
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
+import java.io.Serializable;
 
 import ab.objtracking.MagicParams;
 import ab.vision.real.ImageSegmenter;
 import ab.vision.real.shape.Rect;
 import ab.vision.real.shape.RectType;
 
-public class ABObject extends Rectangle {
+public class ABObject extends Rectangle implements Serializable {
  
  private static final long serialVersionUID = 737741268251922637L;
  public ABType type;
