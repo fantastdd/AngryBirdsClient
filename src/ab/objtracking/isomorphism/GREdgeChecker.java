@@ -36,7 +36,7 @@ public class GREdgeChecker<V extends ABObject, E extends ConstraintEdge> impleme
 		
 	/*	Relation r1 = (arg1.getSource().id == arg2.getSource().id)? arg1.label : Relation.inverseRelation(arg1.label);
 		Relation r2 = (arg1.getSource().id == arg2.getSource().id)? arg2.label : Relation.inverseRelation(arg2.label);*/
-		if((r1 == Relation.Unassigned || r2 == Relation.Unassigned) || Relation.isNeighbor(r1, r2, 2))
+		if((r1 == Relation.UNASSIGNED || r2 == Relation.UNASSIGNED) || Relation.isNeighbor(r1, r2, 2))
 			return true;
 		
 		lastConflictSource = arg1.getSource();

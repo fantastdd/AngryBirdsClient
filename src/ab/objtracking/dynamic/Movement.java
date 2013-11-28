@@ -4,6 +4,7 @@ import ab.objtracking.MagicParams;
 import ab.vision.ABObject;
 
 public class Movement {
+	//TODO add rotation..
 	
 	public static final int POSITIVE = 1;
 	public static final int NEGATIVE = -1;
@@ -31,18 +32,8 @@ public class Movement {
 	public ABObject object;
 	public boolean remainStatic = false;
 	public boolean landMarkMovement = false; // The movement has a higher confidence to be correct
-	public int correctXshift;
-	public int correctYshift;
-	public void setCorrectMovement(int correctXshift, int correctYshift)
-	{
-		this.correctXshift = correctXshift;
-		this.correctYshift = correctYshift;
-	}
-	public void resetCorrectMovement()
-	{
-		this.correctXshift = xDirection;
-		this.correctYshift = yDirection;
-	}
+
+
 	public void setAllowedXDirection(int[] allowedXDirection)
 	{
 		this.allowedXDirection = allowedXDirection;
@@ -239,7 +230,7 @@ public class Movement {
 		this.yDirection = getDirection(yshift); 	
 		}
 	
-	private int getDirection(int shift)
+	private int getDirection(double shift)
 	{
 		if(shift > 0 )//MagicParams.MovementTolearance)
 	    	 return POSITIVE;
@@ -249,7 +240,7 @@ public class Movement {
 	    		return  NONSHIFT;
 	}
 	
-	public boolean isValidMovement(int xshift, int yshift, boolean checkMovementType)
+	public boolean isValidMovement(double xshift, double yshift, boolean checkMovementType)
 	{
 		int xDirection, yDirection;
 		xDirection = getDirection(xshift);
@@ -261,6 +252,15 @@ public class Movement {
 		else
 			return false;
 		
+	}
+	/**
+	 * @return true if iniObj can move to newObj 
+	 * */
+	public boolean isValidMovement(ABObject iniObj, ABObject newObj, boolean checkMovementType)
+	{
+		double xshift = newObj.getCenterX() - iniObj.getCenterX();
+		double yshift = newObj.getCenterY() - iniObj.getCenterY();
+		return isValidMovement(xshift, yshift, checkMovementType);
 	}
 	
 	public boolean isConflictDirection(Movement movement)

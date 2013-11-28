@@ -74,13 +74,13 @@ public class IsomorphismTest {
 		graph2.addVertex(o4);
 		graph2.addVertex(o6);
 		
-		graph1.addEdge(o1, o2, new ConstraintEdge(o1, o2, Relation.Unassigned));
+		graph1.addEdge(o1, o2, new ConstraintEdge(o1, o2, Relation.UNASSIGNED));
 		graph1.addEdge(o2, o3, new ConstraintEdge(o2, o3, Relation.S1_S6));
-		graph1.addEdge(o1, o3, new ConstraintEdge(o1, o3, Relation.Unassigned));
+		graph1.addEdge(o1, o3, new ConstraintEdge(o1, o3, Relation.UNASSIGNED));
 		
 		
-		graph2.addEdge(o5, o6, new ConstraintEdge(o5, o6, Relation.Unassigned));
-		graph2.addEdge(o4, o6, new ConstraintEdge(o4, o6, Relation.Unassigned));
+		graph2.addEdge(o5, o6, new ConstraintEdge(o5, o6, Relation.UNASSIGNED));
+		graph2.addEdge(o4, o6, new ConstraintEdge(o4, o6, Relation.UNASSIGNED));
 		graph2.addEdge(o4, o5, new ConstraintEdge(o4, o5, Relation.S1_S6));
 		
 		

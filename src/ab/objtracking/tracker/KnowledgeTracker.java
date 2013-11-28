@@ -322,43 +322,7 @@ public class KnowledgeTracker extends SMETracker {
 		return false;
 	}
 	
-	
-	protected boolean validateMovement(ABObject source, DirectedGraph<ABObject, ConstraintEdge> network, List<Movement> globalConflicts)
-	{
-		Set<ConstraintEdge> edges = network.edgesOf(source);
-		int size = edges.size();
-		Movement sourceMovement = initialObjsMovement.get(source);
-		int count = 0;
-		List<Movement> conflicts = new LinkedList<Movement>();
-		for (ConstraintEdge edge : edges)
-		{
-			ABObject target = edge.getSource();
-			if(source.id == target.id)
-				target = edge.getTarget();
-			Movement movement = initialObjsMovement.get(target);
-			boolean isSameMovement = sourceMovement.isSameMovement(movement);
-			if(!isSameMovement && movement.landMarkMovement)
-				return false;
-			else if (isSameMovement)
-				count ++;
-			else
-				if(!isSameMovement)
-				{
-						movement.setCorrectMovement(sourceMovement.xDirection, sourceMovement.yDirection);
-						conflicts.add(movement);
-				}
-			
-		}
-		if (size > 3 || count > size/2)
-		{
-			sourceMovement.landMarkMovement = true;
-			globalConflicts.remove(sourceMovement); //in case added by other objs
-			globalConflicts.addAll(conflicts);
-		}
-		return true;
-	}
-	
-	
+
 	
 	public static void main(String args[])
 	{

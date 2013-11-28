@@ -1,22 +1,19 @@
 package ab.objtracking.representation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.jgrapht.alg.DijkstraShortestPath;
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
 public enum Relation {
 	
-	Invalid,Invalid_1, Invalid_2,
-	Unknown,
-	Unassigned,
+	INVALID,INVALID1, INVALID2,
+	UNKNOWN,
+	UNASSIGNED,
 	
 	
 	//Atomic Sectors
@@ -107,7 +104,16 @@ public enum Relation {
 			return true;
 		return false;
 	}
-	
+	public static double distance(Relation r1, Relation r2)
+	{
+		shortestPath = new DijkstraShortestPath<Relation, DefaultWeightedEdge>(graph, r1, r2);
+		/*List<DefaultWeightedEdge> edges = shortestPath.getPathEdgeList();
+		for(DefaultWeightedEdge edge : edges)
+		{
+			System.out.println(edge);
+		}*/
+		return shortestPath.getPathLength();
+	}
     static 
     {
     	System.out.println(" Generate Neighborhood graph ");
@@ -170,7 +176,7 @@ public enum Relation {
     					System.out.println(String.format("%s %s %d %b %s %d %b %s", relation, ln, lnIndex, isSector1Level,
     							rn, rnIndex, isSector2Level,r));*/
 
-    					if(r == Invalid || relation == r)
+    					if(r == INVALID || relation == r)
     						continue;
     					graph.addEdge(relation, r);
     				
@@ -181,7 +187,7 @@ public enum Relation {
     		}
     	}
     	//Process Graph, the v-v relations connecting two edge-edge relations and can be removed.
-    	for (Relation r : graph.vertexSet())
+/*    	for (Relation r : graph.vertexSet())
     	{
     		if(isGRRelation(r) && r.left.atomicRelationIndex%2 == 0 && r.right.atomicRelationIndex%2 == 0)
     		{
@@ -200,15 +206,15 @@ public enum Relation {
     				Relation _r = connectedVertices.get(i);
     				for (int j = i + 1; j < connectedVertices.size(); j++)
     				{
-    					/*if(_r == R4_S1 && connectedVertices.get(j) == S8_S4 )
-    						System.out.println(" saboteur: " + r);*/
+    					if(_r == R4_S1 && connectedVertices.get(j) == S8_S4 )
+    						System.out.println(" saboteur: " + r);
     					graph.addEdge(_r, connectedVertices.get(j));
     				}
     			}
     		    
     		
     		}
-    	}
+    	}*/
     	
 
     }
@@ -226,6 +232,34 @@ public enum Relation {
 			return true;
 		return false;
 	}
+	/**
+	 * @return true if relation is one of the angular edge-edge relations
+	 * */
+	public static boolean isAEE(Relation relation)
+	{
+		if (relation == S2_S6 || relation == S6_S2 || relation == S8_S4 || relation == S4_S8)
+			return true;
+		return false;
+	}
+	/**
+	 * @return true if relation is one of the regular edge-edge relations
+	 * 
+	 * **/
+	public static boolean isREE(Relation relation)
+	{
+		if (relation == R4_R8 || relation == R2_R6 || relation == R8_R4 || relation == R6_R2)
+			return true;
+		return false;
+	}
+	/**
+	 * @return true if relation is one of the edge-edge relations
+	 * */
+	public static boolean isEE(Relation relation)
+	{
+		return isREE(relation) || isAEE(relation);
+	}
+	
+	
 	public static Relation getLeftpart(Relation relation)
 	{
 		if(relation.left == null)
@@ -324,17 +358,18 @@ public enum Relation {
 			case TOP_RIGHT: return BOTTOM_LEFT;
 			case BOTTOM_LEFT: return TOP_RIGHT;
 			case BOTTOM_RIGHT: return TOP_LEFT;
-			case Unknown: return Unknown;
-			case Invalid: return Invalid;
-			case Invalid_1: return Invalid_1;
-			case Invalid_2: return Invalid_2;
-			default: return Unassigned;
+			case UNKNOWN: return UNKNOWN;
+			case INVALID: return INVALID;
+			case INVALID1: return INVALID1;
+			case INVALID2: return INVALID2;
+			default: return UNASSIGNED;
 		}
 		
 	}
 	
 	public static Relation getRelation(int sector1, boolean isSector1Level, int sector2, boolean isSector2Level )
 	{
+		//System.out.println(String.format("%d %b %d %b", sector1, isSector1Level, sector2, isSector2Level));
 	  if(!isSector1Level)
 		switch(sector1)
 		{
@@ -348,15 +383,16 @@ public enum Relation {
 							case 4: return Relation.S1_S5;
 							case 5: return Relation.S1_S6;
 							case 6: return Relation.S1_S7;
-							default: return Relation.Invalid;
+							default: return Relation.INVALID;
 						}
 				  else
 					  switch(sector2)
 						{
+					  		
 							case 2: return Relation.S1_R3;
 							case 3: return Relation.S1_R4;
 							case 4: return Relation.S1_R5;
-							default: return Relation.Invalid;
+							default: return Relation.INVALID;
 						}
 				}
 			case 2: 
@@ -369,7 +405,7 @@ public enum Relation {
 						case 5: return Relation.S3_S6;
 						case 6: return Relation.S3_S7;
 						case 7: return Relation.S3_S8;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
@@ -377,7 +413,7 @@ public enum Relation {
 						case 4: return Relation.S3_R5;
 						case 5: return Relation.S3_R6;
 						case 6: return Relation.S3_R7;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 4: 
@@ -390,7 +426,7 @@ public enum Relation {
 					case 2: return Relation.S5_S3;
 					case 6: return Relation.S5_S7;
 					case 7: return Relation.S5_S8;
-					default: return Relation.Invalid;
+					default: return Relation.INVALID;
 				}
 				else
 					switch(sector2)
@@ -398,7 +434,7 @@ public enum Relation {
 						case 0: return Relation.S5_R1;
 						case 6: return Relation.S5_R7;
 						case 7: return Relation.S5_R8;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 6: 
@@ -411,7 +447,7 @@ public enum Relation {
 					case 2: return Relation.S7_S3;
 					case 3: return Relation.S7_S4;
 					case 4: return Relation.S7_S5;
-					default: return Relation.Invalid;
+					default: return Relation.INVALID;
 				}
 				else
 					switch(sector2)
@@ -419,7 +455,7 @@ public enum Relation {
 						case 0: return Relation.S7_R1;
 						case 1: return Relation.S7_R2;
 						case 2: return Relation.S7_R3;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 1: 
@@ -430,13 +466,13 @@ public enum Relation {
 						case 4: return Relation.S2_S5;
 						case 5: return Relation.S2_S6;
 						case 6: return Relation.S2_S7;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 4: return Relation.S2_R5;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 3: 
@@ -447,13 +483,13 @@ public enum Relation {
 						case 6: return Relation.S4_S7;
 						case 7: return Relation.S4_S8;
 						case 0: return Relation.S4_S1;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 6: return Relation.S4_R7;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 5: 
@@ -464,13 +500,13 @@ public enum Relation {
 						case 0: return Relation.S6_S1;
 						case 1: return Relation.S6_S2;
 						case 2: return Relation.S6_S3;
-						default:return Relation.Invalid;
+						default:return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 0: return Relation.S6_R1;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 7: 
@@ -481,16 +517,16 @@ public enum Relation {
 						case 2: return Relation.S8_S3;
 						case 3: return Relation.S8_S4;
 						case 4: return Relation.S8_S5;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 2: return Relation.S8_R3;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
-			default: return Relation.Invalid;
+			default: return Relation.INVALID;
 			
 		}
 	 
@@ -506,13 +542,13 @@ public enum Relation {
 							case 4: return Relation.R1_S5;
 							case 5: return Relation.R1_S6;
 							case 6: return Relation.R1_S7;
-							default: return Relation.Invalid;
+							default: return Relation.INVALID;
 						}
 				  else
 					  switch(sector2)
 						{
 							case 4: return Relation.R1_R5;
-							default: return Relation.Invalid;
+							default: return Relation.INVALID;
 						}
 				}
 			case 2: 
@@ -523,13 +559,13 @@ public enum Relation {
 						case 0: return Relation.R3_S1;
 						case 6: return Relation.R3_S7;
 						case 7: return Relation.R3_S8;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 6: return Relation.R3_R7;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 4: 
@@ -540,13 +576,13 @@ public enum Relation {
 						case 0: return Relation.R5_S1;
 						case 1: return Relation.R5_S2;
 						case 2: return Relation.R5_S3;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 0: return Relation.R5_R1;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 6: 
@@ -557,13 +593,13 @@ public enum Relation {
 						case 2: return Relation.R7_S3;
 						case 3: return Relation.R7_S4;
 						case 4: return Relation.R7_S5;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 2: return Relation.R7_R3;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 1: 
@@ -572,13 +608,13 @@ public enum Relation {
 					switch(sector2)
 					{
 						case 6: return Relation.R2_S7;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 5: return Relation.R2_R6;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 3: 
@@ -587,13 +623,13 @@ public enum Relation {
 					switch(sector2)
 					{
 						case 0: return Relation.R4_S1;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 7: return Relation.R4_R8;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 5: 
@@ -602,13 +638,13 @@ public enum Relation {
 					switch(sector2)
 					{
 						case 2: return Relation.R6_S3;
-						default:return Relation.Invalid;
+						default:return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 1: return Relation.R6_R2;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
 			case 7: 
@@ -617,28 +653,35 @@ public enum Relation {
 					switch(sector2)
 					{
 						case 4: return Relation.R8_S5;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 				else
 					switch(sector2)
 					{
 						case 3: return Relation.R8_R4;
-						default: return Relation.Invalid;
+						default: return Relation.INVALID;
 					}
 			}
-			default: return Relation.Invalid;
+			default: return Relation.INVALID;
 	
 		}
 		}
 	}
-	
+	public static boolean isOpposite(Relation rel1, Relation rel2)
+	{
+		double distance = distance(rel1, rel2);
+		if (distance > 2 && distance < 5) // since the neighborhood graph does not contain non-gr relatoions, distance(gr, nongr) will give a infinity distance given non  present of the non gr relations in the graph
+			return true;
+		return false;
+	}
 	
 	public static void main(String args[])
 	{ 
-		System.out.println(Relation.isNeighbor(Relation.R4_S1, Relation.S8_S4, 2));
+		/*System.out.println(Relation.isNeighbor(Relation.R4_S1, Relation.S8_S4, 2));
 		for (DefaultEdge edge : graph.edgesOf(Relation.R4_S1))
 		{
 			System.out.println(edge);
-		}
+		}*/
+		System.out.println(Relation.distance(R5_S2, S8_S4));
 	}
 }

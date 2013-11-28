@@ -1,6 +1,7 @@
 package ab.objtracking.representation.util;
 
 import java.awt.Polygon;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,9 @@ public class DebrisToolKit {
 	{
 		List<DebrisGroup> debrisList = new LinkedList<DebrisGroup>();
 		Set<ABObject> vertices = network.vertexSet();
+		
+		//Set<ABObject> usedDebris = new HashSet<ABObject>();
+		
 		for (ABObject obj : vertices)
 		{
 			if(obj.rectType == RectType.rec8x1 || obj.type == ABType.Pig)
@@ -42,27 +46,50 @@ public class DebrisToolKit {
 						if(debris != null)
 						{
 							if(debris.p.contains(obj.getCenter()) && debris.p.contains(target.getCenter()))
-							debrisList.add(debris);
+							{	
+								debrisList.add(debris);
+								//usedDebris.add(obj);
+								//usedDebris.add(target);
+							}
 						}
 					}
 				}
 			}
 		}
+		
 		return debrisList;
 	}
 	/**
-	 * Recover the shape of the original from one piece
-	 * TODO
-	 * */
-	public static ABObject debrisReconstruct(ABObject o1, ABObject original)
+	 * Recover the shape of the original from two debris (the original shape is maintained)
+	 * only recover rec8*1 
+	 * **/
+	public static DebrisGroup debrisReconstruct(ABObject o1, ABObject o2)
 	{
-		if(original.shape == ABShape.Rect)
+		if(o1.shape != ABShape.Rect && o2.shape != ABShape.Rect)
+			return null;
+		if(o1.isLevel && o2.isLevel && ((o1.getPreciseWidth() > MagicParams.SlimRecWidth ) || (o2.getPreciseWidth()> MagicParams.SlimRecWidth)))
+				return null;
+		if(o1.getOriginalShape().rectType.id < RectType.rec6x1.id)
+			return null;
+		double orientationDiff = Math.abs(o1.angle - o2.angle);
+		double angle = getAngle(o1.getCenterX() - o2.getCenterX(), o1.getCenterY() - o2.getCenterY());
+		double diff = Math.abs(angle - o1.angle);
+		
+		if(sameAngle(diff)&& sameAngle(orientationDiff)) 
 		{
-			if(o1.shape == ABShape.Rect)
-			{
-				
-			}
+			double centerX = ( o1.getCenterX() + o2.getCenterX() )/2;
+			double centerY = ( o1.getCenterY() + o2.getCenterY() )/2;
+			ABObject originalShape = o1.getOriginalShape();
+			DebrisGroup debris = new DebrisGroup(centerX, centerY, originalShape.getPreciseWidth(), originalShape.getPreciseHeight(), 
+					angle, -1, (int)(originalShape.getPreciseHeight() * originalShape.getPreciseWidth()));
+			debris.type = o1.type;
+			debris.id = o1.id;
+			debris.addMember(o1);
+			debris.addMember(o2);
+			return debris;
+			
 		}
+		
 		return null;
 	}
 	

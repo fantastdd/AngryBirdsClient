@@ -93,8 +93,8 @@ public class TrackerEvaluator {
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException 
 	{
 		Tracker tracker = new KnowledgeTrackerBaseLine_6(200);
-		//evaluate(tracker, "e2l6_56");
-		evaluate(tracker, "t11");
+		evaluate(tracker, "e2l6_56");
+		//evaluate(tracker, "t11");
 	}
 
 }

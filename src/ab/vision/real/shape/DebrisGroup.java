@@ -28,7 +28,8 @@ public class DebrisGroup extends Rect{
 	}
 	public String toString()
 	{
-		return  " DebrisGroup "  + super.toString();
+		String result = String.format(" Debris: %s \n member1:%s \n member2:%s ", super.toString(), member1, member2);
+		return  result;
 	}
 
 
