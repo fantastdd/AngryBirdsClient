@@ -281,7 +281,7 @@ public abstract class TrackerTemplate implements Tracker{
 		newObj.id = iniObj.id;
 		if(isDebris && (! (iniObj.getOriginalShape().isSameShape(newObj) || newObj.rectType == RectType.rec8x1)))
 		{	
-			newObj.setOriginalShape(iniObj.getOriginalShape());
+			newObj.setOriginalShape(GlobalObjectsToolkit.getIniObjById(iniObj.id));
 			newObj.isDebris = true;
 		}
 		else 
@@ -316,7 +316,29 @@ public abstract class TrackerTemplate implements Tracker{
 			System.out.println("==========");
 		}
 	}
-	
+	protected void printMatch(List<ABObject> interestObj, Map<ABObject, ABObject> newToIniMatch, boolean newToIni)
+	{
+		String str1 = "";
+		String str2 = "";
+		if ( newToIni)
+		{	
+			str1 = "newObj: ";
+			str2 = "iniObj: ";
+		}
+		else
+		{
+			str1 = "iniObj: ";
+			str2 = "newObj: ";
+		}
+			
+		log(" ===========  Print Match ============= ");
+		for (ABObject newObj : interestObj)
+		{
+			System.out.println(str1 + newObj);
+			System.out.println(str2 + newToIniMatch.get(newObj));
+			System.out.println("==========");
+		}
+	}
 	
 	class Pair {
 		public ABObject obj;

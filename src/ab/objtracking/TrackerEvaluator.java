@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import ab.objtracking.tracker.KnowledgeTrackerBaseLine_7;
+import ab.objtracking.tracker.KnowledgeTrackerBaseLine_8;
 import ab.vision.ABObject;
 import ab.vision.real.MyVisionUtils;
 
@@ -94,7 +95,7 @@ public class TrackerEvaluator {
 	}
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException 
 	{
-		Tracker tracker = new KnowledgeTrackerBaseLine_7(200);
+		Tracker tracker = new KnowledgeTrackerBaseLine_8(200);
 		Map<String, Integer> errors = new HashMap<String, Integer>();
 		errors.put("e216_56", evaluate(tracker, "e2l6_56"));
 		

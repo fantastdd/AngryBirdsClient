@@ -1,7 +1,7 @@
 package ab.objtracking.representation.util;
 
+import java.awt.Point;
 import java.awt.Polygon;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -145,7 +145,101 @@ public class DebrisToolkit {
 		}
 		
 	}
+	public static Rect debrisReconstruct(List<ABObject> group) 
+	{
+		if (group.size() == 1)
+		{
+			ABObject obj = group.get(0);
+
+			Rect rec = new Rect(obj.getCenterX(), obj.getCenterY(),
+					obj.getOriginalShape().getPreciseWidth(), obj.getOriginalShape().getPreciseHeight(), -1 , obj.getOriginalShape().area);
+			rec.type = obj.type;
+		}
+		else
+			if (group.size() == 2)
+			{
+				
+				ABObject member1 = group.get(0);
+				ABObject member2 = group.get(1);
+				//log(" ^^^ " + member1 + "\n" + member2);
+				if(canFormDebris(member1, member2))
+				{
+					//log("&&");
+					ABObject originalShape = member1.getOriginalShape();
+					double x = (member1.getCenterX() + member2.getCenterX())/2;
+					double y = (member1.getCenterY() + member2.getCenterY())/2;
+					double angle = divide( (member1.getCenterY() - member2.getCenterY()), (member1.getCenterX() - member2.getCenterX()));
+					angle = Math.atan(angle);
+					angle = (angle > 0)? angle : (Math.PI - angle);
+					Rect rect = new Rect(x, y, originalShape.getPreciseWidth(), originalShape.getPreciseHeight(), angle, -1, originalShape.area);
+					rect.type = member1.type;
+					return rect;
+				}
+			} 
+			else 
+			{
+			   double x, y, angle;
+			   x = y = angle = 0;
+			   ABObject originalShape = null;
+			   ABType type = null;
+			   for (int i = 0; i < group.size() - 1; i++)
+			   {
+				   ABObject member1 = group.get(i);
+				   type = member1.type;
+				   x += member1.getCenterX();
+				   y += member1.getCenterY();
+				   originalShape = member1.getOriginalShape();
+				   for (int j = i + 1; j < group.size(); j++)
+				   {
+					   ABObject member2 = group.get(j);
+					   if(canFormDebris(member1, member2))
+					   {
+						    angle = divide( (member1.getCenterY() - member2.getCenterY()), (member1.getCenterX() - member2.getCenterX()));
+							angle = Math.atan(angle);
+							angle = (angle > 0)? angle : (Math.PI - angle);
+					   }
+					   else
+						   return null;
+				   }
+			   }
+			   x = x/group.size();
+			   y = y/group.size();
+			   Rect rect = new Rect(x, y, originalShape.getPreciseWidth(), originalShape.getPreciseHeight(), angle, -1, originalShape.area);
+			   rect.type = type;
+			   return rect;
+			   
+			}
+
+		return null;
+	}
 	
+	private static double divide(double x, double y)
+	{
+		if ( y == 0)
+			return Double.MAX_VALUE;
+		else
+			return x/y;
+	}
+	/**
+	 * @return true if o1 and o2 can form a same object without considering the type and other info
+	 * */
+	private static boolean canFormDebris(ABObject o1, ABObject o2)
+	{
+		double orientationDiff = Math.abs(o1.angle - o2.angle);
+		double angle = getAngle(o1.getCenterX() - o2.getCenterX(), o1.getCenterY() - o2.getCenterY());
+		double diff = Math.abs(angle - o1.angle);
+		if(sameAngle(orientationDiff) && sameAngle(diff)
+				&&  distance(o1.getCenter(), o2.getCenter()) < MagicParams.maximumHeight)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	private static double distance(Point p1, Point p2)
+	{
+		return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)); 
+	}
 	protected static void log(String message){ System.out.println(message);}
 	/*
 	 * Determine whether two objects are likely to be of the same debris group. Only consider rotated rectangles otherwise most of stacked leveled objects will be considered as debris
@@ -270,5 +364,7 @@ public class DebrisToolkit {
 		Rect rect2 = new Rect(575.0, 328.0, 5.587, 12.281, 1.696, -1, 60);
 		System.out.println(canBeSameDebrisGroup(rect1, rect2, GSRConstructor.computeRectToRectRelation(rect1, rect2).r));
 	}
+	
+	
 
 }

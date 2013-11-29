@@ -12,6 +12,7 @@ import ab.vision.real.shape.RectType;
 public class GlobalObjectsToolkit {
 	//Introduce timing schema later
 	private static Map<Integer, LinkedHashSet<ABObject>> wood, stone, ice;
+	private static Map<Integer, ABObject> allObjs;
 	private static LinkedHashSet<Integer> occludedIds;
 	
 	public static void registerIniObjs(List<ABObject> iniObjs) {
@@ -31,7 +32,10 @@ public class GlobalObjectsToolkit {
 			ice.put(rectType.id, new LinkedHashSet<ABObject>());
 			
 		}
+		allObjs = new HashMap<Integer, ABObject>();
 		for (ABObject obj : iniObjs) {
+			
+			allObjs.put(obj.id, obj);
 			switch (obj.type) {
 			case Wood: {
 				wood.get(obj.rectType.id).add(obj);
@@ -139,6 +143,9 @@ public class GlobalObjectsToolkit {
 		}
 		return null;
 	
+	}
+	public static ABObject getIniObjById(int id) {
+		return allObjs.get(id);
 	}
 
 

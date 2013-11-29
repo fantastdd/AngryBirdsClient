@@ -192,7 +192,7 @@ public class Rect extends Body
     		return true;
     	if (  (Math.abs(rectType.id - _rect.rectType.id) < 2 )&&
     				 ( ratio < MagicParams.AreaRatio
-    						 || (getPreciseWidth() < MagicParams.SlimRecWidth && ao.getPreciseWidth() < MagicParams.SlimRecWidth )
+    						 || (getPreciseWidth() <= MagicParams.SlimRecWidth && ao.getPreciseWidth() <= MagicParams.SlimRecWidth )
     						 ))
     			return true;
     		

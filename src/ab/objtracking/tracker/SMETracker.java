@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import ab.objtracking.MagicParams;
-import ab.objtracking.tracker.TrackerTemplate.Pair;
 import ab.vision.ABObject;
 import ab.vision.ABType;
-import ab.vision.real.shape.Circle;
 import ab.vision.real.shape.Rect;
 
 

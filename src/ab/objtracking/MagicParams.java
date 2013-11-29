@@ -27,6 +27,8 @@ public  class MagicParams {
 	public static  int SlimRecWidth = 7;// sling: 65,58,59 [5,6], sling 50 [4,5] 
 	public static  int NormalRecWidth = 13;
 	public static  int FatRecWidth = 20;
+	
+	public static int maximumHeight = 60;
 	public static  int VisionGap = 2;
 	public static final int maxIncreaseRatio = 3;//get by limiting on the formula.
 
