@@ -12,15 +12,24 @@ import ab.vision.real.shape.RectType;
 public class ABObject extends Rectangle implements Serializable {
  
  private static final long serialVersionUID = 737741268251922637L;
+ 
+ public static final int LEAN_LEFT = -1;
+ public static final int LEAN_RIGHT = 1;
+ public static final int LEAN_NOLEAN = 0;
  public ABType type;
  private static int counter = 0;
  public final static int unassigned = -1;
  public int id;
+ public int area = -1;
  public ABShape shape = ABShape.Rect;
  public RectType rectType = RectType.rec1x1;
+ 
  public boolean isFat = true;
  public boolean isLevel = true;
  public boolean isDebris = false;
+ public int lean = LEAN_NOLEAN;
+ 
+ 
  public ABObject originalShape = null;
  public void setOriginalShape(ABObject obj)
  {

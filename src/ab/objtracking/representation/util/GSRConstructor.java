@@ -77,14 +77,16 @@ public class GSRConstructor {
 				else
 					v1set.add(edge.getSource());
 				
-				//Test and Add GR Groups
-				if (Relation.isEE(edge.label))
+				//================  Test and Add GR Groups ============
+				//if (Relation.isEE(edge.label))
+				if(Relation.isGRRelation(edge.label))
 				{
 					Set<ABObject> set = new HashSet<ABObject>();
 					set.add(o1);
 					set.add(vertex);
 					grgroups.add(set);
 				}
+				//===============  Test and Add End ===================
 				//System.out.println(edge);
 			}
 			Set<ABObject> sameGroup = new HashSet<ABObject>();
@@ -605,6 +607,7 @@ public class GSRConstructor {
 		}
 		else 
 		{
+			//System.out.println(sIndex + "  " +  source.isLevel + "  " + tIndex + "  " + target.isLevel);
 			//Find corner
 			if(sIndex%2 == 0)
 			{
@@ -615,11 +618,13 @@ public class GSRConstructor {
 		}
 		//System.out.println(sIndex + "  " +  source.isLevel + "  " + tIndex + "  " + target.isLevel);
 		Relation r =  Relation.getRelation(sIndex, source.isLevel, tIndex, target.isLevel);
+		//log(r + "");
 		RelationPair pair = new RelationPair(r, minDistance);
 		return pair;
 	}
 	private static int getCorrectSectorIndex(ABObject source, ABObject target, int sIndex, int tIndex)
 	{
+		//System.out.println(" " + source.isLevel + "  " + sIndex + " " + target.isLevel + "  " + tIndex);
 		int sIndex1 = (sIndex == 0)? 7 : sIndex - 1;
 		int sIndex2 = sIndex + 1;
 
@@ -628,8 +633,9 @@ public class GSRConstructor {
 		Line2D tsector = target.sectors[tIndex];
 		/*System.out.println(
 		String.format("%d %s %s %d %s %s %b", sIndex1, sector1.getP1(), sector1.getP2(), sIndex2, sector2.getP1(), sector2.getP2(), (sector1.getP1().equals(sector2.getP2()))));*/
-		if(!sectorsTouchPossible(sector1, sector2, tsector))
+		if(!sectorsTouchPossible(sector1, sIndex1, sector2, sIndex2, tsector))
 		{
+			//System.out.println(" @@ ");
 			if(sIndex == 4 && tIndex == 7)
 				tIndex = 1;
 			else if(sIndex == 4 && tIndex == 1 )
@@ -652,7 +658,7 @@ public class GSRConstructor {
 	/**
 	 * Test whether sector3 can touch the corner of sector1 and sector2 without penetrating.
 	 * */
-	private static boolean sectorsTouchPossible(Line2D sector1, Line2D sector2, Line2D sector3)
+	private static boolean sectorsTouchPossible(Line2D sector1, int sid1, Line2D sector2, int sid2, Line2D sector3)
 	{
 		double angle1, angle2;
 		Point2D commonCorner = null, corner1 = null, corner2 = null;
@@ -688,20 +694,76 @@ public class GSRConstructor {
 		angle1 = divide( corner1.getY() - commonCorner.getY(), corner1.getX() - commonCorner.getX());
 		angle2 = divide( corner2.getY() - commonCorner.getY(), corner2.getX() - commonCorner.getX());
 		double angle3 = divide( (sector3.getY1() - sector3.getY2()), (sector3.getX1() - sector3.getX2()));
-		if(angle1 > angle2)
+		
+		angle1 = Math.atan(angle1);
+		angle2 = Math.atan(angle2);
+		angle3 = Math.atan(angle3);
+		
+		angle1 = (angle1 == Math.PI/2)? - angle1 : angle1;
+		angle2 = (angle2 == Math.PI/2)? - angle2 : angle2;
+		angle3 = (angle3 == Math.PI/2)? - angle3 : angle3;
+		
+		sid1 = (sid1 > 7)? sid1 - 8: sid1;
+		sid2 = (sid2 > 7)? sid2 - 8: sid2;
+		
+		sid1 ++;
+		sid2 ++;
+		
+		int cornerId = (sid1 + sid2)/2;
+		
+		if (cornerId == 5 && (sid1 == 2 || sid1 == 8))
+			cornerId = 1;
+		
+		if (cornerId == 1 || cornerId == 5)
 		{
-			if(angle3 >= angle1 || angle3 <= angle2)
-				return true;
+			if(angle1 > angle2)
+			{
+				if(angle3 >= angle1 || angle3 <= angle2)
+					return false;
+				else
+					return true;
+			}
 			else
-				return false;
+			{
+				if(angle3 >= angle2 || angle3 <= angle1)
+					return false;
+				else
+					return true;
+			}
 		}
 		else
 		{
-			if(angle3 >= angle2 || angle3 <= angle1)
-				return true;
+			if(angle1 > angle2)
+			{
+				if(angle3 <= angle1 && angle3 >= angle2)
+					return false;
+				else
+					return true;
+			}
 			else
-				return false;
+			{
+				if(angle3 <= angle2 && angle3 >= angle1)
+					return false;
+				else
+					return true;
+			}
 		}
+		/*log(angle1 + " " + angle2 + " " + angle3);
+		if(angle1 > angle2)
+		{
+			if(angle3 >= angle1 || angle3 <= angle2)
+				return false;
+			else
+				return true;
+		}
+		else
+		{
+			log (angle3 + "  " + angle1 + " " + (angle3 <= angle1));
+			if(angle3 >= angle2 || angle3 <= angle1)
+				return false;
+			else
+				return true;
+		}*/
 	}
 	private static double divide(double x, double y)
 	{
@@ -849,8 +911,8 @@ public class GSRConstructor {
 	
 		//Rect: id:2 type:rec8x1 area:208 w:  4.697 h: 52.162 a:  2.545 at x:543.5 y:344.0 isDebris:false [ S2_S6 ] 
 		//Rect: id:3 type:rec2x1 area:72 w:  6.119 h: 12.205 a:  2.545 at x:533.0 y:343.5 isDebris:false
-		Rect rec2 = new Rect(646.0, 342.0, 6.914, 50.437, 3.047, -1, 300);
-		Rect rec1 = new Rect(649.0, 353.0, 6.217, 51.176, 2.953, -1, 353);
+		Rect rec2 =new Rect(646.0, 342.0, 6.914, 50.437, 3.047, -1, 300);
+		Rect rec1 = new Rect(649.0, 353.0, 6.217, 51.176, 2.953, -1, 306);
 
 		
 /*
@@ -872,10 +934,10 @@ public class GSRConstructor {
 
 
 		System.out.println(rec1.isLevel + "  " + rec2.isLevel);
-		for (Line2D line : rec1.sectors)
+		/*for (Line2D line : rec1.sectors)
 		{
 			System.out.println(line.getP1() + "  " + line.getP2());
-		}
+		}*/
 		System.out.println(GSRConstructor.computeRectToRectRelation(rec1, rec2).r);
 	}
 

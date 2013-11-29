@@ -22,7 +22,6 @@ public class Rect extends Body
 	private static final long serialVersionUID = 1L;
 	// width and height of the rectangle
     public Polygon p;
-    public int area;
     public int widthType;
     //Note Rect's width is not always the Rectangle's width 
     public Rect(double xs, double ys,  double w, double h, double theta, int t)
@@ -80,8 +79,16 @@ public class Rect extends Body
     				widthType = MagicParams.NormalRecWidth;
     			else
     				widthType = MagicParams.FatRecWidth;
-    	
-    		
+    	//Assign Leaning type
+    	if (isLevel)
+    		lean = LEAN_NOLEAN;
+    	else
+    	{
+    		if ( angle > Math.PI/2)
+    			lean = LEAN_RIGHT;
+    		else
+    			lean = LEAN_LEFT;
+    	}
     }
     
     private void createPolygonAndSectors()

@@ -13,7 +13,7 @@ import ab.objtracking.MagicParams;
 import ab.objtracking.dynamic.Movement;
 import ab.objtracking.dynamic.MovementPredictor;
 import ab.objtracking.representation.ConstraintEdge;
-import ab.objtracking.representation.util.DebrisToolKit;
+import ab.objtracking.representation.util.DebrisToolkit;
 import ab.objtracking.representation.util.GSRConstructor;
 import ab.vision.ABObject;
 import ab.vision.ABType;
@@ -191,7 +191,7 @@ public class KnowledgeTracker extends SMETracker {
 						//{
 							//Inverse Check
 							//dummy = newObj.extend(_initialObj.rectType);
-							if(debris != newObj && DebrisToolKit.isSameDebris(debris, _initialObj, newObj))
+							if(debris != newObj && DebrisToolkit.isSameDebris(debris, _initialObj, newObj))
 							{
 								ABObject newObjLastMatch = matchedObjs.get(newObj);
 								if(newObjLastMatch != null && newObj.id != debris.id && !currentOccludedObjs.contains(newObjLastMatch))
@@ -293,7 +293,10 @@ public class KnowledgeTracker extends SMETracker {
 			
 			log("Print Occluded Objects");
 			for (ABObject occludedObj : currentOccludedObjs)
+			{
+				
 				System.out.println(occludedObj);
+			}
 			
 			objs.addAll(currentOccludedObjs);
 			objs.removeAll(occludedObjsBuffer); // remove all the remembered occluded objects from the previous frame. We only buffer one frame.

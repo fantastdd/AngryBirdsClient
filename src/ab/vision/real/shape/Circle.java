@@ -38,6 +38,7 @@ public class Circle extends Body
         assignType(vision_type);
         
         angle = 0;
+        area = (int)(Math.PI * r * r);
         createSectors(bounds);
     }
     @Override
@@ -80,6 +81,7 @@ public class Circle extends Body
         centerX = (box[0] + box[2]) / 2.0;
         centerY = (box[1] + box[3]) / 2.0;
         r = (box[2] - box[0] + box[3] - box[1]) / 4.0;
+        area = (int)(Math.PI * r * r);
         //int diameter = (int)(2 * r);
         //bounds = new Rectangle((int)box[0], (int)box[1], diameter , diameter );
         bounds = new Rectangle((int)(centerX - r * Math.sin(Math.PI/4)), (int)(centerY - r * Math.sin(Math.PI/4)), 

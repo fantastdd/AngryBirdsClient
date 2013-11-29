@@ -18,9 +18,9 @@ import ab.vision.real.shape.DebrisGroup;
 import ab.vision.real.shape.Rect;
 import ab.vision.real.shape.RectType;
 
-public class DebrisToolKit {
+public class DebrisToolkit {
 
-
+	
 	public static List<DebrisGroup> getAllDummyRectangles(DirectedGraph<ABObject, ConstraintEdge> network)
 	{
 		List<DebrisGroup> debrisList = new LinkedList<DebrisGroup>();

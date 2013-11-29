@@ -43,6 +43,7 @@ public class Poly extends Body
         centerX = xs;
         centerY = ys;
         angle = 0;
+        area = getBounds().height * getBounds().width;
         createSectors(getBounds());
         
     }

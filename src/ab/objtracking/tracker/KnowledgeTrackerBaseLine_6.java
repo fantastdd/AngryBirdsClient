@@ -18,8 +18,9 @@ import ab.objtracking.dynamic.Movement;
 import ab.objtracking.dynamic.MovementPredictor;
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
-import ab.objtracking.representation.util.DebrisToolKit;
+import ab.objtracking.representation.util.DebrisToolkit;
 import ab.objtracking.representation.util.GSRConstructor;
+import ab.objtracking.representation.util.ShapeToolkit;
 import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.real.shape.DebrisGroup;
@@ -88,7 +89,7 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 				//only repair two pieces (most likely occluded by the cloud)
 				if(allOtherPieces.size() == 1)
 				{
-					DebrisGroup debris = DebrisToolKit.debrisReconstruct(iniObj, allOtherPieces.get(0));// Test 60 and 61
+					DebrisGroup debris = DebrisToolkit.debrisReconstruct(iniObj, allOtherPieces.get(0));// Test 60 and 61
 					if(debris != null)
 					{ 
 						debrisGroupIDs.add(debris.id);
@@ -123,12 +124,14 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 
 			iniObjsMovement = MovementPredictor.predict(iniGRNetwork);
 		}  
-	    debrisGroupList = DebrisToolKit.getAllDummyRectangles(newGRNetwork);
+	    debrisGroupList = DebrisToolkit.getAllDummyRectangles(newGRNetwork);
 	    //Create dummy debris
-		/*if (debrisGroupList.isEmpty())
+		if (debrisGroupList.isEmpty())
 			log("\n No Debris Group Detected ");
+		else
+			log(" Create Debris on New Objects");
 	    for (DebrisGroup debris : debrisGroupList)	
-			System.out.println(String.format(" Debris:%s \n member1:%s \n member2:%s ", debris, debris.member1, debris.member2));*/
+			log(debris.toString());
 		
 		newObjs.addAll(debrisGroupList);
 		
@@ -221,6 +224,8 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 		
 		getNextMatchSet(iniObjs, newObjs, newToIniMatch, iniToNewMatch);
 		
+		printMatch(iniToNewMatch, false);
+		
 		evaluateMatch(iniToNewMatch, newToIniMatch, iniKGroups);
 		
 		return newToIniMatch;
@@ -260,8 +265,9 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 					 {
 						 Relation _r = (GSRConstructor.computeRectToRectRelation(_newO1, _newO2)).r;
 						 //System.out.println(newO1 + "  " + newO2 + "  " + _r + "   " + r);
-						 if ( Relation.isOpposite(r, _r) && _o1.type == _o2.type) 
+						 if ( Relation.isOpposite(_o1, _o2, r, _newO1, _newO2, _r) && _o1.type == _o2.type) 
 						 {
+							 //log("@@ " + _o1.id + "  " + _o2.id + "  " + r + "  " + _r);
 							 swap( iniToNewMatch, NewToIniMatch, _o1, _o2, _newO1, _newO2 );
 					 }
 					 }
@@ -295,8 +301,9 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 							 {
 								 Relation _r = (GSRConstructor.computeRectToRectRelation(newO1, newO2)).r;
 								 //System.out.println(newO1 + "  " + newO2 + "  " + _r + "   " + r);
-								 if ( Relation.isOpposite(r, _r) && o1.type == o2.type) 
+								 if ( Relation.isOpposite(o1, o2, r, newO1, newO2, _r) && o1.type == o2.type) 
 								 {
+									
 									 swap( iniToNewMatch, NewToIniMatch, o1, o2, newO1, newO2 );
 									 newn = i;
 								 }
@@ -434,8 +441,8 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 	public void debrisRecognition(List<ABObject> newObjs, List<ABObject> iniObjs) {
 
 	   log(" Debris Recognition ");
-	/*	for (ABObject iniObj : iniObjs)
-			System.out.println("@@@" + iniObj);*/
+		/*for (ABObject iniObj : iniObjs)
+			log("@@@" + iniObj);*/
 		
 		currentOccludedObjs.addAll(iniObjs);
 		
@@ -466,7 +473,8 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 					//if(pair.obj.id == 2)
 					//	System.out.println(pair.obj + "   " + initialObj + "   " + pair.obj.equals(initialObj));
 					// pair.diff's threshold can be estimated by frame frequency
-					if (pair.obj.equals(initialObj) && pair.diff < MagicParams.DiffTolerance) {
+					if (pair.obj.equals(initialObj) && pair.diff < MagicParams.DiffTolerance
+							) {
 					
 						
 						link(newObj, initialObj, true);
@@ -522,7 +530,7 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 							System.out.println(" initial " + _initialObj + " newobj " + newObj);
 							System.out.println(DebrisToolKit.isSameDebris(debris, _initialObj, newObj));
 						}*/
-						if(DebrisToolKit.isSameDebris(debris, _initialObj, newObj))
+						if(DebrisToolkit.isSameDebris(debris, _initialObj, newObj))
 						{
 							ABObject newObjLastMatch = matchedObjs.get(newObj);
 							if(newObjLastMatch != null && newObj.id != debris.id && !currentOccludedObjs.contains(newObjLastMatch))
@@ -626,6 +634,19 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 					}
 				}
 			}
+			//Remove false debris group. False Debris: new objs debris which is not matched, by its members are matched
+			List<ABObject> falseDebris = new LinkedList<ABObject>();
+			for (ABObject newObj : unmatchedNewObjs)
+			{
+				if (newObj instanceof DebrisGroup)
+				{
+					DebrisGroup debris = (DebrisGroup) newObj;
+					if (matchedObjs.get(debris.member1) != null || matchedObjs.get(debris.member2) != null)
+						falseDebris.add(debris);
+				}
+			}
+			newObjs.removeAll(falseDebris);
+			
 			
 			//printNewToIniMatch(matchedObjs);
 			unmatchedIniObjs.removeAll(membersOfMatchedDebrisGroup);
@@ -634,28 +655,30 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 			iniObjsMovement.clear();
 
 			log("Print Occluded Objects");
+			
 			for (ABObject occludedObj : currentOccludedObjs)
 				System.out.println(occludedObj);
 
 			//printMatch();
 			
-			/*log("Print Occlude Objects Buffer");
-			for (ABObject obj : occludedObjsBuffer)
-				System.out.println(obj);*/
+			
 			
 			// only retain those which have been matched;
 			newObjs.retainAll(matchedObjs.keySet());
-			printNewToIniMatch(matchedObjs);
+			
+			//printNewToIniMatch(matchedObjs);
 			
 			// remove duplicates: If in the Initial scenario, we have Debris_A1, Debirs_A2, Debris_A3, and Debirs_A1 and A2 forms a dummy rectangle A12, in the resulting scenario, 
 			//we have Debris_B1, Debris_B2, and Debris_B2 == Debris_A3, however, since Debris_A3 is a debris will not be matched first. So Debris_B2 will be matched to A12
 			// and Debris_A3 will be treated as occlude obj and added to the next initial objs, which creates a duplicate.
+			
 			for (ABObject newObj : currentOccludedObjs)
 			{
 				if ( newObjs.contains(newObj))
 					continue;
 				newObjs.add(newObj);
 			}
+			
 			//newObjs.addAll(currentOccludedObjs);
 			
 			// remove all the matched objs from occludedObjsBuffer (the pre of the pre frame may contain an occluded obj that is matched now)
@@ -720,7 +743,7 @@ public class KnowledgeTrackerBaseLine_6 extends SMETracker {
 	public static void main(String args[])
 	{
 		//String filename = "speedTest_48";
-		String filename = "e2l3_65";//"t11";//"e2l3_65";//"e2l6_56";
+		String filename = "e1l7_54";//"e1l18_55";// "t11";//"t11";//"e2l3_65";//;
 		int timegap = 200;
 		if(filename.contains("_"))
 			timegap = Integer.parseInt(filename.substring(filename.indexOf("_") + 1));

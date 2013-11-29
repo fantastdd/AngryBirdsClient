@@ -1,13 +1,18 @@
 package ab.objtracking.representation;
 
+import java.awt.geom.Line2D;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jgrapht.alg.DijkstraShortestPath;
-import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.graph.SimpleWeightedGraph;
+
+import ab.objtracking.dynamic.Movement;
+import ab.objtracking.representation.util.GSRConstructor;
+import ab.vision.ABObject;
+import ab.vision.real.shape.Rect;
 
 public enum Relation {
 	
@@ -76,14 +81,16 @@ public enum Relation {
 
 	private  Relation left;
 	private  Relation right;
-	private  int atomicRelationIndex;
+	private  int aRI; //atomicRelationIndex
+	private static Relation[] aRelations = {S1, S2, S3, S4, S5, S6, S7, S8, R1, R2, R3, R4, R5, R6, R7, R8 };
 	private Relation(){}
 	private Relation(int index)
 	{
-		atomicRelationIndex = index;
+		aRI = index;
 	}
-	private static SimpleGraph<Relation,DefaultWeightedEdge> graph; //neighbor graph
-	private static DijkstraShortestPath<Relation, DefaultWeightedEdge> shortestPath;
+	private static SimpleGraph<Relation,DefaultEdge> graph; //neighbor graph of relations
+	private static SimpleGraph<Relation, DefaultEdge> sectorsGraph;// Neighbor graph of sectors
+	private static DijkstraShortestPath<Relation, DefaultEdge> shortestPath;
 	public static boolean isNeighbor(Relation r1, Relation r2)
 	{
 		if(r1 == r2)
@@ -97,16 +104,21 @@ public enum Relation {
 	{
 		if(r1 == r2)
 			return true;
-		shortestPath = new DijkstraShortestPath<Relation, DefaultWeightedEdge>(graph, r1, r2);
+		shortestPath = new DijkstraShortestPath<Relation, DefaultEdge>(graph, r1, r2);
 		
 		//System.out.println(shortestPath.getPathLength());
 		if(shortestPath.getPathLength() < dis)
 			return true;
 		return false;
 	}
-	public static double distance(Relation r1, Relation r2)
+	/* **
+	 * @param r1: GR relation
+	 * @param r2: GR relation
+	 * @return the distance between r1 and r2 in the neighborhood graph
+	 * **/
+	private static double distance(Relation r1, Relation r2)
 	{
-		shortestPath = new DijkstraShortestPath<Relation, DefaultWeightedEdge>(graph, r1, r2);
+		shortestPath = new DijkstraShortestPath<Relation, DefaultEdge>(graph, r1, r2);
 		/*List<DefaultWeightedEdge> edges = shortestPath.getPathEdgeList();
 		for(DefaultWeightedEdge edge : edges)
 		{
@@ -114,15 +126,27 @@ public enum Relation {
 		}*/
 		return shortestPath.getPathLength();
 	}
+	/**
+	 * @param r1: atomic GR relation
+	 * @param r2: atomic GR relation
+	 * @return the distance between r1 and r2 in the neighborhood graph
+	 * **/
+	public static double sectorDistance(Relation r1, Relation r2)
+	{
+		shortestPath = new DijkstraShortestPath<Relation, DefaultEdge>(sectorsGraph, r1, r2);
+		return shortestPath.getPathLength();
+	}
     static 
     {
     	System.out.println(" Generate Neighborhood graph ");
-    	graph = new SimpleWeightedGraph<Relation, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-    	//Serialize later;
-    	for (Relation relation : Relation.values())
+    	//TODO Serialize graph;
+    	graph = new SimpleGraph<Relation, DefaultEdge>(DefaultEdge.class);
+    	
+    	for (Relation rel : Relation.values())
     	{
-    		 graph.addVertex(relation);
+    		 graph.addVertex(rel);
     	}
+    	
     	Map<Relation, Relation[]> vnMap = new HashMap<Relation, Relation[]>(); //vertex neighborhood map;
     	//Calculate Atomic Relation Neighborhood graph
     	Relation[] R1N = {R1, S1, S3, R2, R8}; vnMap.put(R1, R1N);
@@ -150,6 +174,26 @@ public enum Relation {
     	Relation[] S7N = {S7, R5, R6, R7, S6, S8}; vnMap.put(S7, S7N);
     	Relation[] S8N = {S8, R6, R8, S7, S1}; vnMap.put(S8, S8N);
     	
+    	
+    	sectorsGraph = new SimpleGraph<Relation, DefaultEdge>(DefaultEdge.class);
+    	for (Relation rel: aRelations)
+    	{
+    		sectorsGraph.addVertex(rel);
+    	}
+    	Set<Relation> sectors = sectorsGraph.vertexSet();
+    	for(Relation rel : sectors)
+    	{
+    		Relation[] neighborRels = vnMap.get(rel);
+    		for (Relation _rel : neighborRels)
+    		{
+    			if( rel != _rel)
+    				sectorsGraph.addEdge(rel, _rel);
+    		}
+    	}
+    	
+    	
+    	
+    	
     	for (Relation relation: Relation.values())
     	{
     	
@@ -157,19 +201,20 @@ public enum Relation {
     			continue;
     	
     		{
+
     			Relation left = relation.left;
     			Relation right = relation.right;
     			Relation[] lns = vnMap.get(left);
     			Relation[] rns = vnMap.get(right);
     			for (Relation ln : lns)
     			{
-    				boolean isSector1Level = ln.atomicRelationIndex > 7;
+    				boolean isSector1Level = ln.aRI > 7;
     				
-    				int lnIndex = (!isSector1Level)?ln.atomicRelationIndex : (ln.atomicRelationIndex - 8); 
+    				int lnIndex = (!isSector1Level)?ln.aRI : (ln.aRI - 8); 
     				for(Relation rn: rns)
     				{
-    					boolean isSector2Level = rn.atomicRelationIndex > 7;
-    					int rnIndex = (!isSector2Level)?rn.atomicRelationIndex : (rn.atomicRelationIndex - 8);
+    					boolean isSector2Level = rn.aRI > 7;
+    					int rnIndex = (!isSector2Level)?rn.aRI : (rn.aRI - 8);
     					
     					Relation r = Relation.getRelation(lnIndex, isSector1Level, rnIndex, isSector2Level);
     					/*
@@ -667,21 +712,189 @@ public enum Relation {
 		}
 		}
 	}
+	/**
+	 * @param sector: the sector of newObj
+	 * @param iniObj: the initial object of a match
+	 * @param newObj: the new object of a match;
+	 * @return the newObj's sector's corresponding sector of the initial obj
+	 * 
+	 * */
+	private static Relation getCorrespondingRelation(Relation sector, ABObject iniObj, ABObject newObj)
+	{
+		
+		if (iniObj.isLevel && newObj.isLevel)
+		{
+			return sector;
+		} else
+			if( iniObj.isLevel)
+			{
+				switch(newObj.lean)
+				{
+					case ABObject.LEAN_LEFT: 
+					{
+						return sector;
+					}
+					case ABObject.LEAN_RIGHT:
+					{
+						switch(sector)
+						{
+						case S1: return R7;
+						case S2: return R8;
+						case S3: return R1;
+						case S4: return R2;
+						case S5: return R3;
+						case S6: return R4;
+						case S7: return R5;
+						case S8: return R6;
+						default: return INVALID;
+						}
+					}
+					default: return INVALID;
+				}
+			}
+			else
+				if (newObj.isLevel)
+				{
+					switch(iniObj.lean)
+					{
+						case ABObject.LEAN_RIGHT: 
+						{
+							return sector;
+						}
+						case ABObject.LEAN_LEFT:
+						{
+							switch(sector)
+							{
+							case R7: return S1;
+							case R8: return S2;
+							case R1: return S3;
+							case R2: return S4;
+							case R3: return S5;
+							case R4: return S6;
+							case R5: return S7;
+							case R6: return S8;
+							default: return INVALID;
+							}
+						}
+						default: return INVALID;
+					}
+				}
+				else
+				{
+					return sector;
+					/*if (iniObj.lean == newObj.lean)
+						return sector;
+					else
+					{
+						if(iniObj.lean == ABObject.LEAN_LEFT)
+						{
+							switch(sector)
+							{
+								case S3: return S1;
+								case S4: return S2;
+								case S5: return S3;
+								case S6: return S4;
+								case S7: return S5;
+								case S8: return S6;
+								case S1: return S7;
+								case S2: return S8;
+								default: return INVALID;
+							}
+						}
+						else
+						{
+							switch(sector)
+							{
+								case S1: return S3;
+								case S2: return S4;
+								case S3: return S5;
+								case S4: return S6;
+								case S5: return S7;
+								case S6: return S8;
+								case S7: return S1;
+								case S8: return S2;
+								default: return INVALID;
+							}
+						}
+					}*/
+				}
+		
+	}
+	
+	/**
+	 * @param iniObj1
+	 * @param iniObj2
+	 * @param iniR: the relation between iniObj1 and iniObj2. 
+	 * @param newObj1
+	 * @param newObj2: the relation between newObj1 and newObj2
+	 * @param newR: the relation between newObj1 and newObj2
+	 * return true if iniR can become newR
+	 * */
+	public static boolean isOpposite(ABObject iniObj1, ABObject iniObj2, Relation iniR, ABObject newObj1, ABObject newObj2, Relation newR )
+	{
+		if ( !Relation.isGRRelation(iniR) || !Relation.isGRRelation(newR))
+		{
+			return iniR == Relation.inverse(newR);
+		}
+		Relation _newRLeft = Relation.getCorrespondingRelation(newR.left, iniObj1, newObj1);
+		Relation _newRRight = Relation.getCorrespondingRelation(newR.right, iniObj2, newObj2);
+		double distanceLeft = sectorDistance(_newRLeft, iniR.left);
+		double distanceRight = sectorDistance(_newRRight, iniR.right);
+		//double distance = Math.max(distanceLeft, distanceRight);
+		double distance = distanceLeft + distanceRight;
+//		/System.out.println(distance);
+		if(distance > 5 && distance < 10)
+			return true;
+		return false;
+	}
+	//TODO return true if iniR can become newR by the movements
+	public static boolean isOpposite(ABObject iniObj1, ABObject iniObj2, Relation iniR, ABObject newObj1, ABObject newObj2, Relation newR, Movement newObj1Movement, Movement newObj2Movement)
+	{
+		return false;
+	}
+	
+	
+
+	
+	
+	
+	
 	public static boolean isOpposite(Relation rel1, Relation rel2)
 	{
+		if ( !Relation.isGRRelation(rel1) || !Relation.isGRRelation(rel2))
+		{
+			return rel1 == Relation.inverse(rel2);
+		}
 		double distance = distance(rel1, rel2);
 		if (distance > 2 && distance < 5) // since the neighborhood graph does not contain non-gr relatoions, distance(gr, nongr) will give a infinity distance given non  present of the non gr relations in the graph
 			return true;
+		
 		return false;
 	}
 	
 	public static void main(String args[])
 	{ 
+		Rect iniObj1 = new Rect(646.0, 342.0, 6.914, 50.437, 3.047, -1, 300);
+		Rect iniObj2 = new Rect(648.0, 353.0, 6.217, 51.176, 2.953, -1, 306);
+		Relation rel1 = GSRConstructor.computeRectToRectRelation(iniObj1, iniObj2).r;
+		Rect newObj2 = new Rect(653.0, 358.0, 6.172, 50.792, 0.157, -1, 300);
+		Rect newObj1 = new Rect(653.0, 364.9, 6.659, 48.661, 0.157, 01, 288);
+		Relation rel2 = GSRConstructor.computeRectToRectRelation(newObj1, newObj2).r;
+		
+		/*for (Line2D line : iniObj1.sectors)
+		{
+			System.out.println(line.getP1() + "  " + line.getP2());
+		}*/
+		
+		System.out.println("  " + rel1 + "  " + rel2);
+		
+		//System.out.println(Relation.sectorDistance(S8, r2));
+		System.out.println(Relation.isOpposite(iniObj1, iniObj2, rel1, newObj1, newObj2, rel2));
 		/*System.out.println(Relation.isNeighbor(Relation.R4_S1, Relation.S8_S4, 2));
 		for (DefaultEdge edge : graph.edgesOf(Relation.R4_S1))
 		{
 			System.out.println(edge);
 		}*/
-		System.out.println(Relation.distance(R5_S2, S8_S4));
+		//System.out.println(Relation.sectorDistance(R5_S2, S8_S4));
 	}
 }

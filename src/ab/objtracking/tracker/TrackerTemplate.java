@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import ab.objtracking.Tracker;
+import ab.objtracking.representation.util.GlobalObjectsToolkit;
 import ab.vision.ABObject;
 import ab.vision.real.shape.RectType;
 
@@ -68,6 +69,8 @@ public abstract class TrackerTemplate implements Tracker{
 		startTracking = true;
 		//reset 
 		this.iniObjs = initialObjs;
+		//System.out.println("@@@@@@@@@");
+		GlobalObjectsToolkit.registerIniObjs(initialObjs);
 		lastInitialObjs = null;
 		newComingObjs = null;
 	}
@@ -290,13 +293,26 @@ public abstract class TrackerTemplate implements Tracker{
 				newObj.isDebris = false;
 	
 	} 
-	protected void printNewToIniMatch(Map<ABObject, ABObject> newToIniMatch)
+	protected void printMatch(Map<ABObject, ABObject> newToIniMatch, boolean newToIni)
 	{
+		String str1 = "";
+		String str2 = "";
+		if ( newToIni)
+		{	
+			str1 = "newObj: ";
+			str2 = "iniObj: ";
+		}
+		else
+		{
+			str1 = "iniObj: ";
+			str2 = "newObj: ";
+		}
+			
 		log(" ===========  Print Match ============= ");
 		for (ABObject newObj : newToIniMatch.keySet())
 		{
-			System.out.println(" newObj: " + newObj);
-			System.out.println(" initial Obj" + newToIniMatch.get(newObj));
+			System.out.println(str1 + newObj);
+			System.out.println(str2 + newToIniMatch.get(newObj));
 			System.out.println("==========");
 		}
 	}

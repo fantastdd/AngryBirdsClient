@@ -14,7 +14,7 @@ import ab.objtracking.dynamic.MovementPredictor;
 import ab.objtracking.isomorphism.IsomorphismTest;
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
-import ab.objtracking.representation.util.DebrisToolKit;
+import ab.objtracking.representation.util.DebrisToolkit;
 import ab.objtracking.representation.util.GSRConstructor;
 import ab.vision.ABObject;
 import ab.vision.ABType;
@@ -55,7 +55,7 @@ public class KnowledgeTracker_3 extends SMETracker {
 			initialObjsMovement = MovementPredictor.predict(initialNetwork);
 		}  
 		//Create dummy debris
-	    debrisGroupList = DebrisToolKit.getAllDummyRectangles(newNetwork);
+	    debrisGroupList = DebrisToolkit.getAllDummyRectangles(newNetwork);
 		for (DebrisGroup debris : debrisGroupList)
 		{
 			
@@ -278,7 +278,7 @@ public class KnowledgeTracker_3 extends SMETracker {
 							System.out.println(" initial " + _initialObj + " newobj " + newObj);
 							System.out.println(DebrisToolKit.isSameDebris(debris, _initialObj, newObj));
 						}*/
-						if(DebrisToolKit.isSameDebris(debris, _initialObj, newObj))
+						if(DebrisToolkit.isSameDebris(debris, _initialObj, newObj))
 						{
 							ABObject newObjLastMatch = matchedObjs.get(newObj);
 							if(newObjLastMatch != null && newObj.id != debris.id && !currentOccludedObjs.contains(newObjLastMatch))

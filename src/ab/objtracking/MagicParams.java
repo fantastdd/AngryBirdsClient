@@ -12,7 +12,7 @@ import ab.vision.real.shape.Rect;
 import ab.vision.real.shape.RectType;
 
 public  class MagicParams {
-	public static final float AngleTolerance = 0.15f; // 5 degree
+	public static final float AngleTolerance = 0.12f; // 5 degree
 
 	public static final int DiffTolerance = Integer.MAX_VALUE;
     public static final int MovementTolearance = 5; // within this value considered as static

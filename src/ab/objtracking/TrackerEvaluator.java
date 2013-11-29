@@ -8,17 +8,18 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import ab.objtracking.tracker.*;
+import ab.objtracking.tracker.KnowledgeTrackerBaseLine_7;
 import ab.vision.ABObject;
 import ab.vision.real.MyVisionUtils;
 
 public class TrackerEvaluator {
 	
-	public static void evaluate(Tracker tracker, String filename) throws FileNotFoundException, IOException, ClassNotFoundException
+	public static int evaluate(Tracker tracker, String filename) throws FileNotFoundException, IOException, ClassNotFoundException
 	{
 		int timegap = 200;
 		if(filename.contains("_"))
@@ -42,9 +43,9 @@ public class TrackerEvaluator {
 		@SuppressWarnings("unchecked")
 		Map<ABObject, ABObject> groundtruth = (Map<ABObject, ABObject>) ois.readObject();
 		ois.close();
-		evaluate(tracker, images, groundtruth);
+		return evaluate(tracker, images, groundtruth);
 	}
-	private static void evaluate(Tracker tracker, File[] images, Map<ABObject, ABObject> groundTruth) throws IOException
+	private static int evaluate(Tracker tracker, File[] images, Map<ABObject, ABObject> groundTruth) throws IOException
 	{
 		RealTimeTracking.flipAskForInitialScenario();
 		File image = images[0];
@@ -89,12 +90,27 @@ public class TrackerEvaluator {
 			}
 		}
 		System.out.println(" Mismatch : " + Error);
+		return Error;
 	}
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException 
 	{
-		Tracker tracker = new KnowledgeTrackerBaseLine_6(200);
-		evaluate(tracker, "e2l6_56");
-		//evaluate(tracker, "t11");
+		Tracker tracker = new KnowledgeTrackerBaseLine_7(200);
+		Map<String, Integer> errors = new HashMap<String, Integer>();
+		errors.put("e216_56", evaluate(tracker, "e2l6_56"));
+		
+		tracker = new KnowledgeTrackerBaseLine_7(200);
+		errors.put("t11", evaluate(tracker, "t11"));
+		
+		tracker = new KnowledgeTrackerBaseLine_7(200);
+		errors.put("t12", evaluate(tracker, "t12"));
+		
+		tracker = new KnowledgeTrackerBaseLine_7(200);
+		errors.put("t14", evaluate(tracker, "t14"));
+		
+		for (String file : errors.keySet())
+		{
+			System.out.println(file + "  Mismatch " + errors.get(file));
+		}
 	}
 
 }

@@ -18,9 +18,9 @@ import ab.objtracking.dynamic.MovementPredictor;
 import ab.objtracking.isomorphism.IsomorphismTest;
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
-import ab.objtracking.representation.util.DebrisToolKit;
+import ab.objtracking.representation.util.DebrisToolkit;
 import ab.objtracking.representation.util.GSRConstructor;
-import ab.objtracking.representation.util.ShapeToolKit;
+import ab.objtracking.representation.util.ShapeToolkit;
 import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.real.shape.DebrisGroup;
@@ -68,7 +68,7 @@ public class KnowledgeTrackerBaseLine_5 extends SMETracker {
 			iniObjsMovement = MovementPredictor.predict(iniGRNetwork);
 		}  
 		//Create dummy debris
-	    debrisGroupList = DebrisToolKit.getAllDummyRectangles(newGRNetwork);
+	    debrisGroupList = DebrisToolkit.getAllDummyRectangles(newGRNetwork);
 		for (DebrisGroup debris : debrisGroupList)	
 			System.out.println(String.format(" Debris:%s \n member1:%s \n member2:%s ", debris, debris.member1, debris.member2));
 		
@@ -332,7 +332,7 @@ public class KnowledgeTrackerBaseLine_5 extends SMETracker {
 							System.out.println(" initial " + _initialObj + " newobj " + newObj);
 							System.out.println(DebrisToolKit.isSameDebris(debris, _initialObj, newObj));
 						}*/
-						if(DebrisToolKit.isSameDebris(debris, _initialObj, newObj))
+						if(DebrisToolkit.isSameDebris(debris, _initialObj, newObj))
 						{
 							ABObject newObjLastMatch = matchedObjs.get(newObj);
 							if(newObjLastMatch != null && newObj.id != debris.id && !currentOccludedObjs.contains(newObjLastMatch))
@@ -702,7 +702,7 @@ public class KnowledgeTrackerBaseLine_5 extends SMETracker {
 				log(" Conflict Pair");
 				log(source.toString());
 				log(target.toString());
-				if(source.type == target.type && !ShapeToolKit.isDifferentShape(source, target))
+				if(source.type == target.type && !ShapeToolkit.isDifferentShape(source, target))
 				{
 					int temp = source.id;
 					source.id = target.id;
