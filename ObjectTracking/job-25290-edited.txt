@@ -1,0 +1,7 @@
+﻿Let O1 and O2 be a set of objects in an initial image and a subsequent image taken at a later time, respectively. For ease of notation, we will refer to objects in O1 as initial objects and objects in O2 as new objects.
+
+First, the method randomly assigns a unique ID to each initial object, and estimates the MBC quadrants of each object according to the object's spatial relations. The domain for each initial object is set so that it contains only the new objects that are of the same object type and within the MBC quadrants. The method then creates a preference list from the domain of each of the initial objects: the new objects in the preference list are sorted by the size of the centroid shift from the initial object in ascending order. 
+
+The method matches the two sets of objects using a stable marriage algorithm with the pre-computed preference lists. The algorithm ensures each match is stable in the sense that no pair of objects would prefer each other over their matched partners. 
+
+Then, the method finds all groups of spatially correlated objects among the initial objects and gets their corresponding objects from the match. The method then checks to see whether a spatial constraint has been violated, as mentioned in \ref{}. If there has, it resolves it accordingly.

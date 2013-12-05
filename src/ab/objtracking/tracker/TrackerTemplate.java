@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import ab.objtracking.Tracker;
+import ab.objtracking.dynamic.Movement;
 import ab.objtracking.representation.util.GlobalObjectsToolkit;
 import ab.vision.ABObject;
 import ab.vision.real.shape.RectType;
@@ -73,6 +74,21 @@ public abstract class TrackerTemplate implements Tracker{
 		GlobalObjectsToolkit.registerIniObjs(initialObjs);
 		lastInitialObjs = null;
 		newComingObjs = null;
+	}
+	
+	protected void swap(Map<ABObject, ABObject> iniToNewMatch, Map<ABObject, ABObject> NewToIniMatch, ABObject o1, ABObject o2, ABObject newO1, ABObject newO2)
+	{
+		iniToNewMatch.remove(o1);
+		iniToNewMatch.remove(o2);
+		
+		NewToIniMatch.remove(newO1);
+		NewToIniMatch.remove(newO2);
+		
+		iniToNewMatch.put(o1, newO2);
+		iniToNewMatch.put(o2, newO1);
+		
+		NewToIniMatch.put(newO1, o2);
+		NewToIniMatch.put(newO2, o1);
 	}
 
 	protected float calMassShift(ABObject o1, ABObject o2) {
@@ -279,7 +295,9 @@ public abstract class TrackerTemplate implements Tracker{
 	protected void link(ABObject newObj, ABObject iniObj, boolean isDebris)
 	{
 		newObj.id = iniObj.id;
-		if(isDebris && (! (iniObj.getOriginalShape().isSameShape(newObj) || newObj.rectType == RectType.rec8x1)))
+		if(isDebris && (! (iniObj.getOriginalShape().isSameShape(newObj) || 
+		  (newObj.rectType == RectType.rec8x1/* && iniObj.getOriginalShape().rectType == RectType.rec8x1*/))
+				))
 		{	
 			newObj.setOriginalShape(GlobalObjectsToolkit.getIniObjById(iniObj.id));
 			newObj.isDebris = true;
@@ -314,6 +332,14 @@ public abstract class TrackerTemplate implements Tracker{
 			System.out.println(str1 + newObj);
 			System.out.println(str2 + newToIniMatch.get(newObj));
 			System.out.println("==========");
+		}
+	}
+	protected void printMovement(Map<ABObject, Movement> movements)
+	{
+		log("\n Print Initial Objects Movements");
+		for (ABObject obj : movements.keySet())
+		{
+			log(movements.get(obj) + "");
 		}
 	}
 	protected void printMatch(List<ABObject> interestObj, Map<ABObject, ABObject> newToIniMatch, boolean newToIni)

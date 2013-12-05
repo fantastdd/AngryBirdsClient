@@ -190,10 +190,13 @@ public class Rect extends Body
     	double ratio = ((area > _rect.area)? ((double)area/_rect.area) : ((double)_rect.area/area));
     	if (ao.rectType == RectType.rec8x1 && rectType == ao.rectType /*&& ao.getPreciseWidth() < MagicParams.SlimRecWidth && getPreciseWidth() < MagicParams.SlimRecWidth*/ )
     		return true;
-    	if (  (Math.abs(rectType.id - _rect.rectType.id) < 2 )&&
+    	if (  ((Math.abs(rectType.id - _rect.rectType.id) < 2 )&&
     				 ( ratio < MagicParams.AreaRatio
     						 || (getPreciseWidth() <= MagicParams.SlimRecWidth && ao.getPreciseWidth() <= MagicParams.SlimRecWidth )
-    						 ))
+    						 )) || ((Math.abs(preciseWidth - ao.getPreciseWidth()) <= MagicParams.VisionGap)&&(Math.abs(preciseHeight - ao.getPreciseHeight()) <= MagicParams.VisionGap))
+    						 
+    			
+    			)
     			return true;
     		
     		/*double _width = ao.getPreciseWidth();
@@ -235,8 +238,8 @@ public class Rect extends Body
     	  this.preciseHeight = height;
     	  this.width = (int)width;
     	  this.height = (int)height;
-    	  this.angle = angle;
     	  this.vision_type = vision_type;
+    	  this.angle = angle;
     	  this.area = area;
     	  createPolygonAndSectors();
           calRecType();    	

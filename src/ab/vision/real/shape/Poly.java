@@ -93,6 +93,6 @@ public class Poly extends Body
 	
 	public String toString()
 	{
-		return String.format("Poly: id:%d %dpts at x:%3.1f y:%3.1f isDebris:%b", id, polygon.npoints, centerX, centerY, isDebris);
+		return String.format("Poly: id:%d %s %dpts at x:%3.1f y:%3.1f isDebris:%b", id, type, polygon.npoints, centerX, centerY, isDebris);
 	}
 }

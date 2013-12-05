@@ -21,6 +21,7 @@ public class Movement {
 	
 	public int lastXshift = MAX_SCOPE;
 	public int lastYshift = MAX_SCOPE;
+	
 	public double lastDistance =  MagicParams.NormalMovementDist;
 	
 	private int[] allowedXDirection, allowedYDirection;// value: 0: allow, -1: forbid. array[0]: allow Negative shift, array[1]: allow Non shift, array[2]: allow positive shift.

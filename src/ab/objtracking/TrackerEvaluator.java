@@ -99,14 +99,28 @@ public class TrackerEvaluator {
 		Map<String, Integer> errors = new HashMap<String, Integer>();
 		errors.put("e216_56", evaluate(tracker, "e2l6_56"));
 		
-		tracker = new KnowledgeTrackerBaseLine_7(200);
+		tracker = new KnowledgeTrackerBaseLine_8(200);
 		errors.put("t11", evaluate(tracker, "t11"));
 		
-		tracker = new KnowledgeTrackerBaseLine_7(200);
+		tracker = new KnowledgeTrackerBaseLine_8(200);
 		errors.put("t12", evaluate(tracker, "t12"));
 		
-		tracker = new KnowledgeTrackerBaseLine_7(200);
+		tracker = new KnowledgeTrackerBaseLine_8(200);
 		errors.put("t14", evaluate(tracker, "t14"));
+		
+		tracker = new KnowledgeTrackerBaseLine_8(200);
+		errors.put("t6", evaluate(tracker, "t6"));
+		
+		
+		tracker = new KnowledgeTrackerBaseLine_8(200);
+		errors.put("e1l7_54", evaluate(tracker, "e1l7_54"));
+		
+		tracker = new KnowledgeTrackerBaseLine_8(200);
+		errors.put("e1l7_62", evaluate(tracker, "e1l7_62"));
+		
+		tracker = new KnowledgeTrackerBaseLine_8(200);
+		errors.put("e1l10t_54", evaluate(tracker, "e1l10t_54"));
+		
 		
 		for (String file : errors.keySet())
 		{

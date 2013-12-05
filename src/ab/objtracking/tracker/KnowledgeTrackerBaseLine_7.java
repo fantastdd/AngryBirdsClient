@@ -655,13 +655,13 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			for (ABObject occludedObj : currentOccludedObjs)
 				System.out.println(occludedObj);
 			
-			GlobalObjectsToolkit.addOccludedObjs(currentOccludedObjs);
+			//GlobalObjectsToolkit.addOccludedObjs(currentOccludedObjs);
 			GlobalObjectsToolkit.updateOccludedObjs(matchedObjs);
 			// ========== Match the remaining objs from prevoius occluded objs ==============
 			unmatchedNewObjs.removeAll(matchedObjs.keySet());
 			for (ABObject obj : unmatchedNewObjs)
 			{
-				ABObject _obj = GlobalObjectsToolkit.getPossibleOccludedMatchByTiming(obj);
+				ABObject _obj = GlobalObjectsToolkit.getPossibleOccludedMatch(obj);
 				if(_obj != null)
 				{
 					link(obj, _obj, true);

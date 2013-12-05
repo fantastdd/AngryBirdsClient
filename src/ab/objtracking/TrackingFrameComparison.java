@@ -1,5 +1,6 @@
 package ab.objtracking;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,7 +27,7 @@ public class TrackingFrameComparison implements Runnable {
 	public int index_0 = -1;
 	public int index_1 = -1;
 	public Tracker tracker;
-	
+	public int step = 1;
 	
 	
 	
@@ -39,7 +40,13 @@ public class TrackingFrameComparison implements Runnable {
 		tfc.run();
 	}
 	
-	
+	public TrackingFrameComparison(String filename, Tracker tracker, int step)
+	{
+		this.filename = filename;
+		this.tracker = tracker;
+		this.step = step;
+		
+	}
 	public TrackingFrameComparison(String filename, Tracker tracker)
 	{
 		this.filename = filename;
@@ -62,14 +69,14 @@ public class TrackingFrameComparison implements Runnable {
 		
 		    BufferedImage prevScreenshot, nextScreenshot = null;
 			// get list of images to process
-			File[] images = null;
+			File[] _images = null;
 			//Buffered results
 			BufferedImage[] processedImages;
 			// check if argument is a directory or an image
 			int pointer = 0;
 			if ((new File(filename)).isDirectory()) 
 			{
-					images = new File(filename).listFiles(new FilenameFilter() {
+					_images = new File(filename).listFiles(new FilenameFilter() {
 					@Override
 					public boolean accept(File directory, String fileName) {
 							return fileName.endsWith(".png");
@@ -77,9 +84,25 @@ public class TrackingFrameComparison implements Runnable {
 					});
 			
 				// iterate through the images
-				Arrays.sort(images);
+				Arrays.sort(_images);
+				int length = (step == 1)? _images.length: _images.length/step + 1;
+				File[] images = new File[length];
+				int index = -1;
+				
+				for (File image : _images)
+				{   
+					index ++;
+					if(index%step == 0)
+					{	
+						images[index/step] = image;
+						//System.out.println(images[index%step]);
+					}
+					
+				}
+			
 				if(index_0 != -1)
 				{
+					//System.out.println("@@@");
 					File[] bufferedImages = new File[2];
 					bufferedImages[0] = images[index_0];
 					bufferedImages[1] = images[index_1];
@@ -97,13 +120,14 @@ public class TrackingFrameComparison implements Runnable {
 				}*/
 				assert(images.length > 1);
 				try {
-					prevScreenshot = ImageIO.read(images[pointer]);
+					
+				prevScreenshot = ImageIO.read(images[pointer]);
 			
 				RealTimeTracking.flipAskForInitialScenario();
 				prevScreenshot = MyVisionUtils.constructImageSegWithTracking(prevScreenshot, tracker);
 				prevScreenshot = VisionUtils.resizeImage(prevScreenshot, 800, 1200);
 				processedImages[0] = prevScreenshot;
-				
+			
 				nextScreenshot = ImageIO.read(images[pointer + 1]);
 				//long time = System.nanoTime();
 				nextScreenshot = MyVisionUtils.constructImageSegWithTracking(nextScreenshot, tracker);
