@@ -29,7 +29,7 @@ public  class MagicParams {
 	public static  int FatRecWidth = 20;
 	
 	public static int maximumHeight = 60;
-	public static  int VisionGap = 2;
+	public static final int VisionGap = 2;
 	public static final int maxIncreaseRatio = 3;//get by limiting on the formula.
 
 	

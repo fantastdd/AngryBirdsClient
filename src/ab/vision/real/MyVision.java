@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ab.vision.ABObject;
+import ab.vision.ABType;
 import ab.vision.VisionUtils;
 import ab.vision.real.shape.Body;
 import ab.vision.real.shape.Circle;
+import ab.vision.real.shape.Rect;
 
 public class MyVision 
 {
@@ -170,7 +172,20 @@ public class MyVision
                 	if(image[(int)b.getCenterX()][(int)b.getCenterY()] == 262143)
                 		continue;
                 }*/
-                _gameObjects.add(b);
+                Body _b = b;
+                if ( b instanceof Circle && b.type == ABType.Wood)
+    			{
+    			
+    				ABObject newBlock = new Rect(
+    						b.getCenterX(), b.getCenterY(), b.getBounds().width, 
+    						b.getBounds().height, 0, -1, b.area);
+    				/*System.out.println(" circle to rec conversion: Circle " + b);
+    				System.out.println(" circle to rec conversion: Rect " + newBlock);*/
+    				newBlock.type = b.type;
+    				newBlock.id = b.id;
+    				_b = (Rect)newBlock;
+    			}
+                _gameObjects.add(_b);
                 _draw.add(c);
                 _drawShape.add(b);
             }
@@ -266,13 +281,14 @@ public class MyVision
             for (ConnectedComponent d : _draw)
                 d.draw(image, false, false);
         }
-        for (Body b : _drawShape)
-        	if (b != null)
+       // for (Body b : _drawShape)
+        for(Body b : _gameObjects)
+        if (b != null)
         	{	
         		b.draw(g, false, Color.RED);
         		g.setColor(Color.black);
         		if(b.id != ABObject.unassigned)
-        		g.drawString(b.id + "", (int)b.centerX - 5, (int)b.centerY + 5);// 10: font size
+        			g.drawString(b.id + "", (int)b.centerX - 5, (int)b.centerY + 5);// 10: font size
         	}
             
         canvas.createGraphics().drawImage(image, 0, 0, null);

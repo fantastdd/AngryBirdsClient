@@ -19,41 +19,25 @@
 
 \section{Introduction}
 
-Intelligent agents perceive the world mainly through images captured at different time points. The world keeps changing and most of the changes are spatial changes. e.g. changes in position, direction of the objects. A typical image captured by the agent is often composed of spatial objects and their relations. Their spatial properties and relations will change from one image to another. Those spatial changes are often resulted from objects motion.  Understanding those changes will help the agent to make sense of the world and perform meaningful tasks.
+Visual perception is one of the main sources of information about the world. Most intelligent agents have eyes, cameras, or other optical devices to "see" their environment and to detect changes in their environment. The information these devices provide is in the form of image sequences, or if the image sampling rate is high enough, we call it video.
+Image understanding \cite{} and object detection \cite{} are essential methods for extracting useful information from images. Equally essential is object tracking \cite{}, that is the ability to identify the same object in a series of images or in video and to track its movement and its changes. Existing object tracking methods typically rely on the visual appearance of objects and on their trajectories to successfully track even temporarily occluded objects \cite{}.
+Similar methods are used for muliple object tracking \cite{}.
+In this paper we are interested in a problem that can occur when intelligent agents observe the world through visual perception and have to track changes.
+It can be described as follows: Given two images, let's call them "before" and after", that depict the same scene at different times. Between the two images, certain physical actions have been happening that affected the locations and possibly the states of the objects in the scene. Our task is to find a match between the objects in the "before" image with the objects in the "after" image that is consistent with the effects of the physical actions that happened between the two images. In case there are multiple consistent matches, we want to identify the most plausible one.
 
-Object tracking, scene similarity, qualitative matching... 
+It is clear that this problem is relatively straightforward to solve if the visual appearance of all objects in each image is unique, as we simply match the objects that have the same visual appearance. The problem gets challenging, if multiple objects have the same visual appearance. We say that objects of the same visual appearance have the same type and we can only match objects of he same type. Whenever there are multiple objects of the same type, existing object tracking methods are not applicable any more.
 
-Multiple objects tracking assumes objects' motions are independent and there are no interactions between the objects. Objects are often approximated. i.e. tracking  flights. A dynamic model is applied to estimate the motions of the targets.  
+There are different variants of this problem depending on the way the relevant physical actions are specified or unspecified. In general, the actions pose additional constraints that have to be satisfied. These constraints can vary from case to case and typically depend on the application. One variant of the problem is when the specific actions that are responsible for the changes are unknown. Then the task is to find a match for which (THIS IS REALLY WEIRD THAT WE DO NOT TAKE INTO ACCOUNT THE PARTICULAR ACTION!!!) the standard laws of physics are satisfied. ARE WE REALLY DOING THIS, DOES THIS MAKE SENSE?
+We could also formulate the problem as identifying physical actions that explain a given match.
+Depending on the speed of the changes, it is clear that the longer the time gap between the "before" and the "after" image, the less accurate a match might be.
 
-Another related problem is qualitative matching between two spatial scenes.\cite{}
+There are many real-world situations where this problem occurs. For example in natural disasters such as earthquakes, storms, or tsunamis, where we often see before and after images, also in terrorist attacks or bomb explosions. But there are also less dramatic situations, for example a satellite that takes another image of the same site at the next fly-over.
 
-Our problem is different from multiple target tracking because the objects in our case can interact and there is no well-defined dynamical model to estimate the objects motion.
+Our interest in this problem is motivated by the Angry Birds AI competition where the task is to build an AI agent that can play Angry Birds as good as the best human players. One major problem in this context is to be able to accurately predict the outcome of an action. To do this, we need to learn from previous cases where the effect an action had on a given scenario is known. As input to the machine learning algorithms we need to know the initial scenario, the action that was used and the effect the action had on each object in the initial scenario, i.e., we need to know exactly which object in the initial state corresponds to which object in the resulting state. In order to be able to learn a huge number of cases, we need to be able to automate the matching between objects in the "before" and in the "after" image.
 
-Our problem is different from the qualitative spatial matching since the subsequent image may look totally different from the initial image regarding the spatial configurations. 
+We evaluate our proposed solution using the Angry Birds scenario. We take two subsequent screenshots of an active Angry Birds game with varying time gaps and apply our method to match the objects between the two screenshots. We measure the accuracy of our method by using the percentage of correct matches out of the total number of possible mismatches. As expected, it turns out that the smaller the time gaps, the higher the accuracy of the matches.
 
-
-\section{Problem Description}
-Finding the corresponding objects in next image can be formulated as a constraint satisfication problem (CSP), which consists of 
-1) A set of variables corresponding to the objects in the initial image
-2) A finite domain composed of the objects in the next image
-3) One to one correspondence between the two sets is required
-
-We use $o \sim o^{\prime}$ to denote a match between the spatial object $o$ and $o^{\prime}$. 
-Given two object sets $O = \{o_1, o_2, ..., o_n\}$ and $O^\prime = \{o^{\prime}_{1}, o^{\prime}_{2}, ...., o^{\prime}_{m}\}$, a matching $M$ is bijection from $O$ to $O^\prime$.
-
-Any matching $M$ between two scenes induces a series of spatial changes. A matching is admissible if the spatial change induced by the matching is achievable. [define achievable]. 
-
-Some assumptions:
-\begin{itemize}
-\item Downwards gravity, continuous spatial change.
-\item We know the time gap between two successive images
-\item Only the objects of the same appearance can be matched. Objects appearance includes color, size and all other visual features. 
-\item No new objects will be created in the subsequent image (except debris).
-\item Initial image should not be crappy
-\end{itemize}
-
-Matching objects of different appearance is trivial, in the rest of paper, unless explicitly mentioned, the objects are supposed to be identical in terms of appearance and physical properties. We only consider rectangles and circles in 2 dimensional space. 
-
+ 
 \section{Objects Representation with the extended GSR (EGSR)}
 
 We use a minimum bounding rectangle to approximate the region occupied by a circle and use exact shapes for the rectangles.
@@ -85,6 +69,8 @@ Movement direction can be approximated by analysing the structural properties, e
 
 \cite{Ge2013} proposed four kinds of supports that can make a solid rectangle stable. We utilize these stable configurations and estimate the open quadrants accordingly. E.g. given an object supported by one edge support, if the right side support is removed, then it is likely to fall to right, thus the open quadrant is $C^{(+,-)}$
 (see Figure \ref{QudrantsEstimation}). 
+
+Movement direction of an object can also be inferred from the impact. E.g. in the angry birds scenario, we know blabla.  
 
 \begin{figure}[h!]\label{QudrantsEstimation}
 \centering\includegraphics[scale=0.4]{QudrantsEstimation.png}\caption{(a) the object in cyan is supported via one-edge support  (b) a subsequent scene after the right support is removed (c) The estimated open quadrant (shadowed area) approximates the subsequent centroid location}
@@ -118,9 +104,7 @@ Formally, let $R$ be a set of EGSR relations and $oppo(r), r\in R$ be the opposi
  [list opposite set for each relation]
 
 
-\section{A method for Objects Tracking}l disappear. The debris can be of 
-We applied all the techniques mentioned above to solve the problem in the 
-
+\section{A Method for Objects Tracking}
 Let $O$ and $O^{\prime}$ be a set of objects in an initial image and a subsequent image taken at a later time, respectively. For ease of notation, we will refer to objects in $O$ as initial objects and objects in $O^{\prime}$ as new objects.
 
 First, the method randomly assigns a unique ID to each initial object, and estimates the MBC quadrants of each object according to the object's spatial relations. The domain for each initial object is set so that it contains only the new objects that are of the same object type and within the MBC quadrants. The method then creates a preference list from the domain of each of the initial objects: the new objects in the preference list are sorted by the size of the centroid shift from the initial object in ascending order. The method matches the two sets of objects using a stable marriage algorithm with the pre-computed preference lists. The algorithm ensures each match is stable in the sense that no pair of objects would prefer each other over their matched partners. 
@@ -128,25 +112,60 @@ First, the method randomly assigns a unique ID to each initial object, and estim
 Then, the method finds all groups of spatially correlated objects among the initial objects and gets their corresponding objects from the match. The method then checks to see whether a spatial constraint has been violated, as mentioned in \ref{trackingBySpatialReasoning}. If there has, it resolves it accordingly.
 
 
+\section{Implementation}
+We implemented our method and applied it to the Angry Birds where the vision can detect the exact shapes of the objects\cite{}. The objects' visual appearance are restricted to a finite number of templates (See Fig. ).
+
+The vision has the following limitations: 1) Damaged objects will be detected as a few separate smaller pieces. 2) Debris are not recognized so that one cannot determine whether an object, say a stone, is a real stone or just a debris from a previously destroyed stone. 3) Objects occlusion is not handled. Objects can be partially or entirely occluded by debris or other game effects e.g. prompted scores or clouds around the hit point (See Figure \ref{})
+
+We show those problem can be dealt with effectively by the above mentioned techniques.
+
+\subsection{Handling Fragmentation and Occlusion}
+
+Objects fragmentation creates new objects in subsequent images and the new objects are not directly related to the initial objects. The varying number of objects from one scenario to another can introduce ambiguities making a tracking algorithm off the track. 
+
+In angry birds, the fragmentation is mainly due to objects destruction, partially occlusion, and damage. (See Fig. ). Handling fragmentation is important. By recognizing the fragments, we are able to infer whether an object is destroyed, damaged, or occluded, which leads to a robust tracking.
+
+We deal with the fragmentation by first recognizing potential fragments, then construct all the possible objects from the fragments, and add them to the pool of the subsequent objects for matching, and finally apply a debris recognition process for the unmatched initial objects. 
+
+To obtain the potential fragments, we group the initial and subsequent objects according to their templates, respectively. If a group of the subsequent objects contains more objects than its initial counterpart, we treat all those subsequent objects as potential fragments.  
+
+For all the potential fragments, we put those that can form a shape of one of the templates into a same group. The shape formed by a group of fragments is an oriented minimum bounding rectangle (OMBR) that bounds all the fragments. The fragments from one group must have the same type. We then treat the OMBR as one object in the subsequent image, which can be potentially matched with one of the initial objects. Once the OMBR is matched, all the fragments from the corresponding group are also matched. i.e. assigned with the same ID. In some rare cases, a fragment can be involved in more than one OMBRs. So we add an additional constraint: all the matched OMBRs should not have a common fragment. 
+
+For those fragments that are not matched, we label them as debris. Destruction of an object will create a cluster of debris around the object's location. Those debris can be of any shape, e.g. circle, polygon and will diffuse until disappear after 2-4 seconds. Given an object $O$ in the initial scenario, we start the debris recognition process if there are no subsequent objects can be matched with $O$ (including the OMBRs created from the fragments). We first draw the MBC of $O$, and get the set of the subsequent objects falling in the MBC excluding those which have been matched. The set of the objects are labelled as debris of $O$ and $O$ is marked as destroyed. 
+
+In some cases, an object can be totally occluded for a subsequence of images. To deal with this, before a matching, we cache the spatial configurations of all the initial objects. At the end of the matching, we update the cache by replacing each initial object's configuration with the matched subsequent object's so that the cache always maintains the latest configuration of each initial object. If an occluded object recurs in one subsequent image, we match the occluded object by searching through the cache for an unmatched initial object. The occlude object will be matched if it lies in the MBC of that initial object. 
+  
 \section{Evaluation}
- We implemented our method and applied it to the Angry Birds where the vision can detect the exact shapes of the objects\cite{}. For each detected object, the vision assigns a type according to the object's color, the main types are $stone, wood, ice$. The vision has the following limitations: 1) Damaged objects will be detected as a few separate smaller objects. 2) Debris are not recognized so that one cannot determine whether an object of type stone is a real stone or just a piece from a previously destroyed stone. 3) Objects occlusion is not handled.  We show those problem can be dealt with effectively by the above mentioned techniques. 
-
- \section{Debris Recognition}
-Destruction of an object will create a cluster of debris around the object's location. Those debris can be of any shape, e.g. circle, polygon and will spread until disappear after 2-4 seconds. We can infer the destruction of a certain object by recognizing the 
-he debris can not be recognized 
-\section{Damage Status Recognition}
+We measure the accuracy of the method by the percentage of correct matches out of the total number of possible mismatches. Specifically, the mismatches 
 
 
-\section{Object Occlusion Management}  
+The evaluation has been done in two phases. We first obtain the ground truth of 
+
+\subsection{Obtaining Ground Truth}
+ 
+ We capture a sequence of screenshots before and after a shot using the smallest time gap (50 ms). The average number of the screenshots in a typical sequence is around 200, i.e. the time gap from the beginning to the end screenshot is about 10 seconds. 
+
+ We apply our method on the whole sequence so that the method will keep tracking the objects through all of the screenshots, from the first until the last. The match between the initial objects in the first screenshot and the subsequent objects in the last screenshot will be saved as ground truth for later evaluation.
+
+To automate the evaluation process, we run an angry birds agent that always aims at a random pig on the first 21 Poached Eggs Levels \cite{}. The agent starts to capture screenshots 3 seconds after a shot is made, and stops after another 10 seconds. In each level, the agent records the screenshots of at most two shots. In the end, we got around 40 samples. Then we run our method on 10 out of the 40 samples, which are randomly picked. We evaluate the matchings by manually labelling the initial objects and their correspondence in the end screenshot.  
+
+
+
+\subsection{Experimental Results}
+
+We evaluate our method on the 40 previously collected samples with varying time gaps, namely 200 ms (the maximum delay in getting screenshot from the server of angry birds AI competition), and 300 ms (the time taken by taking a screenshot plus the vision segmentation). When evaluating with the time gap of 200 ms or 300 ms, The method will pick up one of every 200/50 = 4 or 300/50 = 6 screenshots from the original sequence, and obtain the matching accuracy by compare against the ground truth.  
 
 
 
 
-\section{Obtaining Ground Truth}
- We capture a sequence of images before and after a shot. 
-We first evaluate our method on a sequence of images captured with the smallest time gaps(50 ms). The resulting matchings are recorded and set as ground truth in the later evaluations. 
 
-We evaluate our method by varying the time gaps.
+\subsection{Conclusion}
+
+
+
+
+
+
 
 
 

@@ -12,6 +12,9 @@ import ab.objtracking.Tracker;
 import ab.objtracking.dynamic.Movement;
 import ab.objtracking.representation.util.GlobalObjectsToolkit;
 import ab.vision.ABObject;
+import ab.vision.ABType;
+import ab.vision.real.shape.Circle;
+import ab.vision.real.shape.Rect;
 import ab.vision.real.shape.RectType;
 
 public abstract class TrackerTemplate implements Tracker{
@@ -106,7 +109,36 @@ public abstract class TrackerTemplate implements Tracker{
 		return (float) diff;
 	
 	}
-
+	/**
+	 * Intended for tolerating vision error in detecting wood
+	 * Convert all wood circles to 1x1 wood blocks since vision is likely to treat 1x1 wood as circle
+	 * */
+	protected void preprocessObjs(List<ABObject> objs)
+	{
+		List<ABObject> removal = new LinkedList<ABObject>();
+		List<ABObject> addedBlocks = new LinkedList<ABObject>();
+		for (ABObject obj : objs)
+		{
+			if (obj instanceof Circle && obj.type == ABType.Wood)
+			{
+			
+				ABObject newBlock = new Rect(
+						obj.getCenterX(), obj.getCenterY(), obj.getBounds().width, 
+						obj.getBounds().height, 0, -1, obj.area);
+				log(" circle to rec conversion: Circle " + obj);
+				log(" circle to rec conversion: Rect " + newBlock);
+				 
+				newBlock.id = obj.id;
+				 newBlock.type = ABType.Wood;
+				 addedBlocks.add(newBlock);
+				 removal.add(obj);
+			}
+		}
+		objs.removeAll(removal);
+		objs.addAll(addedBlocks);
+		/*for (ABObject obj : objs)
+			log(obj.toString());*/
+	}
 	@Override
 	public void setInitialObjects(List<ABObject> objs) {
 	
@@ -291,7 +323,14 @@ public abstract class TrackerTemplate implements Tracker{
 			return ((Float) o1.diff).compareTo((Float) o2.diff);
 		}
 	}
-	
+	/**
+	 *@param newObj, iniObj: new object and the matched initial object
+	 *@param isDebris: whether the newObj is a piece of iniObj
+	 *
+	 * Link newObj to iniObj by setting the id equal to iniObj's id, and set the original shape 
+	 * of newObj if newObj is debris (otherwise the original shape of newObj is newObj itself)
+	 * 
+	 * */
 	protected void link(ABObject newObj, ABObject iniObj, boolean isDebris)
 	{
 		newObj.id = iniObj.id;

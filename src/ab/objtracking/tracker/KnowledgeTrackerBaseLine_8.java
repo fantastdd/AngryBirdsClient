@@ -41,6 +41,7 @@ import ab.vision.real.shape.Rect;
  * Add speed consideration: 3 ms per pixel
  * Integrate with Occluded Toolkit
  * Refine Debris Management
+ * Preprocess Objs
  * */
 public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 
@@ -318,6 +319,7 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 	}
 	protected Map<ABObject, ABObject> matchObjs(List<ABObject> iniObjs, List<ABObject> newObjs)
 	{
+		
 		Map<ABObject, ABObject> newToIniMatch = new HashMap<ABObject, ABObject>();
 		Map<ABObject, ABObject> iniToNewMatch = new HashMap<ABObject, ABObject>();
 		
@@ -338,12 +340,7 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 	 * */
 	protected void occlusionMatch(List<ABObject> objs)
 	{
-	   
-		
-		
-		
-		
-		
+	   	
 	}
 	/**
 	 * Convert A - R - B, A - R - C, B - R - C to  A - R - B - R - C. Thus removing the indirect relation between A and C
@@ -380,7 +377,8 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 					 {
 						 Relation _r = (GSRConstructor.computeRectToRectRelation(_newO1, _newO2)).r;
 						 //System.out.println(newO1 + "  " + newO2 + "  " + _r + "   " + r);
-						 if ( Relation.isOpposite(_o1, _o2, r, _newO1, _newO2, _r) && _o1.type == _o2.type) 
+						 if ( Relation.isOpposite(_o1, _o2, r, _newO1, _newO2, _r) && _o1.type == _o2.type
+								 && !ShapeToolkit.isDifferentShape(_newO1, _newO2)) 
 						 {
 							 //log("@@ " + _o1.id + "  " + _o2.id + "  " + r + "  " + _r);
 							 swap( iniToNewMatch, NewToIniMatch, _o1, _o2, _newO1, _newO2 );
@@ -416,7 +414,8 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 							 {
 								 Relation _r = (GSRConstructor.computeRectToRectRelation(newO1, newO2)).r;
 								 //System.out.println(newO1 + "  " + newO2 + "  " + _r + "   " + r);
-								 if ( Relation.isOpposite(o1, o2, r, newO1, newO2, _r) && o1.type == o2.type) 
+								 if ( Relation.isOpposite(o1, o2, r, newO1, newO2, _r) && o1.type == o2.type
+										 && !ShapeToolkit.isDifferentShape(newO1, newO2)) 
 								 {
 									
 									 swap( iniToNewMatch, NewToIniMatch, o1, o2, newO1, newO2 );
@@ -544,7 +543,11 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 
 	   log(" Debris Recognition ");
 		/*for (ABObject iniObj : unmatchedIniObjs)
-			log("@@@" + iniObj);*/
+			log("@@@ini " + iniObj);
+	   for(ABObject newObj : unmatchedNewObjs)
+	   {
+		   log ("@@@new " + newObj);
+	   }*/
 		
 		currentOccludedObjs.addAll(unmatchedIniObjs);
 		List<DebrisGroup> groups = new LinkedList<DebrisGroup>();
@@ -573,7 +576,8 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 				//TODO non necessary loop
 				for (ABObject iniObj : unmatchedIniObjs) {
 					
-				/*	log("--------\n" + newObj.toString() + "  \n" + iniObj.toString() + " \n " 
+					/*log("--------\n" + newObj.toString() + "  \n" + iniObj.toString() + " \n " 
+						+ iniObj.getOriginalShape().toString() + "\n"
 					+ !ShapeToolkit.cannotBeDebris(newObj, iniObj));*/
 					if (pair.obj.equals(iniObj) && pair.diff < MagicParams.DiffTolerance
 							&& !ShapeToolkit.cannotBeDebris(newObj, iniObj)
@@ -622,6 +626,7 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 		if (iniObjs != null ) 
 		{
 			lastInitialObjs = iniObjs;
+			//preprocessObjs(newObjs);
 			createPrefs(newObjs);
 			//printPrefs(prefs);
 			Map<ABObject, ABObject> newToIniMatch;
@@ -803,12 +808,8 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			//Ensure unique assignments
 			uniqueAssignment(newObjs, matchedObjs);
 			
-			
 			//printMatch(newObjs, matchedObjs, true);
 			
-			
-			
-			 
 			//Set Initial Objs Movements
 			iniObjsMovement.clear();
 			
@@ -822,29 +823,20 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 					Movement movement = new Movement(obj);
 					movement.generateInertia(initial);
 					iniObjsMovement.put(obj, movement);
-					
 				}
-				
 			}
-			
-			
-			
 			setInitialObjects(newObjs);
-			
-			
 			return true;
 		}
 		return false;
 	}
 
-
-
 	public static void main(String args[])
 	{
 		//String filename = "speedTest_48";
-		String filename = "e1l10_52";//"e1l7_62";//"t6";//"e1l9_62";//"e1l7_54";//"e1l9_62";//"t11";//"e1l7_54";//"e1l18_55";// "t11";//"t11";//"e2l3_65";//;
+		String filename = "e1L17_58";//"e1L15_53";//"e1L7_54";//"t14";//"e1L16_55";//"e1L10_52";//"e1L7_62";//"t6";//"e1L9_62";//"e1L7_54";//"e1L9_62";//"t11";//"e1L7_54";//"e1L18_55";// "t11";//"t11";//"e2l3_65";//;
 		int timegap = 200;
-		int step = 5;
+		int step = 1;
 		if(filename.contains("_"))
 			timegap = Integer.parseInt(filename.substring(filename.indexOf("_") + 1));
 		Tracker tracker = new KnowledgeTrackerBaseLine_8(timegap * step);

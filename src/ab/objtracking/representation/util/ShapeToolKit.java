@@ -54,7 +54,7 @@ public class ShapeToolkit {
 		//int area = o.getOriginalShape().area;
 		double w = o.getOriginalShape().getPreciseWidth();
 		double h = o.getOriginalShape().getPreciseHeight();
-/*		if (o.id == 2)
+		/*		if (o.id == 2)
 		{
 			System.out.println(" ^^^^" + debris + " \n^^^^" + o.getOriginalShape()
 					+ " \n^^^^^" + (debris.rectType.id)  + "   " + o.getOriginalShape().rectType.id
@@ -65,7 +65,9 @@ public class ShapeToolkit {
 		//System.out.println("#### " + debris);
 		if(debris.type != o.type)
 			return true;
-		if( (debris.getPreciseWidth()) - w > MagicParams.VisionGap && debris.getPreciseHeight() - h > MagicParams.VisionGap)
+		if( (debris.getPreciseWidth()) - w > MagicParams.VisionGap 
+			//	|| debris.getPreciseHeight() - h > MagicParams.VisionGap
+			)
 			return true;
 		if(debris.rectType.id - o.getOriginalShape().rectType.id > 2)
 			return true;
