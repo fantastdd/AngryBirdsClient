@@ -152,6 +152,15 @@ public class ActionRobot {
 			e.printStackTrace();
 		}
 	}
+	
+	public void cFastshoot(Shot shot) {
+		ShootingSchema ss = new ShootingSchema();
+		LinkedList<Shot> shots = new LinkedList<Shot>();
+		shots.add(shot);
+		ss.shoot(proxy, shots);
+	}
+	
+	
 	public void fshoot(Shot shot)
 	{
 		ShootingSchema ss = new ShootingSchema();

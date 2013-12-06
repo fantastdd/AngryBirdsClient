@@ -11,15 +11,21 @@ package example;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import ab.demo.other.ActionRobot;
 import ab.demo.other.Shot;
 import ab.planner.ExampleTrajectoryPlanner;
 import ab.planner.Strategy;
+import ab.utils.ImageSegFrame;
 import ab.utils.StateUtil;
 import ab.vision.ABObject;
 import ab.vision.ABState;
@@ -36,7 +42,9 @@ public class ExampleAgent implements Runnable {
 
 	
 	private Strategy strategy;
-
+	
+	
+	private int shotCount = 0;
 
 	public ExampleAgent() {
 		aRobot = new ActionRobot();
@@ -91,6 +99,7 @@ public class ExampleAgent implements Runnable {
 				}
 				System.out.println("Total Score: " + totalScore);
 				
+				shotCount = 0;
 				aRobot.loadLevel(++currentLevel);
 				// make a new trajectory planner whenever a new level is entered
 				strategy.trajectoryPlanner = new ExampleTrajectoryPlanner();
@@ -99,7 +108,13 @@ public class ExampleAgent implements Runnable {
 		
 			} else if (state == GameState.LOST) {
 				System.out.println("restart");
-				aRobot.restartLevel();
+				//aRobot.restartLevel();
+				shotCount = 0;
+				aRobot.loadLevel(++currentLevel);
+				// make a new trajectory planner whenever a new level is entered
+				strategy.trajectoryPlanner = new ExampleTrajectoryPlanner();
+
+				
 			} else if (state == GameState.LEVEL_SELECTION) {
 				System.out
 						.println("unexpected level selection page, go to the last current level : "
@@ -116,6 +131,7 @@ public class ExampleAgent implements Runnable {
 						.println("unexpected episode menu page, go to the last current level : "
 								+ currentLevel);
 				ActionRobot.GoFromMainMenuToLevelSelection();
+				shotCount = 0;
 				aRobot.loadLevel(currentLevel);
 			}
 
@@ -165,7 +181,13 @@ public class ExampleAgent implements Runnable {
 						if (scale_diff < 25) {
 							
 							//execute the shot
-							aRobot.cshoot(shot);
+							aRobot.cFastshoot(shot);
+							try {
+								takeScreenshots(shotCount++);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							state = ABUtil.getState();
 							
 							// update parameters after a shot is executed
@@ -193,7 +215,33 @@ public class ExampleAgent implements Runnable {
 	
 		return state.getGameState();
 	}
-
+	
+	public void takeScreenshots(int shotCount) throws IOException
+	{
+		int count = 201;
+		List<BufferedImage> images = new LinkedList<BufferedImage>();
+		BufferedImage screenshot = null;
+		long time = 0;
+		long avg = 0;
+		while(count-- > 0)
+		{
+			time = System.nanoTime();
+			screenshot = ActionRobot.doScreenShot();
+			images.add(screenshot);
+			avg += (System.nanoTime() - time);
+		}
+		String saveFileDir = "L" + currentLevel + "_" + shotCount + "_" + (avg/images.size()/1000000) + "\\";
+		int _saveCount = 0;
+		File file = new File(saveFileDir);
+    		if(!file.exists())
+    			file.mkdir();
+    	for (BufferedImage image : images)
+    	{
+    		String imgFilename = saveFileDir + String.format("img%04d.png", _saveCount ++);
+    		ImageIO.write(image, "png", new File(imgFilename));
+    	}
+	} 
+	
 	public static void main(String args[]) {
 
 		ExampleAgent na = new ExampleAgent();

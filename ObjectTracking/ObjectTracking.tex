@@ -25,7 +25,7 @@ Similar methods are used for muliple object tracking \cite{}.
 In this paper we are interested in a problem that can occur when intelligent agents observe the world through visual perception and have to track changes.
 It can be described as follows: Given two images, let's call them "before" and after", that depict the same scene at different times. Between the two images, certain physical actions have been happening that affected the locations and possibly the states of the objects in the scene. Our task is to find a match between the objects in the "before" image with the objects in the "after" image that is consistent with the effects of the physical actions that happened between the two images. In case there are multiple consistent matches, we want to identify the most plausible one.
 
-It is clear that this problem is relatively straightforward to solve if the visual appearance of all objects in each image is unique, as we simply match the objects that have the same visual appearance. The problem gets challenging, if multiple objects have the same visual appearance. We say that objects of the same visual appearance have the same type and we can only match objects of he same type. Whenever there are multiple objects of the same type, existing object tracking methods are not applicable any more.
+It is clear that this problem is relatively straightforward to solve if the visual appearance of all objects in each image is unique, as we simply match the objects that have the same visual appearance. The problem gets challenging, if multiple objects have the same visual appearance. We say that objects of the same visual appearance have the same type and we can only match objects of the same type. Whenever there are multiple objects of the same type, existing object tracking methods are not applicable any more.
 
 There are different variants of this problem depending on the way the relevant physical actions are specified or unspecified. In general, the actions pose additional constraints that have to be satisfied. These constraints can vary from case to case and typically depend on the application. One variant of the problem is when the specific actions that are responsible for the changes are unknown. Then the task is to find a match for which (THIS IS REALLY WEIRD THAT WE DO NOT TAKE INTO ACCOUNT THE PARTICULAR ACTION!!!) the standard laws of physics are satisfied. ARE WE REALLY DOING THIS, DOES THIS MAKE SENSE?
 We could also formulate the problem as identifying physical actions that explain a given match.
@@ -42,12 +42,14 @@ We evaluate our proposed solution using the Angry Birds scenario. We take two su
 
 We use a minimum bounding rectangle to approximate the region occupied by a circle and use exact shapes for the rectangles.
 
-The representation should allow us to infer possible motions of an object from its interaction with other objects. Since the objects can only interact via contacts, it is important to distinguish if and how two objects contact each other.  GSR is expressive enough to capture the contacts between a pair of solid rectangles. It defines eight contact sectors that correspond to the eight edges and corners of the rectangles. Given two GSRs $o_1$ and $o_2$ that contact each other via $sector_1, sector_2 \in \{S_1, ..., S_8, R_1, ..., R_8\}$, the contact relation between $o_1$ and $o_2$ can be expressed as the constraint $o_1 \, (sector_1, sector_2) \, o_2$. 
+Since the objects can only interact via contacts, it is important to distinguish if and how two objects contact each other. A proper representation should allow us to infer possible motions of an object from its interaction with other objects. 
 
-However, GSR introduces ambiguities when the rectangles are disconnected. To overcome the ambiguities, we partition the embedding space around the reference object into nine mutually exclusive tiles[cite, CDC]. The centre tile corresponds to the minimum bounding rectangle of the object and the other eight tiles correspond to the eight cardinal directions. 
+We use GSR\cite{} to model the contact between solid rectangles. GSR defines eight contact sectors that correspond to the eight edges and corners of the rectangles. Given two GSRs $o_1$ and $o_2$ that contact each other via $sector_1, sector_2 \in \{S_1, ..., S_8, R_1, ..., R_8\}$, the contact relation between $o_1$ and $o_2$ can be expressed as the constraint $o_1 \, (sector_1, sector_2) \, o_2$. 
+
+However, GSR introduces ambiguities when the rectangles are disconnected. To overcome the ambiguities, we partition the embedding space around an reference object into nine mutually exclusive tiles[cite, CDC]. The centre tile corresponds to the minimum bounding rectangle of the object and the other eight tiles correspond to the eight cardinal directions. 
 
 
-Given two spatial objects, if the MBRs of the two objects intersect or boundary touch, we assign a GR relation accordingly. Otherwise, one of the eight cardinal tiles will be used to indicate the spatial relation. The GSR relation between a pair of objects can be obtained by first calculating the distance between each pair of the contact sectors and then using the sectors from the pair with the shortest distance. The distance becomes zero when the two objects touch. 
+Given two spatial objects, if the MBRs of the two objects intersect or boundary touch, we assign a GSR relation accordingly. Otherwise, one of the eight cardinal tiles will be used to indicate the spatial relation. The GSR relation between a pair of objects can be obtained by first calculating the distance between each pair of the contact sectors and then using the pair with the shortest distance. The distance becomes zero when the two objects touch. 
 
 \begin{figure}[h!]
 \centering\includegraphics[scale=0.25]{EGSR-relations.png}\caption{Contact sectors and Cardinal directions of (a) an angular rectangle and (b) a normal rectangle}
@@ -57,20 +59,26 @@ Given two spatial objects, if the MBRs of the two objects intersect or boundary 
 
  To find out a best matching, a straightforward approach is to enumerate all the possible matchings. The search space is huge as there is a combinatorial number of matchings between two object sets. However, most of the matchings can be avoided by only searching through the corresponding objects in a limited area. The area of the initial object should therefore cover all the objects in the next scene that can be potentially matched to the initial object.  We use a circular region to represent such area. The circle centre is located at the centroid of the object and the radius of the circle is the maximum shift of the centroid. The radius is calculated by $V \times T$ where $V$ is the maximum velocity of the object while $T$ is the time gap. The calculation ensures the area estimation adaptable to different time gaps. We call this circle as $movement\,bounding\,circle$(MBC). 
 
-The MBC can be divided into four quadrants to further restrict the search area. A quadrant is said to be open if all the objects in that quadrant can be considered as potential correspondence of the referred object, otherwise the quadrant is closed.  
+The MBC can be divided into four quadrants to further restrict the search area. A quadrant is said to be open if all the objects in that quadrant can be considered as potential correspondence of the referred object, otherwise the quadrant is closed. An initial object will be matched with one of the subsequent objects within the open quadrants while the outside ones will not be considered. 
 
  Given a MBC $C$, if we want to explicitly talk about the quadrants that are open, we write $C^{(i,j)}, (i,j) \in \{-, +, *\}$ wrt. the given MBC, where $(+,+)$, $(+,-)$, $(-,-)$, $(-,+)$ correspond to the top-right, top-left, bottom-left, bottom-right quadrant respectively. $(*, *)$ refers to an arbitrary quadrant. 
 \begin{figure}[h!]
 \centering\includegraphics[scale=0.3]{quadrants.png}\caption{(a) The four quadrants of a MBC (b) Qualitative distance with respect to object A and its MBC}
 \end{figure}
-By estimating the movement direction of the object, we can infer the open quadrants by estimating which of the quadrants the object is most likely to be in at the next time point. The initial object will then be matched with one of the objects within the open quadrants while outside objects will not be considered.
 
-Movement direction can be approximated by analysing the structural properties, e.g. the stability of an object. An object is stable when it is supported and remains static. When an object is not stable, there will be two possible motions: 1) free fall if it has no supports. 2) fall to the side where supports are absent. 
+We can infer the open quadrants of an object by estimating which of the quadrants the object is most likely to be in at the next time point. Thus, it is important to approximate the movement direction of that object.  
+
+Movement direction can be inferred from impact. Knowing the direction and the force of an impact, one can estimate the subsequent movements of the objects affected by the impact, directly or indirectly. 
+
+When the impact information is not available, we can still approximate movement direction by analysing structural properties, e.g. the stability of an object or a group of objects. An object is stable when it is supported and remains static. When an object is not stable, there will be two possible motions: 1) free fall if it has no supports. 2) fall to the side where supports are absent. 
+
+In Angry Birds scenario, an initial impact always comes from left by a bird hit. We can access the trajectory and the type of the bird from the vision, and estimate the initial velocities of the affected objects by a physical reasoning model. E.g. 
+
+However, in most of cases, the trajectory is not available, 
+
 
 \cite{Ge2013} proposed four kinds of supports that can make a solid rectangle stable. We utilize these stable configurations and estimate the open quadrants accordingly. E.g. given an object supported by one edge support, if the right side support is removed, then it is likely to fall to right, thus the open quadrant is $C^{(+,-)}$
 (see Figure \ref{QudrantsEstimation}). 
-
-Movement direction of an object can also be inferred from the impact. E.g. in the angry birds scenario, we know blabla.  
 
 \begin{figure}[h!]\label{QudrantsEstimation}
 \centering\includegraphics[scale=0.4]{QudrantsEstimation.png}\caption{(a) the object in cyan is supported via one-edge support  (b) a subsequent scene after the right support is removed (c) The estimated open quadrant (shadowed area) approximates the subsequent centroid location}
@@ -111,6 +119,7 @@ First, the method randomly assigns a unique ID to each initial object, and estim
 
 Then, the method finds all groups of spatially correlated objects among the initial objects and gets their corresponding objects from the match. The method then checks to see whether a spatial constraint has been violated, as mentioned in \ref{trackingBySpatialReasoning}. If there has, it resolves it accordingly.
 
+ 
 
 \section{Implementation}
 We implemented our method and applied it to the Angry Birds where the vision can detect the exact shapes of the objects\cite{}. The objects' visual appearance are restricted to a finite number of templates (See Fig. ).
@@ -136,25 +145,35 @@ For those fragments that are not matched, we label them as debris. Destruction o
 In some cases, an object can be totally occluded for a subsequence of images. To deal with this, before a matching, we cache the spatial configurations of all the initial objects. At the end of the matching, we update the cache by replacing each initial object's configuration with the matched subsequent object's so that the cache always maintains the latest configuration of each initial object. If an occluded object recurs in one subsequent image, we match the occluded object by searching through the cache for an unmatched initial object. The occlude object will be matched if it lies in the MBC of that initial object. 
   
 \section{Evaluation}
-We measure the accuracy of the method by the percentage of correct matches out of the total number of possible mismatches. Specifically, the mismatches 
 
+We measure the accuracy of the method by the percentage of correct matches out of the total number of possible mismatches. Specifically, given a set $n$ of objects in an initial scenario and assume $m$ of them are of unique type, the total number of possible mismatches is $n - m$. We count the correct matches $c$ of the $n - m$ objects. The accuracy is  $c / (n - m)$.
 
-The evaluation has been done in two phases. We first obtain the ground truth of 
+The evaluation has been done in two steps. In the first step, we collect samples () from active angry birds scenarios, and obtain the ground truth by applying our method using the smallest time gap.
 
-\subsection{Obtaining Ground Truth}
+In the second step, we evaluate the method by varying the time gaps and obtain the accuracy by comparing against the ground truth.
+
  
- We capture a sequence of screenshots before and after a shot using the smallest time gap (50 ms). The average number of the screenshots in a typical sequence is around 200, i.e. the time gap from the beginning to the end screenshot is about 10 seconds. 
+\subsection{Obtaining Ground Truth}
+
+ We collect a sample by capturing a sequence of screenshots before and after a shot using the smallest time gap (50 ms). The average time gap between the beginning and the end screenshot is 10 seconds. i.e. A sample contains around 200 screenshots.  
 
  We apply our method on the whole sequence so that the method will keep tracking the objects through all of the screenshots, from the first until the last. The match between the initial objects in the first screenshot and the subsequent objects in the last screenshot will be saved as ground truth for later evaluation.
 
-To automate the evaluation process, we run an angry birds agent that always aims at a random pig on the first 21 Poached Eggs Levels \cite{}. The agent starts to capture screenshots 3 seconds after a shot is made, and stops after another 10 seconds. In each level, the agent records the screenshots of at most two shots. In the end, we got around 40 samples. Then we run our method on 10 out of the 40 samples, which are randomly picked. We evaluate the matchings by manually labelling the initial objects and their correspondence in the end screenshot.  
+To automate this process, we run an angry birds agent that always aims at an random pig on the first 21 Poached Eggs Levels \cite{}. The agent starts to capture screenshots once a shot is made, and stops after 10 seconds. In each level, the agent records the screenshots of at most four shots.
+
+In the end, we have around 80 samples. To evaluate the accuracy of the \"ground truth\", we run our method on 10 samples randomly picked from the 80. We get the accuracy by manually labelling the initial objects and their correspondence in the end screenshot, and compare with the matching. 
+
+It turns out that the method can match most of the objects (see Figure. \ref{}) 
 
 
 
 \subsection{Experimental Results}
 
-We evaluate our method on the 40 previously collected samples with varying time gaps, namely 200 ms (the maximum delay in getting screenshot from the server of angry birds AI competition), and 300 ms (the time taken by taking a screenshot plus the vision segmentation). When evaluating with the time gap of 200 ms or 300 ms, The method will pick up one of every 200/50 = 4 or 300/50 = 6 screenshots from the original sequence, and obtain the matching accuracy by compare against the ground truth.  
+We evaluate our method on the 40 previously collected samples with varying time gaps, namely 200 ms (the maximum delay in getting screenshot from the server used in angry birds AI competition), and 300 ms (the time taken by requesting a screenshot plus the vision segmentation). 
 
+The method will pick up one of every 200/50 = 4 or 300/50 = 6 screenshots from the original sequence, and obtain the matching accuracy by compare against the saved ground truth.  
+
+It turns of that blabla
 
 
 
