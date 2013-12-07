@@ -176,12 +176,12 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 		}  
 	    debrisGroupList = DebrisToolkit.getAllDummyRectangles(newGRNetwork);
 	    //Create dummy debris
-		if (debrisGroupList.isEmpty())
+		/*if (debrisGroupList.isEmpty())
 			log("\n No Debris Group Detected ");
 		else
 			log(" Create Debris on New Objects");
 	    for (DebrisGroup debris : debrisGroupList)	
-			log(debris.toString());
+			log(debris.toString());*/
 		
 		newObjs.addAll(debrisGroupList);
 		
@@ -706,9 +706,9 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			
 			iniObjsMovement.clear();
 
-			log("Print Occluded Objects");
+		/*	log("Print Occluded Objects");
 			for (ABObject occludedObj : currentOccludedObjs)
-				System.out.println(occludedObj);
+				System.out.println(occludedObj);*/
 			
 			//GlobalObjectsToolkit.addOccludedObjs(currentOccludedObjs);
 			//GlobalObjectsToolkit.updateOccludedObjsAndRels(matchedObjs);
@@ -834,11 +834,12 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 	public static void main(String args[])
 	{
 		//String filename = "speedTest_48";
-		String filename = "e1L17_58";//"e1L15_53";//"e1L7_54";//"t14";//"e1L16_55";//"e1L10_52";//"e1L7_62";//"t6";//"e1L9_62";//"e1L7_54";//"e1L9_62";//"t11";//"e1L7_54";//"e1L18_55";// "t11";//"t11";//"e2l3_65";//;
+		String filename = "e1L10_52";//"e1L17_58";//"F:\\Samples\\L7_1_54";
+				//"F:\\Samples\\L11_1_59";//"e1L17_58";//"e1L15_53";//"e1L7_54";//"t14";//"e1L16_55";//"e1L10_52";//"e1L7_62";//"t6";//"e1L9_62";//"e1L7_54";//"e1L9_62";//"t11";//"e1L7_54";//"e1L18_55";// "t11";//"t11";//"e2l3_65";//;
 		int timegap = 200;
 		int step = 1;
 		if(filename.contains("_"))
-			timegap = Integer.parseInt(filename.substring(filename.indexOf("_") + 1));
+			timegap = Integer.parseInt(filename.substring(filename.lastIndexOf("_") + 1));
 		Tracker tracker = new KnowledgeTrackerBaseLine_8(timegap * step);
 		TrackingFrameComparison tfc = new TrackingFrameComparison(filename, tracker, step);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
 		TrackingFrameComparison.continuous = true;

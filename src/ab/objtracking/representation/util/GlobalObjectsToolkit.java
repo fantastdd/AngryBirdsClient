@@ -1,18 +1,13 @@
 package ab.objtracking.representation.util;
 
-import java.awt.Point;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.collections4.ListUtils;
-import org.jgrapht.DirectedGraph;
 
-import ab.objtracking.representation.ConstraintEdge;
-import ab.objtracking.representation.Relation;
 import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.real.shape.RectType;
@@ -24,10 +19,13 @@ public class GlobalObjectsToolkit {
 	private static Map<Integer, ABObject> allObjs;
 	private static LinkedHashSet<Integer> occludedIds;
 	private static LinkedList<Integer> allIds;
-	
+	public static int uniqueObjsNum = 0;
+	public static int allObjsNum = 0;
 	//private static Map<Integer, Map<Integer, Relation>> lastRels;
 	private static Map<Integer, ABObject> lastObjs; // all the objects configurations at last time appearance.
 	public static void registerIniObjs(List<ABObject> iniObjs) {
+		
+		
 		System.out.println(" Register ini objs in GlobalObjectsToolkit");
 		wood = new HashMap<Integer, LinkedHashSet<ABObject>>();
 		stone = new HashMap<Integer, LinkedHashSet<ABObject>>();
@@ -48,10 +46,18 @@ public class GlobalObjectsToolkit {
 		}
 		allObjs = new HashMap<Integer, ABObject>();
 		//create an initial network
-		List<DirectedGraph<ABObject, ConstraintEdge>> graphs = GSRConstructor.contructNetworks(iniObjs);
-		DirectedGraph<ABObject, ConstraintEdge> fullNetwork = graphs.get(0);
+		//List<DirectedGraph<ABObject, ConstraintEdge>> graphs = GSRConstructor.contructNetworks(iniObjs);
+		//DirectedGraph<ABObject, ConstraintEdge> fullNetwork = graphs.get(0);
+		
+		
+		
+		allObjsNum = iniObjs.size();
+		uniqueObjsNum = 0;
 		
 		for (ABObject obj : iniObjs) {
+		
+			if(obj.type == ABType.Hill)
+				uniqueObjsNum++;
 			
 			allObjs.put(obj.id, obj);
 			
@@ -75,6 +81,22 @@ public class GlobalObjectsToolkit {
 			default:
 				break;
 			}
+		}
+		//count unique objects
+		for (Integer key: wood.keySet())
+		{
+			if(wood.get(key).size() == 1)
+				uniqueObjsNum++;
+		}
+		for (Integer key: stone.keySet())
+		{
+			if(stone.get(key).size() == 1)
+				uniqueObjsNum++;
+		}
+		for (Integer key: ice.keySet())
+		{
+			if(ice.get(key).size() == 1)
+				uniqueObjsNum++;
 		}
 		allIds = new LinkedList<Integer>();
 		allIds.addAll(allObjs.keySet());

@@ -59,7 +59,7 @@ public class SMETracker extends TrackerTemplate {
 		}
 		newComingObjs = objs;
 		//printPrefs(iniPrefs);
-		printPrefs(prefs);
+		//printPrefs(prefs);
 	}
 
 	@Override

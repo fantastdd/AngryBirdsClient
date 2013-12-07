@@ -5,7 +5,7 @@
     <defs>
         <pattern latexdraw:type="vlines" latexdraw:rotationAngle="0.0"
             latexdraw:size="7.05555534362793"
-            patternUnits="userSpaceOnUse" id="pattern350" x="0" y="0"
+            patternUnits="userSpaceOnUse" id="pattern18" x="0" y="0"
             width="775" height="311">
             <g stroke="#ff6666" stroke-width="2.0" stroke-dasharray="none">
                 <path d="M 704.0 246.5 L 704.0 311.25 M 713.0555553436279 246.5 L 713.0555553436279 311.25 M 722.1111106872559 246.5 L 722.1111106872559 311.25 M 731.1666660308838 246.5 L 731.1666660308838 311.25 M 740.2222213745117 246.5 L 740.2222213745117 311.25 M 749.2777767181396 246.5 L 749.2777767181396 311.25 M 758.3333320617676 246.5 L 758.3333320617676 311.25 M 767.3888874053955 246.5 L 767.3888874053955 311.25 "/>
@@ -13,93 +13,88 @@
         </pattern>
     </defs>
     <g>
-        <g latexdraw:type="rectangle" id="id336" transform="rotate(18.450065203562165) translate(61.016002713715125 -185.31589165187532)">
-            <rect x="462.0" y="270.0" width="156.0" height="21.0"
-                latexdraw:borderPos="outer" stroke-width="2.0"
-                stroke="#00cccc" fill="none"/>
+        <g latexdraw:type="rectangle" id="id5" transform="rotate(18.450065203562165) translate(61.016002713715125 -185.3158916518753)">
+            <rect x="461.9999999999999" y="270.0" width="156.0"
+                height="21.0" latexdraw:borderPos="outer"
+                stroke-width="2.0" stroke="#00cccc" fill="none"/>
         </g>
-        <g latexdraw:type="rectangle" id="id337">
+        <g latexdraw:type="rectangle" id="id6">
             <rect x="483.0" y="286.0" width="32.0" height="20.0"
                 latexdraw:borderPos="outer" stroke-width="2.0"
                 stroke="black" fill="none"/>
         </g>
-        <g latexdraw:type="rectangle" id="id338" transform="rotate(-42.373594361709245) translate(-352.2137284759701 407.68220444897906)">
-            <rect x="624.0" y="240.0" width="156.0" height="21.0"
-                latexdraw:borderPos="outer" stroke-width="2.0"
-                stroke="#00cccc" fill="none"/>
+        <g latexdraw:type="rectangle" id="id7" transform="rotate(-42.373594361709245) translate(-352.21372847597 407.6822044489791)">
+            <rect x="624.0000000000001" y="239.99999999999994"
+                width="156.0" height="21.0" latexdraw:borderPos="outer"
+                stroke-width="2.0" stroke="#00cccc" fill="none"/>
         </g>
-        <g latexdraw:type="rectangle" id="id339">
+        <g latexdraw:type="rectangle" id="id8">
             <rect x="675.0" y="290.0" width="32.0" height="20.0"
                 latexdraw:borderPos="outer" stroke-width="2.0"
                 stroke="black" fill="none"/>
         </g>
-        <g latexdraw:type="rectangle" id="id340" transform="rotate(-42.373594361709245) translate(-259.1989109402954 181.71169049298243)">
-            <rect x="286.0" y="233.0" width="156.0" height="21.0"
-                latexdraw:borderPos="outer" stroke-width="2.0"
-                stroke="#00cccc" fill="none"/>
+        <g latexdraw:type="rectangle" id="id9" transform="rotate(-42.373594361709245) translate(-259.1989109402954 181.71169049298254)">
+            <rect x="286.0000000000001" y="232.9999999999999"
+                width="156.0" height="21.0" latexdraw:borderPos="outer"
+                stroke-width="2.0" stroke="#00cccc" fill="none"/>
         </g>
-        <g latexdraw:type="rectangle" id="id341">
+        <g latexdraw:type="rectangle" id="id10">
             <rect x="337.0" y="283.0" width="32.0" height="20.0"
                 latexdraw:borderPos="outer" stroke-width="2.0"
                 stroke="black" fill="none"/>
         </g>
-        <g latexdraw:type="rectangle" id="id342">
-            <rect x="413.0" y="215.0" width="21.0" height="87.0"
-                latexdraw:borderPos="outer" stroke-width="2.0"
-                stroke="black" fill="none"/>
-        </g>
-        <g latexdraw:type="dot" id="id343" latexdraw:size="6.0"
+        <g latexdraw:type="dot" id="id11" latexdraw:size="6.0"
             latexdraw:dotShape="dot" latexdraw:position="364.0 242.0">
             <circle r="3.0" fill="black" cx="364.0" cy="242.0"/>
         </g>
-        <g latexdraw:type="dot" id="id344" latexdraw:size="6.0"
+        <g latexdraw:type="dot" id="id12" latexdraw:size="6.0"
             latexdraw:dotShape="dot" latexdraw:position="706.0 247.0">
             <circle r="3.0" fill="black" cx="706.0" cy="247.0"/>
         </g>
-        <g latexdraw:type="dot" id="id345" latexdraw:size="6.0"
+        <g latexdraw:type="dot" id="id13" latexdraw:size="6.0"
             latexdraw:dotShape="dot" latexdraw:position="542.0 282.0">
             <circle r="3.0" fill="black" cx="542.0" cy="282.0"/>
         </g>
-        <g latexdraw:type="circle" id="id346">
+        <g latexdraw:type="circle" id="id14">
             <circle cx="706.5" cy="248.5" r="61.5"
                 latexdraw:borderPos="outer" stroke-width="2.0"
                 stroke="#ff3333" fill="none" stroke-dasharray="8.0, 8.0"/>
         </g>
-        <g latexdraw:type="line" id="id348">
+        <g latexdraw:type="line" id="id16">
             <line x1="643.0" x2="767.0" y1="247.0" y2="246.0"
                 stroke-width="2.0" stroke="#ff0033"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id349">
+        <g latexdraw:type="line" id="id17">
             <line x1="704.0" x2="703.0" y1="188.0" y2="305.0"
                 stroke-width="2.0" stroke="#ff0033"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="akinPoints" id="id350" latexdraw:pathType="1"
+        <g latexdraw:type="akinPoints" id="id18" latexdraw:pathType="1"
             latexdraw:interval="5" latexdraw:points="706.0 249.0 706.0 250.0 706.0 252.0 706.0 255.0 705.0 257.0 705.0 258.0 705.0 260.0 705.0 261.0 705.0 264.0 705.0 265.0 705.0 268.0 705.0 270.0 705.0 272.0 705.0 273.0 705.0 275.0 705.0 277.0 705.0 278.0 705.0 279.0 705.0 280.0 705.0 281.0 705.0 282.0 705.0 283.0 705.0 284.0 705.0 285.0 705.0 286.0 705.0 287.0 705.0 288.0 705.0 289.0 705.0 291.0 705.0 292.0 705.0 293.0 705.0 294.0 705.0 295.0 705.0 296.0 705.0 297.0 705.0 298.0 705.0 299.0 705.0 300.0 705.0 301.0 705.0 302.0 705.0 303.0 705.0 304.0 706.0 304.0 706.0 305.0 706.0 306.0 706.0 307.0 706.0 308.0 706.0 309.0 706.0 310.0 706.0 311.0 707.0 311.0 710.0 311.0 716.0 310.0 718.0 309.0 722.0 308.0 723.0 308.0 726.0 307.0 727.0 307.0 728.0 306.0 729.0 306.0 729.0 305.0 730.0 305.0 731.0 305.0 732.0 305.0 732.0 304.0 733.0 303.0 734.0 303.0 734.0 302.0 735.0 302.0 736.0 302.0 736.0 301.0 738.0 301.0 739.0 301.0 740.0 300.0 741.0 299.0 742.0 299.0 743.0 298.0 745.0 298.0 746.0 298.0 748.0 297.0 748.0 296.0 749.0 296.0 750.0 296.0 751.0 296.0 751.0 295.0 752.0 295.0 753.0 294.0 754.0 294.0 754.0 293.0 755.0 293.0 755.0 292.0 756.0 291.0 757.0 290.0 758.0 288.0 759.0 288.0 759.0 287.0 759.0 286.0 760.0 286.0 760.0 285.0 761.0 284.0 761.0 283.0 762.0 282.0 762.0 281.0 763.0 280.0 764.0 278.0 764.0 277.0 765.0 276.0 765.0 275.0 766.0 275.0 766.0 274.0 767.0 273.0 767.0 272.0 767.0 271.0 768.0 270.0 768.0 269.0 769.0 267.0 770.0 267.0 770.0 265.0 771.0 264.0 771.0 263.0 772.0 261.0 772.0 260.0 773.0 260.0 773.0 259.0 773.0 258.0 773.0 257.0 773.0 256.0 774.0 255.0 774.0 254.0 774.0 253.0 774.0 252.0 774.0 251.0 774.0 250.0 774.0 249.0 774.0 248.0 774.0 247.0 774.0 246.0 774.0 247.0 773.0 247.0 773.0 248.0 773.0 249.0 772.0 249.0 ">
             <path
                 d="M 706.0 249.0 L 705.5 253.5 C 705.25 255.75 705.0 260.5 705.0 263.0 C 705.0 265.5 705.0 270.25 705.0 272.5 C 705.0 274.75 705.0 278.25 705.0 279.5 C 705.0 280.75 705.0 283.25 705.0 284.5 C 705.0 285.75 705.0 288.5 705.0 290.0 C 705.0 291.5 705.0 294.25 705.0 295.5 C 705.0 296.75 705.0 299.25 705.0 300.5 C 705.0 301.75 705.25 304.0 705.5 305.0 C 705.75 306.0 706.25 308.0 706.5 309.0 C 706.75 310.0 711.0 310.25 715.0 309.5 C 719.0 308.75 724.5 307.25 726.0 306.5 C 727.5 305.75 730.0 304.5 731.0 304.0 C 732.0 303.5 733.75 302.5 734.5 302.0 C 735.25 301.5 737.5 300.5 739.0 300.0 C 740.5 299.5 743.5 298.25 745.0 297.5 C 746.5 296.75 749.0 295.75 750.0 295.5 C 751.0 295.25 752.75 294.25 753.5 293.5 C 754.25 292.75 756.0 290.75 757.0 289.5 C 758.0 288.25 759.5 286.0 760.0 285.0 C 760.5 284.0 761.75 281.5 762.5 280.0 C 763.25 278.5 764.75 276.0 765.5 275.0 C 766.25 274.0 767.5 271.5 768.0 270.0 C 768.5 268.5 769.75 265.5 770.5 264.0 C 771.25 262.5 772.25 260.0 772.5 259.0 C 772.75 258.0 773.25 255.75 773.5 254.5 C 773.75 253.25 774.0 250.75 774.0 249.5 C 774.0 248.25 773.75 247.5 773.5 248.0 C 773.25 248.5 772.75 249.0 772.0 249.0 "
                 stroke-width="2.0" stroke="#ff9900"
-                fill="url(#pattern350)" stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+                fill="url(#pattern18)" stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="text" id="id351"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="351.0">
+        <g latexdraw:type="text" id="id19" font-family="Times New Roman"
+            fill="black" font-size="18" latexdraw:x="351.0">
             <text x="351.0" y="349.0"><![CDATA[(a)]]></text>
         </g>
-        <g latexdraw:type="text" id="id354"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="524.0">
+        <g latexdraw:type="text" id="id21" font-family="Times New Roman"
+            fill="black" font-size="18" latexdraw:x="524.0">
             <text x="524.0" y="350.0"><![CDATA[(b)]]></text>
         </g>
-        <g latexdraw:type="text" id="id357"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="715.0">
+        <g latexdraw:type="text" id="id23" font-family="Times New Roman"
+            fill="black" font-size="18" latexdraw:x="715.0">
             <text x="715.0" y="350.0"><![CDATA[(c)]]></text>
         </g>
-        <g latexdraw:type="rectangle" id="id360" transform="rotate(18.450065203562165) translate(52.68623805322693 -248.60342393923446)">
-            <rect x="661.0" y="276.0" width="156.0" height="21.0"
-                latexdraw:borderPos="outer" stroke-width="2.0"
-                stroke="#00cccc" fill="none"/>
+        <g latexdraw:type="rectangle" id="id25" transform="rotate(18.450065203562165) translate(52.68623805322693 -248.6034239392345)">
+            <rect x="661.0000000000001" y="276.0" width="156.0"
+                height="21.0" latexdraw:borderPos="outer"
+                stroke-width="2.0" stroke="#00cccc" fill="none"/>
         </g>
-        <g latexdraw:type="dot" id="id361" latexdraw:size="6.0"
+        <g latexdraw:type="dot" id="id26" latexdraw:size="6.0"
             latexdraw:dotShape="dot" latexdraw:position="740.0 286.0">
             <circle r="3.0" fill="black" cx="740.0" cy="286.0"/>
         </g>
@@ -126,7 +121,7 @@
                 <latexdraw:x>0</latexdraw:x>
                 <latexdraw:y>0</latexdraw:y>
             </latexdraw:position>
-            <latexdraw:dividerPosition>0.772256728778468</latexdraw:dividerPosition>
+            <latexdraw:dividerPosition>0.7665631469979296</latexdraw:dividerPosition>
             <latexdraw:displayCodePanel>true</latexdraw:displayCodePanel>
             <latexdraw:displayXScale>true</latexdraw:displayXScale>
             <latexdraw:displayYScale>true</latexdraw:displayYScale>

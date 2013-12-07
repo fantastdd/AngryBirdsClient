@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  6 DEC 2013 08:01
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  7 DEC 2013 13:00
 entering extended mode
 **ObjectTracking.tex
 
@@ -145,157 +145,196 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 \makeMPintoPDFobject=\count102
 \everyMPtoPDFconversion=\toks19
 )
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 19.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 20.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 47.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 47.
-
-Underfull \hbox (badness 1596) in paragraph at lines 47--48
-[]\OT1/ptm/m/n/10 We use GSR( ) to model the con-tact be-tween solid
- []
-
-<./figure/EGSR-relations.png, id=1, 997.7275pt x 352.31625pt>
-File: ./figure/EGSR-relations.png Graphic file (type png)
-
-<use ./figure/EGSR-relations.png>
-Package pdftex.def Info: ./figure/EGSR-relations.png used on input line 55.
-(pdftex.def)             Requested size: 249.43126pt x 88.07884pt.
-
-Overfull \hbox (10.03688pt too wide) in paragraph at lines 55--55
- [][] 
- []
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Underfull \vbox (badness 4291) has occurred while \output is active []
-
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 31.
  [1
 
 
 {C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-<./figure/quadrants.png, id=12, 564.1075pt x 369.38pt>
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 58.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 58.
+
+Underfull \hbox (badness 1052) in paragraph at lines 58--59
+[]\OT1/ptm/m/n/10 We use GSR( ) to model the con-tacts be-tween solid
+ []
+
+<./figure/EGSR-relations.png, id=7, 997.7275pt x 352.31625pt>
+File: ./figure/EGSR-relations.png Graphic file (type png)
+
+<use ./figure/EGSR-relations.png>
+Package pdftex.def Info: ./figure/EGSR-relations.png used on input line 65.
+(pdftex.def)             Requested size: 249.43126pt x 88.07884pt.
+
+Overfull \hbox (10.03688pt too wide) in paragraph at lines 65--65
+ [][] 
+ []
+
+<./figure/quadrants.png, id=8, 565.11125pt x 369.38pt>
 File: ./figure/quadrants.png Graphic file (type png)
 
 <use ./figure/quadrants.png>
-Package pdftex.def Info: ./figure/quadrants.png used on input line 66.
-(pdftex.def)             Requested size: 169.23355pt x 110.81485pt.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 77.
+Package pdftex.def Info: ./figure/quadrants.png used on input line 79.
+(pdftex.def)             Requested size: 169.53468pt x 110.81485pt.
+ [2 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/EGSR
+-relations.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/Obj
+ectTracking/figure/quadrants.png (PNG copy)>]
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
-File: omsptm.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 77.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 79.
+LaTeX Warning: Citation `Ge2013' on page 3 undefined on input line 88.
 
+<./figure/BirdImpact.png, id=18, 705.63625pt x 200.75pt>
+File: ./figure/BirdImpact.png Graphic file (type png)
 
-LaTeX Warning: Citation `Ge2013' on page 2 undefined on input line 79.
+<use ./figure/BirdImpact.png>
+Package pdftex.def Info: ./figure/BirdImpact.png used on input line 91.
+(pdftex.def)             Requested size: 246.97638pt x 70.26353pt.
 
+Overfull \hbox (7.582pt too wide) in paragraph at lines 91--91
+ [][] 
+ []
 
-LaTeX Warning: Reference `QudrantsEstimation' on page 2 undefined on input line
- 80.
-
-<./figure/QudrantsEstimation.png, id=13, 530.98375pt x 183.68625pt>
+<./figure/QudrantsEstimation.png, id=19, 530.98375pt x 183.68625pt>
 File: ./figure/QudrantsEstimation.png Graphic file (type png)
 
 <use ./figure/QudrantsEstimation.png>
-Package pdftex.def Info: ./figure/QudrantsEstimation.png used on input line 83.
+Package pdftex.def Info: ./figure/QudrantsEstimation.png used on input line 96.
 
 (pdftex.def)             Requested size: 212.38972pt x 73.47318pt.
 
-<./figure/SCOScenario_2.png, id=14, 621.32124pt x 228.855pt>
-File: ./figure/SCOScenario_2.png Graphic file (type png)
-
-<use ./figure/SCOScenario_2.png>
-Package pdftex.def Info: ./figure/SCOScenario_2.png used on input line 94.
-(pdftex.def)             Requested size: 186.39781pt x 68.65701pt.
-
-
-LaTeX Warning: Reference `SCOExample_2' on page 2 undefined on input line 96.
-
-
-LaTeX Warning: Reference `' on page 2 undefined on input line 96.
-
-[2 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/EGSR-
-relations.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/Obje
-ctTracking/figure/quadrants.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/Ang
-ryBirdsClient/ObjectTracking/figure/QudrantsEstimation.png (PNG copy)> <F:/Angr
-yBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/SCOScenario_2.pn
-g (PNG copy)>]
-
-LaTeX Warning: Reference `SCOExample' on page 3 undefined on input line 103.
+Underfull \hbox (badness 1902) in paragraph at lines 119--120
+[]\OT1/ptm/m/n/10 In the slope ex-am-ple, a match $\OMS/cmsy/m/n/10 f\OML/cmm/m
+/it/10 o[] \OMS/cmsy/m/n/10  \OML/cmm/m/it/10 o[]; o[] \OMS/cmsy/m/n/10 
+ []
 
 <./figure/SCOScenario.png, id=20, 284.56313pt x 140.02313pt>
 File: ./figure/SCOScenario.png Graphic file (type png)
 
 <use ./figure/SCOScenario.png>
-Package pdftex.def Info: ./figure/SCOScenario.png used on input line 105.
+Package pdftex.def Info: ./figure/SCOScenario.png used on input line 122.
 (pdftex.def)             Requested size: 199.19283pt x 98.01552pt.
 
-Underfull \hbox (badness 3250) in paragraph at lines 109--110
-[]\OT1/ptm/m/n/10 Formally, let $\OML/cmm/m/it/10 R$ \OT1/ptm/m/n/10 be a set o
-f EGSR re-la-tions and
+<./figure/SCOScenario_2.png, id=21, 790.955pt x 264.99pt>
+File: ./figure/SCOScenario_2.png Graphic file (type png)
+
+<use ./figure/SCOScenario_2.png>
+Package pdftex.def Info: ./figure/SCOScenario_2.png used on input line 127.
+(pdftex.def)             Requested size: 237.28833pt x 79.4976pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Underfull \vbox (badness 3977) has occurred while \output is active []
+
+ [3 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/Bird
+Impact.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectT
+racking/figure/QudrantsEstimation.png (PNG copy)> <F:/AngryBirds/AngryBirdsServ
+er/AngryBirdsClient/ObjectTracking/figure/SCOScenario.png>]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 146.
+
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 146.
+
+<./figure/Templates.png, id=25, 846.91406pt x 464.4853pt>
+File: ./figure/Templates.png Graphic file (type png)
+
+<use ./figure/Templates.png>
+Package pdftex.def Info: ./figure/Templates.png used on input line 152.
+(pdftex.def)             Requested size: 237.13432pt x 130.055pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/Fragmentation.png, id=26, 210.7875pt x 268.00125pt>
+File: ./figure/Fragmentation.png Graphic file (type png)
+
+<use ./figure/Fragmentation.png>
+Package pdftex.def Info: ./figure/Fragmentation.png used on input line 157.
+(pdftex.def)             Requested size: 147.55025pt x 187.59958pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 163.
+[4 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/SCOSc
+enario_2.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/Objec
+tTracking/figure/Templates.png> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClien
+t/ObjectTracking/figure/Fragmentation.png>]
+<./figure/OMBRs.png, id=30, 701.62125pt x 220.825pt>
+File: ./figure/OMBRs.png Graphic file (type png)
+ <use ./figure/OMBRs.png>
+Package pdftex.def Info: ./figure/OMBRs.png used on input line 181.
+(pdftex.def)             Requested size: 210.48799pt x 66.248pt.
+
+Underfull \hbox (badness 1742) in paragraph at lines 189--190
+\OT1/ptm/m/n/10 num-ber of mis-matches, and the per-cent-age of cor-rect
+ []
+
+<./figure/TrackingBackup.png, id=31, 763.35187pt x 252.945pt>
+File: ./figure/TrackingBackup.png Graphic file (type png)
+
+<use ./figure/TrackingBackup.png>
+Package pdftex.def Info: ./figure/TrackingBackup.png used on input line 206.
+(pdftex.def)             Requested size: 244.27759pt x 80.94405pt.
+
+Overfull \hbox (4.88321pt too wide) in paragraph at lines 206--206
+ [][] 
  []
 
 
-LaTeX Warning: Reference `trackingBySpatialReasoning' on page 3 undefined on in
-put line 119.
+LaTeX Warning: Citation `AngryBirdsLevels' on page 5 undefined on input line 21
+0.
 
 
-LaTeX Warning: Reference `' on page 3 undefined on input line 126.
-
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 130.
-[3 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/SCOSc
-enario.png>]
-
-LaTeX Warning: Reference `' on page 4 undefined on input line 165.
+Overfull \hbox (4.20386pt too wide) in paragraph at lines 247--258
+ [][] 
+ []
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!htbp') on input line 191.
+               Default added (so using `!htbp') on input line 264.
 
 
-Underfull \hbox (badness 6380) in paragraph at lines 208--209
+Underfull \hbox (badness 6380) in paragraph at lines 281--282
 [] \OT1/ptm/m/n/10 match($\OML/cmm/m/it/10 iniobj$\OT1/ptm/m/n/10 , $\OML/cmm/m
 /it/10 obj$\OT1/ptm/m/n/10 ), add $\OML/cmm/m/it/10 iniobj[]$ \OT1/ptm/m/n/10 t
 o
  []
 
 
-LaTeX Warning: Reference `' on page 4 undefined on input line 235.
+LaTeX Warning: Reference `' on page 5 undefined on input line 308.
 
 
-LaTeX Warning: Reference `' on page 4 undefined on input line 247.
+LaTeX Warning: Reference `' on page 5 undefined on input line 320.
 
 
-LaTeX Warning: Float too large for page by 72.2042pt on input line 251.
+LaTeX Warning: Float too large for page by 72.2042pt on input line 324.
 
-[4] [5
-
-]
+[5 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/OMBRs
+.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTrackin
+g/figure/TrackingBackup.png>] [6]
 (F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\ObjectTracking.
 aux)
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 1894 strings out of 494045
- 26646 string characters out of 3148390
- 90577 words of memory out of 3000000
- 5188 multiletter control sequences out of 15000+200000
+ 1928 strings out of 494045
+ 27377 string characters out of 3148390
+ 96706 words of memory out of 3000000
+ 5217 multiletter control sequences out of 15000+200000
  14426 words of font info for 28 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,7n,23p,909b,275s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,9n,19p,967b,276s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program File
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX
  2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/font
@@ -304,9 +343,9 @@ ublic/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
 onts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
 cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Pro
 gram Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb>
-Output written on ObjectTracking.pdf (5 pages, 212536 bytes).
+Output written on ObjectTracking.pdf (6 pages, 753986 bytes).
 PDF statistics:
- 56 PDF objects out of 1000 (max. 8388607)
+ 64 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 
