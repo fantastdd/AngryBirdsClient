@@ -1,7 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  10 DEC 2013 00:17
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  10 DEC 2013 00:21
 entering extended mode
 **KR14_Tracking.tex
-(C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\KR14_Tracking.tex
+
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\KR14_Gary_Joche
+n\Submit\KR14_Tracking.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -30,7 +32,8 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\aaai.sty
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\KR14_Gary_Joche
+n\Submit\aaai.sty
 Conference Style for AAAI for LaTeX 2e -- version of 2 February 2013
 \titlebox=\skip43
 ) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\times.sty"
@@ -111,7 +114,8 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\KR14_Tracking.aux)
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\KR14_Gary_Joche
+n\Submit\KR14_Tracking.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
 LaTeX Font Info:    ... okay on input line 25.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
@@ -193,7 +197,8 @@ m/m/it/10 o[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 RIGHT\OT1/cmr/m/n/10 )\OML/cmm/m
 /it/10 o[]$\OT1/ptm/m/n/10 , and
  []
 
-[2 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/GSR.png (PNG copy)>]
+[2 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/KR14_Gary_Jo
+chen/Submit/figure/GSR.png (PNG copy)>]
 <./figure/EGSR-relations.png, id=17, 941.5175pt x 345.29pt>
 File: ./figure/EGSR-relations.png Graphic file (type png)
 
@@ -213,11 +218,13 @@ File: ./figure/quadrants.png Graphic file (type png)
 <use ./figure/quadrants.png>
 Package pdftex.def Info: ./figure/quadrants.png used on input line 113.
 (pdftex.def)             Requested size: 169.53468pt x 110.81485pt.
- [3 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/CardinalTiles.png (PN
-G copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/EGSR-relations.p
-ng (PNG copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/QCN.png (P
-NG copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/quadrants.png (
-PNG copy)>]
+ [3 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/KR14_Gary_J
+ochen/Submit/figure/CardinalTiles.png (PNG copy)> <F:/AngryBirds/AngryBirdsServ
+er/AngryBirdsClient/ObjectTracking/KR14_Gary_Jochen/Submit/figure/EGSR-relation
+s.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracki
+ng/KR14_Gary_Jochen/Submit/figure/QCN.png (PNG copy)> <F:/AngryBirds/AngryBirds
+Server/AngryBirdsClient/ObjectTracking/KR14_Gary_Jochen/Submit/figure/quadrants
+.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 134--135
 []\OT1/ptm/m/n/10 Right-leaning: $\OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 o[]  \OT1/
 cmr/m/n/10 :  \OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 o[] o[]\OT1/cmr/m/n/10 (\OML/c
@@ -258,10 +265,11 @@ File: ./figure/ScenarioByRules.png Graphic file (type png)
 <use ./figure/ScenarioByRules.png>
 Package pdftex.def Info: ./figure/ScenarioByRules.png used on input line 155.
 (pdftex.def)             Requested size: 171.09174pt x 69.91223pt.
- [4 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/QudrantsEstimation.pn
-g (PNG copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/BirdImpact.
-png (PNG copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/ScenarioB
-yRules.png (PNG copy)>]
+ [4 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/KR14_Gary_J
+ochen/Submit/figure/QudrantsEstimation.png (PNG copy)> <F:/AngryBirds/AngryBird
+sServer/AngryBirdsClient/ObjectTracking/KR14_Gary_Jochen/Submit/figure/BirdImpa
+ct.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTrack
+ing/KR14_Gary_Jochen/Submit/figure/ScenarioByRules.png (PNG copy)>]
 Underfull \hbox (badness 1092) in paragraph at lines 176--177
 []\OT1/ptm/m/n/10 In the slope ex-am-ple, the match $\OMS/cmsy/m/n/10 f\OML/cmm
 /m/it/10 o[] \OMS/cmsy/m/n/10  \OML/cmm/m/it/10 o[]; o[] \OMS/cmsy/m/n/10 $
@@ -294,9 +302,10 @@ File: ./figure/Templates.png Graphic file (type png)
 <use ./figure/Templates.png>
 Package pdftex.def Info: ./figure/Templates.png used on input line 202.
 (pdftex.def)             Requested size: 237.13432pt x 130.055pt.
- [5 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/SCOScenario.png> <C:/
-Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/SpatiallyCorrelatdScenario.pn
-g (PNG copy)>]
+ [5 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/KR14_Gary_J
+ochen/Submit/figure/SCOScenario.png> <F:/AngryBirds/AngryBirdsServer/AngryBirds
+Client/ObjectTracking/KR14_Gary_Jochen/Submit/figure/SpatiallyCorrelatdScenario
+.png (PNG copy)>]
 <./figure/Fragmentation.png, id=40, 210.7875pt x 268.00125pt>
 File: ./figure/Fragmentation.png Graphic file (type png)
 
@@ -308,8 +317,9 @@ Underfull \hbox (badness 1117) in paragraph at lines 218--219
 []\OT1/ptm/m/n/10 There are sev-eral ap-proaches for tack-ling this prob-
  []
 
-[6 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/Templates.png> <C:/Use
-rs/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/Fragmentation.png>]
+[6 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/KR14_Gary_Jo
+chen/Submit/figure/Templates.png> <F:/AngryBirds/AngryBirdsServer/AngryBirdsCli
+ent/ObjectTracking/KR14_Gary_Jochen/Submit/figure/Fragmentation.png>]
 <./figure/OMBRs.png, id=44, 701.62125pt x 228.855pt>
 File: ./figure/OMBRs.png Graphic file (type png)
  <use ./figure/OMBRs.png>
@@ -330,8 +340,9 @@ Overfull \hbox (4.88321pt too wide) in paragraph at lines 254--254
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[7 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/OMBRs.png (PNG copy)> 
-<C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/TrackingBackup.png>]
+[7 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/KR14_Gary_Jo
+chen/Submit/figure/OMBRs.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryB
+irdsClient/ObjectTracking/KR14_Gary_Jochen/Submit/figure/TrackingBackup.png>]
 Overfull \hbox (4.20386pt too wide) in paragraph at lines 295--306
  [][] 
  []
@@ -349,7 +360,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 337--338
 
 LaTeX Warning: Float too large for page by 17.2042pt on input line 376.
 
-[8] (C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\KR14_Tracking.bbl
+[8]
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\KR14_Gary_Joche
+n\Submit\KR14_Tracking.bbl
 Underfull \hbox (badness 5741) in paragraph at lines 12--16
 []\OT1/ptm/m/n/10 AIBirds.  2013.  An-gry Birds: AI Com-pe-ti-tion.
  []
@@ -372,27 +385,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 122--126
 
 [9]) [10
 
-] (C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\KR14_Tracking.aux) ) 
+]
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\KR14_Gary_Joche
+n\Submit\KR14_Tracking.aux) ) 
 Here is how much of TeX's memory you used:
  2002 strings out of 494045
- 28592 string characters out of 3148390
+ 29043 string characters out of 3148390
  90782 words of memory out of 3000000
  5279 multiletter control sequences out of 15000+200000
  19576 words of font info for 35 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  27i,10n,19p,1682b,276s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Progra
-m Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
-ic/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr
-5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files/MiKTeX 2.9/f
-onts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/ti
-mes/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontn
+ame/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.p
+fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Fil
+es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts
+/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
+lic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
+onts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+msy9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Prog
+ram Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 
+2.9/fonts/type1/urw/times/utmri8a.pfb>
 Output written on KR14_Tracking.pdf (10 pages, 874520 bytes).
 PDF statistics:
  98 PDF objects out of 1000 (max. 8388607)
