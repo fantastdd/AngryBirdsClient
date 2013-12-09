@@ -258,27 +258,27 @@ We collect a sample by capturing a sequence of screenshots before and after a sh
 To automate this process, we run an angry-birds agent that always aims at an random pig on the first 21 poached-eggs Levels \cite{abGame}. The agent starts to capture screenshots once a shot is made, and stops after 10 seconds. At each level, the agent records the screenshots of at most four shots.
 We collected 80 samples, and discarded the trivial samples, e.g. when a shot does not affect any object. Finally we have 62 samples. To evaluate the accuracy of the ground truth, we run our method on 10 samples randomly picked from the 62. We determine the accuracy by manually labelling the initial objects and their correspondence in the end screenshot, and compare with the matching. This accuracy is a lower-bound accuracy of matching between a pair of screenshots with the specified time gap, because any incorrect matches made in the intermediate stage will yield mismatches between the first and end screenshots.  
 
-The method can match most of the objects with less than 4 mismatches per sample. The average percentage of the number of correctly matched objects out of the total number of objects is $0.95$. The method achieves real-time performance with average 3 ms per match. To illustrate the significant improvements achieved by the reasoning techniques mentioned above, we compare our method with an approach ($BASIC$) that matches objects using their visual appearance and minimizes the centroid shift between initial and subsequent objects. $BASIC$ is a modified version of our method with the movement approximation, and common movement handling disabled. The results are shown in Table \ref{empiResults}.
+The method can match most of the objects with less than 4 mismatches per sample.The method achieves real-time performance with average 3 ms per match. To illustrate the significant improvements achieved by the reasoning techniques mentioned above, we compare our method with an approach ($BASIC$) that matches objects using their visual appearance and minimizes the centroid shift between initial and subsequent objects. $BASIC$ is a modified version of our method with the movement approximation, and common movement handling disabled. The results are shown in Table \ref{empiResults} with each row represents a sample. For each sample, we also show the percentage of the number of correctly matched objects out of the total number of objects ($\emph{TPercent}$).
 
 \begin{table}[h!]
 \caption{Results on the 10 samples(\,$QSR$: the proposed method, $BASIC$: the modified method )}\label{empiResults}
 \centering
-\begin{tabular}{c|c|c|c|c}
+\begin{tabular}{c|c|c|c|c|c}
 \hline
-{} & \multicolumn{2}{c}{Accuracy} & \multicolumn{2}{c}{Mismatch}\\
+{TPercent} & \multicolumn{2}{c}{Accuracy} & \multicolumn{2}{c}{Mismatch}\\
 \hline
-Sample & QSR & BASIC & QSR & BASIC\\
+QSR  & QSR & BASIC & QSR & BASIC\\
 \hline
-1& 0.91 & 0.5 & 2 & 12\\
-2&1.00 & 1.00 & 0 & 0\\
-3&0.80 & 0.40 & 2 & 6\\
-4&0.85 & 0.54 & 2 & 6\\
-5&0.76 & 0.41 & 4 & 10\\
-6&1.00 & 0.00 & 0 & 2\\
-7&1.00 & 0.56 & 0 & 4\\
-8&0.78 & 0.33 & 2 & 6 \\
-9&0.71 & 0.42 & 2 & 4\\
-10&1 & 0.5 & 0 & 2\\
+0.95& 0.91 & 0.5 & 2 & 12\\
+1.00&1.00 & 1.00 & 0 & 0\\
+0.94&0.80 & 0.40 & 2 & 6\\
+0.89&0.85 & 0.54 & 2 & 6\\
+0.91&0.76 & 0.41 & 4 & 10\\
+1.00&1.00 & 0.00 & 0 & 2\\
+1.00&1.00 & 0.56 & 0 & 4\\
+0.93&0.78 & 0.33 & 2 & 6 \\
+0.92&0.71 & 0.42 & 2 & 4\\
+0.94&1.00 & 0.5 & 0 & 2\\
 \hline
 \end{tabular}
 \end{table}
@@ -290,17 +290,17 @@ We evaluate our method on the 62 samples (12400 screenshots) with varying time g
 For a particular time gap, say 200 ms, the tracking method will start from the first screenshot, go through every $200/50 = 4$ (50 ms is the time gap we use to collect the samples) screenshots of the original sequence, until the last screenshot. E.g. Given a sample with a sequence of screenshots $s_1, s_2, ..., s_{14}$, the method using 200 ms as the time gap will track through $s_1, s_6, s_{10}, s_{14}$ sequentially. The accuracy and mismatches are then obtained by comparing against the saved ground truth. Thus, the mismatches can be viewed as \emph{additional mismatches} to the ground truth. As expected, the accuracy drops down when applying larger time gaps (see Table \ref{empiResults_2}). 
 
 \begin{table}[h!]
-\caption{Results on the 62 samples with different time gaps. }\label{empiResults_2}
+\caption{Results on the 62 samples with different time gaps. TPercen, Accuracy, Mismatch are average of all the samples }\label{empiResults_2}
 \centering
-\begin{tabular}{c|c|c}
+\begin{tabular}{c|c|c|c}
 \hline
-Time gap (ms) & Average Accuracy & Average Mismatch\\
+Time gap (ms) & TPercent & Accuracy & Mismatch\\
 \hline
-100 & 0.85 & 2.22\\
-200 & 0.80 & 3.22\\
-300 & 0.77 & 3.4\\
-500 & 0.70 & 3.98\\
-1000 & 0.68 & 4.22\\
+100 & 0.91 & 0.85 & 2.22\\
+200 & 0.89 & 0.80 & 3.22\\
+300 & 0.88 & 0.77 & 3.4\\
+500 & 0.85 & 0.70 & 3.98\\
+1000 & 0.82 & 0.68 & 4.22\\
 \hline
 \end{tabular}
 \end{table}
