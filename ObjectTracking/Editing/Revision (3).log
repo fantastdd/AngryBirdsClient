@@ -1,7 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  7 DEC 2013 21:22
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  9 DEC 2013 04:58
 entering extended mode
-**Revision_2.tex
-(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\Revision_2.tex
+**Revision*(3).tex
+
+("F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\Revision (3).t
+ex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -30,10 +32,7 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\aaai.sty
-Conference Style for AAAI for LaTeX 2e -- version of 2 February 2013
-\titlebox=\skip43
-) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\times.sty"
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\times.sty"
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\helvet.sty"
@@ -71,13 +70,13 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \c@ALG@line=\count89
 \c@ALG@rem=\count90
 \c@ALG@nested=\count91
-\ALG@tlm=\skip44
-\ALG@thistlm=\skip45
+\ALG@tlm=\skip43
+\ALG@thistlm=\skip44
 \c@ALG@Lnr=\count92
 \c@ALG@blocknr=\count93
 \c@ALG@storecount=\count94
 \c@ALG@tmpcounter=\count95
-\ALG@tmplength=\skip46
+\ALG@tmplength=\skip45
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
 ) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\courier.sty"
@@ -111,7 +110,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\Revision_2.aux)
+No file Revision*(3).aux.
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
@@ -142,65 +141,82 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 \makeMPintoPDFobject=\count102
 \everyMPtoPDFconversion=\toks19
 )
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 16.
- <./figure/Templates.png, id=1, 846.91406pt x 464.4853pt>
-File: ./figure/Templates.png Graphic file (type png)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 15.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 20.
 
-<use ./figure/Templates.png>
-Package pdftex.def Info: ./figure/Templates.png used on input line 24.
-(pdftex.def)             Requested size: 237.13432pt x 130.055pt.
 
-<./figure/Fragmentation.png, id=2, 210.7875pt x 268.00125pt>
-File: ./figure/Fragmentation.png Graphic file (type png)
+LaTeX Warning: Reference `SCOExample_2' on page 1 undefined on input line 20.
 
-<use ./figure/Fragmentation.png>
-Package pdftex.def Info: ./figure/Fragmentation.png used on input line 30.
-(pdftex.def)             Requested size: 147.55025pt x 187.59958pt.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 34.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 46.
+(Font)              <7> on input line 20.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 46.
+(Font)              <5> on input line 20.
 
-<./figure/OMBRs.png, id=3, 701.62125pt x 220.825pt>
-File: ./figure/OMBRs.png Graphic file (type png)
- <use ./figure/OMBRs.png>
-Package pdftex.def Info: ./figure/OMBRs.png used on input line 52.
-(pdftex.def)             Requested size: 210.48799pt x 66.248pt.
+LaTeX Warning: Reference `SCOExample_2' on page 1 undefined on input line 20.
+
+
+LaTeX Warning: Reference `SCOExample' on page 1 undefined on input line 26.
+
+
+LaTeX Warning: Reference `SCOExample_2' on page 1 undefined on input line 28.
+
+<./figure/SCOScenario.png, id=1, 284.56313pt x 140.02313pt>
+File: ./figure/SCOScenario.png Graphic file (type png)
+
+<use ./figure/SCOScenario.png>
+Package pdftex.def Info: ./figure/SCOScenario.png used on input line 35.
+(pdftex.def)             Requested size: 199.19283pt x 98.01552pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/SCOScenario_2.png, id=2, 790.955pt x 264.99pt>
+File: ./figure/SCOScenario_2.png Graphic file (type png)
+
+<use ./figure/SCOScenario_2.png>
+Package pdftex.def Info: ./figure/SCOScenario_2.png used on input line 40.
+(pdftex.def)             Requested size: 237.28833pt x 79.4976pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [1
 
+{C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2 <F:/Angry
+Birds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/SCOScenario.png> 
+<F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/SCOScena
+rio_2.png (PNG copy)>]
+("F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\Revision (3).a
+ux")
 
-{C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <F:/AngryBird
-s/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/Templates.png> <F:/An
-gryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/Fragmentation.
-png>] [2
+LaTeX Warning: There were undefined references.
 
- <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/OMBRs.p
-ng (PNG copy)>]
-(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\Revision_2.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 1813 strings out of 494045
- 25187 string characters out of 3148390
- 80511 words of memory out of 3000000
- 5116 multiletter control sequences out of 15000+200000
- 9491 words of font info for 22 fonts, out of 3000000 for 9000
+ 1784 strings out of 494045
+ 24626 string characters out of 3148390
+ 78935 words of memory out of 3000000
+ 5091 multiletter control sequences out of 15000+200000
+ 10668 words of font info for 23 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,6n,19p,754b,208s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,6n,19p,870b,222s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program File
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/
-utmr8a.pfb>
-Output written on Revision_2.pdf (2 pages, 273971 bytes).
+ 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
+onts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on "Revision (3).pdf" (2 pages, 140147 bytes).
 PDF statistics:
- 29 PDF objects out of 1000 (max. 8388607)
+ 48 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

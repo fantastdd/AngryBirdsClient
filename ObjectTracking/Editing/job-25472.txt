@@ -1,0 +1,9 @@
+﻿We collect a sample by capturing a sequence of screenshots before and after a shot using the smallest time gap (50 ms). The average time gap between the beginning and the end screenshot is 10 seconds. i.e. A sample contains around 200 screenshots.  
+We apply our method on the whole sequence so that the method will keep tracking the objects through all of the screenshots, from the first until the last  The match between the initial objects in the first screenshot and the subsequent objects in the last screenshot will be saved as ground truth for later evaluation. 
+To automate this process, we run an angry birds agent that always aims at an random pig on the first 21 Poached Eggs Levels. The agent starts to capture screenshots once a shot is made, and stops after 10 seconds. In each level, the agent records the screenshots of at most four shots.
+In the end, we have around 80 samples. To evaluate the accuracy of the \"ground truth\", we run our method on 10 samples randomly picked from the 80. We get the accuracy by manually labeling the initial objects and their correspondence in the end screenshot, and compare with the matching. 
+
+
+It turns out that the method can match most of the objects with less than 5 mismatches per sample. The method achieves real-time performance with average 35 ms per match. To show the suitability of our reasoning method
+
+To illustrate significant improvements over existing methods, we compare our method with an approach  ($BASIC$) which matches by visual appearance and minimizing the centroid shift between initial and subsequent objects. We show the results in Table \ref{empiResults}.

@@ -20,7 +20,9 @@ import javax.imageio.ImageIO;
 import ab.objtracking.representation.util.GlobalObjectsToolkit;
 import ab.objtracking.tracker.KnowledgeTrackerBaseLine_8;
 import ab.objtracking.tracker.SMETracker;
+import ab.vision.ABList;
 import ab.vision.ABObject;
+import ab.vision.real.MyVision;
 import ab.vision.real.MyVisionUtils;
 
 public class AutomaticTrackerEvaluator {
@@ -224,10 +226,80 @@ public class AutomaticTrackerEvaluator {
 		System.out.println(" Mismatch : " + error);
 		return error;
 	}
+	public static void getStaticObjs(String dir) throws IOException, ClassNotFoundException
+	{
+		File directory = new File(dir);
+		createMatchReport(dir + "\\" + "StationaryObjs.txt");
+		File samples[] = null;
+		if (directory.isDirectory()) 
+		{
+				samples = directory.listFiles(new FilenameFilter() {
+				@Override
+				public boolean accept(File directory, String fileName) {
+						return fileName.startsWith("L");
+				}
+				});
+		}
+
+		for (File sample : samples)
+		{
+			bw = new BufferedWriter(new OutputStreamWriter( new FileOutputStream(matchReport, true)));
+			ObjectInputStream ois = new ObjectInputStream( new FileInputStream( new File(sample.getAbsolutePath() + "\\" + "groundtruth.obj")));
+			@SuppressWarnings("unchecked")
+			Map<ABObject, ABObject> groundtruth = (Map<ABObject, ABObject>) ois.readObject();
+			String filename = sample.getAbsolutePath();
+			File[] images = null;
+			
+			bw.append(filename.substring(filename.indexOf("L")) + ",");
+			
+			if ((new File(filename)).isDirectory()) 
+			{
+					images = new File(filename).listFiles(new FilenameFilter() {
+					@Override
+					public boolean accept(File directory, String fileName) {
+							return fileName.endsWith(".png");
+					}
+					});
+			
+				// iterate through the images
+				Arrays.sort(images);
+			}
+			MyVision vision = new MyVision(ImageIO.read(images[0]));
+			ABList allInterestObjs = ABList.newList();
+			allInterestObjs.addAll(vision.findObjects());
+			int stationary = 0;
+			for (ABObject abobject : allInterestObjs)
+			{
+				for (ABObject _obj : groundtruth.keySet())
+				{   
+					//ABObject iniObj = groundtruth.get(_object);
+					if(_obj.id == abobject.id)
+					{
+						double distance = Math.sqrt(
+								(_obj.getCenterX() - abobject.getCenterX()) * (_obj.getCenterX() - abobject.getCenterX())
+						  + (_obj.getCenterY() - abobject.getCenterY()) * (_obj.getCenterY() - abobject.getCenterY()));
+						if (distance < 5)
+						{
+							
+							stationary++;
+						}
+					}
+					 
+				}
+			}
+			bw.append(stationary + "\n");
+			//tracker = new KnowledgeTrackerBaseLine_8(200);
+			//tracker = new SMETracker(200);
+			//evaluate(tracker, sample.getAbsolutePath());
+			
+			bw.close();
+		}
+	}
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException 
 	{
 		//createGroundTruth("F:\\Samples");
-		runEvaluation("F:\\Samples");
+		//runEvaluation("F:\\Samples");
+		getStaticObjs("F:\\Samples");
 	}
 
 }

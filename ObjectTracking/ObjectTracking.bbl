@@ -1,0 +1,164 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Adam, Rivlin, and
+  Shimshoni}{2006}]{Occlusion1}
+Adam, A.; Rivlin, E.; and Shimshoni, I.
+\newblock 2006.
+\newblock {Robust Fragments-based Tracking using the Integral Histogram}.
+\newblock In {\em Computer Vision and Pattern Recognition}, volume~1,
+  798--805.
+
+\bibitem[\protect\citeauthoryear{AIBirds}{2013}]{abCompetition}
+AIBirds.
+\newblock 2013.
+\newblock {Angry} {Birds}: {AI} {Competition}.
+\newblock http://www.aibirds.org.
+
+\bibitem[\protect\citeauthoryear{Balbiani, Condotta, and
+  Del~Cerro}{1998}]{balbiani1998model}
+Balbiani, P.; Condotta, J.-F.; and Del~Cerro, L.~F.
+\newblock 1998.
+\newblock A model for reasoning about bidimensional temporal relations.
+\newblock In {\em PRINCIPLES OF KNOWLEDGE REPRESENTATION AND
+  REASONING-INTERNATIONAL CONFERENCE-},  124--130.
+\newblock Citeseer.
+
+\bibitem[\protect\citeauthoryear{Berclaz \bgroup et al\mbox.\egroup
+  }{2011}]{berclaz2011multiple}
+Berclaz, J.; Fleuret, F.; Turetken, E.; and Fua, P.
+\newblock 2011.
+\newblock Multiple object tracking using k-shortest paths optimization.
+\newblock {\em Pattern Analysis and Machine Intelligence, IEEE Transactions on}
+  33(9):1806--1819.
+
+\bibitem[\protect\citeauthoryear{Bose, Wang, and Grimson}{2007}]{Occlusion2}
+Bose, B.; Wang, X.; and Grimson, E.
+\newblock 2007.
+\newblock {Multi-class object tracking algorithm that handles fragmentation and
+  grouping}.
+\newblock In {\em Computer Vision and Pattern Recognition}.
+
+\bibitem[\protect\citeauthoryear{Cohn, Renz, and
+  Sridhar}{2012}]{cohn2012thinking}
+Cohn, A.~G.; Renz, J.; and Sridhar, M.
+\newblock 2012.
+\newblock Thinking inside the box: A comprehensive spatial representation for
+  video analysis.
+\newblock In {\em KR}.
+
+\bibitem[\protect\citeauthoryear{Cutler and Davis}{2000}]{cutler2000robust}
+Cutler, R., and Davis, L.~S.
+\newblock 2000.
+\newblock Robust real-time periodic motion detection, analysis, and
+  applications.
+\newblock {\em Pattern Analysis and Machine Intelligence, IEEE Transactions on}
+  22(8):781--796.
+
+\bibitem[\protect\citeauthoryear{Ge and Renz}{2013}]{Ge2013}
+Ge, X., and Renz, J.
+\newblock 2013.
+\newblock Representation and reasoning about general solid rectangles.
+\newblock In {\em Proceedings of the Twenty-Third International Joint
+  Conference on Artificial Intelligence}, IJCAI'13,  905--911.
+\newblock AAAI Press.
+
+\bibitem[\protect\citeauthoryear{Goyal and
+  Egenhofer}{1997}]{goyal1997direction}
+Goyal, R., and Egenhofer, M.
+\newblock 1997.
+\newblock The direction-relation matrix: A representation of direction
+  relations for extended spatial objects.
+\newblock {\em UCGIS annual assembly and summer retreat, Bar Harbor, ME}
+  65--74.
+
+\bibitem[\protect\citeauthoryear{Han \bgroup et al\mbox.\egroup
+  }{2004}]{han2004algorithm}
+Han, M.; Xu, W.; Tao, H.; and Gong, Y.
+\newblock 2004.
+\newblock An algorithm for multiple object trajectory tracking.
+\newblock In {\em Computer Vision and Pattern Recognition, 2004. CVPR 2004.
+  Proceedings of the 2004 IEEE Computer Society Conference on}, volume~1,
+  I--864.
+\newblock IEEE.
+
+\bibitem[\protect\citeauthoryear{Papageorgiou, Oren, and
+  Poggio}{1998}]{papageorgiou1998general}
+Papageorgiou, C.~P.; Oren, M.; and Poggio, T.
+\newblock 1998.
+\newblock A general framework for object detection.
+\newblock In {\em Computer Vision, 1998. Sixth International Conference on},
+  555--562.
+\newblock IEEE.
+
+\bibitem[\protect\citeauthoryear{Rovio}{2013}]{abGame}
+Rovio.
+\newblock 2013.
+\newblock {Angry} {Birds} {Chrome}.
+\newblock http://chrome.angrybirds.com/.
+
+\bibitem[\protect\citeauthoryear{Sokeh, Gould, and
+  Renz}{2013}]{sokeh2013efficient}
+Sokeh, H.~S.; Gould, S.; and Renz, J.
+\newblock 2013.
+\newblock Efficient extraction and representation of spatial information from
+  video data.
+\newblock {\em Proceedings of IJCAI-13}.
+
+\bibitem[\protect\citeauthoryear{Sridhar, Cohn, and
+  Hogg}{2011}]{sridhar_video_2011}
+Sridhar, M.; Cohn, A.~G.; and Hogg, D.~C.
+\newblock 2011.
+\newblock From video to {RCC8:} exploiting a distance based semantics to
+  stabilise the interpretation of mereotopological relations.
+\newblock In {\em Spatial Information Theory}. Springer.
+\newblock  110–125.
+
+\bibitem[\protect\citeauthoryear{Viola, Jones, and
+  Snow}{2005}]{viola2005detecting}
+Viola, P.; Jones, M.~J.; and Snow, D.
+\newblock 2005.
+\newblock Detecting pedestrians using patterns of motion and appearance.
+\newblock {\em International Journal of Computer Vision} 63(2):153--161.
+
+\bibitem[\protect\citeauthoryear{Wallgr{\"u}n, Wolter, and
+  Richter}{2010}]{wallgrun2010qualitative}
+Wallgr{\"u}n, J.~O.; Wolter, D.; and Richter, K.-F.
+\newblock 2010.
+\newblock Qualitative matching of spatial information.
+\newblock In {\em Proceedings of the 18th SIGSPATIAL International Conference
+  on Advances in Geographic Information Systems},  300--309.
+\newblock ACM.
+
+\bibitem[\protect\citeauthoryear{Yang, Duraiswami, and
+  Davis}{2005}]{yang2005fast}
+Yang, C.; Duraiswami, R.; and Davis, L.
+\newblock 2005.
+\newblock Fast multiple object tracking via a hierarchical particle filter.
+\newblock In {\em Computer Vision, 2005. ICCV 2005. Tenth IEEE International
+  Conference on}, volume~1,  212--219.
+\newblock IEEE.
+
+\bibitem[\protect\citeauthoryear{Yilmaz, Javed, and
+  Shah}{2006}]{yilmaz2006object}
+Yilmaz, A.; Javed, O.; and Shah, M.
+\newblock 2006.
+\newblock Object tracking: A survey.
+\newblock {\em Acm Computing Surveys (CSUR)} 38(4):13.
+
+\bibitem[\protect\citeauthoryear{Yilmaz, Li, and
+  Shah}{2004}]{yilmaz2004contour}
+Yilmaz, A.; Li, X.; and Shah, M.
+\newblock 2004.
+\newblock Contour-based object tracking with occlusion handling in video
+  acquired using mobile cameras.
+\newblock {\em Pattern Analysis and Machine Intelligence, IEEE Transactions on}
+  26(11):1531--1536.
+
+\bibitem[\protect\citeauthoryear{Yu, Medioni, and Cohen}{2007}]{Occlusion3}
+Yu, Q.; Medioni, G.~G.; and Cohen, I.
+\newblock 2007.
+\newblock {Multiple Target Tracking Using Spatio-Temporal Markov Chain Monte
+  Carlo Data Association}.
+\newblock In {\em Computer Vision and Pattern Recognition}.
+
+\end{thebibliography}
