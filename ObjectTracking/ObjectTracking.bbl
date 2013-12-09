@@ -38,6 +38,12 @@ Bose, B.; Wang, X.; and Grimson, E.
   grouping}.
 \newblock In {\em Computer Vision and Pattern Recognition}.
 
+\bibitem[\protect\citeauthoryear{Cohn and Hazarika}{2001}]{cohn2001qualitative}
+Cohn, A., and Hazarika, S.
+\newblock 2001.
+\newblock Qualitative spatial representation and reasoning: An overview.
+\newblock {\em Fundamenta Informaticae} 46(1-2):1--29.
+
 \bibitem[\protect\citeauthoryear{Cohn, Renz, and
   Sridhar}{2012}]{cohn2012thinking}
 Cohn, A.~G.; Renz, J.; and Sridhar, M.
@@ -53,6 +59,12 @@ Cutler, R., and Davis, L.~S.
   applications.
 \newblock {\em Pattern Analysis and Machine Intelligence, IEEE Transactions on}
   22(8):781--796.
+
+\bibitem[\protect\citeauthoryear{Gale and Shapley}{1962}]{gale1962college}
+Gale, D., and Shapley, L.~S.
+\newblock 1962.
+\newblock College admissions and the stability of marriage.
+\newblock {\em The American Mathematical Monthly} 69(1):9--15.
 
 \bibitem[\protect\citeauthoryear{Ge and Renz}{2013}]{Ge2013}
 Ge, X., and Renz, J.
@@ -104,14 +116,11 @@ Sokeh, H.~S.; Gould, S.; and Renz, J.
   video data.
 \newblock {\em Proceedings of IJCAI-13}.
 
-\bibitem[\protect\citeauthoryear{Sridhar, Cohn, and
-  Hogg}{2011}]{sridhar_video_2011}
-Sridhar, M.; Cohn, A.~G.; and Hogg, D.~C.
-\newblock 2011.
-\newblock From video to {RCC8:} exploiting a distance based semantics to
-  stabilise the interpretation of mereotopological relations.
-\newblock In {\em Spatial Information Theory}. Springer.
-\newblock  110–125.
+\bibitem[\protect\citeauthoryear{Sonka \bgroup et al\mbox.\egroup
+  }{1999}]{sonka1999image}
+Sonka, M.; Hlavac, V.; Boyle, R.; et~al.
+\newblock 1999.
+\newblock Image processing, analysis, and machine vision.
 
 \bibitem[\protect\citeauthoryear{Viola, Jones, and
   Snow}{2005}]{viola2005detecting}
@@ -128,6 +137,11 @@ Wallgr{\"u}n, J.~O.; Wolter, D.; and Richter, K.-F.
 \newblock In {\em Proceedings of the 18th SIGSPATIAL International Conference
   on Advances in Geographic Information Systems},  300--309.
 \newblock ACM.
+
+\bibitem[\protect\citeauthoryear{Wang}{2012}]{andrewVision}
+Wang, A.
+\newblock 2012.
+\newblock Angry birds project vision component.
 
 \bibitem[\protect\citeauthoryear{Yang, Duraiswami, and
   Davis}{2005}]{yang2005fast}

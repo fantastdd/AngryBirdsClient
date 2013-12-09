@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  8 DEC 2013 23:55
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  9 DEC 2013 18:29
 entering extended mode
 **ObjectTracking.tex
 
@@ -164,6 +164,11 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 27.
 
+
+LaTeX Warning: Citation ` sridhar_video_2011' on page 1 undefined on input line
+ 42.
+
+
 Underfull \vbox (badness 1400) has occurred while \output is active []
 
  [1{C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
@@ -177,158 +182,170 @@ File: ./figure/GSR.png Graphic file (type png)
 Package pdftex.def Info: ./figure/GSR.png used on input line 75.
 (pdftex.def)             Requested size: 177.91425pt x 55.95892pt.
 
+<./figure/CardinalTiles.png, id=10, 531.9875pt x 266.9975pt>
+File: ./figure/CardinalTiles.png Graphic file (type png)
+
+<use ./figure/CardinalTiles.png>
+Package pdftex.def Info: ./figure/CardinalTiles.png used on input line 82.
+(pdftex.def)             Requested size: 186.19841pt x 93.45052pt.
+
+Underfull \hbox (badness 2903) in paragraph at lines 82--82
+[]\OT1/ptm/m/n/10 Figure 2: (a) The nine car-di-nal tiles (b) An ex-am-
+ []
+
+
+Underfull \hbox (badness 3514) in paragraph at lines 82--82
+\OT1/ptm/m/n/10 ple sce-nario where $\OML/cmm/m/it/10 o[]\OT1/cmr/m/n/10 (\OML/
+cmm/m/it/10 TOP\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[]$\OT1/ptm/m/n/10 , $\OML/cm
+m/m/it/10 o[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 RIGHT\OT1/cmr/m/n/10 )\OML/cmm/m
+/it/10 o[]$\OT1/ptm/m/n/10 , and
+ []
+
 [2 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/GSR.p
-ng (PNG copy)>] <./figure/EGSR-relations.png, id=16, 997.7275pt x 352.31625pt>
+ng (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/
+figure/CardinalTiles.png (PNG copy)>]
+<./figure/EGSR-relations.png, id=17, 997.7275pt x 352.31625pt>
 File: ./figure/EGSR-relations.png Graphic file (type png)
 
 <use ./figure/EGSR-relations.png>
-Package pdftex.def Info: ./figure/EGSR-relations.png used on input line 91.
+Package pdftex.def Info: ./figure/EGSR-relations.png used on input line 88.
 (pdftex.def)             Requested size: 249.43126pt x 88.07884pt.
 
-Overfull \hbox (10.03688pt too wide) in paragraph at lines 91--91
+Overfull \hbox (10.03688pt too wide) in paragraph at lines 88--88
  [][] 
  []
 
-<./figure/QCN.png, id=17, 452.69125pt x 232.87pt>
+<./figure/QCN.png, id=18, 452.69125pt x 232.87pt>
 File: ./figure/QCN.png Graphic file (type png)
  <use ./figure/QCN.png>
-Package pdftex.def Info: ./figure/QCN.png used on input line 96.
+Package pdftex.def Info: ./figure/QCN.png used on input line 100.
 (pdftex.def)             Requested size: 203.70917pt x 104.79051pt.
 
-<./figure/quadrants.png, id=18, 565.11125pt x 369.38pt>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/quadrants.png, id=19, 565.11125pt x 369.38pt>
 File: ./figure/quadrants.png Graphic file (type png)
 
 <use ./figure/quadrants.png>
-Package pdftex.def Info: ./figure/quadrants.png used on input line 111.
+Package pdftex.def Info: ./figure/quadrants.png used on input line 115.
 (pdftex.def)             Requested size: 169.53468pt x 110.81485pt.
  [3 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/EGSR
 -relations.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/Obj
 ectTracking/figure/QCN.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBir
 dsClient/ObjectTracking/figure/quadrants.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 127--128
+Underfull \hbox (badness 10000) in paragraph at lines 132--133
 []$\OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 o[]  \OT1/cmr/m/n/10 :  \OMS/cmsy/m/n/10 
 9\OML/cmm/m/it/10 o[] o[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S[]; \OMS/cmsy/m/n/1
 0 \OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[] \OMS/cmsy/m/n/10 ^ :9\OML/cmm/m/it/10 
 o[] o[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S[]; \OMS/cmsy/m/n/10 \OT1/cmr/m/n/10
- )\OML/cmm/m/it/10 o[] \OMS/cmsy/m/n/10 ^
+ )\OML/cmm/m/it/10 o[] \OMS/cmsy/m/n/10 ^$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--130
+Underfull \hbox (badness 10000) in paragraph at lines 134--135
 []$\OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 o[]  \OT1/cmr/m/n/10 :  \OMS/cmsy/m/n/10 
 9\OML/cmm/m/it/10 o[] o[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S[]; \OMS/cmsy/m/n/1
 0 \OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[] \OMS/cmsy/m/n/10 ^ :9\OML/cmm/m/it/10 
 o[] o[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S[]; \OMS/cmsy/m/n/10 \OT1/cmr/m/n/10
- )\OML/cmm/m/it/10 o[] \OMS/cmsy/m/n/10 ^
+ )\OML/cmm/m/it/10 o[] \OMS/cmsy/m/n/10 ^$
  []
 
-<./figure/BirdImpact.png, id=24, 705.63625pt x 200.75pt>
+<./figure/BirdImpact.png, id=25, 705.63625pt x 199.74625pt>
 File: ./figure/BirdImpact.png Graphic file (type png)
 
 <use ./figure/BirdImpact.png>
-Package pdftex.def Info: ./figure/BirdImpact.png used on input line 135.
-(pdftex.def)             Requested size: 246.97638pt x 70.26353pt.
+Package pdftex.def Info: ./figure/BirdImpact.png used on input line 140.
+(pdftex.def)             Requested size: 246.97638pt x 69.91223pt.
 
-Overfull \hbox (7.582pt too wide) in paragraph at lines 135--135
+Overfull \hbox (7.582pt too wide) in paragraph at lines 140--140
  [][] 
  []
 
-<./figure/QudrantsEstimation.png, id=25, 477.785pt x 186.6975pt>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/QudrantsEstimation.png, id=26, 477.785pt x 186.6975pt>
 File: ./figure/QudrantsEstimation.png Graphic file (type png)
 
 <use ./figure/QudrantsEstimation.png>
-Package pdftex.def Info: ./figure/QudrantsEstimation.png used on input line 140
+Package pdftex.def Info: ./figure/QudrantsEstimation.png used on input line 145
 .
 (pdftex.def)             Requested size: 191.11061pt x 74.67767pt.
 
-Underfull \hbox (badness 1092) in paragraph at lines 164--165
-[]\OT1/ptm/m/n/10 In the slope ex-am-ple, the match $\OMS/cmsy/m/n/10 f\OML/cmm
-/m/it/10 o[] \OMS/cmsy/m/n/10  \OML/cmm/m/it/10 o[]; o[] \OMS/cmsy/m/n/10 
- []
-
-<./figure/SCOScenario.png, id=26, 284.56313pt x 140.02313pt>
-File: ./figure/SCOScenario.png Graphic file (type png)
-
-<use ./figure/SCOScenario.png>
-Package pdftex.def Info: ./figure/SCOScenario.png used on input line 167.
-(pdftex.def)             Requested size: 199.19283pt x 98.01552pt.
-
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./figure/SCOScenario_2.png, id=27, 790.955pt x 264.99pt>
-File: ./figure/SCOScenario_2.png Graphic file (type png)
-
-<use ./figure/SCOScenario_2.png>
-Package pdftex.def Info: ./figure/SCOScenario_2.png used on input line 172.
-(pdftex.def)             Requested size: 237.28833pt x 79.4976pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: Citation `gale1962college' on page 4 undefined on input line 180
-.
 
 [4 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/BirdI
 mpact.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTr
 acking/figure/QudrantsEstimation.png (PNG copy)>]
-
-LaTeX Warning: Citation `andrewVision' on page 5 undefined on input line 186.
-
-
-Underfull \hbox (badness 1117) in paragraph at lines 197--198
-[]\OT1/ptm/m/n/10 There are sev-eral ap-proaches for tack-ling this prob-
+Underfull \hbox (badness 1092) in paragraph at lines 168--169
+[]\OT1/ptm/m/n/10 In the slope ex-am-ple, the match $\OMS/cmsy/m/n/10 f\OML/cmm
+/m/it/10 o[] \OMS/cmsy/m/n/10  \OML/cmm/m/it/10 o[]; o[] \OMS/cmsy/m/n/10 $
  []
 
-<./figure/Templates.png, id=34, 846.91406pt x 464.4853pt>
+<./figure/SCOScenario.png, id=33, 284.56313pt x 140.02313pt>
+File: ./figure/SCOScenario.png Graphic file (type png)
+
+<use ./figure/SCOScenario.png>
+Package pdftex.def Info: ./figure/SCOScenario.png used on input line 171.
+(pdftex.def)             Requested size: 199.19283pt x 98.01552pt.
+
+<./figure/SCOScenario_2.png, id=34, 790.955pt x 264.99pt>
+File: ./figure/SCOScenario_2.png Graphic file (type png)
+
+<use ./figure/SCOScenario_2.png>
+Package pdftex.def Info: ./figure/SCOScenario_2.png used on input line 176.
+(pdftex.def)             Requested size: 237.28833pt x 79.4976pt.
+
+<./figure/Templates.png, id=35, 846.91406pt x 464.4853pt>
 File: ./figure/Templates.png Graphic file (type png)
 
 <use ./figure/Templates.png>
-Package pdftex.def Info: ./figure/Templates.png used on input line 202.
+Package pdftex.def Info: ./figure/Templates.png used on input line 192.
 (pdftex.def)             Requested size: 237.13432pt x 130.055pt.
 
-<./figure/Fragmentation.png, id=35, 210.7875pt x 268.00125pt>
+<./figure/Fragmentation.png, id=36, 210.7875pt x 268.00125pt>
 File: ./figure/Fragmentation.png Graphic file (type png)
 
 <use ./figure/Fragmentation.png>
-Package pdftex.def Info: ./figure/Fragmentation.png used on input line 207.
+Package pdftex.def Info: ./figure/Fragmentation.png used on input line 202.
 (pdftex.def)             Requested size: 147.55025pt x 187.59958pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+ [5 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/SCOS
+cenario.png> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/fi
+gure/SCOScenario_2.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsCl
+ient/ObjectTracking/figure/Templates.png>]
+Underfull \hbox (badness 1117) in paragraph at lines 208--209
+[]\OT1/ptm/m/n/10 There are sev-eral ap-proaches for tack-ling this prob-
+ []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 211.
-[5 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/SCOSc
-enario.png> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/fig
-ure/SCOScenario_2.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsCli
-ent/ObjectTracking/figure/Templates.png>]
-<./figure/OMBRs.png, id=39, 701.62125pt x 228.855pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 213.
+<./figure/OMBRs.png, id=40, 701.62125pt x 228.855pt>
 File: ./figure/OMBRs.png Graphic file (type png)
  <use ./figure/OMBRs.png>
-Package pdftex.def Info: ./figure/OMBRs.png used on input line 225.
+Package pdftex.def Info: ./figure/OMBRs.png used on input line 227.
 (pdftex.def)             Requested size: 210.48799pt x 68.65701pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./figure/TrackingBackup.png, id=40, 763.35187pt x 252.945pt>
-File: ./figure/TrackingBackup.png Graphic file (type png)
-
-<use ./figure/TrackingBackup.png>
-Package pdftex.def Info: ./figure/TrackingBackup.png used on input line 243.
-(pdftex.def)             Requested size: 244.27759pt x 80.94405pt.
-
-Overfull \hbox (4.88321pt too wide) in paragraph at lines 243--243
- [][] 
- []
 
 [6 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/Fragm
 entation.png> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/f
-igure/OMBRs.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/Ob
-jectTracking/figure/TrackingBackup.png>]
-Overfull \hbox (4.20386pt too wide) in paragraph at lines 283--294
+igure/OMBRs.png (PNG copy)>]
+<./figure/TrackingBackup.png, id=44, 763.35187pt x 252.945pt>
+File: ./figure/TrackingBackup.png Graphic file (type png)
+
+<use ./figure/TrackingBackup.png>
+Package pdftex.def Info: ./figure/TrackingBackup.png used on input line 244.
+(pdftex.def)             Requested size: 244.27759pt x 80.94405pt.
+
+Overfull \hbox (4.88321pt too wide) in paragraph at lines 244--244
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Overfull \hbox (4.20386pt too wide) in paragraph at lines 285--296
  [][] 
  []
 
@@ -337,15 +354,28 @@ LaTeX Warning: No positions in optional float specifier.
                Default added (so using `!htbp') on input line 299.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 317--318
-[] \OT1/ptm/m/n/10 match($\OML/cmm/m/it/10 iniobj$\OT1/ptm/m/n/10 , $\OML/cmm/m
-/it/10 obj$\OT1/ptm/m/n/10 ), $\OML/cmm/m/it/10 freeobjs \OMS/cmsy/m/n/10  
+Underfull \hbox (badness 10000) in paragraph at lines 307--308
+[] $\OML/cmm/m/it/10 pmatches \OMS/cmsy/m/n/10  $ \OT1/ptm/m/n/10 MotionApproxi
+mation($\OML/cmm/m/it/10 iniobjs$\OT1/ptm/m/n/10 ,
  []
 
 
-LaTeX Warning: Float too large for page by 94.2042pt on input line 357.
+Underfull \hbox (badness 1237) in paragraph at lines 308--309
+[] \OT1/ptm/m/n/10 CalculatePreference($\OML/cmm/m/it/10 iniobjs$\OT1/ptm/m/n/1
+0 , $\OML/cmm/m/it/10 pmatches$\OT1/ptm/m/n/10 )[] //Cal-cu-
+ []
 
-[7]
+
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
+[] \OT1/ptm/m/n/10 match($\OML/cmm/m/it/10 iniobj$\OT1/ptm/m/n/10 , $\OML/cmm/m
+/it/10 obj$\OT1/ptm/m/n/10 ), $\OML/cmm/m/it/10 freeobjs \OMS/cmsy/m/n/10  $
+ []
+
+
+LaTeX Warning: Float too large for page by 61.2042pt on input line 356.
+
+[7 <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/Track
+ingBackup.png>]
 (F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\ObjectTracking.
 bbl
 Underfull \hbox (badness 5741) in paragraph at lines 12--16
@@ -364,24 +394,23 @@ EDGE
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 94--98
+Underfull \hbox (badness 10000) in paragraph at lines 106--110
 []\OT1/ptm/m/n/10 Rovio.  2013.  An-gry Birds Chrome.
  []
 
-Missing character: There is no â in font ptmr7t!
-Missing character: There is no € in font ptmr7t!
-Missing character: There is no “ in font ptmr7t!
-) [8]
+[8]) [9
+
+]
 (F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\ObjectTracking.
 aux) ) 
 Here is how much of TeX's memory you used:
- 1978 strings out of 494045
- 28280 string characters out of 3148390
- 92530 words of memory out of 3000000
- 5257 multiletter control sequences out of 15000+200000
+ 1993 strings out of 494045
+ 28521 string characters out of 3148390
+ 94664 words of memory out of 3000000
+ 5271 multiletter control sequences out of 15000+200000
  19576 words of font info for 35 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,10n,19p,1249b,276s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,10n,19p,1277b,278s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program 
 Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/Mi
 KTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files/MiKTeX 2.9/
@@ -394,9 +423,9 @@ rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fo
 nts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/tim
 es/utmri8a.pfb>
-Output written on ObjectTracking.pdf (8 pages, 839747 bytes).
+Output written on ObjectTracking.pdf (9 pages, 860475 bytes).
 PDF statistics:
- 90 PDF objects out of 1000 (max. 8388607)
+ 94 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
 

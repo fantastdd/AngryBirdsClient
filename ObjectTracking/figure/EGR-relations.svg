@@ -4,304 +4,280 @@
     version="1.1" baseProfile="full">
     <defs/>
     <g>
-        <g latexdraw:type="drawing" id="id1916">
-            <g latexdraw:type="rectangle" id="id1917">
-                <rect x="326.10000002384186" y="244.10000002384186"
-                    width="163.79999995231628"
-                    height="136.79999995231628"
-                    latexdraw:borderPos="outer"
-                    stroke-width="2.200000047683716" stroke="black"
-                    fill="none" stroke-dasharray="8.0, 8.0"/>
-            </g>
-            <g latexdraw:type="rectangle" id="id1918" transform="rotate(-33.641071869131764) translate(-240.45301267356885 173.3883782797535)">
-                <rect x="325.10000002384186" y="286.10000002384186"
-                    width="163.79999995231628"
-                    height="49.799999952316284"
-                    latexdraw:borderPos="outer"
-                    stroke-width="2.200000047683716" stroke="black" fill="none"/>
-            </g>
-            <g latexdraw:type="line" id="id1919">
-                <line x1="324.0" x2="326.0" y1="158.0" y2="246.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="line" id="id1920">
-                <line x1="327.0" x2="328.0" y1="377.0" y2="458.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="line" id="id1921">
-                <line x1="248.0" x2="326.0" y1="241.0" y2="243.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="line" id="id1922">
-                <line x1="490.0" x2="580.0" y1="244.0" y2="244.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="line" id="id1923">
-                <line x1="245.0" x2="327.0" y1="378.0" y2="379.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="line" id="id1924">
-                <line x1="489.0" x2="580.0" y1="378.0" y2="380.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="line" id="id1925">
-                <line x1="631.0" x2="630.0" y1="184.0" y2="185.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="line" id="id1926">
-                <line x1="488.0" x2="488.0" y1="160.0" y2="245.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="line" id="id1927">
-                <line x1="490.0" x2="488.0" y1="375.0" y2="455.0"
-                    stroke-width="2.200000047683716" stroke="black"
-                    stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
-            </g>
-            <g latexdraw:type="text" id="id1928"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="253.0">
-                <text x="253.0" y="322.0"><![CDATA[LEFT]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1931"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="386.0">
-                <text x="386.0" y="198.0"><![CDATA[TOP]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1934"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="515.0">
-                <text x="515.0" y="312.0"><![CDATA[RIGHT]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1937"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="375.0">
-                <text x="375.0" y="420.0"><![CDATA[BOTTOM]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1940"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="228.0">
-                <text x="228.0" y="199.0"><![CDATA[TOP]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1943"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="512.0">
-                <text x="512.0" y="196.0"><![CDATA[TOP]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1946"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="269.0">
-                <text x="269.0" y="199.0"><![CDATA[LEFT]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1949"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="273.0">
-                <text x="273.0" y="419.0"><![CDATA[LEFT]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1952"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="186.0">
-                <text x="186.0" y="420.0"><![CDATA[BOTTOM]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1955"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="588.0">
-                <text x="588.0" y="418.0"><![CDATA[RIGHT]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1958"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="504.0">
-                <text x="504.0" y="417.0"><![CDATA[BOTTOM]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1961"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="555.0">
-                <text x="555.0" y="195.0"><![CDATA[RIGHT]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1964"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="447.0">
-                <text x="447.0" y="239.0"><![CDATA[S1]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1967"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="372.0">
-                <text x="372.0" y="283.0"><![CDATA[S2]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1970"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="300.0">
-                <text x="300.0" y="342.0"><![CDATA[S3]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1973"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="343.0">
-                <text x="343.0" y="352.0"><![CDATA[S4]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1976"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="339.0">
-                <text x="339.0" y="398.0"><![CDATA[S5]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1979"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="417.0">
-                <text x="417.0" y="357.0"><![CDATA[S6]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1982"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="495.0">
-                <text x="495.0" y="292.0"><![CDATA[S7]]></text>
-            </g>
-            <g latexdraw:type="text" id="id1985"
-                font-family="Times New Roman" fill="black"
-                font-size="18" latexdraw:x="456.0">
-                <text x="456.0" y="279.0"><![CDATA[S8]]></text>
-            </g>
+        <g latexdraw:type="rectangle" id="id491">
+            <rect x="382.10000002384186" y="254.10000002384186"
+                width="163.79999995231628" height="136.79999995231628"
+                latexdraw:borderPos="outer"
+                stroke-width="2.200000047683716" stroke="black"
+                fill="none" stroke-dasharray="8.0, 8.0"/>
         </g>
-        <g latexdraw:type="rectangle" id="id1989">
+        <g latexdraw:type="rectangle" id="id492" transform="rotate(-33.64107186913177) translate(-255.37153475211883 202.73697637154623)">
+            <rect x="381.1000000238421" y="296.1000000238415"
+                width="163.79999995231628" height="49.799999952316284"
+                latexdraw:borderPos="outer"
+                stroke-width="2.200000047683716" stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="line" id="id493">
+            <line x1="380.0" x2="382.0" y1="168.0" y2="256.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id494">
+            <line x1="383.0" x2="384.0" y1="387.0" y2="468.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id495">
+            <line x1="304.0" x2="382.0" y1="251.0" y2="253.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id496">
+            <line x1="546.0" x2="636.0" y1="254.0" y2="254.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id497">
+            <line x1="301.0" x2="383.0" y1="388.0" y2="389.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id498">
+            <line x1="545.0" x2="636.0" y1="388.0" y2="390.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id499">
+            <line x1="687.0" x2="686.0" y1="194.0" y2="195.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id500">
+            <line x1="544.0" x2="544.0" y1="170.0" y2="255.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id501">
+            <line x1="546.0" x2="544.0" y1="385.0" y2="465.0"
+                stroke-width="2.200000047683716" stroke="black"
+                stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="text" id="id502"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="309.0">
+            <text x="309.0" y="332.0"><![CDATA[LEFT]]></text>
+        </g>
+        <g latexdraw:type="text" id="id504"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="442.0">
+            <text x="442.0" y="208.0"><![CDATA[TOP]]></text>
+        </g>
+        <g latexdraw:type="text" id="id506"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="571.0">
+            <text x="571.0" y="322.0"><![CDATA[RIGHT]]></text>
+        </g>
+        <g latexdraw:type="text" id="id508"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="431.0">
+            <text x="431.0" y="430.0"><![CDATA[BOTTOM]]></text>
+        </g>
+        <g latexdraw:type="text" id="id510"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="284.0">
+            <text x="284.0" y="209.0"><![CDATA[TOP]]></text>
+        </g>
+        <g latexdraw:type="text" id="id512"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="568.0">
+            <text x="568.0" y="206.0"><![CDATA[TOP]]></text>
+        </g>
+        <g latexdraw:type="text" id="id514"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="325.0">
+            <text x="325.0" y="209.0"><![CDATA[LEFT]]></text>
+        </g>
+        <g latexdraw:type="text" id="id516"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="329.0">
+            <text x="329.0" y="429.0"><![CDATA[LEFT]]></text>
+        </g>
+        <g latexdraw:type="text" id="id518"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="242.0">
+            <text x="242.0" y="430.0"><![CDATA[BOTTOM]]></text>
+        </g>
+        <g latexdraw:type="text" id="id520"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="644.0">
+            <text x="644.0" y="428.0"><![CDATA[RIGHT]]></text>
+        </g>
+        <g latexdraw:type="text" id="id522"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="560.0">
+            <text x="560.0" y="427.0"><![CDATA[BOTTOM]]></text>
+        </g>
+        <g latexdraw:type="text" id="id524"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="611.0">
+            <text x="611.0" y="205.0"><![CDATA[RIGHT]]></text>
+        </g>
+        <g latexdraw:type="text" id="id526"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="503.0">
+            <text x="503.0" y="249.0"><![CDATA[A1]]></text>
+        </g>
+        <g latexdraw:type="text" id="id529"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="428.0">
+            <text x="428.0" y="293.0"><![CDATA[A2]]></text>
+        </g>
+        <g latexdraw:type="text" id="id532"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="356.0">
+            <text x="356.0" y="352.0"><![CDATA[A3]]></text>
+        </g>
+        <g latexdraw:type="text" id="id535"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="399.0">
+            <text x="399.0" y="362.0"><![CDATA[A4]]></text>
+        </g>
+        <g latexdraw:type="text" id="id538"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="395.0">
+            <text x="395.0" y="408.0"><![CDATA[A5]]></text>
+        </g>
+        <g latexdraw:type="text" id="id541"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="473.0">
+            <text x="473.0" y="367.0"><![CDATA[A6]]></text>
+        </g>
+        <g latexdraw:type="text" id="id544"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="551.0">
+            <text x="551.0" y="302.0"><![CDATA[A7]]></text>
+        </g>
+        <g latexdraw:type="text" id="id547"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="512.0">
+            <text x="512.0" y="289.0"><![CDATA[A8]]></text>
+        </g>
+        <g latexdraw:type="rectangle" id="id550">
             <rect x="850.1000000238419" y="254.10000002384186"
                 width="163.79999995231628" height="136.79999995231628"
                 latexdraw:borderPos="outer"
                 stroke-width="2.200000047683716" stroke="black" fill="none"/>
         </g>
-        <g latexdraw:type="line" id="id1990">
+        <g latexdraw:type="line" id="id551">
             <line x1="848.0" x2="850.0" y1="168.0" y2="256.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id1991">
+        <g latexdraw:type="line" id="id552">
             <line x1="851.0" x2="852.0" y1="387.0" y2="468.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id1992">
+        <g latexdraw:type="line" id="id553">
             <line x1="772.0" x2="850.0" y1="251.0" y2="253.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id1993">
+        <g latexdraw:type="line" id="id554">
             <line x1="1014.0" x2="1104.0" y1="254.0" y2="254.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id1994">
+        <g latexdraw:type="line" id="id555">
             <line x1="769.0" x2="851.0" y1="388.0" y2="389.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id1995">
+        <g latexdraw:type="line" id="id556">
             <line x1="1013.0" x2="1104.0" y1="388.0" y2="390.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id1996">
+        <g latexdraw:type="line" id="id557">
             <line x1="1155.0" x2="1154.0" y1="194.0" y2="195.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id1997">
+        <g latexdraw:type="line" id="id558">
             <line x1="1012.0" x2="1012.0" y1="170.0" y2="255.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="line" id="id1998">
+        <g latexdraw:type="line" id="id559">
             <line x1="1014.0" x2="1012.0" y1="385.0" y2="465.0"
                 stroke-width="2.200000047683716" stroke="black"
                 stroke-dasharray="8.0, 8.0" latexdraw:rotationAngle="0.0"/>
         </g>
-        <g latexdraw:type="text" id="id1999"
+        <g latexdraw:type="text" id="id560"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="777.0">
             <text x="777.0" y="332.0"><![CDATA[LEFT]]></text>
         </g>
-        <g latexdraw:type="text" id="id2002"
+        <g latexdraw:type="text" id="id562"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="910.0">
             <text x="910.0" y="208.0"><![CDATA[TOP]]></text>
         </g>
-        <g latexdraw:type="text" id="id2005"
+        <g latexdraw:type="text" id="id564"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="1039.0">
             <text x="1039.0" y="322.0"><![CDATA[RIGHT]]></text>
         </g>
-        <g latexdraw:type="text" id="id2008"
+        <g latexdraw:type="text" id="id566"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="899.0">
             <text x="899.0" y="430.0"><![CDATA[BOTTOM]]></text>
         </g>
-        <g latexdraw:type="text" id="id2011"
+        <g latexdraw:type="text" id="id568"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="752.0">
             <text x="752.0" y="209.0"><![CDATA[TOP]]></text>
         </g>
-        <g latexdraw:type="text" id="id2014"
+        <g latexdraw:type="text" id="id570"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="1036.0">
             <text x="1036.0" y="206.0"><![CDATA[TOP]]></text>
         </g>
-        <g latexdraw:type="text" id="id2017"
+        <g latexdraw:type="text" id="id572"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="793.0">
             <text x="793.0" y="209.0"><![CDATA[LEFT]]></text>
         </g>
-        <g latexdraw:type="text" id="id2020"
+        <g latexdraw:type="text" id="id574"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="797.0">
             <text x="797.0" y="429.0"><![CDATA[LEFT]]></text>
         </g>
-        <g latexdraw:type="text" id="id2023"
+        <g latexdraw:type="text" id="id576"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="709.0">
             <text x="709.0" y="430.0"><![CDATA[BOTTOM]]></text>
         </g>
-        <g latexdraw:type="text" id="id2026"
+        <g latexdraw:type="text" id="id578"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="1112.0">
             <text x="1112.0" y="428.0"><![CDATA[RIGHT]]></text>
         </g>
-        <g latexdraw:type="text" id="id2029"
+        <g latexdraw:type="text" id="id580"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="1028.0">
             <text x="1028.0" y="427.0"><![CDATA[BOTTOM]]></text>
         </g>
-        <g latexdraw:type="text" id="id2032"
+        <g latexdraw:type="text" id="id582"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="1079.0">
             <text x="1079.0" y="205.0"><![CDATA[RIGHT]]></text>
         </g>
-        <g latexdraw:type="text" id="id2035"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="852.0">
-            <text x="852.0" y="249.0"><![CDATA[R1]]></text>
+        <g latexdraw:type="text" id="id584"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="992.0">
+            <text x="992.0" y="249.0"><![CDATA[R1]]></text>
         </g>
-        <g latexdraw:type="text" id="id2038"
+        <g latexdraw:type="text" id="id586"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="917.0">
+            <text x="917.0" y="250.0"><![CDATA[R2]]></text>
+        </g>
+        <g latexdraw:type="text" id="id588"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="854.0">
+            <text x="854.0" y="247.0"><![CDATA[R3]]></text>
+        </g>
+        <g latexdraw:type="text" id="id590"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="857.0">
-            <text x="857.0" y="315.0"><![CDATA[R2]]></text>
+            <text x="857.0" y="320.0"><![CDATA[R4]]></text>
         </g>
-        <g latexdraw:type="text" id="id2041"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="857.0">
-            <text x="857.0" y="383.0"><![CDATA[R3]]></text>
+        <g latexdraw:type="text" id="id592"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="855.0">
+            <text x="855.0" y="383.0"><![CDATA[R5]]></text>
         </g>
-        <g latexdraw:type="text" id="id2044"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="928.0">
-            <text x="928.0" y="384.0"><![CDATA[R4]]></text>
+        <g latexdraw:type="text" id="id594"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="989.0">
+            <text x="989.0" y="384.0"><![CDATA[R7]]></text>
         </g>
-        <g latexdraw:type="text" id="id2047"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="993.0">
-            <text x="993.0" y="385.0"><![CDATA[R5]]></text>
+        <g latexdraw:type="text" id="id596"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="924.0">
+            <text x="924.0" y="384.0"><![CDATA[R6]]></text>
         </g>
-        <g latexdraw:type="text" id="id2050"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="990.0">
-            <text x="990.0" y="250.0"><![CDATA[R7]]></text>
-        </g>
-        <g latexdraw:type="text" id="id2053"
+        <g latexdraw:type="text" id="id598"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="991.0">
-            <text x="991.0" y="317.0"><![CDATA[R6]]></text>
+            <text x="991.0" y="322.0"><![CDATA[R8]]></text>
         </g>
-        <g latexdraw:type="text" id="id2056"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="926.0">
-            <text x="926.0" y="249.0"><![CDATA[R8]]></text>
+        <g latexdraw:type="text" id="id600"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="428.0">
+            <text x="428.0" y="496.0"><![CDATA[( a )]]></text>
         </g>
-        <g latexdraw:type="text" id="id2059"
-            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="372.0">
-            <text x="372.0" y="486.0"><![CDATA[( a )]]></text>
-        </g>
-        <g latexdraw:type="text" id="id2062"
+        <g latexdraw:type="text" id="id602"
             font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="929.0">
             <text x="929.0" y="493.0"><![CDATA[( b )]]></text>
         </g>
@@ -328,7 +304,7 @@
                 <latexdraw:x>0</latexdraw:x>
                 <latexdraw:y>5</latexdraw:y>
             </latexdraw:position>
-            <latexdraw:dividerPosition>0.772256728778468</latexdraw:dividerPosition>
+            <latexdraw:dividerPosition>0.6599378881987578</latexdraw:dividerPosition>
             <latexdraw:displayCodePanel>true</latexdraw:displayCodePanel>
             <latexdraw:displayXScale>true</latexdraw:displayXScale>
             <latexdraw:displayYScale>true</latexdraw:displayYScale>

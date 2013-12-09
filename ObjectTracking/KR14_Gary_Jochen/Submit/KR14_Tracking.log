@@ -1,0 +1,401 @@
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  10 DEC 2013 00:17
+entering extended mode
+**KR14_Tracking.tex
+(C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\KR14_Tracking.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2009-06-19, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, lao, latin, lat
+vian, lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerm
+an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese, 
+romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
+sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
+senglishmax, welsh, loaded.
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\aaai.sty
+Conference Style for AAAI for LaTeX 2e -- version of 2 February 2013
+\titlebox=\skip43
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\times.sty"
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\helvet.sty"
+Package: helvet 2005/04/12 PSNFSS-v9.2a (WaS) 
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty"
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count87
+\float@exts=\toks15
+\float@box=\box26
+\@float@everytoks=\toks16
+\@floatcapt=\box27
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks17
+\c@algorithm=\count88
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithmicx\algpseudocode.sty"
+Package: algpseudocode 
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithmicx\algorithmicx.sty"
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count89
+\c@ALG@rem=\count90
+\c@ALG@nested=\count91
+\ALG@tlm=\skip44
+\ALG@thistlm=\skip45
+\c@ALG@Lnr=\count92
+\c@ALG@blocknr=\count93
+\c@ALG@storecount=\count94
+\c@ALG@tmpcounter=\count95
+\ALG@tmplength=\skip46
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\courier.sty"
+Package: courier 2005/04/12 PSNFSS-v9.2a (WaS) 
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count96
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\KR14_Tracking.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 25.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count97
+\scratchdimen=\dimen105
+\scratchbox=\box28
+\nofMPsegments=\count98
+\nofMParguments=\count99
+\everyMPshowfont=\toks18
+\MPscratchCnt=\count100
+\MPscratchDim=\dimen106
+\MPnumerator=\count101
+\makeMPintoPDFobject=\count102
+\everyMPtoPDFconversion=\toks19
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 26.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 26.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 26.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 26.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 26.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 26.
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 26.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 27.
+ [1{C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+
+
+]
+<./figure/GSR.png, id=9, 714.67pt x 223.83624pt>
+File: ./figure/GSR.png Graphic file (type png)
+ <use ./figure/GSR.png>
+Package pdftex.def Info: ./figure/GSR.png used on input line 79.
+(pdftex.def)             Requested size: 178.66705pt x 55.95892pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 83.
+
+<./figure/CardinalTiles.png, id=10, 531.9875pt x 266.9975pt>
+File: ./figure/CardinalTiles.png Graphic file (type png)
+
+<use ./figure/CardinalTiles.png>
+Package pdftex.def Info: ./figure/CardinalTiles.png used on input line 87.
+(pdftex.def)             Requested size: 186.19841pt x 93.45052pt.
+
+Underfull \hbox (badness 2903) in paragraph at lines 87--87
+[]\OT1/ptm/m/n/10 Figure 2: (a) The nine car-di-nal tiles (b) An ex-am-
+ []
+
+
+Underfull \hbox (badness 3514) in paragraph at lines 87--87
+\OT1/ptm/m/n/10 ple sce-nario where $\OML/cmm/m/it/10 o[]\OT1/cmr/m/n/10 (\OML/
+cmm/m/it/10 TOP\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[]$\OT1/ptm/m/n/10 , $\OML/cm
+m/m/it/10 o[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 RIGHT\OT1/cmr/m/n/10 )\OML/cmm/m
+/it/10 o[]$\OT1/ptm/m/n/10 , and
+ []
+
+[2 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/GSR.png (PNG copy)>]
+<./figure/EGSR-relations.png, id=17, 941.5175pt x 345.29pt>
+File: ./figure/EGSR-relations.png Graphic file (type png)
+
+<use ./figure/EGSR-relations.png>
+Package pdftex.def Info: ./figure/EGSR-relations.png used on input line 93.
+(pdftex.def)             Requested size: 235.3788pt x 86.32228pt.
+
+<./figure/QCN.png, id=18, 454.69875pt x 232.87pt>
+File: ./figure/QCN.png Graphic file (type png)
+ <use ./figure/QCN.png>
+Package pdftex.def Info: ./figure/QCN.png used on input line 105.
+(pdftex.def)             Requested size: 204.61253pt x 104.79051pt.
+
+<./figure/quadrants.png, id=19, 565.11125pt x 369.38pt>
+File: ./figure/quadrants.png Graphic file (type png)
+
+<use ./figure/quadrants.png>
+Package pdftex.def Info: ./figure/quadrants.png used on input line 113.
+(pdftex.def)             Requested size: 169.53468pt x 110.81485pt.
+ [3 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/CardinalTiles.png (PN
+G copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/EGSR-relations.p
+ng (PNG copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/QCN.png (P
+NG copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/quadrants.png (
+PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 134--135
+[]\OT1/ptm/m/n/10 Right-leaning: $\OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 o[]  \OT1/
+cmr/m/n/10 :  \OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 o[] o[]\OT1/cmr/m/n/10 (\OML/c
+mm/m/it/10 A[]; \OMS/cmsy/m/n/10 \OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[] \OMS/cm
+sy/m/n/10 ^$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--137
+[]\OT1/ptm/m/n/10 Left-leaning: $\OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 o[]  \OT1/c
+mr/m/n/10 :  \OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 o[] o[]\OT1/cmr/m/n/10 (\OML/cm
+m/m/it/10 A[]; \OMS/cmsy/m/n/10 \OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[] \OMS/cms
+y/m/n/10 ^$
+ []
+
+<./figure/QudrantsEstimation.png, id=24, 477.785pt x 186.6975pt>
+File: ./figure/QudrantsEstimation.png Graphic file (type png)
+
+<use ./figure/QudrantsEstimation.png>
+Package pdftex.def Info: ./figure/QudrantsEstimation.png used on input line 144
+.
+(pdftex.def)             Requested size: 167.22725pt x 65.3451pt.
+
+<./figure/BirdImpact.png, id=25, 705.63625pt x 199.74625pt>
+File: ./figure/BirdImpact.png Graphic file (type png)
+
+<use ./figure/BirdImpact.png>
+Package pdftex.def Info: ./figure/BirdImpact.png used on input line 150.
+(pdftex.def)             Requested size: 246.97638pt x 69.91223pt.
+
+Overfull \hbox (7.582pt too wide) in paragraph at lines 150--150
+ [][] 
+ []
+
+<./figure/ScenarioByRules.png, id=26, 488.82625pt x 199.74625pt>
+File: ./figure/ScenarioByRules.png Graphic file (type png)
+
+<use ./figure/ScenarioByRules.png>
+Package pdftex.def Info: ./figure/ScenarioByRules.png used on input line 155.
+(pdftex.def)             Requested size: 171.09174pt x 69.91223pt.
+ [4 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/QudrantsEstimation.pn
+g (PNG copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/BirdImpact.
+png (PNG copy)> <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/ScenarioB
+yRules.png (PNG copy)>]
+Underfull \hbox (badness 1092) in paragraph at lines 176--177
+[]\OT1/ptm/m/n/10 In the slope ex-am-ple, the match $\OMS/cmsy/m/n/10 f\OML/cmm
+/m/it/10 o[] \OMS/cmsy/m/n/10  \OML/cmm/m/it/10 o[]; o[] \OMS/cmsy/m/n/10 $
+ []
+
+<./figure/SCOScenario.png, id=33, 284.56313pt x 140.02313pt>
+File: ./figure/SCOScenario.png Graphic file (type png)
+
+<use ./figure/SCOScenario.png>
+Package pdftex.def Info: ./figure/SCOScenario.png used on input line 179.
+(pdftex.def)             Requested size: 199.19283pt x 98.01552pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/SpatiallyCorrelatdScenario.png, id=34, 790.955pt x 264.99pt>
+File: ./figure/SpatiallyCorrelatdScenario.png Graphic file (type png)
+
+<use ./figure/SpatiallyCorrelatdScenario.png>
+Package pdftex.def Info: ./figure/SpatiallyCorrelatdScenario.png used on input 
+line 184.
+(pdftex.def)             Requested size: 237.28833pt x 79.4976pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/Templates.png, id=35, 846.91406pt x 464.4853pt>
+File: ./figure/Templates.png Graphic file (type png)
+
+<use ./figure/Templates.png>
+Package pdftex.def Info: ./figure/Templates.png used on input line 202.
+(pdftex.def)             Requested size: 237.13432pt x 130.055pt.
+ [5 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/SCOScenario.png> <C:/
+Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/SpatiallyCorrelatdScenario.pn
+g (PNG copy)>]
+<./figure/Fragmentation.png, id=40, 210.7875pt x 268.00125pt>
+File: ./figure/Fragmentation.png Graphic file (type png)
+
+<use ./figure/Fragmentation.png>
+Package pdftex.def Info: ./figure/Fragmentation.png used on input line 212.
+(pdftex.def)             Requested size: 147.55025pt x 187.59958pt.
+
+Underfull \hbox (badness 1117) in paragraph at lines 218--219
+[]\OT1/ptm/m/n/10 There are sev-eral ap-proaches for tack-ling this prob-
+ []
+
+[6 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/Templates.png> <C:/Use
+rs/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/Fragmentation.png>]
+<./figure/OMBRs.png, id=44, 701.62125pt x 228.855pt>
+File: ./figure/OMBRs.png Graphic file (type png)
+ <use ./figure/OMBRs.png>
+Package pdftex.def Info: ./figure/OMBRs.png used on input line 237.
+(pdftex.def)             Requested size: 210.48799pt x 68.65701pt.
+
+<./figure/TrackingBackup.png, id=45, 763.35187pt x 252.945pt>
+File: ./figure/TrackingBackup.png Graphic file (type png)
+
+<use ./figure/TrackingBackup.png>
+Package pdftex.def Info: ./figure/TrackingBackup.png used on input line 254.
+(pdftex.def)             Requested size: 244.27759pt x 80.94405pt.
+
+Overfull \hbox (4.88321pt too wide) in paragraph at lines 254--254
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[7 <C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/OMBRs.png (PNG copy)> 
+<C:/Users/Gary/Desktop/KR14_Gary_Jochen/Submit/figure/TrackingBackup.png>]
+Overfull \hbox (4.20386pt too wide) in paragraph at lines 295--306
+ [][] 
+ []
+
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `!htbp') on input line 319.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 337--338
+[] \OT1/ptm/m/n/10 match($\OML/cmm/m/it/10 iniobj$\OT1/ptm/m/n/10 , $\OML/cmm/m
+/it/10 obj$\OT1/ptm/m/n/10 ), $\OML/cmm/m/it/10 freeobjs \OMS/cmsy/m/n/10  $
+ []
+
+
+LaTeX Warning: Float too large for page by 17.2042pt on input line 376.
+
+[8] (C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\KR14_Tracking.bbl
+Underfull \hbox (badness 5741) in paragraph at lines 12--16
+[]\OT1/ptm/m/n/10 AIBirds.  2013.  An-gry Birds: AI Com-pe-ti-tion.
+ []
+
+
+Underfull \hbox (badness 5036) in paragraph at lines 19--25
+[]\OT1/ptm/m/n/10 Balbiani, P.; Con-dotta, J.-F.; and Del Cerro, L. F.
+ []
+
+
+Underfull \hbox (badness 2368) in paragraph at lines 19--25
+\OT1/ptm/m/n/10 po-ral re-la-tions.  In \OT1/ptm/m/it/10 PRIN-CI-PLES OF KNOWL-
+EDGE
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 122--126
+[]\OT1/ptm/m/n/10 Rovio.  2013.  An-gry Birds Chrome.
+ []
+
+[9]) [10
+
+] (C:\Users\Gary\Desktop\KR14_Gary_Jochen\Submit\KR14_Tracking.aux) ) 
+Here is how much of TeX's memory you used:
+ 2002 strings out of 494045
+ 28592 string characters out of 3148390
+ 90782 words of memory out of 3000000
+ 5279 multiletter control sequences out of 15000+200000
+ 19576 words of font info for 35 fonts, out of 3000000 for 9000
+ 715 hyphenation exceptions out of 8191
+ 27i,10n,19p,1682b,276s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Progra
+m Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr
+5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/ti
+mes/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on KR14_Tracking.pdf (10 pages, 874520 bytes).
+PDF statistics:
+ 98 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+

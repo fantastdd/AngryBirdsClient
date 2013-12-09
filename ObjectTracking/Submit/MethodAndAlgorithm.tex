@@ -1,0 +1,91 @@
+%File: formatting-instruction.tex
+\documentclass[letterpaper]{article}
+\usepackage{aaai}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{courier}
+\usepackage{graphicx}
+\graphicspath{{./figure/}}
+\frenchspacing
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+\pdfinfo{
+/Title (Multiple Object Tracking using Spatial Reasoning)
+/Author (Xiaoyu Ge, Jochen Renz)}
+\title{Multiple Object Tracking using Spatial Reasoning}
+\author{Xiaoyu Ge \and Jochen Renz \\
+Research School of Computer Science\\
+The Australian National University \\
+Canberra, Australia\\
+\{xiaoyu.ge, jochen.renz\}@anu.edu.au
+}
+\setcounter{secnumdepth}{0}  
+ \begin{document}
+\section{A Method for Objects Tracking}
+Let $O$ and $O^{\prime}$ be a set of objects in an initial image and a subsequent image taken at a later time, respectively. For ease of notation, we will refer to objects in $O$ as initial objects and objects in $O^{\prime}$ as subsequent objects.
+
+First, the method randomly assigns a unique ID to each initial object, and estimates the MBC quadrants of each object according to the object's spatial relations (see Alg.\ref{algo} line \ref{MA}). The list of possible matches for each initial object is set so that it contains only the subsequent objects that are of the same type and within the MBC quadrants (see Alg.\ref{algo} line \ref{SetPossible}). The method then creates a preference list from the possible matches of each of the initial objects: the subsequent objects in the preference list are sorted by the size of the centroid shift from the initial object in ascending order. The method matches the two sets of objects using a stable marriage algorithm \cite{gale1962college} with the pre-computed preference lists (see Alg.\ref{algo} line \ref{calPref}). The algorithm ensures each match is stable in the sense that no pair of objects would prefer each other over their matched partners. 
+
+Then, the method finds all groups of spatially correlated objects among the initial objects and gets their corresponding objects from the match (see Alg.\ref{algo} line \ref{getSCO}). The method then checks to see whether the spatial constraint (see Section \ref{CM}) has been violated. If there has, it resolves it accordingly (see Alg.\ref{algo} line \ref{CommonMotion}).
+
+\begin{algorithm}[!]
+\caption{The Object Tracking Algorithm}\label{algo}
+\begin{algorithmic}[1]
+\Procedure {MatchObjects}{$objs$}
+\State $iniobjs$ \Comment initial objects
+%\State $objs \leftarrow$ HandlingFragments($objs$) // add the OMBRs to the objects pool 
+\State $solution \leftarrow \{iniobjs, \{\}\}$
+\State $pmatches \leftarrow \{iniobjs, \{\}\}$ \Comment possible matches of each initial object
+\State $pmatches \leftarrow$ ApproxMovement($iniobjs$, $objs$) \label{SetPossible}
+\State CalculatePreference($iniobjs$, $pmatches$)\label{calPref} //Calculate the preference list of $iniobjs$
+\State $freeobjs \leftarrow iniobjs$
+\While{$freeobjs$ is not empty}\label{stableMarriage}
+\State $iniobj \leftarrow dequeue(freeobjs)$
+\State get a next preferred $obj$ from $iniobj$'s preference list  
+\If {$obj$ is not assigned yet}
+  \State match($iniobj$, $obj$)
+  \Else{ $obj$ has been assigned to another initial object $iniobj^{\prime}$}
+  \If{$obj$ prefers $iniobj$ to $iniobj^{\prime}$}
+  \State match($iniobj$, $obj$), $freeobjs \leftarrow freeobjs \cup \{iniobj^{\prime}\}$
+  \Else 
+  \State $freeobjs \leftarrow freeobjs \cup \{iniobj\}$
+\EndIf 
+\EndIf
+\EndWhile
+\State $cobjsList \leftarrow$ GetSCO($iniobjs$)// get spatially correlated objects
+\State CommonMotion($cobjsList$,$solution$), find the debris, $iniobjs \leftarrow objs$
+\EndProcedure
+
+\Procedure{GetSCO}{$objs$}\label{getSCO}
+\State $cobjsList \leftarrow \{\}$, $QCN \leftarrow$ construct a QCN on $objs$
+\For {$obj \in objs$}
+\State $cobjs \leftarrow objs$ 
+\State $tobjs \leftarrow$ a set of the objects that touch $obj$
+\For {$tobj \in tobjs$}
+\State $ttobjs \leftarrow$ a set of the objects excluding $obj$ that touch $tobj$ via the same contact relation.
+\State $cobjs \leftarrow cobjs \cap ttobjs$
+\EndFor
+\State $cobjsList \leftarrow cobjsList \cup cobjs$
+\EndFor
+\Return $cobjsList$
+\EndProcedure
+\Procedure{ApproxMovement}{$iniobjs$, $objs$}\label{MA}
+\For {$iniobj \in iniobjs$}
+\State $pobjs \leftarrow \{\}$, compute the active quadrants of $iniobj$, add $obj \in objs$ to $pobjs$ if $obj$ is within the quadrants and have the same type with $iniobj$ 
+\State $pmatches \leftarrow pmatches \cup \{iniobj, \{pobjs\}\}$
+\EndFor
+\Return $pmatches$
+\EndProcedure
+\Procedure{Match}{$iniobj$, $obj$}
+\State $obj.id \leftarrow iniobj.id$, $solution \leftarrow \{iniobj, obj\}$
+\EndProcedure
+\Procedure{CommonMotion}{$cobjsList$, $solution$}\label{CommonMotion}
+\For {$cobjs \in cobjsList$}
+\State for each object in $cobjs$, get its matched $obj$ from $solution$. Check whether the spatial constraints are violated. Re-assign until resolved  
+\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+ \end{document}

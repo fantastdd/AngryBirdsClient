@@ -1,0 +1,262 @@
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  9 DEC 2013 20:26
+entering extended mode
+**EfficientMatchingByApproximatingMovement.tex
+
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\EfficientMatchi
+ngByApproximatingMovement.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2009-06-19, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, lao, latin, lat
+vian, lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerm
+an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese, 
+romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
+sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
+senglishmax, welsh, loaded.
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\aaai.sty
+Conference Style for AAAI for LaTeX 2e -- version of 2 February 2013
+\titlebox=\skip43
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\times.sty"
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\helvet.sty"
+Package: helvet 2005/04/12 PSNFSS-v9.2a (WaS) 
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty"
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count87
+\float@exts=\toks15
+\float@box=\box26
+\@float@everytoks=\toks16
+\@floatcapt=\box27
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks17
+\c@algorithm=\count88
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithmicx\algpseudocode.sty"
+Package: algpseudocode 
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithmicx\algorithmicx.sty"
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count89
+\c@ALG@rem=\count90
+\c@ALG@nested=\count91
+\ALG@tlm=\skip44
+\ALG@thistlm=\skip45
+\c@ALG@Lnr=\count92
+\c@ALG@blocknr=\count93
+\c@ALG@storecount=\count94
+\c@ALG@tmpcounter=\count95
+\ALG@tmplength=\skip46
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\courier.sty"
+Package: courier 2005/04/12 PSNFSS-v9.2a (WaS) 
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count96
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\EfficientMatchi
+ngByApproximatingMovement.aux
+
+LaTeX Warning: Label `QudrantsEstimation' multiply defined.
+
+)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 25.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count97
+\scratchdimen=\dimen105
+\scratchbox=\box28
+\nofMPsegments=\count98
+\nofMParguments=\count99
+\everyMPshowfont=\toks18
+\MPscratchCnt=\count100
+\MPscratchDim=\dimen106
+\MPnumerator=\count101
+\makeMPintoPDFobject=\count102
+\everyMPtoPDFconversion=\toks19
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 28.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 30.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 30.
+ <./figure/quadrants.png, id=1, 565.11125pt x 369.38pt>
+File: ./figure/quadrants.png Graphic file (type png)
+
+<use ./figure/quadrants.png>
+Package pdftex.def Info: ./figure/quadrants.png used on input line 32.
+(pdftex.def)             Requested size: 169.53468pt x 110.81485pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 46.
+
+
+LaTeX Warning: Citation `Ge2013' on page 1 undefined on input line 46.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--53
+[]\OT1/ptm/m/n/10 Right-leaning: $\OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 o[]  \OT1/
+cmr/m/n/10 :  \OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 o[] o[]\OT1/cmr/m/n/10 (\OML/c
+mm/m/it/10 A[]; \OMS/cmsy/m/n/10 \OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[] \OMS/cm
+sy/m/n/10 ^$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--55
+[]\OT1/ptm/m/n/10 Left-leaning: $\OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 o[]  \OT1/c
+mr/m/n/10 :  \OMS/cmsy/m/n/10 9\OML/cmm/m/it/10 o[] o[]\OT1/cmr/m/n/10 (\OML/cm
+m/m/it/10 A[]; \OMS/cmsy/m/n/10 \OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[] \OMS/cms
+y/m/n/10 ^$
+ []
+
+<./figure/QudrantsEstimation.png, id=2, 477.785pt x 186.6975pt>
+File: ./figure/QudrantsEstimation.png Graphic file (type png)
+
+<use ./figure/QudrantsEstimation.png>
+Package pdftex.def Info: ./figure/QudrantsEstimation.png used on input line 60.
+
+(pdftex.def)             Requested size: 191.11061pt x 74.67767pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/BirdImpact.png, id=3, 705.63625pt x 199.74625pt>
+File: ./figure/BirdImpact.png Graphic file (type png)
+
+<use ./figure/BirdImpact.png>
+Package pdftex.def Info: ./figure/BirdImpact.png used on input line 66.
+(pdftex.def)             Requested size: 246.97638pt x 69.91223pt.
+
+Overfull \hbox (7.582pt too wide) in paragraph at lines 66--66
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/ScenarioByRules.png, id=4, 488.82625pt x 199.74625pt>
+File: ./figure/ScenarioByRules.png Graphic file (type png)
+
+<use ./figure/ScenarioByRules.png>
+Package pdftex.def Info: ./figure/ScenarioByRules.png used on input line 71.
+(pdftex.def)             Requested size: 195.52702pt x 79.89708pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[1
+
+
+{C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <F:/AngryBird
+s/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/quadrants.png (PNG co
+py)>] [2
+
+ <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/Qudrant
+sEstimation.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/Ob
+jectTracking/figure/BirdImpact.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/
+AngryBirdsClient/ObjectTracking/figure/ScenarioByRules.png (PNG copy)>]
+(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\EfficientMatchi
+ngByApproximatingMovement.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 1819 strings out of 494045
+ 25695 string characters out of 3148390
+ 84826 words of memory out of 3000000
+ 5121 multiletter control sequences out of 15000+200000
+ 8984 words of font info for 21 fonts, out of 3000000 for 9000
+ 715 hyphenation exceptions out of 8191
+ 27i,7n,23p,1003b,212s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+mr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Progr
+am Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2
+.9/fonts/type1/urw/times/utmr8a.pfb>
+Output written on EfficientMatchingByApproximatingMovement.pdf (2 pages, 170885
+ bytes).
+PDF statistics:
+ 54 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+

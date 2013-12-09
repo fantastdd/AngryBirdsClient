@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  9 DEC 2013 04:00
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  9 DEC 2013 15:33
 entering extended mode
 **Revision_Representation.tex
 
@@ -113,12 +113,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\Revision_Repres
-entation.aux
-
-LaTeX Warning: Label `GSR' multiply defined.
-
-)
+No file Revision_Representation.aux.
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
@@ -132,7 +127,7 @@ LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 14.
- ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
@@ -152,141 +147,150 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 16.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 20.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 21.
 
 
 LaTeX Warning: Citation `balbiani1998model' on page 1 undefined on input line 2
-0.
+1.
 
 
-LaTeX Warning: Citation `cohn2012thinking' on page 1 undefined on input line 20
+LaTeX Warning: Citation `cohn2012thinking' on page 1 undefined on input line 21
 .
 
 
 LaTeX Warning: Citation `sokeh2013efficient' on page 1 undefined on input line 
-20.
+21.
 
 
-LaTeX Warning: Citation `Ge2013' on page 1 undefined on input line 20.
+LaTeX Warning: Citation `cohn2001qualitative' on page 1 undefined on input line
+ 21.
+
+
+LaTeX Warning: Citation `Ge2013' on page 1 undefined on input line 21.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 20.
+(Font)              <7> on input line 21.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 20.
+(Font)              <5> on input line 21.
+
+LaTeX Warning: Reference `GSR' on page 1 undefined on input line 21.
+
 <./figure/GSR.png, id=1, 711.65875pt x 223.83624pt>
 File: ./figure/GSR.png Graphic file (type png)
  <use ./figure/GSR.png>
-Package pdftex.def Info: ./figure/GSR.png used on input line 22.
+Package pdftex.def Info: ./figure/GSR.png used on input line 23.
 (pdftex.def)             Requested size: 177.91425pt x 55.95892pt.
 
-Underfull \hbox (badness 1931) in paragraph at lines 20--25
+Underfull \hbox (badness 1931) in paragraph at lines 21--26
 \OT1/ptm/m/n/10 vel-oped in the con-text of Qual-i-ta-tive Spa-tial Rea-son-
  []
 
 
-Underfull \hbox (badness 1874) in paragraph at lines 20--25
-\OT1/ptm/m/n/10 ing for deal-ing with dif-fer-ent spa-tial as-pects of such
- []
-
-
-Underfull \hbox (badness 1931) in paragraph at lines 20--25
+Underfull \hbox (badness 1931) in paragraph at lines 21--26
 \OT1/ptm/m/n/10 by ( \OT1/ptm/b/n/10 ?\OT1/ptm/m/n/10 ). GSR-n is a com-pre-hen
 -sive spa-tial rep-re-sen-ta-
  []
 
+<./figure/CardinalTiles.png, id=2, 531.9875pt x 266.9975pt>
+File: ./figure/CardinalTiles.png Graphic file (type png)
 
-LaTeX Warning: Citation `goyal1997direction' on page 1 undefined on input line 
-28.
+<use ./figure/CardinalTiles.png>
+Package pdftex.def Info: ./figure/CardinalTiles.png used on input line 30.
+(pdftex.def)             Requested size: 186.19841pt x 93.45052pt.
 
-
-LaTeX Warning: Citation `balbiani1998model' on page 1 undefined on input line 3
-6.
-
-
-LaTeX Warning: Citation `cohn2012thinking' on page 1 undefined on input line 36
-.
-
-
-LaTeX Warning: Citation `sokeh2013efficient' on page 1 undefined on input line 
-36.
-
-
-LaTeX Warning: Citation `Ge2013' on page 1 undefined on input line 36.
-
-File: ./figure/GSR.png Graphic file (type png)
-<use ./figure/GSR.png>
-Package pdftex.def Info: ./figure/GSR.png used on input line 38.
-(pdftex.def)             Requested size: 177.91425pt x 55.95892pt.
-
-Underfull \hbox (badness 1931) in paragraph at lines 36--41
-\OT1/ptm/m/n/10 vel-oped in the con-text of Qual-i-ta-tive Spa-tial Rea-son-
+Underfull \hbox (badness 2903) in paragraph at lines 30--30
+[]\OT1/ptm/m/n/10 Figure 2: (a) The nine car-di-nal tiles (b) An ex-am-
  []
 
 
-Underfull \hbox (badness 1874) in paragraph at lines 36--41
-\OT1/ptm/m/n/10 ing for deal-ing with dif-fer-ent spa-tial as-pects of such
- []
-
-
-Underfull \hbox (badness 1931) in paragraph at lines 36--41
-\OT1/ptm/m/n/10 by ( \OT1/ptm/b/n/10 ?\OT1/ptm/m/n/10 ). GSR-n is a com-pre-hen
--sive spa-tial rep-re-sen-ta-
+Underfull \hbox (badness 3514) in paragraph at lines 30--30
+\OT1/ptm/m/n/10 ple sce-nario where $\OML/cmm/m/it/10 o[]\OT1/cmr/m/n/10 (\OML/
+cmm/m/it/10 TOP\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 o[]$\OT1/ptm/m/n/10 , $\OML/cm
+m/m/it/10 o[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 RIGHT\OT1/cmr/m/n/10 )\OML/cmm/m
+/it/10 o[]$\OT1/ptm/m/n/10 , and
  []
 
 
 LaTeX Warning: Citation `goyal1997direction' on page 1 undefined on input line 
-44.
+33.
+
+
+LaTeX Warning: Reference `CardinalTile' on page 1 undefined on input line 33.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./figure/EGSR-relations.png, id=3, 997.7275pt x 352.31625pt>
+File: ./figure/EGSR-relations.png Graphic file (type png)
+
+<use ./figure/EGSR-relations.png>
+Package pdftex.def Info: ./figure/EGSR-relations.png used on input line 36.
+(pdftex.def)             Requested size: 249.43126pt x 88.07884pt.
+
+Overfull \hbox (10.03688pt too wide) in paragraph at lines 36--36
+ [][] 
+ []
+
+
+LaTeX Warning: Reference `EGSR' on page 1 undefined on input line 39.
+
+
+LaTeX Warning: Reference `CardinalTile' on page 1 undefined on input line 41.
+
+
+LaTeX Warning: Citation `wallgrun2010qualitative' on page 1 undefined on input 
+line 43.
+
+
+LaTeX Warning: Reference `QCN' on page 1 undefined on input line 44.
+
+<./figure/QCN.png, id=4, 452.69125pt x 232.87pt>
+File: ./figure/QCN.png Graphic file (type png)
+ <use ./figure/QCN.png>
+Package pdftex.def Info: ./figure/QCN.png used on input line 47.
+(pdftex.def)             Requested size: 203.70917pt x 104.79051pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [1
 
 
 {C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <F:/AngryBird
-s/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/GSR.png (PNG copy)>] 
-<./figure/EGSR-relations.png, id=12, 997.7275pt x 352.31625pt>
-File: ./figure/EGSR-relations.png Graphic file (type png)
+s/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/GSR.png (PNG copy)> <
+F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/CardinalT
+iles.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTra
+cking/figure/EGSR-relations.png (PNG copy)>] [2
 
-<use ./figure/EGSR-relations.png>
-Package pdftex.def Info: ./figure/EGSR-relations.png used on input line 49.
-(pdftex.def)             Requested size: 249.43126pt x 88.07884pt.
-
-Overfull \hbox (10.03688pt too wide) in paragraph at lines 49--49
- [][] 
- []
-
-<./figure/QCN.png, id=13, 452.69125pt x 232.87pt>
-File: ./figure/QCN.png Graphic file (type png)
- <use ./figure/QCN.png>
-Package pdftex.def Info: ./figure/QCN.png used on input line 54.
-(pdftex.def)             Requested size: 203.70917pt x 104.79051pt.
-
-[2
-
- <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/EGSR-re
-lations.png (PNG copy)> <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/Object
-Tracking/figure/QCN.png (PNG copy)>]
+ <F:/AngryBirds/AngryBirdsServer/AngryBirdsClient/ObjectTracking/figure/QCN.png
+ (PNG copy)>]
 (F:\AngryBirds\AngryBirdsServer\AngryBirdsClient\ObjectTracking\Revision_Repres
 entation.aux)
 
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 1817 strings out of 494045
- 25331 string characters out of 3148390
- 84550 words of memory out of 3000000
- 5120 multiletter control sequences out of 15000+200000
+ 1823 strings out of 494045
+ 25351 string characters out of 3148390
+ 82487 words of memory out of 3000000
+ 5127 multiletter control sequences out of 15000+200000
  8984 words of font info for 21 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,7n,23p,1258b,212s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,7n,23p,1286b,212s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program File
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/
-utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb>
-Output written on Revision_Representation.pdf (2 pages, 130909 bytes).
+ 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
+onts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pf
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb>
+Output written on Revision_Representation.pdf (2 pages, 156716 bytes).
 PDF statistics:
- 37 PDF objects out of 1000 (max. 8388607)
+ 42 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
