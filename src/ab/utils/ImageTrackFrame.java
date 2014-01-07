@@ -44,7 +44,7 @@ import ab.demo.other.ActionRobot;
 import ab.objtracking.RealTimeTracking;
 import ab.objtracking.Tracker;
 import ab.objtracking.TrackingFrameComparison;
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 import ab.vision.VisionUtils;
 import ab.vision.real.ImageSegmenter;
 
@@ -241,12 +241,12 @@ public class ImageTrackFrame {
 						toolTip.setTipText("(" + e.getX() + ", " + e.getY()
 								+ ")");
 					else {
-						List<ABObject> objs;
+						List<ABTrackingObject> objs;
 						if (initialFrame)
 							objs = tracker.getInitialObjects();
 						else
 							objs = tracker.getMatchedObjects();
-						for (ABObject obj : objs) {
+						for (ABTrackingObject obj : objs) {
 							Point center = obj.getCenter();
 							// System.out.println(e.getX() + "  " +
 							// center.getX());

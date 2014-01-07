@@ -1,6 +1,5 @@
 package ab.objtracking;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,9 +11,9 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import ab.objtracking.tracker.KnowledgeTrackerBaseLine_5;
+import ab.objtracking.tracker.KnowledgeTrackerBaseLine_8;
 import ab.utils.ImageTrackFrame;
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 import ab.vision.VisionUtils;
 import ab.vision.real.MyVisionUtils;
 
@@ -33,8 +32,8 @@ public class TrackingFrameComparison implements Runnable {
 	
 	public static void main(String[] args) {
 		
-		Tracker tracker = new KnowledgeTrackerBaseLine_5(200);
-		TrackingFrameComparison tfc = new TrackingFrameComparison("t4_61", tracker);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
+		Tracker tracker = new KnowledgeTrackerBaseLine_8(200);
+		TrackingFrameComparison tfc = new TrackingFrameComparison("t11", tracker);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
 		
 		TrackingFrameComparison.continuous = true;
 		tfc.run();
@@ -159,7 +158,7 @@ public class TrackingFrameComparison implements Runnable {
 						{
 							saveGroundTruth = false;
 							//save ground truth file;
-							Map<ABObject, ABObject> matchedObjs = tracker.getLastMatch();
+							Map<ABTrackingObject, ABTrackingObject> matchedObjs = tracker.getLastMatch();
 							File groundTruth = new File(filename + "\\" + "groundtruth" + System.currentTimeMillis() + ".obj");
 							ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream(groundTruth));
 							oos.writeObject(matchedObjs);

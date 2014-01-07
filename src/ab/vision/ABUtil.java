@@ -61,7 +61,7 @@ public class ABUtil {
 	
 
 	// If o1 supports o2, return true
-	public static boolean isSupport(ABObject o2, ABObject o1)
+	public static boolean isSupport(ABTrackingObject o2, ABTrackingObject o1)
 	{
 		int ex_o1 = o1.x + o1.width;
 		int ex_o2 = o2.x + o2.width;
@@ -80,11 +80,11 @@ public class ABUtil {
 	//Return a link list of ABObjects that support o1 (test by isSupport function ). 
 	//objs refers to a list of potential supporters.
 	//Empty list will be returned if no such supporters. 
-	public static ABList getSupporters(ABObject o2, List<ABObject> objs)
+	public static ABList getSupporters(ABTrackingObject o2, List<ABTrackingObject> objs)
 			{
 				ABList result = ABList.newList();
 				//Loop through the potential supporters
-		        for(ABObject o1: objs)
+		        for(ABTrackingObject o1: objs)
 		        {
 		        	if(isSupport(o2,o1))
 		        		result.add(o1);
@@ -103,7 +103,7 @@ public class ABUtil {
 		for(Point point: points)
 		{
 		  if((counter++)%10 == 0 && point.x < 840 && point.y < 480)
-			for(ABObject ab: state.findBlocks())
+			for(ABTrackingObject ab: state.findBlocks())
 			{
 				/*System.out.println(point.x + "  " + point.y + "  " + state.vision._scene.length + "  "
 						+ state.vision._scene[1].length);*/

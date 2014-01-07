@@ -2,16 +2,16 @@ package ab.objtracking.representation;
 
 import org.jgrapht.graph.DefaultEdge;
 
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 
 public class ConstraintEdge extends DefaultEdge {
 
-	 private ABObject source;
-     private ABObject target;
+	 private ABTrackingObject source;
+     private ABTrackingObject target;
      public Relation label;
      public double distance = 0;
 
-     public ConstraintEdge(ABObject source, ABObject target, Relation label, double distance) {
+     public ConstraintEdge(ABTrackingObject source, ABTrackingObject target, Relation label, double distance) {
          
          this.source = source;
          this.target = target;
@@ -19,7 +19,7 @@ public class ConstraintEdge extends DefaultEdge {
          this.distance = distance;
      }
      //Just for compatibility;
-     public ConstraintEdge(ABObject source, ABObject target, Relation label) {
+     public ConstraintEdge(ABTrackingObject source, ABTrackingObject target, Relation label) {
          
          this.source = source;
          this.target = target;
@@ -27,18 +27,18 @@ public class ConstraintEdge extends DefaultEdge {
       
      }
 
-     public ABObject getSource() {
+     public ABTrackingObject getSource() {
          return source;
      }
 
      public void inverseDirection()
      {
-    	 ABObject temp = source;
+    	 ABTrackingObject temp = source;
     	 source = target;
     	 target = temp;
     	 label = Relation.inverse(label);
      }
-     public ABObject getTarget() {
+     public ABTrackingObject getTarget() {
          return target;
      }
 

@@ -13,12 +13,12 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 import ab.vision.ABType;
 import ab.vision.VisionUtils;
-import ab.vision.real.shape.Body;
-import ab.vision.real.shape.Circle;
-import ab.vision.real.shape.Rect;
+import ab.vision.real.shape.TrackingBody;
+import ab.vision.real.shape.TrackingCircle;
+import ab.vision.real.shape.TrackingRect;
 
 public class MyVision 
 {
@@ -34,12 +34,12 @@ public class MyVision
     
     // detected game objects
     private Rectangle _sling = null;
-    private ArrayList<Circle> _birds = null;
-    private ArrayList<Body> _gameObjects = null;
+    private ArrayList<TrackingCircle> _birds = null;
+    private ArrayList<TrackingBody> _gameObjects = null;
     
     // connected component and shapes for drawing purposes
     private ArrayList<ConnectedComponent> _draw = null;
-    private ArrayList<Body> _drawShape = null;
+    private ArrayList<TrackingBody> _drawShape = null;
     
     // the reference point (point birds are launched from)
     private Point _ref = null;
@@ -58,7 +58,7 @@ public class MyVision
         _height = screenshot.getHeight();
         
         // Reset object counter
-         ABObject.resetCounter();
+         ABTrackingObject.resetCounter();
         
         // find ground level and all connected components in scene
         _seg = new ImageSegmenter(screenshot);
@@ -67,7 +67,7 @@ public class MyVision
         
         // initialise drawing objects
         _draw = new ArrayList<ConnectedComponent>();
-        _drawShape = new ArrayList<Body>();
+        _drawShape = new ArrayList<TrackingBody>();
         
         // find the slingshot and reference point
         findSling();
@@ -109,12 +109,12 @@ public class MyVision
     }
     
     // find all birds in the scene, listed from left to right
-    public ArrayList<Circle> findBirds()
+    public ArrayList<TrackingCircle> findBirds()
     {
         if (_birds != null) return _birds;
         if (_sling == null) return null;
         
-        _birds = new ArrayList<Circle>();
+        _birds = new ArrayList<TrackingCircle>();
         
         // scan the birds from left to right
         int xMax = -2;
@@ -133,7 +133,7 @@ public class MyVision
                 // add if not overlapping with previous bird
                 if ((bound[0] + bound[2]) / 2 > xMax + 1)
                 {
-                    Circle b = (Circle) c.getShape();
+                    TrackingCircle b = (TrackingCircle) c.getShape();
                     _birds.add(b);
                     _draw.add(c);
                     _drawShape.add(b);
@@ -147,19 +147,19 @@ public class MyVision
     }
     
     // find all objects in the scene beside slingshot and birds
-    public List<Body> findObjects()
+    public List<TrackingBody> findObjects()
     {
         int xMin = 0;
         if (_sling != null)
             xMin = _sling.x + 100;
             
-        _gameObjects = new ArrayList<Body>();
+        _gameObjects = new ArrayList<TrackingBody>();
         for (ConnectedComponent c : _components)
         {
             if ((c.getType() >= ImageSegmenter.PIG && c.getType() <= ImageSegmenter.DUCK) || 
                 c.getType() == ImageSegmenter.HILLS)
             {
-                Body b = c.getShape();
+                TrackingBody b = c.getShape();
                 if (b == null || (c.getType() != ImageSegmenter.HILLS && b.centerX < xMin))
                     continue;
                     
@@ -172,18 +172,18 @@ public class MyVision
                 	if(image[(int)b.getCenterX()][(int)b.getCenterY()] == 262143)
                 		continue;
                 }*/
-                Body _b = b;
-                if ( b instanceof Circle && b.type == ABType.Wood)
+                TrackingBody _b = b;
+                if ( b instanceof TrackingCircle && b.type == ABType.Wood)
     			{
     			
-    				ABObject newBlock = new Rect(
+    				ABTrackingObject newBlock = new TrackingRect(
     						b.getCenterX(), b.getCenterY(), b.getBounds().width, 
     						b.getBounds().height, 0, -1, b.area);
     				/*System.out.println(" circle to rec conversion: Circle " + b);
     				System.out.println(" circle to rec conversion: Rect " + newBlock);*/
     				newBlock.type = b.type;
     				newBlock.id = b.id;
-    				_b = (Rect)newBlock;
+    				_b = (TrackingRect)newBlock;
     			}
                 _gameObjects.add(_b);
                 _draw.add(c);
@@ -255,7 +255,7 @@ public class MyVision
             for (ConnectedComponent d : _draw)
                 d.draw(image, false, false);
         }
-        for (Body b : _drawShape)
+        for (TrackingBody b : _drawShape)
         if (b != null)
             b.draw(g, false, Color.RED);
             
@@ -282,12 +282,12 @@ public class MyVision
                 d.draw(image, false, false);
         }
        // for (Body b : _drawShape)
-        for(Body b : _gameObjects)
+        for(TrackingBody b : _gameObjects)
         if (b != null)
         	{	
         		b.draw(g, false, Color.RED);
         		g.setColor(Color.black);
-        		if(b.id != ABObject.unassigned)
+        		if(b.id != ABTrackingObject.unassigned)
         			g.drawString(b.id + "", (int)b.centerX - 5, (int)b.centerY + 5);// 10: font size
         	}
             

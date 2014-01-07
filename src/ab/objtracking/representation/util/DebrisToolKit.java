@@ -11,24 +11,24 @@ import org.jgrapht.DirectedGraph;
 import ab.objtracking.MagicParams;
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 import ab.vision.ABShape;
 import ab.vision.ABType;
 import ab.vision.real.shape.DebrisGroup;
-import ab.vision.real.shape.Rect;
+import ab.vision.real.shape.TrackingRect;
 import ab.vision.real.shape.RectType;
 
 public class DebrisToolkit {
 
 	
-	public static List<DebrisGroup> getAllDummyRectangles(DirectedGraph<ABObject, ConstraintEdge> network)
+	public static List<DebrisGroup> getAllDummyRectangles(DirectedGraph<ABTrackingObject, ConstraintEdge> network)
 	{
 		List<DebrisGroup> debrisList = new LinkedList<DebrisGroup>();
-		Set<ABObject> vertices = network.vertexSet();
+		Set<ABTrackingObject> vertices = network.vertexSet();
 		
 		//Set<ABObject> usedDebris = new HashSet<ABObject>();
 		
-		for (ABObject obj : vertices)
+		for (ABTrackingObject obj : vertices)
 		{
 			if(obj.rectType == RectType.rec8x1 || obj.type == ABType.Pig)
 				continue;
@@ -37,7 +37,7 @@ public class DebrisToolkit {
 				Set<ConstraintEdge> edges = network.edgesOf(obj);
 				for (ConstraintEdge edge : edges)
 				{
-					ABObject target = edge.getTarget();
+					ABTrackingObject target = edge.getTarget();
 					
 					if(obj.id < target.id && obj.type == target.type && canBeSameDebrisGroup(obj, target, edge.label) )
 					{
@@ -63,7 +63,7 @@ public class DebrisToolkit {
 	 * Recover the shape of the original from two debris (the original shape is maintained)
 	 * only recover rec8*1 
 	 * **/
-	public static DebrisGroup debrisReconstruct(ABObject o1, ABObject o2)
+	public static DebrisGroup debrisReconstruct(ABTrackingObject o1, ABTrackingObject o2)
 	{
 		if(o1.shape != ABShape.Rect && o2.shape != ABShape.Rect)
 			return null;
@@ -79,7 +79,7 @@ public class DebrisToolkit {
 		{
 			double centerX = ( o1.getCenterX() + o2.getCenterX() )/2;
 			double centerY = ( o1.getCenterY() + o2.getCenterY() )/2;
-			ABObject originalShape = o1.getOriginalShape();
+			ABTrackingObject originalShape = o1.getOriginalShape();
 			DebrisGroup debris = new DebrisGroup(centerX, centerY, originalShape.getPreciseWidth(), originalShape.getPreciseHeight(), 
 					angle, -1, (int)(originalShape.getPreciseHeight() * originalShape.getPreciseWidth()));
 			debris.type = o1.type;
@@ -96,7 +96,7 @@ public class DebrisToolkit {
 	/**
 	 * Recover the shape of the original from two pieces
 	 * */
-	public static DebrisGroup debrisReconstruct(ABObject o1, ABObject o2, Relation o1Too2)
+	public static DebrisGroup debrisReconstruct(ABTrackingObject o1, ABTrackingObject o2, Relation o1Too2)
 	{
 		DebrisGroup debris;
 		if (!o1.isLevel)
@@ -145,13 +145,13 @@ public class DebrisToolkit {
 		}
 		
 	}
-	public static Rect debrisReconstruct(List<ABObject> group) 
+	public static TrackingRect debrisReconstruct(List<ABTrackingObject> group) 
 	{
 		if (group.size() == 1)
 		{
-			ABObject obj = group.get(0);
+			ABTrackingObject obj = group.get(0);
 
-			Rect rec = new Rect(obj.getCenterX(), obj.getCenterY(),
+			TrackingRect rec = new TrackingRect(obj.getCenterX(), obj.getCenterY(),
 					obj.getOriginalShape().getPreciseWidth(), obj.getOriginalShape().getPreciseHeight(), -1 , obj.getOriginalShape().area);
 			rec.type = obj.type;
 		}
@@ -159,19 +159,19 @@ public class DebrisToolkit {
 			if (group.size() == 2)
 			{
 				
-				ABObject member1 = group.get(0);
-				ABObject member2 = group.get(1);
+				ABTrackingObject member1 = group.get(0);
+				ABTrackingObject member2 = group.get(1);
 				//log(" ^^^ " + member1 + "\n" + member2);
 				if(canFormDebris(member1, member2))
 				{
 					//log("&&");
-					ABObject originalShape = member1.getOriginalShape();
+					ABTrackingObject originalShape = member1.getOriginalShape();
 					double x = (member1.getCenterX() + member2.getCenterX())/2;
 					double y = (member1.getCenterY() + member2.getCenterY())/2;
 					double angle = divide( (member1.getCenterY() - member2.getCenterY()), (member1.getCenterX() - member2.getCenterX()));
 					angle = Math.atan(angle);
 					angle = (angle > 0)? angle : (Math.PI - angle);
-					Rect rect = new Rect(x, y, originalShape.getPreciseWidth(), originalShape.getPreciseHeight(), angle, -1, originalShape.area);
+					TrackingRect rect = new TrackingRect(x, y, originalShape.getPreciseWidth(), originalShape.getPreciseHeight(), angle, -1, originalShape.area);
 					rect.type = member1.type;
 					return rect;
 				}
@@ -180,18 +180,18 @@ public class DebrisToolkit {
 			{
 			   double x, y, angle;
 			   x = y = angle = 0;
-			   ABObject originalShape = null;
+			   ABTrackingObject originalShape = null;
 			   ABType type = null;
 			   for (int i = 0; i < group.size() - 1; i++)
 			   {
-				   ABObject member1 = group.get(i);
+				   ABTrackingObject member1 = group.get(i);
 				   type = member1.type;
 				   x += member1.getCenterX();
 				   y += member1.getCenterY();
 				   originalShape = member1.getOriginalShape();
 				   for (int j = i + 1; j < group.size(); j++)
 				   {
-					   ABObject member2 = group.get(j);
+					   ABTrackingObject member2 = group.get(j);
 					   if(canFormDebris(member1, member2))
 					   {
 						    angle = divide( (member1.getCenterY() - member2.getCenterY()), (member1.getCenterX() - member2.getCenterX()));
@@ -204,7 +204,7 @@ public class DebrisToolkit {
 			   }
 			   x = x/group.size();
 			   y = y/group.size();
-			   Rect rect = new Rect(x, y, originalShape.getPreciseWidth(), originalShape.getPreciseHeight(), angle, -1, originalShape.area);
+			   TrackingRect rect = new TrackingRect(x, y, originalShape.getPreciseWidth(), originalShape.getPreciseHeight(), angle, -1, originalShape.area);
 			   rect.type = type;
 			   return rect;
 			   
@@ -223,7 +223,7 @@ public class DebrisToolkit {
 	/**
 	 * @return true if o1 and o2 can form a same object without considering the type and other info
 	 * */
-	private static boolean canFormDebris(ABObject o1, ABObject o2)
+	private static boolean canFormDebris(ABTrackingObject o1, ABTrackingObject o2)
 	{
 		double orientationDiff = Math.abs(o1.angle - o2.angle);
 		double angle = getAngle(o1.getCenterX() - o2.getCenterX(), o1.getCenterY() - o2.getCenterY());
@@ -244,7 +244,7 @@ public class DebrisToolkit {
 	/*
 	 * Determine whether two objects are likely to be of the same debris group. Only consider rotated rectangles otherwise most of stacked leveled objects will be considered as debris
 	 * **/
-	public static boolean canBeSameDebrisGroup(ABObject o1, ABObject o2, Relation o1Too2)
+	public static boolean canBeSameDebrisGroup(ABTrackingObject o1, ABTrackingObject o2, Relation o1Too2)
 	{
 		//(o1.)
 		if(o1.shape != ABShape.Rect && o2.shape != ABShape.Rect)
@@ -288,14 +288,14 @@ public class DebrisToolkit {
 	 * 
 	 * If debris and newObj can form a bigger shape, but the shape is bigger than initialObj, then return true;
 	 * **/
-	public static boolean isSameDebris(ABObject debris, Rect initialObj, ABObject newObj)
+	public static boolean isSameDebris(ABTrackingObject debris, TrackingRect initialObj, ABTrackingObject newObj)
 	{
 		if(debris.type == newObj.type)
 		{
 			/*if(debris.isSameShape(initialObj))
 				return false;*/
 			
-			Rect dummy = debris.extend(initialObj.rectType);
+			TrackingRect dummy = debris.extend(initialObj.rectType);
 			//Relation r = GSRConstructor.computeRectToRectRelation(debris, initialObj);
 			Polygon p = dummy.p;
 			if(p.contains(newObj.getCenter()))// && newObj instanceof Rect)//damage detection only supports rect currently
@@ -360,8 +360,8 @@ public class DebrisToolkit {
 	 */
 	public static void main(String[] args) {
 		
-		Rect rect1 = new Rect(578.0, 306.5, 5.691, 31.382, 1.696, -1, 155);
-		Rect rect2 = new Rect(575.0, 328.0, 5.587, 12.281, 1.696, -1, 60);
+		TrackingRect rect1 = new TrackingRect(578.0, 306.5, 5.691, 31.382, 1.696, -1, 155);
+		TrackingRect rect2 = new TrackingRect(575.0, 328.0, 5.587, 12.281, 1.696, -1, 60);
 		System.out.println(canBeSameDebrisGroup(rect1, rect2, GSRConstructor.computeRectToRectRelation(rect1, rect2).r));
 	}
 	

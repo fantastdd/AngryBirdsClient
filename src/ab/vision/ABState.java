@@ -16,7 +16,7 @@ public class ABState {
 	private ABList pigs;
 	private ABList birds;
 	private GameState gameState;
-	private ABObject slingshot;
+	private ABTrackingObject slingshot;
 	
 	@SuppressWarnings("unused")
 	private ABState(){}
@@ -49,13 +49,13 @@ public class ABState {
 			birds = vision.findBirds();
 		return birds;
 	}
-	public ABObject findSlingshot()
+	public ABTrackingObject findSlingshot()
 	{
 		if(slingshot == null)
 		{
 		    Rectangle slingMBR = vision.findSlingshotMBR();
 		    if(slingMBR != null)
-		    	slingshot = new ABObject(slingMBR,ABType.Sling);
+		    	slingshot = new ABTrackingObject(slingMBR,ABType.Sling);
 		}
 		return slingshot;
 	}

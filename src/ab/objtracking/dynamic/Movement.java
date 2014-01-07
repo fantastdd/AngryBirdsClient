@@ -1,7 +1,7 @@
 package ab.objtracking.dynamic;
 
 import ab.objtracking.MagicParams;
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 
 public class Movement {
 	//TODO add rotation..
@@ -30,7 +30,7 @@ public class Movement {
 	public int xDirection;
 	public int yDirection;
 	
-	public ABObject object;
+	public ABTrackingObject object;
 	public boolean remainStatic = false;
 	public boolean landMarkMovement = false; // The movement has a higher confidence to be correct
 
@@ -87,7 +87,7 @@ public class Movement {
 	{
 		this.allowedYDirection = allowedYDirection;
 	}
-	public Movement(ABObject object) 
+	public Movement(ABTrackingObject object) 
 	{
 		super();
 		this.object = object;
@@ -99,7 +99,7 @@ public class Movement {
 			allowedYDirection[i] = MAX_SCOPE;
 		}
 	}
-	public Movement(int xshift, int yshift, ABObject object) {
+	public Movement(int xshift, int yshift, ABTrackingObject object) {
 		super();
 		this.object = object;
 		allowedXDirection = new int[3];
@@ -112,7 +112,7 @@ public class Movement {
 	    setDirectionAndType(xshift, yshift);
 	    
 	}
-	public Movement(Movement movement, ABObject object)
+	public Movement(Movement movement, ABTrackingObject object)
 	{
 		this.object = object;
 		int count = -1;
@@ -137,7 +137,7 @@ public class Movement {
 		}
 		movementType = movement.movementType;
 	}
-	public void generateInertia(ABObject obj)
+	public void generateInertia(ABTrackingObject obj)
 	{
 		int xshift = (int) (this.object.getCenterX() - obj.getCenterX());
 		int yshift = (int) (this.object.getCenterY() - obj.getCenterY());
@@ -257,7 +257,7 @@ public class Movement {
 	/**
 	 * @return true if iniObj can move to newObj 
 	 * */
-	public boolean isValidMovement(ABObject iniObj, ABObject newObj, boolean checkMovementType)
+	public boolean isValidMovement(ABTrackingObject iniObj, ABTrackingObject newObj, boolean checkMovementType)
 	{
 		double xshift = newObj.getCenterX() - iniObj.getCenterX();
 		double yshift = newObj.getCenterY() - iniObj.getCenterY();

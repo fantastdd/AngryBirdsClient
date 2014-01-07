@@ -39,7 +39,7 @@ public class Vision {
 	public Vision(BufferedImage screenshot) {
 
 		//Reset the ID counter for each segmentation
-		ABObject.resetCounter();
+		ABTrackingObject.resetCounter();
 		processScreenShot(screenshot);
 	}
 
@@ -505,7 +505,7 @@ public class Vision {
 					objects.add(new ABPig(rec, type));
 		else
 			for(Rectangle rec: mbrs)
-				objects.add(new ABObject(rec, type));
+				objects.add(new ABTrackingObject(rec, type));
 		return objects;
 	}
 	public List<Rectangle> findBlackBirds() {

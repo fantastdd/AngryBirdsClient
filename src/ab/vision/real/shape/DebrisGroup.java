@@ -1,8 +1,8 @@
 package ab.vision.real.shape;
 
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 
-public class DebrisGroup extends Rect{
+public class DebrisGroup extends TrackingRect{
 
 	/**
 	 * 
@@ -15,10 +15,10 @@ public class DebrisGroup extends Rect{
 		member1 = null;
 		member2 = null;
 	}
-    public ABObject member1;
-    public ABObject member2;
+    public ABTrackingObject member1;
+    public ABTrackingObject member2;
     public final boolean isDebris = false;
-	public void addMember(ABObject member)
+	public void addMember(ABTrackingObject member)
 	{
 		member.isDebris = true;
 		if (member1 != null)

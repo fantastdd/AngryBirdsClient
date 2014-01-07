@@ -11,8 +11,8 @@ import org.jgrapht.graph.SimpleGraph;
 
 import ab.objtracking.dynamic.Movement;
 import ab.objtracking.representation.util.GSRConstructor;
-import ab.vision.ABObject;
-import ab.vision.real.shape.Rect;
+import ab.vision.ABTrackingObject;
+import ab.vision.real.shape.TrackingRect;
 
 public enum Relation {
 	
@@ -719,7 +719,7 @@ public enum Relation {
 	 * @return the newObj's sector's corresponding sector of the initial obj
 	 * 
 	 * */
-	private static Relation getCorrespondingRelation(Relation sector, ABObject iniObj, ABObject newObj)
+	private static Relation getCorrespondingRelation(Relation sector, ABTrackingObject iniObj, ABTrackingObject newObj)
 	{
 		
 		if (iniObj.isLevel && newObj.isLevel)
@@ -730,11 +730,11 @@ public enum Relation {
 			{
 				switch(newObj.lean)
 				{
-					case ABObject.LEAN_LEFT: 
+					case ABTrackingObject.LEAN_LEFT: 
 					{
 						return sector;
 					}
-					case ABObject.LEAN_RIGHT:
+					case ABTrackingObject.LEAN_RIGHT:
 					{
 						switch(sector)
 						{
@@ -757,11 +757,11 @@ public enum Relation {
 				{
 					switch(iniObj.lean)
 					{
-						case ABObject.LEAN_RIGHT: 
+						case ABTrackingObject.LEAN_RIGHT: 
 						{
 							return sector;
 						}
-						case ABObject.LEAN_LEFT:
+						case ABTrackingObject.LEAN_LEFT:
 						{
 							switch(sector)
 							{
@@ -830,7 +830,7 @@ public enum Relation {
 	 * @param newR: the relation between newObj1 and newObj2
 	 * return true if iniR can become newR
 	 * */
-	public static boolean isOpposite(ABObject iniObj1, ABObject iniObj2, Relation iniR, ABObject newObj1, ABObject newObj2, Relation newR )
+	public static boolean isOpposite(ABTrackingObject iniObj1, ABTrackingObject iniObj2, Relation iniR, ABTrackingObject newObj1, ABTrackingObject newObj2, Relation newR )
 	{
 		if ( !Relation.isGRRelation(iniR) || !Relation.isGRRelation(newR))
 		{
@@ -848,7 +848,7 @@ public enum Relation {
 		return false;
 	}
 	//TODO return true if iniR can become newR by the movements
-	public static boolean isOpposite(ABObject iniObj1, ABObject iniObj2, Relation iniR, ABObject newObj1, ABObject newObj2, Relation newR, Movement newObj1Movement, Movement newObj2Movement)
+	public static boolean isOpposite(ABTrackingObject iniObj1, ABTrackingObject iniObj2, Relation iniR, ABTrackingObject newObj1, ABTrackingObject newObj2, Relation newR, Movement newObj1Movement, Movement newObj2Movement)
 	{
 		return false;
 	}
@@ -874,11 +874,11 @@ public enum Relation {
 	
 	public static void main(String args[])
 	{ 
-		Rect iniObj1 = new Rect(646.0, 342.0, 6.914, 50.437, 3.047, -1, 300);
-		Rect iniObj2 = new Rect(648.0, 353.0, 6.217, 51.176, 2.953, -1, 306);
+		TrackingRect iniObj1 = new TrackingRect(646.0, 342.0, 6.914, 50.437, 3.047, -1, 300);
+		TrackingRect iniObj2 = new TrackingRect(648.0, 353.0, 6.217, 51.176, 2.953, -1, 306);
 		Relation rel1 = GSRConstructor.computeRectToRectRelation(iniObj1, iniObj2).r;
-		Rect newObj2 = new Rect(653.0, 358.0, 6.172, 50.792, 0.157, -1, 300);
-		Rect newObj1 = new Rect(653.0, 364.9, 6.659, 48.661, 0.157, 01, 288);
+		TrackingRect newObj2 = new TrackingRect(653.0, 358.0, 6.172, 50.792, 0.157, -1, 300);
+		TrackingRect newObj1 = new TrackingRect(653.0, 364.9, 6.659, 48.661, 0.157, 01, 288);
 		Relation rel2 = GSRConstructor.computeRectToRectRelation(newObj1, newObj2).r;
 		
 		/*for (Line2D line : iniObj1.sectors)

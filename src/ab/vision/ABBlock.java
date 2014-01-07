@@ -3,18 +3,18 @@ package ab.vision;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 import ab.vision.ABType;
 
-public class ABBlock extends ABObject {
-	public static final ABBlock nullBlock = new ABBlock(new ABObject(new Rectangle(0,0,1,1),ABType.Unknown,-1));	
+public class ABBlock extends ABTrackingObject {
+	public static final ABBlock nullBlock = new ABBlock(new ABTrackingObject(new Rectangle(0,0,1,1),ABType.Unknown,-1));	
 	private static Random random = new Random();
 	public ABBlock(Rectangle mbr, ABType type) {
 		super(mbr, type);
 		// TODO Auto-generated constructor stub
 	}
 
-    public ABBlock(ABObject obj)
+    public ABBlock(ABTrackingObject obj)
     {
     	super(obj);
     }

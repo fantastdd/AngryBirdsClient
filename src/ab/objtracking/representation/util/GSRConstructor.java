@@ -24,11 +24,11 @@ import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
 import ab.utils.ImageSegFrame;
 import ab.vision.ABList;
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 import ab.vision.ABType;
 import ab.vision.VisionUtils;
 import ab.vision.real.MyVision;
-import ab.vision.real.shape.Rect;
+import ab.vision.real.shape.TrackingRect;
 
 public class GSRConstructor {
 
@@ -36,42 +36,42 @@ public class GSRConstructor {
 	 * @param grnetwork: network with GR relations
 	 * @return a list of all possible set of objects that have the same kinematics configurations (evaluating by GR relations)
 	 * */
-	public static List<Set<ABObject>> getAllKinematicsGroups(DirectedGraph<ABObject, ConstraintEdge> grnetwork)
+	public static List<Set<ABTrackingObject>> getAllKinematicsGroups(DirectedGraph<ABTrackingObject, ConstraintEdge> grnetwork)
 	{
 
 		
-		List<Set<ABObject>> allGroups = new LinkedList<Set<ABObject>>();
+		List<Set<ABTrackingObject>> allGroups = new LinkedList<Set<ABTrackingObject>>();
 
-		Set<ABObject> vertices = grnetwork.vertexSet();
+		Set<ABTrackingObject> vertices = grnetwork.vertexSet();
 
 		//GR Group
-		List<Set<ABObject>> grgroups = new LinkedList<Set<ABObject>>();
+		List<Set<ABTrackingObject>> grgroups = new LinkedList<Set<ABTrackingObject>>();
 		
-		ArrayList<ABObject> vlist = new ArrayList<ABObject>();
+		ArrayList<ABTrackingObject> vlist = new ArrayList<ABTrackingObject>();
 		
 		vlist.addAll(vertices);
 		//Sort by ID
-		Collections.sort(vlist, new Comparator<ABObject>(){
+		Collections.sort(vlist, new Comparator<ABTrackingObject>(){
 
 			@Override
-			public int compare(ABObject o1, ABObject o2) {
+			public int compare(ABTrackingObject o1, ABTrackingObject o2) {
 
 				return ((Integer)o1.id).compareTo(o2.id);
 			}});
 		for (int i = 0; i < vlist.size(); i++)
 		{
-			ABObject o1 = vlist.get(i);
+			ABTrackingObject o1 = vlist.get(i);
 			
 			Set<ConstraintEdge> o1set = grnetwork.edgesOf(o1);//get all edges;
 			
-			Set<ABObject> v1set = new HashSet<ABObject>();//get neighbor objs: those objects will potentially give force
+			Set<ABTrackingObject> v1set = new HashSet<ABTrackingObject>();//get neighbor objs: those objects will potentially give force
 
 			for (ConstraintEdge edge : o1set)
 			{
 				if(edge.distance > MagicParams.VisionGap)
 					continue;
 				
-				ABObject vertex = edge.getTarget();
+				ABTrackingObject vertex = edge.getTarget();
 				if(vertex != o1)
 					v1set.add(vertex);
 				else
@@ -81,7 +81,7 @@ public class GSRConstructor {
 				//if (Relation.isEE(edge.label))
 				if(Relation.isGRRelation(edge.label))
 				{
-					Set<ABObject> set = new HashSet<ABObject>();
+					Set<ABTrackingObject> set = new HashSet<ABTrackingObject>();
 					set.add(o1);
 					set.add(vertex);
 					grgroups.add(set);
@@ -89,14 +89,14 @@ public class GSRConstructor {
 				//===============  Test and Add End ===================
 				//System.out.println(edge);
 			}
-			Set<ABObject> sameGroup = new HashSet<ABObject>();
+			Set<ABTrackingObject> sameGroup = new HashSet<ABTrackingObject>();
 			int o1Degree = grnetwork.inDegreeOf(o1) + grnetwork.outDegreeOf(o1);
 			
 			
 			//Search o1 neighbor's neighbors
 			for (int j = 0; j < vlist.size(); j++)
 			{
-				ABObject o2 = vlist.get(j);
+				ABTrackingObject o2 = vlist.get(j);
 
 				if(v1set.contains(o2))
 				{					
@@ -112,12 +112,12 @@ public class GSRConstructor {
 						r = e.label;
 
 					Set<ConstraintEdge> o2set = grnetwork.edgesOf(o2);
-					Set<ABObject> sameLabelSet = new HashSet<ABObject>();
+					Set<ABTrackingObject> sameLabelSet = new HashSet<ABTrackingObject>();
 					for (ConstraintEdge edge : o2set)
 					{
 						if(edge.distance > MagicParams.VisionGap)
 							continue;
-						ABObject vertex = edge.getTarget();
+						ABTrackingObject vertex = edge.getTarget();
 						int vertexDegree = grnetwork.inDegreeOf(vertex) + grnetwork.outDegreeOf(vertex);
 						Relation _r = edge.label;
 						if(vertex == o2)
@@ -179,13 +179,13 @@ public class GSRConstructor {
 		allGroups.addAll(grgroups);
 		
 		//Remove subset stuff
-		List<Set<ABObject>> subsets = new LinkedList<Set<ABObject>>();
+		List<Set<ABTrackingObject>> subsets = new LinkedList<Set<ABTrackingObject>>();
 		for (int i = 0; i < allGroups.size() - 1; i++)
 		{
-			Set<ABObject> set1 = allGroups.get(i);
+			Set<ABTrackingObject> set1 = allGroups.get(i);
 			for (int j = i + 1; j < allGroups.size(); j++)
 			{
-				Set<ABObject> set2 = allGroups.get(j);
+				Set<ABTrackingObject> set2 = allGroups.get(j);
 				if(set1.containsAll(set2))
 					subsets.add(set2);
 				else
@@ -206,14 +206,14 @@ public class GSRConstructor {
 	
 	}
 	
-	private static void printGroup(List<Set<ABObject>> allGroups)
+	private static void printGroup(List<Set<ABTrackingObject>> allGroups)
 	{
 		log("\nPrint Group");
 		int count = 0;
-		for (Set<ABObject> objs : allGroups)
+		for (Set<ABTrackingObject> objs : allGroups)
 		{
 			System.out.println("======== Group " + ++count + "=========");
-			for (ABObject obj : objs)
+			for (ABTrackingObject obj : objs)
 			{
 				System.out.println(obj);
 			}
@@ -227,35 +227,35 @@ public class GSRConstructor {
 	 * @return graphs[]: graphs[0]: Full network, graph[1]: GR network
 	 * Construct two Constraint network: Full and GR
 	 */
-	public static List<DirectedGraph<ABObject, ConstraintEdge>> contructNetworks(List<ABObject> objs)
+	public static List<DirectedGraph<ABTrackingObject, ConstraintEdge>> contructNetworks(List<ABTrackingObject> objs)
 	{
-		DirectedGraph<ABObject, ConstraintEdge> fullGraph,grGraph;
+		DirectedGraph<ABTrackingObject, ConstraintEdge> fullGraph,grGraph;
 
-		fullGraph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
-		grGraph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		fullGraph = new SimpleDirectedGraph<ABTrackingObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABTrackingObject, ConstraintEdge>(ConstraintEdge.class));
+		grGraph = new SimpleDirectedGraph<ABTrackingObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABTrackingObject, ConstraintEdge>(ConstraintEdge.class));
 
-		List<DirectedGraph<ABObject, ConstraintEdge>> graphs = new ArrayList<DirectedGraph<ABObject, ConstraintEdge>>();
+		List<DirectedGraph<ABTrackingObject, ConstraintEdge>> graphs = new ArrayList<DirectedGraph<ABTrackingObject, ConstraintEdge>>();
 
 		//Sort by ID
-		Collections.sort(objs, new Comparator<ABObject>(){
+		Collections.sort(objs, new Comparator<ABTrackingObject>(){
 
 			@Override
-			public int compare(ABObject o1, ABObject o2) {
+			public int compare(ABTrackingObject o1, ABTrackingObject o2) {
 
 				return ((Integer)o1.id).compareTo(o2.id);
 			}});
 		//Create Node
-		for (ABObject obj : objs)
+		for (ABTrackingObject obj : objs)
 		{
 			fullGraph.addVertex(obj);
 			grGraph.addVertex(obj);
 		}
 		for ( int i = 0; i < objs.size() - 1; i++ )
 		{
-			ABObject sourceVertex = objs.get(i);
+			ABTrackingObject sourceVertex = objs.get(i);
 			for (int j = i + 1; j < objs.size(); j++ )
 			{
-				ABObject targetVertex = objs.get(j);
+				ABTrackingObject targetVertex = objs.get(j);
 				RelationPair pair = computeRelation(sourceVertex, targetVertex);
 				if (sourceVertex.equals(targetVertex))
 					System.out.println(" Duplicate: " + sourceVertex + "  " + sourceVertex.hashCode() + "  " + targetVertex + "  " + targetVertex.hashCode());
@@ -270,31 +270,31 @@ public class GSRConstructor {
 		return graphs;
 	}
 	//Construct Constraint network (directed-graph)
-	public static DirectedGraph<ABObject, ConstraintEdge> constructFullNetwork(List<ABObject> objs)
+	public static DirectedGraph<ABTrackingObject, ConstraintEdge> constructFullNetwork(List<ABTrackingObject> objs)
 	{
-		DirectedGraph<ABObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		DirectedGraph<ABTrackingObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABTrackingObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABTrackingObject, ConstraintEdge>(ConstraintEdge.class));
 
 		//Sort by ID
-		Collections.sort(objs, new Comparator<ABObject>(){
+		Collections.sort(objs, new Comparator<ABTrackingObject>(){
 
 			@Override
-			public int compare(ABObject o1, ABObject o2) {
+			public int compare(ABTrackingObject o1, ABTrackingObject o2) {
 
 				return ((Integer)o1.id).compareTo(o2.id);
 			}});
 
 		//Create Node
-		for (ABObject obj : objs)
+		for (ABTrackingObject obj : objs)
 		{
 			graph.addVertex(obj);
 		}
 
 		for ( int i = 0; i < objs.size() - 1; i++ )
 		{
-			ABObject sourceVertex = objs.get(i);
+			ABTrackingObject sourceVertex = objs.get(i);
 			for (int j = i + 1; j < objs.size(); j++ )
 			{
-				ABObject targetVertex = objs.get(j);
+				ABTrackingObject targetVertex = objs.get(j);
 				RelationPair pair = computeRelation(sourceVertex, targetVertex);
 				graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, pair.r, pair.distance));	
 			}
@@ -302,13 +302,13 @@ public class GSRConstructor {
 		return graph;
 	}
 
-	public static DirectedGraph<ABObject, ConstraintEdge> addVertexToGRNetwork(ABObject obj, DirectedGraph<ABObject, ConstraintEdge> graph)
+	public static DirectedGraph<ABTrackingObject, ConstraintEdge> addVertexToGRNetwork(ABTrackingObject obj, DirectedGraph<ABTrackingObject, ConstraintEdge> graph)
 	{
 
 		//Create Node
 		graph.addVertex(obj);
 
-		for (ABObject vertex : graph.vertexSet())
+		for (ABTrackingObject vertex : graph.vertexSet())
 		{
 			if (vertex.id > obj.id)
 			{
@@ -336,31 +336,31 @@ public class GSRConstructor {
 
 	}
 
-	public static DirectedGraph<ABObject, ConstraintEdge> constructGRNetwork(List<ABObject> objs)
+	public static DirectedGraph<ABTrackingObject, ConstraintEdge> constructGRNetwork(List<ABTrackingObject> objs)
 	{
 
-		DirectedGraph<ABObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		DirectedGraph<ABTrackingObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABTrackingObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABTrackingObject, ConstraintEdge>(ConstraintEdge.class));
 
 
 		//Sort by ID
-		Collections.sort(objs, new Comparator<ABObject>(){
+		Collections.sort(objs, new Comparator<ABTrackingObject>(){
 
 			@Override
-			public int compare(ABObject o1, ABObject o2) {
+			public int compare(ABTrackingObject o1, ABTrackingObject o2) {
 
 				return ((Integer)o1.id).compareTo(o2.id);
 			}});
 		//Create Node
-		for (ABObject obj : objs)
+		for (ABTrackingObject obj : objs)
 		{
 			graph.addVertex(obj);
 		}
 		for ( int i = 0; i < objs.size() - 1; i++ )
 		{
-			ABObject sourceVertex = objs.get(i);
+			ABTrackingObject sourceVertex = objs.get(i);
 			for (int j = i + 1; j < objs.size(); j++ )
 			{
-				ABObject targetVertex = objs.get(j);
+				ABTrackingObject targetVertex = objs.get(j);
 				RelationPair pair = computeRelation(sourceVertex, targetVertex);
 
 
@@ -377,31 +377,31 @@ public class GSRConstructor {
 
 
 	}
-	public static DirectedGraph<ABObject, ConstraintEdge> constructGRNetworkWithoutUnassignedRelations(List<ABObject> objs)
+	public static DirectedGraph<ABTrackingObject, ConstraintEdge> constructGRNetworkWithoutUnassignedRelations(List<ABTrackingObject> objs)
 	{
 
-		DirectedGraph<ABObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		DirectedGraph<ABTrackingObject, ConstraintEdge> graph = new SimpleDirectedGraph<ABTrackingObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABTrackingObject, ConstraintEdge>(ConstraintEdge.class));
 		//Create Node
-		for (ABObject obj : objs)
+		for (ABTrackingObject obj : objs)
 		{
 			graph.addVertex(obj);
 		}
 
 		//Sort by ID
-		Collections.sort(objs, new Comparator<ABObject>(){
+		Collections.sort(objs, new Comparator<ABTrackingObject>(){
 
 			@Override
-			public int compare(ABObject o1, ABObject o2) {
+			public int compare(ABTrackingObject o1, ABTrackingObject o2) {
 
 				return ((Integer)o1.id).compareTo(o2.id);
 			}});
 
 		for ( int i = 0; i < objs.size() - 1; i++ )
 		{
-			ABObject sourceVertex = objs.get(i);
+			ABTrackingObject sourceVertex = objs.get(i);
 			for (int j = i + 1; j < objs.size(); j++ )
 			{
-				ABObject targetVertex = objs.get(j);
+				ABTrackingObject targetVertex = objs.get(j);
 				RelationPair pair = computeRelation(sourceVertex, targetVertex);
 				if(Relation.isGRRelation(pair.r))
 					graph.addEdge(sourceVertex, targetVertex, new ConstraintEdge(sourceVertex, targetVertex, pair.r, pair.distance));	
@@ -414,13 +414,13 @@ public class GSRConstructor {
 
 
 	}
-	private static RelationPair computeRelation(ABObject source, ABObject target)
+	private static RelationPair computeRelation(ABTrackingObject source, ABTrackingObject target)
 	{
 
 		return computeRectToRectRelation(source, target);
 	}
 
-	public static RelationPair computeRectToRectRelation(ABObject source, ABObject target)
+	public static RelationPair computeRectToRectRelation(ABTrackingObject source, ABTrackingObject target)
 	{
 		Rectangle mbr_1 = source.getBounds();
 		Rectangle mbr_2 = target.getBounds();
@@ -433,7 +433,7 @@ public class GSRConstructor {
 
 	}
 
-	private static RelationPair computeRectToRectContactRelation(ABObject source, ABObject target)
+	private static RelationPair computeRectToRectContactRelation(ABTrackingObject source, ABTrackingObject target)
 	{
 		if (source.type == ABType.Hill)
 		{
@@ -622,7 +622,7 @@ public class GSRConstructor {
 		RelationPair pair = new RelationPair(r, minDistance);
 		return pair;
 	}
-	private static int getCorrectSectorIndex(ABObject source, ABObject target, int sIndex, int tIndex)
+	private static int getCorrectSectorIndex(ABTrackingObject source, ABTrackingObject target, int sIndex, int tIndex)
 	{
 		//System.out.println(" " + source.isLevel + "  " + sIndex + " " + target.isLevel + "  " + tIndex);
 		int sIndex1 = (sIndex == 0)? 7 : sIndex - 1;
@@ -777,7 +777,7 @@ public class GSRConstructor {
 		System.out.println(message);
 	}
 	//TODO Perform some relaxiaion here
-	private static RelationPair computeNonContactRelation(ABObject source, ABObject target, boolean vertical_intersect, boolean horizontal_intersect)
+	private static RelationPair computeNonContactRelation(ABTrackingObject source, ABTrackingObject target, boolean vertical_intersect, boolean horizontal_intersect)
 	{
 		Point source_center = source.getCenter();
 		Point target_center = target.getCenter();
@@ -862,10 +862,10 @@ public class GSRConstructor {
 			return false;
 		return true;
 	}
-	public static void printNetwork(Graph<ABObject, ConstraintEdge> network){
+	public static void printNetwork(Graph<ABTrackingObject, ConstraintEdge> network){
 
 		//System.out.println(network);
-		for (ABObject vertex: network.vertexSet())
+		for (ABTrackingObject vertex: network.vertexSet())
 		{
 			System.out.println(" vertex: " + vertex);
 			for (ConstraintEdge edge: network.edgesOf(vertex))
@@ -891,9 +891,9 @@ public class GSRConstructor {
 		screenshot = VisionUtils.resizeImage(screenshot, 800, 1200);
 		frame.refresh(screenshot);
 		long time = System.nanoTime();
-		DirectedGraph<ABObject, ConstraintEdge> network = GSRConstructor.constructGRNetwork(allInterestObjs);
+		DirectedGraph<ABTrackingObject, ConstraintEdge> network = GSRConstructor.constructGRNetwork(allInterestObjs);
 		System.out.println(" Time: " + (System.nanoTime() - time) + " nanos ");
-		for (ABObject vertex: network.vertexSet())
+		for (ABTrackingObject vertex: network.vertexSet())
 		{
 			System.out.println(" vertex: " + vertex);
 			for (ConstraintEdge edge: network.edgesOf(vertex))
@@ -911,8 +911,8 @@ public class GSRConstructor {
 	
 		//Rect: id:2 type:rec8x1 area:208 w:  4.697 h: 52.162 a:  2.545 at x:543.5 y:344.0 isDebris:false [ S2_S6 ] 
 		//Rect: id:3 type:rec2x1 area:72 w:  6.119 h: 12.205 a:  2.545 at x:533.0 y:343.5 isDebris:false
-		Rect rec2 =new Rect(646.0, 342.0, 6.914, 50.437, 3.047, -1, 300);
-		Rect rec1 = new Rect(649.0, 353.0, 6.217, 51.176, 2.953, -1, 306);
+		TrackingRect rec2 =new TrackingRect(646.0, 342.0, 6.914, 50.437, 3.047, -1, 300);
+		TrackingRect rec1 = new TrackingRect(649.0, 353.0, 6.217, 51.176, 2.953, -1, 306);
 
 		
 /*

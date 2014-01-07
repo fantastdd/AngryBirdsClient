@@ -11,22 +11,23 @@ import java.util.Map;
 import ab.objtracking.Tracker;
 import ab.objtracking.dynamic.Movement;
 import ab.objtracking.representation.util.GlobalObjectsToolkit;
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 import ab.vision.ABType;
-import ab.vision.real.shape.Circle;
-import ab.vision.real.shape.Rect;
+import ab.vision.real.shape.TrackingCircle;
+import ab.vision.real.shape.TrackingRect;
 import ab.vision.real.shape.RectType;
 
 public abstract class TrackerTemplate implements Tracker{
 
-	List<ABObject> iniObjs = null;
-	List<ABObject> lastInitialObjs = null;
-	Map<ABObject, List<Pair>> prefs;
-	Map<ABObject, List<Pair>> iniPrefs;
-	List<ABObject> unmatchedIniObjs;
-	List<ABObject> unmatchedNewObjs;
-	Map<ABObject, ABObject> matchedObjs;
-	List<ABObject> newComingObjs;
+	List<ABTrackingObject> iniObjs = null;
+	List<ABTrackingObject> lastInitialObjs = null;
+	Map<ABTrackingObject, List<Pair>> prefs;
+	Map<ABTrackingObject, List<Pair>> iniPrefs;
+	List<ABTrackingObject> unmatchedIniObjs;
+	List<ABTrackingObject> unmatchedNewObjs;
+	Map<ABTrackingObject, ABTrackingObject> matchedObjs;
+	List<ABTrackingObject> newComingObjs;
+	Map<Integer, Integer> matchedId = new HashMap<Integer, Integer>();
 	long maximum_distance;
 	int timegap;
 	
@@ -49,7 +50,7 @@ public abstract class TrackerTemplate implements Tracker{
 	 * @param: objects in the next frame create preferences based on the mass
 	 *         center shift
 	 * */
-	public abstract void createPrefs(List<ABObject> objs);
+	public abstract void createPrefs(List<ABTrackingObject> objs);
 
 	/**
 	 * @param targetObj
@@ -61,7 +62,7 @@ public abstract class TrackerTemplate implements Tracker{
 	 * @return true: if targetObj prefers lastMatchedObj over rivalObject.
 	 *       
 	 * */
-	public abstract boolean prefers(ABObject targetObj, ABObject lastObj, ABObject rivalObj, Map<ABObject, List<Pair>> prefs);
+	public abstract boolean prefers(ABTrackingObject targetObj, ABTrackingObject lastObj, ABTrackingObject rivalObj, Map<ABTrackingObject, List<Pair>> prefs);
 
 	@Override
 	public boolean isTrackingStart() {
@@ -69,7 +70,7 @@ public abstract class TrackerTemplate implements Tracker{
 	}
 
 	@Override
-	public void startTracking(List<ABObject> initialObjs) {
+	public void startTracking(List<ABTrackingObject> initialObjs) {
 		startTracking = true;
 		//reset 
 		this.iniObjs = initialObjs;
@@ -79,7 +80,7 @@ public abstract class TrackerTemplate implements Tracker{
 		newComingObjs = null;
 	}
 	
-	protected void swap(Map<ABObject, ABObject> iniToNewMatch, Map<ABObject, ABObject> NewToIniMatch, ABObject o1, ABObject o2, ABObject newO1, ABObject newO2)
+	protected void swap(Map<ABTrackingObject, ABTrackingObject> iniToNewMatch, Map<ABTrackingObject, ABTrackingObject> NewToIniMatch, ABTrackingObject o1, ABTrackingObject o2, ABTrackingObject newO1, ABTrackingObject newO2)
 	{
 		iniToNewMatch.remove(o1);
 		iniToNewMatch.remove(o2);
@@ -94,7 +95,7 @@ public abstract class TrackerTemplate implements Tracker{
 		NewToIniMatch.put(newO2, o1);
 	}
 
-	protected float calMassShift(ABObject o1, ABObject o2) {
+	protected float calMassShift(ABTrackingObject o1, ABTrackingObject o2) {
 	
 		Point center1 = o1.getCenter();
 		Point center2 = o2.getCenter();
@@ -113,16 +114,16 @@ public abstract class TrackerTemplate implements Tracker{
 	 * Intended for tolerating vision error in detecting wood
 	 * Convert all wood circles to 1x1 wood blocks since vision is likely to treat 1x1 wood as circle
 	 * */
-	protected void preprocessObjs(List<ABObject> objs)
+	protected void preprocessObjs(List<ABTrackingObject> objs)
 	{
-		List<ABObject> removal = new LinkedList<ABObject>();
-		List<ABObject> addedBlocks = new LinkedList<ABObject>();
-		for (ABObject obj : objs)
+		List<ABTrackingObject> removal = new LinkedList<ABTrackingObject>();
+		List<ABTrackingObject> addedBlocks = new LinkedList<ABTrackingObject>();
+		for (ABTrackingObject obj : objs)
 		{
-			if (obj instanceof Circle && obj.type == ABType.Wood)
+			if (obj instanceof TrackingCircle && obj.type == ABType.Wood)
 			{
 			
-				ABObject newBlock = new Rect(
+				ABTrackingObject newBlock = new TrackingRect(
 						obj.getCenterX(), obj.getCenterY(), obj.getBounds().width, 
 						obj.getBounds().height, 0, -1, obj.area);
 				log(" circle to rec conversion: Circle " + obj);
@@ -140,35 +141,35 @@ public abstract class TrackerTemplate implements Tracker{
 			log(obj.toString());*/
 	}
 	@Override
-	public void setInitialObjects(List<ABObject> objs) {
+	public void setIniObjs(List<ABTrackingObject> objs) {
 	
 		iniObjs = objs;
 	
 	}
 
-	protected Map<ABObject, ABObject> matchObjs(List<ABObject> moreObjs, List<ABObject> lessObjs, Map<ABObject, List<Pair>> morePrefs, Map<ABObject, List<Pair>> lessPrefs) {
+	protected Map<ABTrackingObject, ABTrackingObject> matchObjs(List<ABTrackingObject> moreObjs, List<ABTrackingObject> lessObjs, Map<ABTrackingObject, List<Pair>> morePrefs, Map<ABTrackingObject, List<Pair>> lessPrefs) {
 	
-		HashMap<ABObject, ABObject> current = new HashMap<ABObject, ABObject>();
-		LinkedList<ABObject> freeObjs = new LinkedList<ABObject>();
+		HashMap<ABTrackingObject, ABTrackingObject> current = new HashMap<ABTrackingObject, ABTrackingObject>();
+		LinkedList<ABTrackingObject> freeObjs = new LinkedList<ABTrackingObject>();
 		freeObjs.addAll(lessObjs);
 	
-		HashMap<ABObject, Integer> next = new HashMap<ABObject, Integer>();
+		HashMap<ABTrackingObject, Integer> next = new HashMap<ABTrackingObject, Integer>();
 	
-		for (ABObject obj : moreObjs)
+		for (ABTrackingObject obj : moreObjs)
 			current.put(obj, null);
 	
 		// System.out.println(" freeObjs size: " + freeObjs.size());
-		for (ABObject obj : freeObjs) {
+		for (ABTrackingObject obj : freeObjs) {
 			next.put(obj, 0);
 		}
 		// System.out.println(" key size: " + next.keySet().size());
 		// while there are no free objects or all the original objects have been
 		// assigned.
-		unmatchedIniObjs = new LinkedList<ABObject>();
+		unmatchedIniObjs = new LinkedList<ABTrackingObject>();
 	
 		while (!freeObjs.isEmpty()) {
 	
-			ABObject freeObj = freeObjs.remove();
+			ABTrackingObject freeObj = freeObjs.remove();
 			int index = next.get(freeObj);
 			/*
 			 * System.out.println(obj + " " + index); for (ABObject t :
@@ -180,7 +181,7 @@ public abstract class TrackerTemplate implements Tracker{
 			else 
 			{
 					Pair pair = pairs.get(index);
-					ABObject moreObj = pair.obj;
+					ABTrackingObject moreObj = pair.obj;
 					next.put(freeObj, ++index);
 					if(pair.sameShape && pair.diff < 1000)
 					{
@@ -188,7 +189,7 @@ public abstract class TrackerTemplate implements Tracker{
 							current.put(moreObj, freeObj);
 						else 
 						{
-							ABObject rival = current.get(moreObj);
+							ABTrackingObject rival = current.get(moreObj);
 							if (prefers(moreObj, freeObj, rival, morePrefs)) 
 							{
 								current.put(moreObj, freeObj);
@@ -207,14 +208,14 @@ public abstract class TrackerTemplate implements Tracker{
 	}
 
 	@Override
-	public boolean matchObjs(List<ABObject> objs) {
+	public boolean matchObjs(List<ABTrackingObject> objs) {
 		/*
 		 * if(initialObjs != null) System.out.println(initialObjs.size());
 		 */
 		// System.out.println(objs.size());
 		// Do match, assuming initialObjs.size() > objs.size(): no objects will
 		// be created
-		matchedObjs = new HashMap<ABObject, ABObject>();
+		matchedObjs = new HashMap<ABTrackingObject, ABTrackingObject>();
 		if (iniObjs != null /*&& initialObjs.size() >= objs.size()*/) 
 		{
 	
@@ -229,14 +230,14 @@ public abstract class TrackerTemplate implements Tracker{
 			// log(" " + initialObjs.size() + "  " + objs.size());
 			createPrefs(objs);
 			//printPrefs(prefs);
-			Map<ABObject, ABObject> match;
-			unmatchedNewObjs = new LinkedList<ABObject>();
+			Map<ABTrackingObject, ABTrackingObject> match;
+			unmatchedNewObjs = new LinkedList<ABTrackingObject>();
 			if (!lessIni) {
 				match = matchObjs(iniObjs, objs, iniPrefs, prefs);
 	
 				// Assign Id
-				for (ABObject iniObj : match.keySet()) {
-					ABObject obj = match.get(iniObj);
+				for (ABTrackingObject iniObj : match.keySet()) {
+					ABTrackingObject obj = match.get(iniObj);
 					if (obj != null)
 					{
 						obj.id = iniObj.id;
@@ -256,8 +257,8 @@ public abstract class TrackerTemplate implements Tracker{
 				 */
 				match = matchObjs(objs, iniObjs, prefs, iniPrefs);
 				// Assign Id
-				for (ABObject obj : match.keySet()) {
-					ABObject iniObj = match.get(obj);
+				for (ABTrackingObject obj : match.keySet()) {
+					ABTrackingObject iniObj = match.get(obj);
 					if (iniObj != null)
 					{	
 						obj.id = iniObj.id; 
@@ -272,7 +273,7 @@ public abstract class TrackerTemplate implements Tracker{
 	
 			}
 	
-			this.setInitialObjects(objs);
+			this.setIniObjs(objs);
 			//printPrefs(prefs);
 			return true;
 		}
@@ -283,30 +284,25 @@ public abstract class TrackerTemplate implements Tracker{
 		super();
 	}
 
-	public abstract void debrisRecognition(List<ABObject> newObjs, List<ABObject> initialObjs);
+	public abstract void debrisRecognition(List<ABTrackingObject> newObjs, List<ABTrackingObject> initialObjs);
+
 
 	@Override
-	public boolean isMatch(Shape a, Shape b) {
-	
-		return false;
-	}
-
-	@Override
-	public List<ABObject> getMatchedObjects() {
+	public List<ABTrackingObject> getMatchedObjects() {
 	
 		return newComingObjs;
 	}
 
 	@Override
-	public List<ABObject> getInitialObjects() {
+	public List<ABTrackingObject> getInitialObjects() {
 		// TODO Auto-generated method stub
 		return lastInitialObjs;
 	}
 
-	public void printPrefs(Map<ABObject, List<Pair>> prefs) {
+	public void printPrefs(Map<ABTrackingObject, List<Pair>> prefs) {
 		
 		log("  ====================  Print Prefs =========================\n  ");
-		for (ABObject ao : prefs.keySet()) {
+		for (ABTrackingObject ao : prefs.keySet()) {
 			System.out.println(ao);
 			List<Pair> pairs = prefs.get(ao);
 			for (Pair pair : pairs) {
@@ -331,8 +327,9 @@ public abstract class TrackerTemplate implements Tracker{
 	 * of newObj if newObj is debris (otherwise the original shape of newObj is newObj itself)
 	 * 
 	 * */
-	protected void link(ABObject newObj, ABObject iniObj, boolean isDebris)
+	protected void link(ABTrackingObject newObj, ABTrackingObject iniObj, boolean isDebris)
 	{
+		matchedId.put(newObj.id, iniObj.id);
 		newObj.id = iniObj.id;
 		if(isDebris && (! (iniObj.getOriginalShape().isSameShape(newObj) || 
 		  (newObj.rectType == RectType.rec8x1/* && iniObj.getOriginalShape().rectType == RectType.rec8x1*/))
@@ -350,7 +347,12 @@ public abstract class TrackerTemplate implements Tracker{
 				newObj.isDebris = false;
 	
 	} 
-	protected void printMatch(Map<ABObject, ABObject> newToIniMatch, boolean newToIni)
+	@Override
+	public Map<Integer, Integer> getMatchedId()
+	{
+		return matchedId;
+	}
+	protected void printMatch(Map<ABTrackingObject, ABTrackingObject> newToIniMatch, boolean newToIni)
 	{
 		String str1 = "";
 		String str2 = "";
@@ -366,22 +368,22 @@ public abstract class TrackerTemplate implements Tracker{
 		}
 			
 		log(" ===========  Print Match ============= ");
-		for (ABObject newObj : newToIniMatch.keySet())
+		for (ABTrackingObject newObj : newToIniMatch.keySet())
 		{
 			System.out.println(str1 + newObj);
 			System.out.println(str2 + newToIniMatch.get(newObj));
 			System.out.println("==========");
 		}
 	}
-	protected void printMovement(Map<ABObject, Movement> movements)
+	protected void printMovement(Map<ABTrackingObject, Movement> movements)
 	{
 		log("\n Print Initial Objects Movements");
-		for (ABObject obj : movements.keySet())
+		for (ABTrackingObject obj : movements.keySet())
 		{
 			log(movements.get(obj) + "");
 		}
 	}
-	protected void printMatch(List<ABObject> interestObj, Map<ABObject, ABObject> newToIniMatch, boolean newToIni)
+	protected void printMatch(List<ABTrackingObject> interestObj, Map<ABTrackingObject, ABTrackingObject> newToIniMatch, boolean newToIni)
 	{
 		String str1 = "";
 		String str2 = "";
@@ -397,7 +399,7 @@ public abstract class TrackerTemplate implements Tracker{
 		}
 			
 		log(" ===========  Print Match ============= ");
-		for (ABObject newObj : interestObj)
+		for (ABTrackingObject newObj : interestObj)
 		{
 			System.out.println(str1 + newObj);
 			System.out.println(str2 + newToIniMatch.get(newObj));
@@ -406,11 +408,11 @@ public abstract class TrackerTemplate implements Tracker{
 	}
 	
 	class Pair {
-		public ABObject obj;
+		public ABTrackingObject obj;
 		public float diff;
 		public boolean sameShape;
 	
-		public Pair(ABObject obj, float diff, boolean sameShape) {
+		public Pair(ABTrackingObject obj, float diff, boolean sameShape) {
 			super();
 			this.obj = obj;
 			this.diff = diff;

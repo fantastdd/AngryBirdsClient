@@ -21,7 +21,7 @@ import ab.objtracking.representation.util.GlobalObjectsToolkit;
 import ab.objtracking.tracker.KnowledgeTrackerBaseLine_8;
 import ab.objtracking.tracker.SMETracker;
 import ab.vision.ABList;
-import ab.vision.ABObject;
+import ab.vision.ABTrackingObject;
 import ab.vision.real.MyVision;
 import ab.vision.real.MyVisionUtils;
 
@@ -127,7 +127,7 @@ public class AutomaticTrackerEvaluator {
 			screenshot = ImageIO.read(image);
 			MyVisionUtils.constructImageSegWithTracking(screenshot, tracker);
 		}
-		Map<ABObject, ABObject> match = tracker.getLastMatch();
+		Map<ABTrackingObject, ABTrackingObject> match = tracker.getLastMatch();
 		File groundTruth = new File(filename + "\\" + "groundtruth.obj");
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(groundTruth));
 		oos.writeObject(match);
@@ -175,7 +175,7 @@ public class AutomaticTrackerEvaluator {
 		//load ground truth
 		ObjectInputStream ois = new ObjectInputStream( new FileInputStream( new File(filename + "\\" + "groundtruth.obj")));
 		@SuppressWarnings("unchecked")
-		Map<ABObject, ABObject> groundtruth = (Map<ABObject, ABObject>) ois.readObject();
+		Map<ABTrackingObject, ABTrackingObject> groundtruth = (Map<ABTrackingObject, ABTrackingObject>) ois.readObject();
 		ois.close();
 		return evaluate(tracker, _images, groundtruth);
 	}
@@ -183,7 +183,7 @@ public class AutomaticTrackerEvaluator {
 	
 	
 	
-	private static int evaluate(Tracker tracker, File[] images, Map<ABObject, ABObject> groundTruth) throws IOException
+	private static int evaluate(Tracker tracker, File[] images, Map<ABTrackingObject, ABTrackingObject> groundTruth) throws IOException
 	{
 		RealTimeTracking.flipAskForInitialScenario();
 		File image = images[0];
@@ -206,14 +206,14 @@ public class AutomaticTrackerEvaluator {
 		
 		//Compare the matching result;
 		int error = 0;
-		Map<ABObject, ABObject> match = tracker.getLastMatch();
+		Map<ABTrackingObject, ABTrackingObject> match = tracker.getLastMatch();
 
-		for (ABObject iniObj: groundTruth.keySet())
+		for (ABTrackingObject iniObj: groundTruth.keySet())
 		{
-			ABObject newObj = groundTruth.get(iniObj);
+			ABTrackingObject newObj = groundTruth.get(iniObj);
 			if (newObj != null)
 			{
-				ABObject _newObj = match.get(iniObj);
+				ABTrackingObject _newObj = match.get(iniObj);
 				if(_newObj == null || _newObj.id != newObj.id)
 				{
 					error++;
@@ -246,7 +246,7 @@ public class AutomaticTrackerEvaluator {
 			bw = new BufferedWriter(new OutputStreamWriter( new FileOutputStream(matchReport, true)));
 			ObjectInputStream ois = new ObjectInputStream( new FileInputStream( new File(sample.getAbsolutePath() + "\\" + "groundtruth.obj")));
 			@SuppressWarnings("unchecked")
-			Map<ABObject, ABObject> groundtruth = (Map<ABObject, ABObject>) ois.readObject();
+			Map<ABTrackingObject, ABTrackingObject> groundtruth = (Map<ABTrackingObject, ABTrackingObject>) ois.readObject();
 			String filename = sample.getAbsolutePath();
 			File[] images = null;
 			
@@ -268,9 +268,9 @@ public class AutomaticTrackerEvaluator {
 			ABList allInterestObjs = ABList.newList();
 			allInterestObjs.addAll(vision.findObjects());
 			int stationary = 0;
-			for (ABObject abobject : allInterestObjs)
+			for (ABTrackingObject abobject : allInterestObjs)
 			{
-				for (ABObject _obj : groundtruth.keySet())
+				for (ABTrackingObject _obj : groundtruth.keySet())
 				{   
 					//ABObject iniObj = groundtruth.get(_object);
 					if(_obj.id == abobject.id)
