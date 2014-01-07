@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 
 import ab.objtracking.tracker.KnowledgeTrackerBaseLine_8;
 import ab.utils.ImageTrackFrame;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.VisionUtils;
 import ab.vision.real.MyVisionUtils;
 
@@ -158,7 +158,7 @@ public class TrackingFrameComparison implements Runnable {
 						{
 							saveGroundTruth = false;
 							//save ground truth file;
-							Map<ABTrackingObject, ABTrackingObject> matchedObjs = tracker.getLastMatch();
+							Map<ABObject, ABObject> matchedObjs = tracker.getLastMatch();
 							File groundTruth = new File(filename + "\\" + "groundtruth" + System.currentTimeMillis() + ".obj");
 							ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream(groundTruth));
 							oos.writeObject(matchedObjs);

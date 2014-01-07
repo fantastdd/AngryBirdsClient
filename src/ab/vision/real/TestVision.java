@@ -25,11 +25,11 @@ import ab.demo.other.ActionRobot;
 import ab.vision.GameStateExtractor;
 import ab.vision.GameStateExtractor.GameState;
 
+@SuppressWarnings("serial")
 public class TestVision extends JFrame implements KeyListener, MouseListener, ActionListener, Runnable {
         
     // game related handlers
     private GameStateExtractor gameStateExtractor;
-    private ActionRobot ar;
     private BufferedImage screenshot;
     private boolean playing = false;
     
@@ -46,14 +46,12 @@ public class TestVision extends JFrame implements KeyListener, MouseListener, Ac
     public final static String modeStr[] = {"Detected objects", "Original image", "Labelled image", "Edge image",
                                             "Connected components"};
     private int mode = FULL;
-    private String rgbString = "";
     
     public TestVision() {
         super("Test Vision");
         
         // initiate game handlers
         gameStateExtractor = new GameStateExtractor();
-        ar = new ActionRobot();
         screenshot = ActionRobot.doScreenShot();
         
         final int nHeight = screenshot.getHeight();
@@ -151,7 +149,7 @@ public class TestVision extends JFrame implements KeyListener, MouseListener, Ac
     {   
         if (e.getSource() == timer)
         {
-            screenshot = ar.doScreenShot();
+            screenshot = ActionRobot.doScreenShot();
             GameState state = gameStateExtractor.getGameState(screenshot);
             
             if (state == GameState.PLAYING)
@@ -160,7 +158,7 @@ public class TestVision extends JFrame implements KeyListener, MouseListener, Ac
                 if (!playing)
                 {
                     System.out.println("zooming out");
-                    ar.fullyZoomOut();
+                    ActionRobot.fullyZoomOut();
                     playing = true;
                 }
             }
@@ -177,18 +175,13 @@ public class TestVision extends JFrame implements KeyListener, MouseListener, Ac
     // Fix release point or tap point depending on part of the image clicked
     public void mouseClicked(MouseEvent e)
     {
-        screenshot = ar.doScreenShot();
+        screenshot = ActionRobot.doScreenShot();
         Color color = new Color(screenshot.getRGB(e.getX(), e.getY()));
         
         int r = color.getRed();
         int g = color.getGreen();
         int b = color.getBlue();
-        int hue = ImageSegmenter.getHue(r, g, b);
-        int sat = ImageSegmenter.getSaturation(r, g, b);
-        int val = ImageSegmenter.getValue(r, g, b);
-        rgbString = String.format("(%d, %d): {r %d, g %d, b %d}; {hue %d, sat %d, val %d},",
-                            e.getX()+264, e.getY()+156, r, g, b, hue, sat, val);
-        //System.out.println(rgbString);
+     
         System.out.println((r << 10) | (g << 5) | b);
     }
     
@@ -216,6 +209,6 @@ public class TestVision extends JFrame implements KeyListener, MouseListener, Ac
         System.out.println("Usage java ab.demo.TestVision");
         System.out.println("Press SPACE to change different views\n");
         
-        TestVision tv = new TestVision();
+        new TestVision();
     }
 }

@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ab.demo.other.ActionRobot;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.real.MyVision;
-import ab.vision.real.shape.TrackingBody;
-import ab.vision.real.shape.TrackingRect;
+import ab.vision.real.shape.Body;
+import ab.vision.real.shape.Rect;
 import ab.vision.real.shape.RectType;
 
 public  class MagicParams {
@@ -40,18 +40,18 @@ public  class MagicParams {
 		new ActionRobot();
 		BufferedImage image = ActionRobot.doScreenShot();
 		MyVision vision = new MyVision(image);
-		List<TrackingBody> objs = vision.findObjects();
-		List<TrackingRect> rects = new LinkedList<TrackingRect>();
-		for (ABTrackingObject obj : objs)
+		List<Body> objs = vision.findObjects();
+		List<Rect> rects = new LinkedList<Rect>();
+		for (ABObject obj : objs)
 		{
 			if (obj.rectType == RectType.rec8x1)
 			{
-				rects.add((TrackingRect)obj);
+				rects.add((Rect)obj);
 			}
 		}
 		//calculate average
 		double total = 0;
-		for (TrackingRect rect : rects)
+		for (Rect rect : rects)
 		{
 			double width = rect.getPreciseWidth();
 			total += width;

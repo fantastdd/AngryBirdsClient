@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import ab.vision.real.shape.TrackingBody;
-import ab.vision.real.shape.TrackingCircle;
-import ab.vision.real.shape.TrackingPoly;
-import ab.vision.real.shape.TrackingRect;
+import ab.vision.real.shape.Body;
+import ab.vision.real.shape.Circle;
+import ab.vision.real.shape.Poly;
+import ab.vision.real.shape.Rect;
 
 class ConnectedComponent {
     
@@ -42,8 +42,6 @@ class ConnectedComponent {
     private int _perimeter;
     private int _type;
     private int _image[][];
-    private boolean _hasLine[][];
-    private int _edgeGroup[][];
     private double _angleThreshold = 0;
     
     // points and lines in the component
@@ -252,7 +250,7 @@ class ConnectedComponent {
      *          (points where contour orientation changes)
      * @return  Most likely shape of the object, null if it is noise
      */
-    private TrackingBody findShape(ArrayList<Point> corners)
+    private Body findShape(ArrayList<Point> corners)
     {
         final int RESOLUTION = 50;
         final double res = Math.PI / 2 / RESOLUTION;
@@ -319,33 +317,33 @@ class ConnectedComponent {
             
         // test for joined component
         if (areaMin > (_area + _perimeter) * JOIN_THRESHOLD)
-            return new TrackingPoly(findLines(), _left, _top, _type, _left+_width/2, _top+_height/2);
+            return new Poly(findLines(), _left, _top, _type, _left+_width/2, _top+_height/2);
             
         // test for circle
         if (areaMin * tc > areaMax && Math.abs(_width - _height) <= 3)
         {
             int r = (_width + _height) / 4 - 2;
-            return new TrackingCircle(x, y, r, _type);
+            return new Circle(x, y, r, _type);
         }
         
-        return new TrackingRect(x, y, width, height, angle, _type);
+        return new Rect(x, y, width, height, angle, _type);
     }
     
     /* find the most likely shape of the component
      * @return  most likely shape, null if it is noise
      */
-    public TrackingBody getShape()
+    public Body getShape()
     {
         if (_type == ImageSegmenter.SLING)
-            return new TrackingRect(boundingBox(), _type);
+            return new Rect(boundingBox(), _type);
         
         if ((_type > ImageSegmenter.SLING &&
             _type <= ImageSegmenter.PIG) ||
             _type == ImageSegmenter.TRAJECTORY)
-            return new TrackingCircle(boundingBox(), _type);
+            return new Circle(boundingBox(), _type);
         
         if (_type == ImageSegmenter.HILLS)
-            return new TrackingPoly(findLines(), _left, _top, _type, _left+_width/2, _top+_height/2);
+            return new Poly(findLines(), _left, _top, _type, _left+_width/2, _top+_height/2);
         
         ArrayList<Point> corners = new ArrayList<Point>();
         // use all edge points if the shape is small

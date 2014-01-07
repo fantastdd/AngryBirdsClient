@@ -330,7 +330,7 @@ public class ImageSegFrame {
   	    {
 	    	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
   	        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
-  	        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+  	        defaultScreen.getDefaultConfiguration().getBounds();
   	        //int x = (int) rect.getMaxX() - frame.getWidth();
   	        int x = 0;
   	        int y = 0;

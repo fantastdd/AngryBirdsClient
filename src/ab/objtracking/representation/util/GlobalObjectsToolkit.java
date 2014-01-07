@@ -8,43 +8,43 @@ import java.util.Map;
 
 import org.apache.commons.collections4.ListUtils;
 
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.real.shape.RectType;
 
 
 public class GlobalObjectsToolkit {
 	//Introduce timing schema later
-	private static Map<Integer, LinkedHashSet<ABTrackingObject>> wood, stone, ice;
-	private static Map<Integer, ABTrackingObject> allObjs;
+	private static Map<Integer, LinkedHashSet<ABObject>> wood, stone, ice;
+	private static Map<Integer, ABObject> allObjs;
 	private static LinkedHashSet<Integer> occludedIds;
 	private static LinkedList<Integer> allIds;
 	public static int uniqueObjsNum = 0;
 	public static int allObjsNum = 0;
 	//private static Map<Integer, Map<Integer, Relation>> lastRels;
-	private static Map<Integer, ABTrackingObject> lastObjs; // all the objects configurations at last time appearance.
-	public static void registerIniObjs(List<ABTrackingObject> iniObjs) {
+	private static Map<Integer, ABObject> lastObjs; // all the objects configurations at last time appearance.
+	public static void registerIniObjs(List<ABObject> iniObjs) {
 		
 		
 		System.out.println(" Register ini objs in GlobalObjectsToolkit");
-		wood = new HashMap<Integer, LinkedHashSet<ABTrackingObject>>();
-		stone = new HashMap<Integer, LinkedHashSet<ABTrackingObject>>();
-		ice = new HashMap<Integer, LinkedHashSet<ABTrackingObject>>();
+		wood = new HashMap<Integer, LinkedHashSet<ABObject>>();
+		stone = new HashMap<Integer, LinkedHashSet<ABObject>>();
+		ice = new HashMap<Integer, LinkedHashSet<ABObject>>();
 		
 		//initialize the spatial relations map;
 		//lastRels = new HashMap<Integer, Map<Integer, Relation>>();
-		lastObjs = new HashMap<Integer, ABTrackingObject>();
+		lastObjs = new HashMap<Integer, ABObject>();
 		
 		occludedIds = new LinkedHashSet<Integer>();
 		
 		for (RectType rectType : RectType.values()) {
 			
-			wood.put(rectType.id, new LinkedHashSet<ABTrackingObject>());
-			stone.put(rectType.id, new LinkedHashSet<ABTrackingObject>());
-			ice.put(rectType.id, new LinkedHashSet<ABTrackingObject>());
+			wood.put(rectType.id, new LinkedHashSet<ABObject>());
+			stone.put(rectType.id, new LinkedHashSet<ABObject>());
+			ice.put(rectType.id, new LinkedHashSet<ABObject>());
 			
 		}
-		allObjs = new HashMap<Integer, ABTrackingObject>();
+		allObjs = new HashMap<Integer, ABObject>();
 		//create an initial network
 		//List<DirectedGraph<ABObject, ConstraintEdge>> graphs = GSRConstructor.contructNetworks(iniObjs);
 		//DirectedGraph<ABObject, ConstraintEdge> fullNetwork = graphs.get(0);
@@ -54,7 +54,7 @@ public class GlobalObjectsToolkit {
 		allObjsNum = iniObjs.size();
 		uniqueObjsNum = 0;
 		
-		for (ABTrackingObject obj : iniObjs) {
+		for (ABObject obj : iniObjs) {
 		
 			if(obj.type == ABType.Hill)
 				uniqueObjsNum++;
@@ -143,10 +143,10 @@ public class GlobalObjectsToolkit {
 	{
 		return lastRels.get(sourceObj.id).get(targetObj.id);
 	}*/
-	public static void updateOccludedObjs(Map<ABTrackingObject, ABTrackingObject> newToIniMatch)
+	public static void updateOccludedObjs(Map<ABObject, ABObject> newToIniMatch)
 	{	
 		List<Integer> matchedIds = new LinkedList<Integer>();
-		for (ABTrackingObject newObj :newToIniMatch.keySet())
+		for (ABObject newObj :newToIniMatch.keySet())
 		{
 			//if(newToIniMatch.get(newObj) != null)
 			/*if(newObj.id == 16)
@@ -169,7 +169,7 @@ public class GlobalObjectsToolkit {
 		log("Wood");
 		for (Integer rectType : wood.keySet())
 		{
-			for (ABTrackingObject obj : wood.get(rectType))
+			for (ABObject obj : wood.get(rectType))
 				
 			{
 				log(obj.toString());
@@ -178,7 +178,7 @@ public class GlobalObjectsToolkit {
 		log("Stone");
 		for (Integer rectType : stone.keySet())
 		{
-			for (ABTrackingObject obj : stone.get(rectType))
+			for (ABObject obj : stone.get(rectType))
 			{
 				log(obj.toString());
 			}
@@ -186,7 +186,7 @@ public class GlobalObjectsToolkit {
 		log("Ice");
 		for (Integer rectType : ice.keySet())
 		{
-			for (ABTrackingObject obj : ice.get(rectType))
+			for (ABObject obj : ice.get(rectType))
 			{
 				log(obj.toString());
 			}
@@ -196,9 +196,9 @@ public class GlobalObjectsToolkit {
 	private static void log(String message){System.out.println(message);}
 	// Assign the most recent disappeared objs.
 	// unmatched cannot be DebrisGroup?
-	public static ABTrackingObject getPossibleOccludedMatch(ABTrackingObject unmatched)
+	public static ABObject getPossibleOccludedMatch(ABObject unmatched)
 	{
-		Map<Integer, LinkedHashSet<ABTrackingObject>> occObjs;
+		Map<Integer, LinkedHashSet<ABObject>> occObjs;
 		
 		//printIniObjs();
 		
@@ -216,14 +216,14 @@ public class GlobalObjectsToolkit {
 					return null;
 
 		//Search for large-size occluded blocks
-		ABTrackingObject matchedObj = null;
+		ABObject matchedObj = null;
 		for (int i = unmatched.rectType.id; i < RectType.values().length; i ++)
 		{
-			LinkedHashSet<ABTrackingObject> occByRectType = occObjs.get(i);
+			LinkedHashSet<ABObject> occByRectType = occObjs.get(i);
 			
 			float diff;
 			diff = Integer.MAX_VALUE;
-			for (ABTrackingObject obj : occByRectType)
+			for (ABObject obj : occByRectType)
 			{
 				if(occludedIds.contains(obj.id) && !ShapeToolkit.isDifferentShape(obj, unmatched))
 				{  
@@ -253,7 +253,7 @@ public class GlobalObjectsToolkit {
 	
 	}
 
-	public static ABTrackingObject getIniObjById(int id) {
+	public static ABObject getIniObjById(int id) {
 		return allObjs.get(id);
 	}
 

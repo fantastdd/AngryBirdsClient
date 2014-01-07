@@ -6,10 +6,10 @@ import java.io.Serializable;
 
 import ab.objtracking.MagicParams;
 import ab.vision.real.ImageSegmenter;
-import ab.vision.real.shape.TrackingRect;
+import ab.vision.real.shape.Rect;
 import ab.vision.real.shape.RectType;
 
-public class ABTrackingObject extends Rectangle implements Serializable {
+public class ABObject extends Rectangle implements Serializable {
  
  private static final long serialVersionUID = 737741268251922637L;
  
@@ -30,12 +30,12 @@ public class ABTrackingObject extends Rectangle implements Serializable {
  public int lean = LEAN_NOLEAN;
  
  
- public ABTrackingObject originalShape = null;
- public void setOriginalShape(ABTrackingObject obj)
+ public ABObject originalShape = null;
+ public void setOriginalShape(ABObject obj)
  {
 	 originalShape = obj.getOriginalShape();
  }
- public ABTrackingObject getOriginalShape()
+ public ABObject getOriginalShape()
  {
 	 if(originalShape == null)
 		 originalShape = this;
@@ -59,23 +59,23 @@ public class ABTrackingObject extends Rectangle implements Serializable {
  public double angle;
  public Line2D[] sectors;
  
-public ABTrackingObject(Rectangle mbr, ABType type) {
+public ABObject(Rectangle mbr, ABType type) {
 	super(mbr);
 	this.type = type;
 	this.id = counter++;
 }
-public ABTrackingObject(Rectangle mbr, ABType type, int id) {
+public ABObject(Rectangle mbr, ABType type, int id) {
 	super(mbr);
 	this.type = type;
 	this.id = id;
 }
-public ABTrackingObject(ABTrackingObject ab)
+public ABObject(ABObject ab)
 {
 	super(ab.getBounds());
 	this.type = ab.type;
 	this.id = ab.id;
 }
-public ABTrackingObject()
+public ABObject()
 {
 	this.id = counter ++;
 	this.type = ABType.Unknown;
@@ -84,7 +84,7 @@ public ABType getType()
 {
 	return type;
 }
-public boolean isSameShape(ABTrackingObject ao)
+public boolean isSameShape(ABObject ao)
 {
 	if (Math.abs(width - ao.width) < MagicParams.VisionGap && Math.abs(height - ao.height) < MagicParams.VisionGap)
 		return true;
@@ -101,14 +101,14 @@ public ABPoint getCenter() {
  * Extend this rectangle of a rect Type to the target. Return the original rectangle when the target rect type is smaller
  * By default, all the shape has rec1x1 recTye
  */
-public TrackingRect extend(RectType rectType)
+public Rect extend(RectType rectType)
 {
 	double extensionDegree = (double)rectType.id  - 1;
 	Rectangle bounds = getBounds();
 	double height = bounds.height * extensionDegree * 2.2 + bounds.height;
 	//System.out.println(" height: " + height + " extensionDegree: " + extensionDegree + " rectType" + rectType + " id ");
 	int area = (int)(bounds.width * height);
-	return new TrackingRect(bounds.getCenterX(), bounds.getCenterY(), bounds.width, height, this.angle, -1 , area);	
+	return new Rect(bounds.getCenterX(), bounds.getCenterY(), bounds.width, height, this.angle, -1 , area);	
 }
 
 

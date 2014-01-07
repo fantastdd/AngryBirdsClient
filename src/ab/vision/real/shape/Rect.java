@@ -11,10 +11,10 @@ import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 
 import ab.objtracking.MagicParams;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.real.ImageSegmenter;
 
-public class TrackingRect extends TrackingBody
+public class Rect extends Body
 {
     /**
 	 * 
@@ -24,7 +24,7 @@ public class TrackingRect extends TrackingBody
     public Polygon p;
     public int widthType;
     //Note Rect's width is not always the Rectangle's width 
-    public TrackingRect(double xs, double ys,  double w, double h, double theta, int t)
+    public Rect(double xs, double ys,  double w, double h, double theta, int t)
     {
         vision_type = t;
         
@@ -171,9 +171,9 @@ public class TrackingRect extends TrackingBody
     	return p.getBounds();
     }
     @Override
-    public boolean isSameShape(ABTrackingObject ao)
+    public boolean isSameShape(ABObject ao)
     {
-    	if (ao instanceof TrackingRect)
+    	if (ao instanceof Rect)
     	{
     		//Rect _rect = (Rect)ao;
     		if (isSameSize(ao))
@@ -183,10 +183,10 @@ public class TrackingRect extends TrackingBody
     }
    
     
-    protected boolean isSameSize(ABTrackingObject ao)
+    protected boolean isSameSize(ABObject ao)
     {
     
-    	TrackingRect _rect = (TrackingRect)ao;
+    	Rect _rect = (Rect)ao;
     	double ratio = ((area > _rect.area)? ((double)area/_rect.area) : ((double)_rect.area/area));
     	if (ao.rectType == RectType.rec8x1 && rectType == ao.rectType /*&& ao.getPreciseWidth() < MagicParams.SlimRecWidth && getPreciseWidth() < MagicParams.SlimRecWidth*/ )
     		return true;
@@ -206,7 +206,7 @@ public class TrackingRect extends TrackingBody
     	
     	return false;
     }
-    public TrackingRect(int box[], int t)
+    public Rect(int box[], int t)
     {
         centerX = (box[0] + box[2]) / 2.0;
         centerY = (box[3] + box[1]) / 2.0;
@@ -230,7 +230,7 @@ public class TrackingRect extends TrackingBody
         createPolygonAndSectors();
         calRecType();
     }
-    public TrackingRect(double centerX, double centerY, double width, double height, double angle, int vision_type, int area)
+    public Rect(double centerX, double centerY, double width, double height, double angle, int vision_type, int area)
     {
     	  this.centerX = centerX;
     	  this.centerY = centerY;
@@ -246,7 +246,7 @@ public class TrackingRect extends TrackingBody
           calRecType();    	
     }
     @Override
-    public TrackingRect extend(RectType rectType)
+    public Rect extend(RectType rectType)
     {
     	if(rectType.id <= this.rectType.id)
     	 return this;
@@ -255,7 +255,7 @@ public class TrackingRect extends TrackingBody
     	double height = this.preciseHeight * extensionDegree * 2.2 + this.preciseHeight;
     	//System.out.println(" height: " + height + " extensionDegree: " + extensionDegree + " rectType" + rectType + " id ");
     	int area = (int)(this.preciseWidth * height);
-    	return new TrackingRect(this.centerX, this.centerY, this.preciseWidth, height, this.angle, this.vision_type, area);	
+    	return new Rect(this.centerX, this.centerY, this.preciseWidth, height, this.angle, this.vision_type, area);	
     }
     
     

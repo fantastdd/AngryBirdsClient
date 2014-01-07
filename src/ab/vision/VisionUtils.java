@@ -459,11 +459,11 @@ public class VisionUtils {
 		return canvas;
 	}
 	//draw bounding boxes with IDs onto an image
-	public static BufferedImage drawBoundingBoxesWithID(BufferedImage canvas, List<ABTrackingObject>boxes, 
+	public static BufferedImage drawBoundingBoxesWithID(BufferedImage canvas, List<ABObject>boxes, 
 			Color bgColour)
 	{
 		Graphics2D g2d = canvas.createGraphics();
-		for (ABTrackingObject r : boxes) {
+		for (ABObject r : boxes) {
 			g2d.setColor(bgColour);
 			g2d.drawRect(r.x - 1, r.y - 1, r.width + 2, r.height + 2);
 			g2d.drawRect(r.x + 1, r.y + 1, r.width - 2, r.height - 2);

@@ -13,9 +13,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import ab.objtracking.tracker.KnowledgeTrackerBaseLine_7;
 import ab.objtracking.tracker.KnowledgeTrackerBaseLine_8;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.real.MyVisionUtils;
 
 public class TrackerEvaluator {
@@ -42,11 +41,11 @@ public class TrackerEvaluator {
 		//load ground truth
 		ObjectInputStream ois = new ObjectInputStream( new FileInputStream( new File(filename + "\\" + "groundtruth.obj")));
 		@SuppressWarnings("unchecked")
-		Map<ABTrackingObject, ABTrackingObject> groundtruth = (Map<ABTrackingObject, ABTrackingObject>) ois.readObject();
+		Map<ABObject, ABObject> groundtruth = (Map<ABObject, ABObject>) ois.readObject();
 		ois.close();
 		return evaluate(tracker, images, groundtruth);
 	}
-	private static int evaluate(Tracker tracker, File[] images, Map<ABTrackingObject, ABTrackingObject> groundTruth) throws IOException
+	private static int evaluate(Tracker tracker, File[] images, Map<ABObject, ABObject> groundTruth) throws IOException
 	{
 		RealTimeTracking.flipAskForInitialScenario();
 		File image = images[0];
@@ -69,7 +68,7 @@ public class TrackerEvaluator {
 		
 		//Compare the matching result;
 		int Error = 0;
-		Map<ABTrackingObject, ABTrackingObject> match = tracker.getLastMatch();
+		Map<ABObject, ABObject> match = tracker.getLastMatch();
 		
 /*		for (Integer id : tracker.getMatchedId().keySet())
 			System.out.println(id + " is matched to " + tracker.getMatchedId().get(id));*/
@@ -80,12 +79,12 @@ public class TrackerEvaluator {
 			System.out.println(" initial Obj" + match.get(newObj));
 			System.out.println("==========");
 		}*/
-		for (ABTrackingObject iniObj: groundTruth.keySet())
+		for (ABObject iniObj: groundTruth.keySet())
 		{
-			ABTrackingObject newObj = groundTruth.get(iniObj);
+			ABObject newObj = groundTruth.get(iniObj);
 			if (newObj != null)
 			{
-				ABTrackingObject _newObj = match.get(iniObj);
+				ABObject _newObj = match.get(iniObj);
 				if(_newObj == null || _newObj.id != newObj.id)
 				{
 					System.out.println(newObj + "  " + _newObj + "  " + iniObj);

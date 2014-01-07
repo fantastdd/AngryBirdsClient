@@ -22,10 +22,10 @@ import ab.objtracking.representation.util.DebrisToolkit;
 import ab.objtracking.representation.util.GSRConstructor;
 import ab.objtracking.representation.util.GlobalObjectsToolkit;
 import ab.objtracking.representation.util.ShapeToolkit;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.ABType;
 import ab.vision.real.shape.DebrisGroup;
-import ab.vision.real.shape.TrackingRect;
+import ab.vision.real.shape.Rect;
 
 
 /**
@@ -43,15 +43,15 @@ import ab.vision.real.shape.TrackingRect;
 public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 
 
-	public DirectedGraph<ABTrackingObject, ConstraintEdge> iniGRNetwork, newGRNetwork, iniFullNetwork, newFullNetwork;
-	protected Map<ABTrackingObject, Movement> iniObjsMovement = new HashMap<ABTrackingObject, Movement>();
+	public DirectedGraph<ABObject, ConstraintEdge> iniGRNetwork, newGRNetwork, iniFullNetwork, newFullNetwork;
+	protected Map<ABObject, Movement> iniObjsMovement = new HashMap<ABObject, Movement>();
 	protected List<DebrisGroup> debrisGroupList = new LinkedList<DebrisGroup>();
-	protected List<ABTrackingObject> debrisList;
+	protected List<ABObject> debrisList;
 	protected boolean lessIniObjs = false;
 	
 	
 	
-	protected List<Set<ABTrackingObject>> iniKGroups, newKGroups;
+	protected List<Set<ABObject>> iniKGroups, newKGroups;
 	
 	
 	
@@ -60,13 +60,13 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 		maximum_distance = (timegap/3 + 1) * (timegap/3 + 1);
 	}
 	
-	protected void preprocessDebris(List<ABTrackingObject> iniObjs)
+	protected void preprocessDebris(List<ABObject> iniObjs)
 	{
 		Set<Integer> debrisGroupIDs = new HashSet<Integer>();
 		//preprocess debris in iniObjs
 		
 		//Get all known debris group ID
-		for (ABTrackingObject iniObj : iniObjs)
+		for (ABObject iniObj : iniObjs)
 		{
 			if(iniObj instanceof DebrisGroup)
 			{
@@ -76,13 +76,13 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 		// check disassociated debris
 		for (int i = 0; i < iniObjs.size() - 1; i++)
 		{
-			ABTrackingObject iniObj = iniObjs.get(i);
+			ABObject iniObj = iniObjs.get(i);
 			if (iniObj.isDebris && !debrisGroupIDs.contains(iniObj.id))
 			{
-				List<ABTrackingObject> allOtherPieces = new ArrayList<ABTrackingObject>();
+				List<ABObject> allOtherPieces = new ArrayList<ABObject>();
 				for (int j = i + 1; j < iniObjs.size(); j++)
 				{
-					ABTrackingObject _obj = iniObjs.get(j);
+					ABObject _obj = iniObjs.get(j);
 					if (_obj.id == iniObj.id)
 					{
 						allOtherPieces.add(_obj);
@@ -105,10 +105,10 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 	} 
 	
 	@Override
-	public void createPrefs(List<ABTrackingObject> newObjs) 
+	public void createPrefs(List<ABObject> newObjs) 
 	{
 		
-		List<DirectedGraph<ABTrackingObject, ConstraintEdge>> graphs = GSRConstructor.contructNetworks(iniObjs);
+		List<DirectedGraph<ABObject, ConstraintEdge>> graphs = GSRConstructor.contructNetworks(iniObjs);
 		iniGRNetwork = graphs.get(1);
 		iniFullNetwork = graphs.get(0);
 		iniKGroups = GSRConstructor.getAllKinematicsGroups(iniGRNetwork);
@@ -120,7 +120,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 		newGRNetwork = graphs.get(1);
 		newFullNetwork = graphs.get(0);
 				
-		debrisList = new LinkedList<ABTrackingObject>();
+		debrisList = new LinkedList<ABObject>();
 		//If no previous movement detected
 		if(iniObjsMovement.isEmpty()){
 
@@ -141,14 +141,14 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 		
 		
 		
-		prefs = new HashMap<ABTrackingObject, List<Pair>>();
-		iniPrefs = new HashMap<ABTrackingObject, List<Pair>>();
+		prefs = new HashMap<ABObject, List<Pair>>();
+		iniPrefs = new HashMap<ABObject, List<Pair>>();
 
-		for (ABTrackingObject obj : newObjs) 
+		for (ABObject obj : newObjs) 
 		{	
 			List<Pair> diffs = new LinkedList<Pair>();
 			ABType objType = obj.type;
-			for (ABTrackingObject iniObj : iniObjs) 
+			for (ABObject iniObj : iniObjs) 
 			{   
 
 				if(objType == iniObj.type)
@@ -193,7 +193,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			Collections.sort(diffs, new PairComparator());
 			prefs.put(obj, diffs);
 		}
-		for (ABTrackingObject iniObj : iniPrefs.keySet()) {
+		for (ABObject iniObj : iniPrefs.keySet()) {
 			Collections.sort(iniPrefs.get(iniObj), new PairComparator());
 		}
 		newComingObjs = newObjs;
@@ -201,18 +201,18 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 		//printPrefs(iniPrefs);
 		//printPrefs(prefs);
 	}
-	protected void printMovement(Map<ABTrackingObject, Movement> movements)
+	protected void printMovement(Map<ABObject, Movement> movements)
 	{
 		log("\n Print Initial Objects Movements");
-		for (ABTrackingObject obj : movements.keySet())
+		for (ABObject obj : movements.keySet())
 		{
 			log(movements.get(obj) + "");
 		}
 	}
-	protected Map<ABTrackingObject, ABTrackingObject> matchObjs(List<ABTrackingObject> iniObjs, List<ABTrackingObject> newObjs)
+	protected Map<ABObject, ABObject> matchObjs(List<ABObject> iniObjs, List<ABObject> newObjs)
 	{
-		Map<ABTrackingObject, ABTrackingObject> newToIniMatch = new HashMap<ABTrackingObject, ABTrackingObject>();
-		Map<ABTrackingObject, ABTrackingObject> iniToNewMatch = new HashMap<ABTrackingObject, ABTrackingObject>();
+		Map<ABObject, ABObject> newToIniMatch = new HashMap<ABObject, ABObject>();
+		Map<ABObject, ABObject> iniToNewMatch = new HashMap<ABObject, ABObject>();
 		
 		getNextMatchSet(iniObjs, newObjs, newToIniMatch, iniToNewMatch);
 		
@@ -226,21 +226,21 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 	 * Convert A - R - B, A - R - C, B - R - C to  A - R - B - R - C. Thus removing the indirect relation between A and C
 	 * 
 	 * **/
-	protected void evaluateMatch(Map<ABTrackingObject, ABTrackingObject> iniToNewMatch, Map<ABTrackingObject, ABTrackingObject> NewToIniMatch, List<Set<ABTrackingObject>> kinematicGroups)
+	protected void evaluateMatch(Map<ABObject, ABObject> iniToNewMatch, Map<ABObject, ABObject> NewToIniMatch, List<Set<ABObject>> kinematicGroups)
 	{
 		//check each group;
-		 for (Set<ABTrackingObject> kg: kinematicGroups)
+		 for (Set<ABObject> kg: kinematicGroups)
 		 {
-			 List<ABTrackingObject> list = new ArrayList<ABTrackingObject>();
+			 List<ABObject> list = new ArrayList<ABObject>();
 			 list.addAll(kg);
 			 int n = list.size();
 			 //Most of the groups are of size 2
 			 if( n == 2)
 			 {
-				 ABTrackingObject _o1 = list.get(0);
-				 ABTrackingObject _newO1 = iniToNewMatch.get(_o1);
+				 ABObject _o1 = list.get(0);
+				 ABObject _newO1 = iniToNewMatch.get(_o1);
 				 if(_newO1 != null){
-					 ABTrackingObject _o2 = list.get(1);
+					 ABObject _o2 = list.get(1);
 					 ConstraintEdge e;
 					 Relation r;
 					 e = iniFullNetwork.getEdge(_o1, _o2);
@@ -252,7 +252,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 					 else
 						  r = e.label;
 					
-					 ABTrackingObject _newO2 = iniToNewMatch.get(_o2);
+					 ABObject _newO2 = iniToNewMatch.get(_o2);
 					 if(_newO2 != null)
 					 {
 						 Relation _r = (GSRConstructor.computeRectToRectRelation(_newO1, _newO2)).r;
@@ -272,11 +272,11 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 					 newn = 0;
 					 for (int i = 1; i < n - 1; i++ )
 					 {
-						 ABTrackingObject o1 = list.get(i - 1);
-						 ABTrackingObject newO1 = iniToNewMatch.get(o1);
+						 ABObject o1 = list.get(i - 1);
+						 ABObject newO1 = iniToNewMatch.get(o1);
 						 if(newO1 != null)
 						 {
-							 ABTrackingObject o2 = list.get(i);
+							 ABObject o2 = list.get(i);
 							 ConstraintEdge e;
 							 Relation r;
 							 e = iniFullNetwork.getEdge(o1, o2);
@@ -288,7 +288,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 							 else
 								  r = e.label;
 							
-							 ABTrackingObject newO2 = iniToNewMatch.get(o2);
+							 ABObject newO2 = iniToNewMatch.get(o2);
 							 if(newO2 != null)
 							 {
 								 Relation _r = (GSRConstructor.computeRectToRectRelation(newO1, newO2)).r;
@@ -309,7 +309,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 		 }
 		
 	}
-	protected void swap(Map<ABTrackingObject, ABTrackingObject> iniToNewMatch, Map<ABTrackingObject, ABTrackingObject> NewToIniMatch, ABTrackingObject o1, ABTrackingObject o2, ABTrackingObject newO1, ABTrackingObject newO2)
+	protected void swap(Map<ABObject, ABObject> iniToNewMatch, Map<ABObject, ABObject> NewToIniMatch, ABObject o1, ABObject o2, ABObject newO1, ABObject newO2)
 	{
 		iniToNewMatch.remove(o1);
 		iniToNewMatch.remove(o2);
@@ -329,25 +329,25 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 	 * 
 	 * */
 	protected void getNextMatchSet
-	(List<ABTrackingObject> iniObjs, List<ABTrackingObject> newObjs, Map<ABTrackingObject, ABTrackingObject> newToIniMatch, Map<ABTrackingObject, ABTrackingObject> iniToNewMatch)
+	(List<ABObject> iniObjs, List<ABObject> newObjs, Map<ABObject, ABObject> newToIniMatch, Map<ABObject, ABObject> iniToNewMatch)
 	{
-		HashMap<ABTrackingObject, ABTrackingObject> current = new HashMap<ABTrackingObject, ABTrackingObject>();
+		HashMap<ABObject, ABObject> current = new HashMap<ABObject, ABObject>();
 		
-		LinkedList<ABTrackingObject> freeObjs = new LinkedList<ABTrackingObject>();
+		LinkedList<ABObject> freeObjs = new LinkedList<ABObject>();
 		
 		freeObjs.addAll(newObjs);
 		
-		HashMap<ABTrackingObject, Integer> next = new HashMap<ABTrackingObject, Integer>(); //prefs recorder
+		HashMap<ABObject, Integer> next = new HashMap<ABObject, Integer>(); //prefs recorder
 		
 		//initialize the current map
-		for(ABTrackingObject obj : iniObjs) current.put(obj, null);
+		for(ABObject obj : iniObjs) current.put(obj, null);
 		//initialize prefs recorder
-		for(ABTrackingObject obj: freeObjs) next.put(obj, 0);
+		for(ABObject obj: freeObjs) next.put(obj, 0);
 		
 		
 		while(!freeObjs.isEmpty())
 		{
-			ABTrackingObject freeObj = freeObjs.remove();
+			ABObject freeObj = freeObjs.remove();
 			int index = next.get(freeObj);
 
 			List<Pair> pairs =  prefs.get(freeObj);
@@ -356,7 +356,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			else 
 			{
 				Pair pair = pairs.get(index);
-				ABTrackingObject iniObj = pair.obj;
+				ABObject iniObj = pair.obj;
 				next.put(freeObj, ++index);
 				if(pair.sameShape && !iniObj.isDebris)
 				{
@@ -364,7 +364,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 						current.put(iniObj, freeObj);
 					else 
 					{
-						ABTrackingObject rival = current.get(iniObj);
+						ABObject rival = current.get(iniObj);
 						if (prefers(iniObj, freeObj, rival, iniPrefs)) 
 						{
 							current.put(iniObj, freeObj);
@@ -379,12 +379,12 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			}
 		}
 		
-		unmatchedIniObjs = new LinkedList<ABTrackingObject>();
+		unmatchedIniObjs = new LinkedList<ABObject>();
 		
-		Map<ABTrackingObject,DebrisGroup> iniMatchedToDebris = new HashMap<ABTrackingObject, DebrisGroup>();
-		for (ABTrackingObject obj : iniObjs)
+		Map<ABObject,DebrisGroup> iniMatchedToDebris = new HashMap<ABObject, DebrisGroup>();
+		for (ABObject obj : iniObjs)
 		{
-			ABTrackingObject newObj = current.get(obj);
+			ABObject newObj = current.get(obj);
 			
 			if(newObj != null)
 			{
@@ -402,16 +402,16 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 				unmatchedIniObjs.add(obj);
 		}
 		//printNewToIniMatch(newToIniMatch);
-		for (ABTrackingObject obj : iniMatchedToDebris.keySet())
+		for (ABObject obj : iniMatchedToDebris.keySet())
 		{
 			 DebrisGroup newDebris = iniMatchedToDebris.get(obj);
-			 ABTrackingObject member1 = newDebris.member1;
-			 ABTrackingObject member2 = newDebris.member2;
+			 ABObject member1 = newDebris.member1;
+			 ABObject member2 = newDebris.member2;
 			 
-			 ABTrackingObject iniMember1 = newToIniMatch.get(member1);
+			 ABObject iniMember1 = newToIniMatch.get(member1);
 			 if (iniMember1 != null && !iniMember1.isDebris)
 			 {
-				 ABTrackingObject iniMember2 = newToIniMatch.get(member2);
+				 ABObject iniMember2 = newToIniMatch.get(member2);
 				 if (iniMember2 != null && !iniMember2.isDebris)
 				 {
 					 unmatchedIniObjs.add(obj);
@@ -430,15 +430,15 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 	
 	
 	@Override
-	public void debrisRecognition(List<ABTrackingObject> unmatchedNewObjs, List<ABTrackingObject> unmatchedIniObjs) {
+	public void debrisRecognition(List<ABObject> unmatchedNewObjs, List<ABObject> unmatchedIniObjs) {
 
 	   log(" Debris Recognition ");
-		for (ABTrackingObject iniObj : unmatchedIniObjs)
+		for (ABObject iniObj : unmatchedIniObjs)
 			log("@@@" + iniObj);
 		
 		currentOccludedObjs.addAll(unmatchedIniObjs);
 		
-		for (ABTrackingObject newObj : unmatchedNewObjs) 
+		for (ABObject newObj : unmatchedNewObjs) 
 		{
 			
 			List<Pair> pairs = prefs.get(newObj);
@@ -455,13 +455,13 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 				else
 					pointer++;
 			}
-			newObj.id = ABTrackingObject.unassigned;
+			newObj.id = ABObject.unassigned;
 			 //log(" unmatched new object: " + newObj);
 
 			if (pair != null)
 			{
 				//TODO non necessary loop
-				for (ABTrackingObject iniObj : unmatchedIniObjs) {
+				for (ABObject iniObj : unmatchedIniObjs) {
 					
 				/*	log("--------\n" + newObj.toString() + "  \n" + iniObj.toString() + " \n " 
 					+ !ShapeToolkit.cannotBeDebris(newObj, iniObj, matchedObjs));*/
@@ -490,14 +490,14 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 		//newObjs.removeAll(debrisList);
 		// Damage Recognition, call back schema: if an object has been detected as damaged, and only one part of the object has been found, the algo will go back to check for 
 		//the other part, even though that part has been matched
-		for (ABTrackingObject debris: debrisList)
+		for (ABObject debris: debrisList)
 		{
-			ABTrackingObject iniObj = matchedObjs.get(debris);
-			if( iniObj instanceof TrackingRect )//&& debris instanceof Rect)
+			ABObject iniObj = matchedObjs.get(debris);
+			if( iniObj instanceof Rect )//&& debris instanceof Rect)
 			{
-				TrackingRect _iniObj = (TrackingRect)iniObj;
+				Rect _iniObj = (Rect)iniObj;
 				//Rect _debris = (Rect)debris;
-				for (ABTrackingObject newObj : unmatchedNewObjs)
+				for (ABObject newObj : unmatchedNewObjs)
 				{
 					if(debris!= newObj && newObj.type != ABType.Pig)
 					{
@@ -525,15 +525,15 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 						}*/
 						if(DebrisToolkit.isSameDebris(debris, _iniObj, newObj))
 						{
-							ABTrackingObject newObjLastMatch = matchedObjs.get(newObj);
+							ABObject newObjLastMatch = matchedObjs.get(newObj);
 							if(newObjLastMatch != null && newObj.id != debris.id && !currentOccludedObjs.contains(newObjLastMatch))
 							{
 								
 								//TODO optimize the following search;
 								boolean anotherMatch = false;
-								for (ABTrackingObject matched : matchedObjs.keySet())
+								for (ABObject matched : matchedObjs.keySet())
 								{
-									ABTrackingObject _lastmatch = matchedObjs.get(matched);
+									ABObject _lastmatch = matchedObjs.get(matched);
 									if(_lastmatch == newObjLastMatch && matched != newObj)
 									{
 										anotherMatch = true;
@@ -563,12 +563,12 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 
 	
 	@Override
-	public boolean matchObjs(List<ABTrackingObject> newObjs) {
+	public boolean matchObjs(List<ABObject> newObjs) {
 		
 
-		matchedObjs = new HashMap<ABTrackingObject, ABTrackingObject>();
+		matchedObjs = new HashMap<ABObject, ABObject>();
 		
-		currentOccludedObjs = new LinkedList<ABTrackingObject>();
+		currentOccludedObjs = new LinkedList<ABObject>();
 
 		
 		if (iniObjs != null ) 
@@ -576,22 +576,22 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			lastInitialObjs = iniObjs;
 			createPrefs(newObjs);
 			//printPrefs(prefs);
-			Map<ABTrackingObject, ABTrackingObject> newToIniMatch;
+			Map<ABObject, ABObject> newToIniMatch;
 			
-			unmatchedNewObjs = new LinkedList<ABTrackingObject>();
+			unmatchedNewObjs = new LinkedList<ABObject>();
 			
-			List<ABTrackingObject> membersOfMatchedDebrisGroup = new LinkedList<ABTrackingObject>();
+			List<ABObject> membersOfMatchedDebrisGroup = new LinkedList<ABObject>();
 			
 			newToIniMatch = matchObjs(iniObjs, newObjs);
 			
 			//Assign Id
-			for (ABTrackingObject obj: newToIniMatch.keySet())
+			for (ABObject obj: newToIniMatch.keySet())
 			{
 				if (matchedObjs.containsKey(obj))
 					continue;
 				else
 				{
-					ABTrackingObject iniObj = newToIniMatch.get(obj);
+					ABObject iniObj = newToIniMatch.get(obj);
 					if (iniObj != null)
 					{
 						
@@ -603,8 +603,8 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 						if(obj instanceof DebrisGroup)
 						{
 							DebrisGroup debris = (DebrisGroup)obj;
-							ABTrackingObject member1 = debris.member1;
-							ABTrackingObject member2 = debris.member2;
+							ABObject member1 = debris.member1;
+							ABObject member2 = debris.member2;
 
 							unmatchedNewObjs.remove(member1);
 							unmatchedNewObjs.remove(member2);
@@ -630,8 +630,8 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			
 			//printMatch(matchedObjs, true);
 			//Remove false debris group. False Debris: new objs debris which is not matched, by its members are matched
-			List<ABTrackingObject> falseDebris = new LinkedList<ABTrackingObject>();
-			for (ABTrackingObject newObj : unmatchedNewObjs)
+			List<ABObject> falseDebris = new LinkedList<ABObject>();
+			for (ABObject newObj : unmatchedNewObjs)
 			{
 				if (newObj instanceof DebrisGroup)
 				{
@@ -652,16 +652,16 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			iniObjsMovement.clear();
 
 			log("Print Occluded Objects");
-			for (ABTrackingObject occludedObj : currentOccludedObjs)
+			for (ABObject occludedObj : currentOccludedObjs)
 				System.out.println(occludedObj);
 			
 			//GlobalObjectsToolkit.addOccludedObjs(currentOccludedObjs);
 			GlobalObjectsToolkit.updateOccludedObjs(matchedObjs);
 			// ========== Match the remaining objs from prevoius occluded objs ==============
 			unmatchedNewObjs.removeAll(matchedObjs.keySet());
-			for (ABTrackingObject obj : unmatchedNewObjs)
+			for (ABObject obj : unmatchedNewObjs)
 			{
-				ABTrackingObject _obj = GlobalObjectsToolkit.getPossibleOccludedMatch(obj);
+				ABObject _obj = GlobalObjectsToolkit.getPossibleOccludedMatch(obj);
 				if(_obj != null)
 				{
 					link(obj, _obj, true);
@@ -682,7 +682,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			//we have Debris_B1, Debris_B2, and Debris_B2 == Debris_A3, however, since Debris_A3 is a debris will not be matched first. So Debris_B2 will be matched to A12
 			// and Debris_A3 will be treated as occlude obj and added to the next initial objs, which creates a duplicate.
 			
-			for (ABTrackingObject newObj : currentOccludedObjs)
+			for (ABObject newObj : currentOccludedObjs)
 			{
 				if (newObjs.contains(newObj))
 				{
@@ -715,9 +715,9 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 			
 			//new edit remove on unmatched new objs. since they all have -1 id, which we do not want to use.
 			
-			for (ABTrackingObject obj : matchedObjs.keySet())
+			for (ABObject obj : matchedObjs.keySet())
 			{
-				ABTrackingObject initial = matchedObjs.get(obj);
+				ABObject initial = matchedObjs.get(obj);
 				
 				if(initial != null){
 					/*if(initial.id == -1)

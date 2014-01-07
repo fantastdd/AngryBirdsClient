@@ -4,10 +4,9 @@ import org.jgrapht.Graph;
 import org.jgrapht.experimental.equivalence.EquivalenceComparator;
 
 import ab.objtracking.representation.ConstraintEdge;
-import ab.objtracking.representation.Relation;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 
-public class GRVertexChecker<V extends ABTrackingObject, E extends ConstraintEdge> implements EquivalenceComparator<V, Graph<V,E>>{
+public class GRVertexChecker<V extends ABObject, E extends ConstraintEdge> implements EquivalenceComparator<V, Graph<V,E>>{
 
 	@Override
 	public boolean equivalenceCompare(V arg1, V arg2, Graph<V, E> context1,

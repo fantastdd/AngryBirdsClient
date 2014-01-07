@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("serial")
-public class ABList extends LinkedList<ABTrackingObject> {
+public class ABList extends LinkedList<ABObject> {
 	Random r = null;
 	public static ABList newList()
 	{
 		return new ABList();
 	}
-	public ABTrackingObject random()
+	public ABObject random()
 	{
 		if(r == null)
 			r = new Random();
@@ -26,7 +26,7 @@ public class ABList extends LinkedList<ABTrackingObject> {
 	public ABList(){
 		super();
 	}
-	public ABList(List<ABTrackingObject> list)
+	public ABList(List<ABObject> list)
 	{
 		super(list);
 	}
@@ -34,7 +34,7 @@ public class ABList extends LinkedList<ABTrackingObject> {
 /**by
  * Sort the ABObjects according their X coordinate (top-left corner)
  * */
-public LinkedList<ABTrackingObject> sortByX()
+public LinkedList<ABObject> sortByX()
 {
 	Collections.sort(this, new Comparator<Rectangle>(){
 
@@ -52,7 +52,7 @@ public LinkedList<ABTrackingObject> sortByX()
 /**
  * Sort the ABObjects according their Y coordinate (top-left corner)
  * */
-public LinkedList<ABTrackingObject> sortByY()
+public LinkedList<ABObject> sortByY()
 {
 	Collections.sort(this, new Comparator<Rectangle>(){
 

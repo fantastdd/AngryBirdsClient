@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import ab.objtracking.MagicParams;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.ABType;
-import ab.vision.real.shape.TrackingRect;
+import ab.vision.real.shape.Rect;
 
 
 /**
@@ -19,23 +19,23 @@ import ab.vision.real.shape.TrackingRect;
  * */
 public class SMETracker extends TrackerTemplate {
 
-	public List<ABTrackingObject> currentOccludedObjs; //intended for realtime tracking. stored the potential occluded objs, and add them to the next intial objs
-	public List<ABTrackingObject> occludedObjsBuffer = new LinkedList<ABTrackingObject>();
+	public List<ABObject> currentOccludedObjs; //intended for realtime tracking. stored the potential occluded objs, and add them to the next intial objs
+	public List<ABObject> occludedObjsBuffer = new LinkedList<ABObject>();
 	public SMETracker(int timegap) {
 		super(timegap);
 	}
 
 	@Override
-	public void createPrefs(List<ABTrackingObject> objs) 
+	public void createPrefs(List<ABObject> objs) 
 	{
-		prefs = new HashMap<ABTrackingObject, List<Pair>>();
-		iniPrefs = new HashMap<ABTrackingObject, List<Pair>>();
+		prefs = new HashMap<ABObject, List<Pair>>();
+		iniPrefs = new HashMap<ABObject, List<Pair>>();
 	
-		for (ABTrackingObject obj : objs) 
+		for (ABObject obj : objs) 
 		{	
 			List<Pair> diffs = new LinkedList<Pair>();
 			ABType objType = obj.type;
-			for (ABTrackingObject iniObj : iniObjs) {
+			for (ABObject iniObj : iniObjs) {
 				if(objType == iniObj.type)
 				{
 					boolean sameShape = iniObj.isSameShape(obj);
@@ -54,7 +54,7 @@ public class SMETracker extends TrackerTemplate {
 			Collections.sort(diffs, new PairComparator());
 			prefs.put(obj, diffs);
 		}
-		for (ABTrackingObject iniObj : iniPrefs.keySet()) {
+		for (ABObject iniObj : iniPrefs.keySet()) {
 			Collections.sort(iniPrefs.get(iniObj), new PairComparator());
 		}
 		newComingObjs = objs;
@@ -63,11 +63,11 @@ public class SMETracker extends TrackerTemplate {
 	}
 
 	@Override
-	public void debrisRecognition(List<ABTrackingObject> newObjs, List<ABTrackingObject> initialObjs) {
+	public void debrisRecognition(List<ABObject> newObjs, List<ABObject> initialObjs) {
 		
-		List<ABTrackingObject> debrisList = new LinkedList<ABTrackingObject>();
+		List<ABObject> debrisList = new LinkedList<ABObject>();
 		currentOccludedObjs.addAll(initialObjs);
-		for (ABTrackingObject newObj : newObjs) 
+		for (ABObject newObj : newObjs) 
 		{
 			
 			List<Pair> pairs = prefs.get(newObj);
@@ -87,13 +87,13 @@ public class SMETracker extends TrackerTemplate {
 				else
 					pointer++;
 			}
-			newObj.id = ABTrackingObject.unassigned;
+			newObj.id = ABObject.unassigned;
 			// log(" unmatched new object: " + newObj + "  " + (newObj.type != ABType.Pig) + " " + pair);
 				
 			if (pair != null)
 			{
 				//System.out.println(" pair check");
-				for (ABTrackingObject initialObj : initialObjs) {
+				for (ABObject initialObj : initialObjs) {
 					//System.out.println(initialObj);
 					//if(pair.obj.id == 2)
 					//	System.out.println(pair.obj + "   " + initialObj + "   " + pair.obj.equals(initialObj));
@@ -116,20 +116,20 @@ public class SMETracker extends TrackerTemplate {
 		}
 		// Damage Recognition, call back schema: if an object has been detected as damaged, and only one part of the object has been found, the algo will go back to check for 
 		//the other part, even though that part has been matched
-		for (ABTrackingObject debris: debrisList)
+		for (ABObject debris: debrisList)
 		{
-			ABTrackingObject initialObj = matchedObjs.get(debris);
-			if( initialObj instanceof TrackingRect )//&& debris instanceof Rect)
+			ABObject initialObj = matchedObjs.get(debris);
+			if( initialObj instanceof Rect )//&& debris instanceof Rect)
 			{
-				TrackingRect _initialObj = (TrackingRect)initialObj;
+				Rect _initialObj = (Rect)initialObj;
 				//Rect _debris = (Rect)debris;
-				for (ABTrackingObject newObj : newObjs)
+				for (ABObject newObj : newObjs)
 				{
 					if(/*unmatchedDebris.id == ABObject.unassigned &&*/ newObj.type != ABType.Pig)
 					{
 						//System.out.println(" debris " + debris);
 						//System.out.println(" unmatched " + unmatchedDebris);
-						TrackingRect dummy = debris.extend(_initialObj.rectType);
+						Rect dummy = debris.extend(_initialObj.rectType);
 						//System.out.println(" initial " + _initialObj + " newobj " + newObj + " dummy" + dummy);
 						//System.out.println(" dummy " + dummy);
 						Polygon p = dummy.p;
@@ -147,15 +147,15 @@ public class SMETracker extends TrackerTemplate {
 		
 	}
 	@Override
-	public boolean matchObjs(List<ABTrackingObject> objs) {
+	public boolean matchObjs(List<ABObject> objs) {
 		/*
 		 * if(initialObjs != null) System.out.println(initialObjs.size());
 		 */
 		// System.out.println(objs.size());
 		// Do match, assuming initialObjs.size() > objs.size(): no objects will
 		// be created
-		matchedObjs = new HashMap<ABTrackingObject, ABTrackingObject>();
-		currentOccludedObjs = new LinkedList<ABTrackingObject>();
+		matchedObjs = new HashMap<ABObject, ABObject>();
+		currentOccludedObjs = new LinkedList<ABObject>();
 		
 		if (iniObjs != null /*&& initialObjs.size() >= objs.size()*/) 
 		{
@@ -171,14 +171,14 @@ public class SMETracker extends TrackerTemplate {
 			// log(" " + initialObjs.size() + "  " + objs.size());
 			createPrefs(objs);
 			//printPrefs(prefs);
-			Map<ABTrackingObject, ABTrackingObject> match;
-			unmatchedNewObjs = new LinkedList<ABTrackingObject>();
+			Map<ABObject, ABObject> match;
+			unmatchedNewObjs = new LinkedList<ABObject>();
 			if (!lessIni) {
 				match = matchObjs(iniObjs, objs, iniPrefs, prefs);
 	
 				// Assign Id
-				for (ABTrackingObject iniObj : match.keySet()) {
-					ABTrackingObject obj = match.get(iniObj);
+				for (ABObject iniObj : match.keySet()) {
+					ABObject obj = match.get(iniObj);
 					if (obj != null)
 					{
 						obj.id = iniObj.id;
@@ -198,8 +198,8 @@ public class SMETracker extends TrackerTemplate {
 				 */
 				match = matchObjs(objs, iniObjs, prefs, iniPrefs);
 				// Assign Id
-				for (ABTrackingObject obj : match.keySet()) {
-					ABTrackingObject iniObj = match.get(obj);
+				for (ABObject obj : match.keySet()) {
+					ABObject iniObj = match.get(obj);
 					if (iniObj != null)
 					{	
 						obj.id = iniObj.id; 
@@ -213,7 +213,7 @@ public class SMETracker extends TrackerTemplate {
 				debrisRecognition(unmatchedNewObjs, unmatchedIniObjs);
 	
 			}
-			for (ABTrackingObject occludedObj : currentOccludedObjs)
+			for (ABObject occludedObj : currentOccludedObjs)
 				System.out.println(occludedObj);
 			
 			objs.addAll(currentOccludedObjs);
@@ -228,7 +228,7 @@ public class SMETracker extends TrackerTemplate {
 	}
 	
 	@Override
-	public boolean prefers(ABTrackingObject targetObj, ABTrackingObject lastObj, ABTrackingObject rivalObj, Map<ABTrackingObject, List<Pair>> prefs){
+	public boolean prefers(ABObject targetObj, ABObject lastObj, ABObject rivalObj, Map<ABObject, List<Pair>> prefs){
 	 	
 		for (Pair pair : prefs.get(targetObj)) {
 			if (pair.obj.equals(lastObj))
@@ -251,7 +251,7 @@ public class SMETracker extends TrackerTemplate {
 	}
 
 	@Override
-	public Map<ABTrackingObject, ABTrackingObject> getLastMatch() {
+	public Map<ABObject, ABObject> getLastMatch() {
 		
 		return matchedObjs;
 	}

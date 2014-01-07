@@ -5,12 +5,12 @@ import org.jgrapht.experimental.equivalence.EquivalenceComparator;
 
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 
-public class GREdgeChecker<V extends ABTrackingObject, E extends ConstraintEdge> implements EquivalenceComparator<E, Graph<V,E>>{
+public class GREdgeChecker<V extends ABObject, E extends ConstraintEdge> implements EquivalenceComparator<E, Graph<V,E>>{
 
-	public ABTrackingObject lastConflictSource = null;
-	public ABTrackingObject lastConflictTarget = null;
+	public ABObject lastConflictSource = null;
+	public ABObject lastConflictTarget = null;
 	@Override
 	public boolean equivalenceCompare(E arg1, E arg2, Graph<V, E> context1,
 			Graph<V, E> context2) {

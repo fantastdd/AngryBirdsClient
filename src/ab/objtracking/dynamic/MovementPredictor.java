@@ -9,7 +9,7 @@ import org.jgrapht.DirectedGraph;
 
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 
 public class MovementPredictor {
 	
@@ -19,9 +19,9 @@ public class MovementPredictor {
 	 * 
 	 * */
 	
-	public static Movement adjustMovementOnAll(Movement movement, DirectedGraph<ABTrackingObject, ConstraintEdge> network)
+	public static Movement adjustMovementOnAll(Movement movement, DirectedGraph<ABObject, ConstraintEdge> network)
 	{
-		ABTrackingObject obj = movement.object;
+		ABObject obj = movement.object;
 		int count = -1;
 		Set<ConstraintEdge> edges = network.edgesOf(obj);
 		if(edges.isEmpty())
@@ -37,7 +37,7 @@ public class MovementPredictor {
 		for (ConstraintEdge edge: edges)
 		{
 			count ++;
-			ABTrackingObject target = edge.getTarget();
+			ABObject target = edge.getTarget();
 			Relation r = edge.label;
 			// Note, debris all have the same ID.
 			if (target.id == obj.id) {
@@ -89,9 +89,9 @@ public class MovementPredictor {
 	 * Adjust movement on GRNetwork
 	 * 
 	 * */
-	public static Movement adjustMovementOnGR(Movement movement, DirectedGraph<ABTrackingObject, ConstraintEdge> network)
+	public static Movement adjustMovementOnGR(Movement movement, DirectedGraph<ABObject, ConstraintEdge> network)
 	{
-		ABTrackingObject obj = movement.object;
+		ABObject obj = movement.object;
 		//check whether the obj is supported
 		//obj is stable : Level: S3-S5. Fat: S3-S7, >PI/2 S6-S7, < PI/2 S3-S4
 		int count = -1;
@@ -110,7 +110,7 @@ public class MovementPredictor {
 		for (ConstraintEdge edge: edges)
 		{
 			count ++;
-			ABTrackingObject target = edge.getTarget();
+			ABObject target = edge.getTarget();
 			Relation r = edge.label;
 			// Note, debris all have the same ID.
 			if (target.id == obj.id) {
@@ -159,10 +159,10 @@ public class MovementPredictor {
 	
 	
 	// currently do not consider the debris
-	public static Map<ABTrackingObject, Movement> predict(DirectedGraph<ABTrackingObject, ConstraintEdge> network) {
-		Map<ABTrackingObject, Movement> movements = new HashMap<ABTrackingObject, Movement>();
+	public static Map<ABObject, Movement> predict(DirectedGraph<ABObject, ConstraintEdge> network) {
+		Map<ABObject, Movement> movements = new HashMap<ABObject, Movement>();
 		// Calculate landmark movement first
-		for (ABTrackingObject obj : network.vertexSet()) {
+		for (ABObject obj : network.vertexSet()) {
 			if (!obj.isLevel && !obj.isFat) {
 				Movement movement = new Movement(obj);
 				
@@ -219,16 +219,16 @@ public class MovementPredictor {
 			}
 		}
 		// Then use the landmarks to predict others' movement
-		Set<ABTrackingObject> landmarks = movements.keySet();
-		LinkedList<ABTrackingObject> landmarksList = new LinkedList<ABTrackingObject>();
+		Set<ABObject> landmarks = movements.keySet();
+		LinkedList<ABObject> landmarksList = new LinkedList<ABObject>();
 		landmarksList.addAll(landmarks);
 		while(!landmarksList.isEmpty())
 		{
-			ABTrackingObject landmark = landmarksList.remove();
+			ABObject landmark = landmarksList.remove();
 			Set<ConstraintEdge> edges = network.edgesOf(landmark);
 			Movement landmarkMovement = movements.get(landmark);
 			for (ConstraintEdge edge : edges) {
-				ABTrackingObject target = edge.getTarget();
+				ABObject target = edge.getTarget();
 				Relation r = edge.label;
 				// Note, debris all have the same ID.
 				if (target.id == landmark.id) {

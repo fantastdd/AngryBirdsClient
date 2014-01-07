@@ -9,14 +9,14 @@ import java.util.ArrayList;
 
 import ab.objtracking.MagicParams;
 import ab.vision.ABShape;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.real.ImageSegmenter;
 import ab.vision.real.LineSegment;
 /**
  * @author      Andrew Wang <u4853279@anu.edu.au>
  */
 
-public class TrackingPoly extends TrackingBody
+public class Poly extends Body
 {
     /**
 	 * 
@@ -24,7 +24,7 @@ public class TrackingPoly extends TrackingBody
 	private static final long serialVersionUID = -3628493742939819604L;
 	public Polygon polygon = null;
 	
-    public TrackingPoly(Polygon polygon, int visionType, 
+    public Poly(Polygon polygon, int visionType, 
     	 double centerX, double centerY)
     {
     	  this.polygon = polygon;
@@ -37,7 +37,7 @@ public class TrackingPoly extends TrackingBody
           area = getBounds().height * getBounds().width;
           createSectors(getBounds());
     }
-    public TrackingPoly(ArrayList<LineSegment> lines, int left, int top, int t, double xs, double ys)
+    public Poly(ArrayList<LineSegment> lines, int left, int top, int t, double xs, double ys)
     {
         polygon = new Polygon();
         vision_type = t;
@@ -59,11 +59,11 @@ public class TrackingPoly extends TrackingBody
         
     }
     @Override
-    public boolean isSameShape(ABTrackingObject ao)
+    public boolean isSameShape(ABObject ao)
     {
-    	if (ao instanceof TrackingPoly)
+    	if (ao instanceof Poly)
     	{
-    		Polygon _polygon = ((TrackingPoly)ao).polygon;
+    		Polygon _polygon = ((Poly)ao).polygon;
     		if(
     				Math.abs( polygon.getBounds().width -
     						_polygon.getBounds().width) < MagicParams.VisionGap 

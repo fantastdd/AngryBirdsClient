@@ -7,19 +7,16 @@ package ab.vision.real.shape;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.Line2D;
-
-import ab.objtracking.MagicParams;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.ABShape;
 import ab.vision.real.ImageSegmenter;
 
-public class TrackingCircle extends TrackingBody
+public class Circle extends Body
 {
-    /**
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1589877197248079847L;
 	// radius of the circle
     public double r;
     public Rectangle bounds;
@@ -28,7 +25,7 @@ public class TrackingCircle extends TrackingBody
      *          radius - circle radius
      *          t      - type of the object
      */
-    public TrackingCircle(double xs, double ys, double radius, int t)
+    public Circle(double xs, double ys, double radius, int t)
     {
         centerX = xs;
         centerY = ys;
@@ -46,9 +43,9 @@ public class TrackingCircle extends TrackingBody
         createSectors(bounds);
     }
     @Override
-    public boolean isSameShape(ABTrackingObject ao)
+    public boolean isSameShape(ABObject ao)
     {
-    	if (ao instanceof TrackingCircle)
+    	if (ao instanceof Circle)
     	{
     		//if (Math.abs(r - ((Circle)ao).r) < MagicParams.VisionGap)
     				return true;
@@ -69,18 +66,18 @@ public class TrackingCircle extends TrackingBody
     	return bounds;
     }
     @Override
-    public TrackingRect extend(RectType rectType)
+    public Rect extend(RectType rectType)
     {
     	double extensionDegree = (double)rectType.id  - 1;
     	Rectangle bounds = getBounds();
     	double height = bounds.height * extensionDegree * 2.2 + bounds.height;
     	//System.out.println(" height: " + height + " extensionDegree: " + extensionDegree + " rectType" + rectType + " id ");
     	int area = (int)(bounds.width * height);
-    	return new TrackingRect(bounds.getCenterX(), bounds.getCenterY(), 2 * height, 2 * height, this.angle, -1 , area);	
+    	return new Rect(bounds.getCenterX(), bounds.getCenterY(), 2 * height, 2 * height, this.angle, -1 , area);	
     }
 
 
-    public TrackingCircle(int box[], int t)
+    public Circle(int box[], int t)
     {
         centerX = (box[0] + box[2]) / 2.0;
         centerY = (box[1] + box[3]) / 2.0;

@@ -6,18 +6,15 @@ package ab.vision.real.shape;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.geom.Line2D;
-
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.ABPoint;
 
-public abstract class TrackingBody extends ABTrackingObject
+public abstract class Body extends ABObject
 {
    
 	private static final long serialVersionUID = 4126732384091164666L;
 	
-	public TrackingBody()
+	public Body()
 	{
 		super();
 	}
@@ -64,9 +61,9 @@ public abstract class TrackingBody extends ABTrackingObject
     public boolean equals(Object body)
     {
 //    	/System.out.println(hashCode() + "  " + body.hashCode());
-    	if ( body instanceof TrackingBody)
+    	if ( body instanceof Body)
     	{
-    		TrackingBody b = (TrackingBody)body;
+    		Body b = (Body)body;
     		if(getPreciseWidth() == b.getPreciseWidth() && getPreciseHeight() == b.getPreciseHeight() 
     				&& shape == b.shape && type == b.type && getCenterX() == b.getCenterX() && getCenterY() == b.getCenterY())
     			return true;

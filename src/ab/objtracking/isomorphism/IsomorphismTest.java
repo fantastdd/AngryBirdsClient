@@ -9,25 +9,25 @@ import org.jgrapht.graph.SimpleDirectedGraph;
 
 import ab.objtracking.representation.ConstraintEdge;
 import ab.objtracking.representation.Relation;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 
 public class IsomorphismTest {
 
-	private static GREdgeChecker<ABTrackingObject, ConstraintEdge> edgeChecker;
-	public static boolean isIsomorphic(DirectedGraph<ABTrackingObject, ConstraintEdge> graph1, DirectedGraph<ABTrackingObject, ConstraintEdge> graph2)
+	private static GREdgeChecker<ABObject, ConstraintEdge> edgeChecker;
+	public static boolean isIsomorphic(DirectedGraph<ABObject, ConstraintEdge> graph1, DirectedGraph<ABObject, ConstraintEdge> graph2)
 	{
-		edgeChecker = new GREdgeChecker<ABTrackingObject, ConstraintEdge>();
+		edgeChecker = new GREdgeChecker<ABObject, ConstraintEdge>();
 		@SuppressWarnings("unchecked")
-		GraphIsomorphismInspector<IsomorphismRelation<ABTrackingObject, ConstraintEdge>> inspector 
-		= AdaptiveIsomorphismInspectorFactory.createIsomorphismInspector(graph1, graph2, new GRVertexChecker<ABTrackingObject, ConstraintEdge>(), edgeChecker);
+		GraphIsomorphismInspector<IsomorphismRelation<ABObject, ConstraintEdge>> inspector 
+		= AdaptiveIsomorphismInspectorFactory.createIsomorphismInspector(graph1, graph2, new GRVertexChecker<ABObject, ConstraintEdge>(), edgeChecker);
 		return inspector.isIsomorphic();
 	}
 	
-	public static ABTrackingObject getLastConflictSource()
+	public static ABObject getLastConflictSource()
 	{
 		return edgeChecker.lastConflictSource;
 	}
-	public static ABTrackingObject getLastConflictTarget()
+	public static ABObject getLastConflictTarget()
 	{
 		return edgeChecker.lastConflictTarget;
 	}
@@ -37,30 +37,30 @@ public class IsomorphismTest {
 	 */
 	public static void main(String[] args) {
 		
-		SimpleDirectedGraph<ABTrackingObject, ConstraintEdge> graph1 = new SimpleDirectedGraph<ABTrackingObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABTrackingObject, ConstraintEdge>(ConstraintEdge.class));
-		SimpleDirectedGraph<ABTrackingObject, ConstraintEdge> graph2 = new SimpleDirectedGraph<ABTrackingObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABTrackingObject, ConstraintEdge>(ConstraintEdge.class));
-		ABTrackingObject o1 = new ABTrackingObject();
+		SimpleDirectedGraph<ABObject, ConstraintEdge> graph1 = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		SimpleDirectedGraph<ABObject, ConstraintEdge> graph2 = new SimpleDirectedGraph<ABObject, ConstraintEdge>(new ClassBasedEdgeFactory<ABObject, ConstraintEdge>(ConstraintEdge.class));
+		ABObject o1 = new ABObject();
 		//o1.id = 12;
 		o1.width = 10;
 		System.out.println(o1.hashCode());
-		ABTrackingObject o2 = new ABTrackingObject();
+		ABObject o2 = new ABObject();
 		//o2.id = 11;
 		o2.width = 1500;
 		System.out.println(o2.hashCode());
-		ABTrackingObject o3 = new ABTrackingObject();
+		ABObject o3 = new ABObject();
 		//o3.id = 10;
 		o3.width = 12;
 		System.out.println(o3.hashCode());
 		
-		ABTrackingObject o4 = new ABTrackingObject();
+		ABObject o4 = new ABObject();
 		//o4.id = 10;
 		o4.width = 1500;
 		System.out.println(o4.hashCode());
-		ABTrackingObject o5 = new ABTrackingObject();
+		ABObject o5 = new ABObject();
 		//o5.id = 11;
 		o5.width = 10;
 		System.out.println(o5.hashCode());
-		ABTrackingObject o6 = new ABTrackingObject();
+		ABObject o6 = new ABObject();
 		//o6.id = 12;
 		o6.width = 12;
 		System.out.println(o6.hashCode());

@@ -21,7 +21,7 @@ public class SpeedTest {
 		{
 			long time = System.nanoTime();
 			BufferedImage image = ActionRobot.doScreenShot();
-			MyVision vision = new MyVision(image);
+			new MyVision(image);
 			//Vision vision = new Vision(image);
 			log((System.nanoTime() - time) + "");
 		}

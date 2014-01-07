@@ -44,9 +44,8 @@ import ab.demo.other.ActionRobot;
 import ab.objtracking.RealTimeTracking;
 import ab.objtracking.Tracker;
 import ab.objtracking.TrackingFrameComparison;
-import ab.vision.ABTrackingObject;
+import ab.vision.ABObject;
 import ab.vision.VisionUtils;
-import ab.vision.real.ImageSegmenter;
 
 public class ImageTrackFrame {
 
@@ -241,12 +240,12 @@ public class ImageTrackFrame {
 						toolTip.setTipText("(" + e.getX() + ", " + e.getY()
 								+ ")");
 					else {
-						List<ABTrackingObject> objs;
+						List<ABObject> objs;
 						if (initialFrame)
 							objs = tracker.getInitialObjects();
 						else
 							objs = tracker.getMatchedObjects();
-						for (ABTrackingObject obj : objs) {
+						for (ABObject obj : objs) {
 							Point center = obj.getCenter();
 							// System.out.println(e.getX() + "  " +
 							// center.getX());
@@ -390,7 +389,7 @@ public class ImageTrackFrame {
 			GraphicsEnvironment ge = GraphicsEnvironment
 					.getLocalGraphicsEnvironment();
 			GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
-			Rectangle rect = defaultScreen.getDefaultConfiguration()
+			defaultScreen.getDefaultConfiguration()
 					.getBounds();
 			// int x = (int) rect.getMaxX() - frame.getWidth();
 			int x = 0;
