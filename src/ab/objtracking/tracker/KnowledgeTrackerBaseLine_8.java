@@ -429,55 +429,7 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 								 }
 							 }
 					}
-				/*  
-				   int newn = 0;
-				   while( n > 0)
-				 {
-					 newn = 0;
-					 for (int i = 1; i <= n - 1; i++ )
-					 {
-						 ABObject o1 = list.get(i - 1);
-						 ABObject newO1 = iniToNewMatch.get(o1);
-						
-						 if(newO1 != null)
-						 {
-							 ABObject o2 = list.get(i);
-							 ConstraintEdge e;
-							 Relation r;
-							 e = iniFullNetwork.getEdge(o1, o2);
-							 if( e == null)
-							 {
-								 e = iniFullNetwork.getEdge(o2, o1);
-								 r = Relation.inverse(e.label);
-							 }
-							 else
-								  r = e.label;
-							
-							 ABObject newO2 = iniToNewMatch.get(o2);
-							 
-							 log(o1.toString()+ "  " + o2.toString());
-							 if(newO1 != null)
-								 log(" newO1 " + newO1.toString());
-							 if(newO2 != null)
-								 log(" newO2 " + newO2.toString());
-							
-							 if(newO2 != null)
-							 {
-								 Relation _r = (GSRConstructor.computeRectToRectRelation(newO1, newO2)).r;
-								 log(" o1: " + o1.toString() + " o2: " + o2.toString());
-								 log(" newO1: " + newO1 + " newO2: " + newO2 + "  " + _r + "   " + r);
-								 if ( Relation.isOpposite(o1, o2, r, newO1, newO2, _r) && o1.type == o2.type
-										 && !ShapeToolkit.isDifferentShape(newO1, newO2)) 
-								 {
-									 log(" swap " + o1 + "  " + o2);
-									 swap( iniToNewMatch, newToIniMatch, o1, o2, newO1, newO2 );
-									 newn = i;
-								 }
-							 }
-						 }		 
-					 }
-					 n = newn;
-				 }*/
+			
 			 }
 			 
 		 }
