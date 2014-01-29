@@ -48,8 +48,7 @@ public class DebrisToolkit {
 							if(debris.p.contains(obj.getCenter()) && debris.p.contains(target.getCenter()))
 							{	
 								debrisList.add(debris);
-								//usedDebris.add(obj);
-								//usedDebris.add(target);
+								
 							}
 						}
 					}

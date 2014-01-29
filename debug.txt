@@ -1,0 +1,40 @@
+ Debris: Rect: id:3 ABType:Wood rectType:rec7x1 Area:196 w:  5.457 h: 36.026 a:0.157 at x:479.5 y:364.5 isDebris:false 
+ member1:Rect: id:3 ABType:Wood rectType:rec3x1 Area:80 w:  5.457 h: 16.116 a:0.157 at x:469.0 y:363.0 isDebris:true 
+ member2:Rect: id:3 ABType:Wood rectType:rec4x1 Area:95 w:  5.408 h: 19.910 a:0.157 at x:488.0 y:366.0 isDebris:true    
+
+ Debris: Rect: id:13 ABType:Wood rectType:rec7x1 Area:196 w:  5.457 h: 36.026 a:0.157 at x:479.5 y:364.5 isDebris:false 
+ member1:Rect: id:13 ABType:Wood rectType:rec3x1 Area:80 w:  5.457 h: 16.116 a:0.157 at x:469.0 y:363.0 isDebris:true 
+ member2:Rect: id:13 ABType:Wood rectType:rec4x1 Area:95 w:  5.408 h: 19.910 a:0.157 at x:488.0 y:366.0 isDebris:true   
+
+
+ Rect: id:3 ABType:Wood rectType:rec3x1 Area:75 w:  5.770 h: 15.441 a:0.157 at x:469.5 y:363.0 isDebris:true
+ 
+
+
+
+
+ Debris: Rect: id:3 ABType:Wood rectType:rec7x1 Area:196 w:  5.457 h: 36.026 a:0.157 at x:479.5 y:364.5 isDebris:false 
+ member1:Rect: id:3 ABType:Wood rectType:rec3x1 Area:80 w:  5.457 h: 16.116 a:0.157 at x:469.0 y:363.0 isDebris:true 
+ member2:Rect: id:3 ABType:Wood rectType:rec4x1 Area:95 w:  5.408 h: 19.910 a:0.157 at x:488.0 y:366.0 isDebris:true    
+
+ Debris: Rect: id:13 ABType:Wood rectType:rec7x1 Area:196 w:  5.457 h: 36.026 a:0.157 at x:479.5 y:364.5 isDebris:false 
+ member1:Rect: id:13 ABType:Wood rectType:rec3x1 Area:80 w:  5.457 h: 16.116 a:0.157 at x:469.0 y:363.0 isDebris:true 
+ member2:Rect: id:13 ABType:Wood rectType:rec4x1 Area:95 w:  5.408 h: 19.910 a:0.157 at x:488.0 y:366.0 isDebris:true   
+
+ Rect: id:3 ABType:Wood rectType:rec4x1 Area:105 w:  5.408 h: 21.054 a:0.157 at x:487.5 y:366.0 isDebris:true
+ 
+ Debris: Rect: id:3 ABType:Wood rectType:rec7x1 Area:196 w:  5.457 h: 36.026 a:0.157 at x:479.5 y:364.5 isDebris:false 
+ member1:Rect: id:3 ABType:Wood rectType:rec3x1 Area:80 w:  5.457 h: 16.116 a:0.157 at x:469.0 y:363.0 isDebris:true 
+ member2:Rect: id:3 ABType:Wood rectType:rec4x1 Area:95 w:  5.408 h: 19.910 a:0.157 at x:488.0 y:366.0 isDebris:true    
+
+ Debris: Rect: id:13 ABType:Wood rectType:rec7x1 Area:196 w:  5.457 h: 36.026 a:0.157 at x:479.5 y:364.5 isDebris:false 
+ member1:Rect: id:13 ABType:Wood rectType:rec3x1 Area:80 w:  5.457 h: 16.116 a:0.157 at x:469.0 y:363.0 isDebris:true 
+ member2:Rect: id:13 ABType:Wood rectType:rec4x1 Area:95 w:  5.408 h: 19.910 a:0.157 at x:488.0 y:366.0 isDebris:true   
+
+ Debris: Rect: id:3 ABType:Wood rectType:rec6x1 Area:210 w:  5.770 h: 36.495 a:0.157 at x:479.5 y:364.5 isDebris:false 
+ member1:Rect: id:3 ABType:Wood rectType:rec3x1 Area:75 w:  5.770 h: 15.441 a:0.157 at x:469.5 y:363.0 isDebris:true 
+ member2:Rect: id:3 ABType:Wood rectType:rec4x1 Area:105 w:  5.408 h: 21.054 a:0.157 at x:487.5 y:366.0 isDebris:true 
+ 
+
+
+ Mismatch : 3

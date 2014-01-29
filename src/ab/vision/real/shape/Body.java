@@ -6,8 +6,9 @@ package ab.vision.real.shape;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
+
 import ab.vision.ABObject;
-import ab.vision.ABPoint;
 
 public abstract class Body extends ABObject
 {
@@ -31,9 +32,11 @@ public abstract class Body extends ABObject
         return (int) (i + 0.5);
     }
     @Override
-    public ABPoint getCenter()
+    public Point getCenter()
     {
-    	return new ABPoint(centerX, centerY);
+    	Point point = new Point();
+    	point.setLocation(centerX, centerY);
+    	return point;
     }
     @Override
     public double getCenterX()

@@ -85,7 +85,7 @@ public class TrackerEvaluator {
 			if (newObj != null)
 			{
 				ABObject _newObj = match.get(iniObj);
-				if(_newObj == null || _newObj.id != newObj.id)
+				if(_newObj == null || ! _newObj.equals(newObj))// _newObj.id != newObj.id)
 				{
 					System.out.println(newObj + "  " + _newObj + "  " + iniObj);
 					Error++;
@@ -97,37 +97,13 @@ public class TrackerEvaluator {
 	}
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException 
 	{
-		Tracker tracker = new KnowledgeTrackerBaseLine_8(200);
 		Map<String, Integer> errors = new HashMap<String, Integer>();
-		errors.put("e2L6_56", evaluate(tracker, "e2L6_56"));
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put("t11", evaluate(tracker, "t11"));
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put("t12", evaluate(tracker, "t12"));
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put("t14", evaluate(tracker, "t14"));
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put("t6", evaluate(tracker, "t6"));
-		
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put("e1L9_54", evaluate(tracker, "e1L9_54"));
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put("e1L9_62", evaluate(tracker, "e1L9_62"));
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put("e1L10t_54", evaluate(tracker, "e1L10t_54"));
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put( "e1L15_53", evaluate(tracker,  "e1L15_53"));
-		
-		tracker = new KnowledgeTrackerBaseLine_8(200);
-		errors.put( "e1L17_58", evaluate(tracker,  "e1L17_58"));
+		String[] filenames = {"e2L6_56", "t11", "t12", "t14", "t6", "e1L9_54", "e1L9_62", "e1L10t_54", "e1L15_53", "e1L17_58"};
+		for (String filename: filenames)
+		{
+			Tracker tracker = new KnowledgeTrackerBaseLine_8(200);
+			errors.put(filename, evaluate(tracker, filename));
+		}
 		
 		for (String file : errors.keySet())
 		{

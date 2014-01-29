@@ -50,8 +50,7 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 	protected Map<ABObject, Movement> iniObjsMovement = new HashMap<ABObject, Movement>();
 	protected List<DebrisGroup> debrisGroupList = new LinkedList<DebrisGroup>();
 	protected List<ABObject> debrisList;
-	protected boolean lessIniObjs = false;
-	protected List<Set<ABObject>> iniKGroups, newKGroups;
+	protected List<Set<ABObject>> iniKGroups;
 	public KnowledgeTrackerBaseLine_8(int timegap) {
 		super(timegap);
 		maximum_distance = (timegap/3 + 1) * (timegap/3 + 1);
@@ -147,7 +146,10 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 		List<DirectedGraph<ABObject, ConstraintEdge>> graphs = GSRConstructor.contructNetworks(iniObjs);
 		iniGRNetwork = graphs.get(1);
 		iniFullNetwork = graphs.get(0);
-		iniKGroups = GSRConstructor.getAllKinematicsGroups(iniGRNetwork);
+		
+		//GSRConstructor.printNetwork(iniGRNetwork);
+		
+		iniKGroups = GSRConstructor.getSCOIncludingFreefall(iniGRNetwork);
 		
 		//=================  Remove Polygons  ===============================
 		List<ABObject> polygons = new LinkedList<ABObject>();
@@ -252,7 +254,7 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 	/**
 	 * Check if multiple objects have been assigned with a same ID
 	 * */
-	public void uniqueAssignment(List<ABObject> newObjs, Map<ABObject, ABObject> newToIniMatch)
+	protected void uniqueAssignment(List<ABObject> newObjs, Map<ABObject, ABObject> newToIniMatch)
 	{
 		Map<Integer, Set<ABObject>> groups = new HashMap<Integer, Set<ABObject>>();
 		for (ABObject newObj : newObjs)
@@ -317,17 +319,15 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			matchedObjs.remove(obj);*/
 		
 	}
-	protected Map<ABObject, ABObject> matchObjs(List<ABObject> iniObjs, List<ABObject> newObjs)
+	protected Map<ABObject, ABObject> matchObjsNew(List<ABObject> iniObjs, List<ABObject> newObjs, Map<ABObject, ABObject> newToIniMatch, Map<ABObject, ABObject> iniToNewMatch)
 	{
 		
-		Map<ABObject, ABObject> newToIniMatch = new HashMap<ABObject, ABObject>();
-		Map<ABObject, ABObject> iniToNewMatch = new HashMap<ABObject, ABObject>();
 		
 		getNextMatchSet(iniObjs, newObjs, newToIniMatch, iniToNewMatch);
 		
         //printMatch(iniToNewMatch, false);
 		
-		evaluateMatch(iniToNewMatch, newToIniMatch, iniKGroups);
+		//evaluateMatch(iniToNewMatch, newToIniMatch, iniKGroups);
 		
 		return newToIniMatch;
 	}
@@ -346,10 +346,11 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 	 * Convert A - R - B, A - R - C, B - R - C to  A - R - B - R - C. Thus removing the indirect relation between A and C
 	 * 
 	 * **/
-	protected void evaluateMatch(Map<ABObject, ABObject> iniToNewMatch, Map<ABObject, ABObject> NewToIniMatch, List<Set<ABObject>> kinematicGroups)
+	protected void evaluateMatch(Map<ABObject, ABObject> iniToNewMatch, Map<ABObject, ABObject> newToIniMatch, List<Set<ABObject>> SCOs)
 	{
+		//GSRConstructor.printNetwork(newFullNetwork);
 		//check each group;
-		 for (Set<ABObject> kg: kinematicGroups)
+		 for (Set<ABObject> kg: SCOs)
 		 {
 			 List<ABObject> list = new ArrayList<ABObject>();
 			 list.addAll(kg);
@@ -375,26 +376,69 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 					 ABObject _newO2 = iniToNewMatch.get(_o2);
 					 if(_newO2 != null)
 					 {
+						 //log(" test ");
 						 Relation _r = (GSRConstructor.computeRectToRectRelation(_newO1, _newO2)).r;
-						 //System.out.println(newO1 + "  " + newO2 + "  " + _r + "   " + r);
+						 //log(_newO1 + "  " + _newO2 + "  " + _r + "   " + r);
 						 if ( Relation.isOpposite(_o1, _o2, r, _newO1, _newO2, _r) && _o1.type == _o2.type
 								 && !ShapeToolkit.isDifferentShape(_newO1, _newO2)) 
 						 {
-							 //log("@@ " + _o1.id + "  " + _o2.id + "  " + r + "  " + _r);
-							 swap( iniToNewMatch, NewToIniMatch, _o1, _o2, _newO1, _newO2 );
+							 //log(" swap " + _o1 + "  " + _o2);
+							 swap( iniToNewMatch, newToIniMatch, _o1, _o2, _newO1, _newO2 );
 					 }
 					 }
 				 }
 			 }
 			 else{
-				 int newn = 0;
-				 while( n > 0)
+				 
+			/*	 for (ABObject obj : list)
+					 log(obj.toString() + "  " + iniToNewMatch.get(obj));*/
+					 for (int i = 0; i < n - 1; i++)
+					 {
+						 ABObject o1 = list.get(i);
+						 ABObject newO1 = iniToNewMatch.get(o1);
+						 if(newO1 != null)
+							 for (int j = i + 1; j < n; j++)
+							 {
+								 ABObject o2 = list.get(j);
+								 ConstraintEdge e;
+								 Relation r;
+								 e = iniFullNetwork.getEdge(o1, o2);
+								 if( e == null)
+								 {
+									 e = iniFullNetwork.getEdge(o2, o1);
+									 r = Relation.inverse(e.label);
+								 }
+								 else
+									  r = e.label;
+								 ABObject newO2 = iniToNewMatch.get(o2);
+								 
+								 //log(" o1: " + o1.toString() + " o2: " + o2.toString());
+								 //log(" newO1: " + newO1 + " newO2: " + newO2 + "  ");
+								 
+								 if(newO2 != null)
+								 {
+									 Relation _r = (GSRConstructor.computeRectToRectRelation(newO1, newO2)).r;
+									/* log(" o1: " + o1.toString() + " o2: " + o2.toString());
+									 log(" newO1: " + newO1 + " newO2: " + newO2 + "  " + _r + "   " + r);*/
+									 if ( Relation.isOpposite(o1, o2, r, newO1, newO2, _r) && o1.type == o2.type
+											 && !ShapeToolkit.isDifferentShape(newO1, newO2)) 
+									 {
+										 //log(" swap " + o1 + "  " + o2);
+										 swap( iniToNewMatch, newToIniMatch, o1, o2, newO1, newO2 );
+									 }
+								 }
+							 }
+					}
+				/*  
+				   int newn = 0;
+				   while( n > 0)
 				 {
 					 newn = 0;
-					 for (int i = 1; i < n - 1; i++ )
+					 for (int i = 1; i <= n - 1; i++ )
 					 {
 						 ABObject o1 = list.get(i - 1);
 						 ABObject newO1 = iniToNewMatch.get(o1);
+						
 						 if(newO1 != null)
 						 {
 							 ABObject o2 = list.get(i);
@@ -410,26 +454,34 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 								  r = e.label;
 							
 							 ABObject newO2 = iniToNewMatch.get(o2);
+							 
+							 log(o1.toString()+ "  " + o2.toString());
+							 if(newO1 != null)
+								 log(" newO1 " + newO1.toString());
+							 if(newO2 != null)
+								 log(" newO2 " + newO2.toString());
+							
 							 if(newO2 != null)
 							 {
 								 Relation _r = (GSRConstructor.computeRectToRectRelation(newO1, newO2)).r;
-								 //System.out.println(newO1 + "  " + newO2 + "  " + _r + "   " + r);
+								 log(" o1: " + o1.toString() + " o2: " + o2.toString());
+								 log(" newO1: " + newO1 + " newO2: " + newO2 + "  " + _r + "   " + r);
 								 if ( Relation.isOpposite(o1, o2, r, newO1, newO2, _r) && o1.type == o2.type
 										 && !ShapeToolkit.isDifferentShape(newO1, newO2)) 
 								 {
-									
-									 swap( iniToNewMatch, NewToIniMatch, o1, o2, newO1, newO2 );
+									 log(" swap " + o1 + "  " + o2);
+									 swap( iniToNewMatch, newToIniMatch, o1, o2, newO1, newO2 );
 									 newn = i;
 								 }
 							 }
 						 }		 
 					 }
 					 n = newn;
-				 }
+				 }*/
 			 }
 			 
 		 }
-		
+		//printMatch(newToIniMatch, true);
 	}
 
 	/**
@@ -535,13 +587,10 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 		
 	}
 	
-
-	
-	
 	@Override
 	public void debrisRecognition(List<ABObject> unmatchedNewObjs, List<ABObject> unmatchedIniObjs) {
 
-	   log(" Debris Recognition ");
+	   //log(" Debris Recognition ");
 		/*for (ABObject iniObj : unmatchedIniObjs)
 			log("@@@ini " + iniObj);
 	   for(ABObject newObj : unmatchedNewObjs)
@@ -629,13 +678,13 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			//preprocessObjs(newObjs);
 			createPrefs(newObjs);
 			//printPrefs(prefs);
-			Map<ABObject, ABObject> newToIniMatch;
-			
+			Map<ABObject, ABObject> newToIniMatch = new HashMap<ABObject, ABObject>();
+			Map<ABObject, ABObject> iniToNewMatch = new HashMap<ABObject, ABObject>();
 			unmatchedNewObjs = new LinkedList<ABObject>();
 			
 			List<ABObject> membersOfMatchedDebrisGroup = new LinkedList<ABObject>();
 			
-			newToIniMatch = matchObjs(iniObjs, newObjs);
+		    matchObjsNew(iniObjs, newObjs, newToIniMatch, iniToNewMatch);
 			
 			//Assign Id
 			for (ABObject obj: newToIniMatch.keySet())
@@ -690,7 +739,8 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			debrisRecognition(unmatchedNewObjs, unmatchedIniObjs);
 			
 			//printMatch(matchedObjs, true);
-			//Remove false debris group. False Debris: new objs debris which is not matched, by its members are matched
+			
+			//==================== Remove false debris group. False Debris: new objs debris which is not matched, by its members are matched ======================
 			List<ABObject> falseDebris = new LinkedList<ABObject>();
 			for (ABObject newObj : unmatchedNewObjs)
 			{
@@ -703,6 +753,8 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			}
 			newObjs.removeAll(falseDebris);
 			unmatchedNewObjs.removeAll(falseDebris);
+			//============================================= Removal End ==============================================================================================
+			
 			
 			iniObjsMovement.clear();
 
@@ -749,6 +801,7 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			// ========== End Match =========================================================
 			
 			
+			
 			// only retain those which have been matched;
 			newObjs.retainAll(matchedObjs.keySet());
 			
@@ -789,19 +842,6 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			//remove all new objs if they have the debris group being matched with the same id
 			reassociatePieces(newObjs, matchedObjs);
 			
-				/*List<ABObject> removal = new LinkedList<ABObject>();
-				for (ABObject obj : newObjs)
-				{
-					if(obj instanceof DebrisGroup)
-					{
-						DebrisGroup group = (DebrisGroup)obj;
-						removal.add(group.member1);
-						removal.add(group.member2);
-					}
-				}
-				newObjs.removeAll(removal);*/
-			
-			//newObjs.retainAll(matchedObjs.keySet());
 			
 			//Update before unique assignment
 			GlobalObjectsToolkit.updateOccludedObjs(matchedObjs);
@@ -813,8 +853,16 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 			//Set Initial Objs Movements
 			iniObjsMovement.clear();
 			
-			//new edit remove on unmatched new objs. since they all have -1 id, which we do not want to use.
+			//new edit: remove on unmatched new objs. since they all have -1 id, which we do not want to use.
+			//printMatch(matchedObjs, true);
 			
+			for (ABObject obj : matchedObjs.keySet())
+			{
+				if (matchedObjs.get(obj) != null)
+					iniToNewMatch.put(matchedObjs.get(obj), obj);
+			}
+			//printMatch(matchedObjs, true);
+			evaluateMatch(iniToNewMatch, matchedObjs, iniKGroups);
 			
 			for (ABObject obj : matchedObjs.keySet())
 			{
@@ -835,14 +883,15 @@ public class KnowledgeTrackerBaseLine_8 extends SMETracker {
 	public static void main(String args[])
 	{
 		//String filename = "speedTest_48";
-		String filename = "e1L10_52";//"e1L17_58";//"F:\\Samples\\L7_1_54";
+		String filename = "e1L5_53";//"e1L10_52";//"e1L17_58";//"F:\\Samples\\L7_1_54";
 				//"F:\\Samples\\L11_1_59";//"e1L17_58";//"e1L15_53";//"e1L7_54";//"t14";//"e1L16_55";//"e1L10_52";//"e1L7_62";//"t6";//"e1L9_62";//"e1L7_54";//"e1L9_62";//"t11";//"e1L7_54";//"e1L18_55";// "t11";//"t11";//"e2l3_65";//;
 		int timegap = 200;
 		int step = 1;
 		if(filename.contains("_"))
 			timegap = Integer.parseInt(filename.substring(filename.lastIndexOf("_") + 1));
 		Tracker tracker = new KnowledgeTrackerBaseLine_8(timegap * step);
-		TrackingFrameComparison tfc = new TrackingFrameComparison(filename, tracker, step);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
+		TrackingFrameComparison tfc = new TrackingFrameComparison("t6", tracker);
+		//TrackingFrameComparison tfc = new TrackingFrameComparison(filename, tracker, 88, 89);// t3,t9,t5,t13 Fixed: t11, t12, t6, t14, t15[not]
 		TrackingFrameComparison.continuous = true;
 		tfc.run();
 	}

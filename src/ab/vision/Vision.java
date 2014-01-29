@@ -499,10 +499,10 @@ public class Vision {
 		ABList objects = ABList.newList();
 		if(type == ABType.Wood || type == ABType.Ice || type == ABType.Stone || type == ABType.TNT)
 			for(Rectangle rec: mbrs)
-				objects.add(new ABBlock(rec, type));
+				objects.add(new ABObject(rec, type));
 		else if(type == ABType.Pig)
 				for(Rectangle rec: mbrs)
-					objects.add(new ABPig(rec, type));
+					objects.add(new ABObject(rec, type));
 		else
 			for(Rectangle rec: mbrs)
 				objects.add(new ABObject(rec, type));

@@ -43,7 +43,7 @@ public class ConstraintEdge extends DefaultEdge {
      }
 
      public String toString() {
-         return source + " [ " + label + " ] "+ target;
+         return source + " [ " + label +  ": " + distance + " ] "+ target;
      }
 
 	private static final long serialVersionUID = -3762172925571437811L;

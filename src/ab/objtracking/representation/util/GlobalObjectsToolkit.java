@@ -227,12 +227,14 @@ public class GlobalObjectsToolkit {
 			{
 				if(occludedIds.contains(obj.id) && !ShapeToolkit.isDifferentShape(obj, unmatched))
 				{  
-					float _diff = ShapeToolkit.calMassShift(lastObjs.get(obj.id), unmatched);
+					ABObject _obj = lastObjs.get(obj.id); //The last appearance of the object.
+					
+					float _diff = ShapeToolkit.calMassShift(_obj, unmatched);
 					if (_diff < diff)
 					{	
 					
 						diff = _diff;
-						matchedObj = obj;
+						matchedObj = _obj;
 					}
 					
 				}

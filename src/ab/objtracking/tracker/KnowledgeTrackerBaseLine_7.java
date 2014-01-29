@@ -111,7 +111,7 @@ public class KnowledgeTrackerBaseLine_7 extends SMETracker {
 		List<DirectedGraph<ABObject, ConstraintEdge>> graphs = GSRConstructor.contructNetworks(iniObjs);
 		iniGRNetwork = graphs.get(1);
 		iniFullNetwork = graphs.get(0);
-		iniKGroups = GSRConstructor.getAllKinematicsGroups(iniGRNetwork);
+		iniKGroups = GSRConstructor.getSCO(iniGRNetwork);
 		
 		preprocessDebris(iniObjs);
 		

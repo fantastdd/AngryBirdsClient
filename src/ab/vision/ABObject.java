@@ -1,5 +1,6 @@
 package ab.vision;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.io.Serializable;
@@ -91,9 +92,11 @@ public boolean isSameShape(ABObject ao)
 	return false;
 }
 
-public ABPoint getCenter() {
-	
-   return new ABPoint(getCenterX(), getCenterY());
+public Point getCenter() {
+
+   Point point = new Point();
+   point.setLocation(getCenterX(), getCenterY());
+   return point;
 }
 
 /**

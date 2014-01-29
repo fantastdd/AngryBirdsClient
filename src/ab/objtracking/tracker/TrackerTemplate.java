@@ -92,6 +92,9 @@ public abstract class TrackerTemplate implements Tracker{
 		
 		NewToIniMatch.put(newO1, o2);
 		NewToIniMatch.put(newO2, o1);
+		
+		link(newO1, o2, true);
+		link(newO2, o1, true);
 	}
 
 	protected float calMassShift(ABObject o1, ABObject o2) {
@@ -351,6 +354,11 @@ public abstract class TrackerTemplate implements Tracker{
 	{
 		return matchedId;
 	}
+	/***
+	 * Print the match between two objeccts sets. 
+	 * @param newToIniMatch: after - before match
+	 * @param newToIni: is after - before
+	 * **/
 	protected void printMatch(Map<ABObject, ABObject> newToIniMatch, boolean newToIni)
 	{
 		String str1 = "";

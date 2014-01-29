@@ -11,7 +11,7 @@
 (function() {
     var sock = null;
 
-    function connect() {
+    function connect() {dxd
         if (sock !== null) {
             return;
         }

@@ -32,8 +32,7 @@ public class Movement {
 	
 	public ABObject object;
 	public boolean remainStatic = false;
-	public boolean landMarkMovement = false; // The movement has a higher confidence to be correct
-
+	
 
 	public void setAllowedXDirection(int[] allowedXDirection)
 	{
@@ -46,7 +45,7 @@ public class Movement {
 			allowPositive = getBoundingScopeValue();
 		} else
 			if (allowPositive == MAX_SCOPE)
-				allowPositive = getMaxXScope();
+					allowPositive = getMaxXScope();
 		
 		if (allowNegative == BOUNDING_SCOPE)
 		{
@@ -112,12 +111,13 @@ public class Movement {
 	    setDirectionAndType(xshift, yshift);
 	    
 	}
+	
 	public Movement(Movement movement, ABObject object)
 	{
 		this.object = object;
 		int count = -1;
 		allowedXDirection = new int[3];
-		allowedYDirection = new int[3];
+		allowedYDirection = new int[3]; 
 		for (int scope : movement.allowedXDirection){
 			count ++;
 			if (scope == NOT_ALLOWED)

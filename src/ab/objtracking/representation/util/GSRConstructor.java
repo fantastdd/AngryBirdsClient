@@ -36,7 +36,7 @@ public class GSRConstructor {
 	 * @param grnetwork: network with GR relations
 	 * @return a list of all possible set of objects that have the same kinematics configurations (evaluating by GR relations)
 	 * */
-	public static List<Set<ABObject>> getAllKinematicsGroups(DirectedGraph<ABObject, ConstraintEdge> grnetwork)
+	public static List<Set<ABObject>> getSCO(DirectedGraph<ABObject, ConstraintEdge> grnetwork)
 	{
 
 		
@@ -172,10 +172,7 @@ public class GSRConstructor {
 				allGroups.add(sameGroup);
 
 		}
-
-		
 	
-		
 		allGroups.addAll(grgroups);
 		
 		//Remove subset stuff
@@ -206,17 +203,221 @@ public class GSRConstructor {
 	
 	}
 	
-	private static void printGroup(List<Set<ABObject>> allGroups)
+	
+	/**
+	 * @param grnetwork: network with GR relations
+	 * @return a list of all possible set of objects that have the same kinematics configurations (evaluating by GR relations)
+	 * */
+	public static List<Set<ABObject>> getSCOIncludingFreefall(DirectedGraph<ABObject, ConstraintEdge> grnetwork)
+	{
+
+		
+		List<Set<ABObject>> allGroups = new LinkedList<Set<ABObject>>();
+
+		Set<ABObject> vertices = grnetwork.vertexSet();
+
+		//GR Group
+		List<Set<ABObject>> grgroups = new LinkedList<Set<ABObject>>();
+		
+		ArrayList<ABObject> vlist = new ArrayList<ABObject>();
+		
+		vlist.addAll(vertices);
+		//Sort by ID
+		Collections.sort(vlist, new Comparator<ABObject>(){
+
+			@Override
+			public int compare(ABObject o1, ABObject o2) {
+
+				return ((Integer)o1.id).compareTo(o2.id);
+			}});
+		for (int i = 0; i < vlist.size(); i++)
+		{
+			ABObject o1 = vlist.get(i);
+			
+			Set<ConstraintEdge> o1set = grnetwork.edgesOf(o1);//get all edges;
+			
+			Set<ABObject> v1set = new HashSet<ABObject>();//get neighbor objs: those objects will potentially give force
+
+			for (ConstraintEdge edge : o1set)
+			{
+				if(edge.distance > MagicParams.VisionGap)
+					continue;
+				
+				ABObject vertex = edge.getTarget();
+				if(vertex != o1)
+					v1set.add(vertex);
+				else
+					v1set.add(edge.getSource());
+				
+				//================  Test and Add GR Groups ============
+				//if (Relation.isEE(edge.label))
+				if(Relation.isGRRelation(edge.label))
+				{
+					Set<ABObject> set = new HashSet<ABObject>();
+					set.add(o1);
+					set.add(vertex);
+					grgroups.add(set);
+				}
+				//===============  Test and Add End ===================
+				//System.out.println(edge);
+			}
+			Set<ABObject> sameGroup = new HashSet<ABObject>();
+			int o1Degree = grnetwork.inDegreeOf(o1) + grnetwork.outDegreeOf(o1);
+			
+			
+			//Search o1 neighbor's neighbors
+			for (int j = 0; j < vlist.size(); j++)
+			{
+				ABObject o2 = vlist.get(j);
+
+				if(v1set.contains(o2))
+				{					
+					ConstraintEdge e;
+					Relation r;
+					e = grnetwork.getEdge(o2, o1);
+					if(e == null)
+					{	
+						e = grnetwork.getEdge(o1, o2);
+						r = Relation.inverse(e.label);
+					}
+					else
+						r = e.label;
+
+					Set<ConstraintEdge> o2set = grnetwork.edgesOf(o2);
+					Set<ABObject> sameLabelSet = new HashSet<ABObject>();
+					for (ConstraintEdge edge : o2set)
+					{
+						if(edge.distance > MagicParams.VisionGap)
+							continue;
+						ABObject vertex = edge.getTarget();
+						int vertexDegree = grnetwork.inDegreeOf(vertex) + grnetwork.outDegreeOf(vertex);
+						Relation _r = edge.label;
+						if(vertex == o2)
+						{	
+							vertex = edge.getSource();
+							_r = Relation.inverse(_r);
+						}
+						if ( r == _r)
+						{
+							if(vertex != o1 && o1Degree == vertexDegree && vertex.type == o1.type)
+								sameLabelSet.add(vertex);
+						}
+
+					}
+					
+				/*	log("print same group " + o1);
+					if(sameGroup.isEmpty())
+						log("empty group size ");
+					for (ABObject obj : sameGroup)
+					{
+						log(obj + "");
+					}
+					log("\n print same label set " + o2);
+					if(sameLabelSet.isEmpty())
+						log("empty label set size");
+					else
+						for (ABObject obj : sameLabelSet)
+							log(obj + "");
+					 */
+
+					if(sameGroup.isEmpty())
+						sameGroup.addAll(sameLabelSet);
+					else
+						sameGroup.retainAll(sameLabelSet);	
+
+				}
+
+			}
+			sameGroup.add(o1);
+			/*log("\nprint same group before adding " + o1);
+			if(sameGroup.isEmpty())
+				log("\nempty group size ");
+			for (ABObject obj : sameGroup)
+			{
+				log(obj + "");
+			}*/
+
+		/*	log(" add to all groups " + o1);
+			log(allGroups.contains(sameGroup) + "");*/
+
+			if(!allGroups.contains(sameGroup) && sameGroup.size() > 1)
+				allGroups.add(sameGroup);
+
+		}
+	
+		allGroups.addAll(grgroups);
+		
+		//printGroup(vertices, 0);
+	    //printNetwork(grnetwork);
+		Set<ABObject> freeFallObjs = new HashSet<ABObject>();
+		freeFallObjs.addAll(vertices);
+		for (ABObject obj : vertices)
+		{
+			Set<ConstraintEdge> edges = grnetwork.edgesOf(obj);
+			if (edges.isEmpty())
+				freeFallObjs.remove(obj);
+			else
+			for (ConstraintEdge edge : edges)
+			{
+				if (edge.distance <= 1)
+				{
+					//log(edge.toString()+ "  " + obj.toString());
+					freeFallObjs.remove(edge.getTarget());
+					freeFallObjs.remove(edge.getSource());
+					break;
+				}
+			}
+		}
+		//printGroup(freeFallObjs, 1);
+		
+		allGroups.add(freeFallObjs);
+		
+		//Remove subset stuff
+		List<Set<ABObject>> subsets = new LinkedList<Set<ABObject>>();
+		for (int i = 0; i < allGroups.size() - 1; i++)
+		{
+			Set<ABObject> set1 = allGroups.get(i);
+			for (int j = i + 1; j < allGroups.size(); j++)
+			{
+				Set<ABObject> set2 = allGroups.get(j);
+				if(set1.containsAll(set2))
+					subsets.add(set2);
+				else
+					if(set2.containsAll(set1))
+					{
+						subsets.add(set1);
+						break;
+					}
+			}
+		}
+		allGroups.removeAll(subsets);
+
+		//printNetwork(grnetwork);
+		//printGroups(allGroups);
+		
+		return allGroups;
+		
+	
+	}
+	
+	private static void printGroup(Set<ABObject> group, int count)
+	{
+		log("\nPrint Group");
+		log("======== Group " + count + "=========");
+		for (ABObject obj : group)
+		{
+			log(obj.toString());
+		}
+		
+	}
+	
+	private static void printGroups(List<Set<ABObject>> allGroups)
 	{
 		log("\nPrint Group");
 		int count = 0;
 		for (Set<ABObject> objs : allGroups)
 		{
-			System.out.println("======== Group " + ++count + "=========");
-			for (ABObject obj : objs)
-			{
-				System.out.println(obj);
-			}
+			printGroup(objs, ++count);
 
 		}
 		
