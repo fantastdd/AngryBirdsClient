@@ -1,0 +1,339 @@
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  4 FEB 2014 23:16
+entering extended mode
+**KR14_Tracking.tex
+(F:\ObjectTrackingAAAI\KR14_Tracking.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2009-06-19, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, lao, latin, lat
+vian, lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerm
+an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese, 
+romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
+sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
+senglishmax, welsh, loaded.
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(F:\ObjectTrackingAAAI\aaai.sty
+Conference Style for AAAI for LaTeX 2e -- version of 1 December 2013
+\titlebox=\skip43
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\times.sty"
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\helvet.sty"
+Package: helvet 2005/04/12 PSNFSS-v9.2a (WaS) 
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty"
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count87
+\float@exts=\toks15
+\float@box=\box26
+\@float@everytoks=\toks16
+\@floatcapt=\box27
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks17
+\c@algorithm=\count88
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithmicx\algpseudocode.sty"
+Package: algpseudocode 
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithmicx\algorithmicx.sty"
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count89
+\c@ALG@rem=\count90
+\c@ALG@nested=\count91
+\ALG@tlm=\skip44
+\ALG@thistlm=\skip45
+\c@ALG@Lnr=\count92
+\c@ALG@blocknr=\count93
+\c@ALG@storecount=\count94
+\c@ALG@tmpcounter=\count95
+\ALG@tmplength=\skip46
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\courier.sty"
+Package: courier 2005/04/12 PSNFSS-v9.2a (WaS) 
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count96
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(F:\ObjectTrackingAAAI\KR14_Tracking.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 26.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count97
+\scratchdimen=\dimen105
+\scratchbox=\box28
+\nofMPsegments=\count98
+\nofMParguments=\count99
+\everyMPshowfont=\toks18
+\MPscratchCnt=\count100
+\MPscratchDim=\dimen106
+\MPnumerator=\count101
+\makeMPintoPDFobject=\count102
+\everyMPtoPDFconversion=\toks19
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 27.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 27.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 27.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 27.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 27.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 27.
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 27.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 28.
+
+Underfull \vbox (badness 6542) has occurred while \output is active []
+
+ [1{C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+
+
+]
+<./figure/GSR.png, id=11, 548.0475pt x 152.06813pt>
+File: ./figure/GSR.png Graphic file (type png)
+ <use ./figure/GSR.png>
+Package pdftex.def Info: ./figure/GSR.png used on input line 62.
+(pdftex.def)             Requested size: 191.81949pt x 53.22464pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 68.
+
+<./figure/CardinalTiles.png, id=13, 531.9875pt x 266.9975pt>
+File: ./figure/CardinalTiles.png Graphic file (type png)
+
+<use ./figure/CardinalTiles.png>
+Package pdftex.def Info: ./figure/CardinalTiles.png used on input line 73.
+(pdftex.def)             Requested size: 159.59747pt x 80.09985pt.
+
+<./figure/EGSR-relations.png, id=14, 941.5175pt x 345.29pt>
+File: ./figure/EGSR-relations.png Graphic file (type png)
+
+<use ./figure/EGSR-relations.png>
+Package pdftex.def Info: ./figure/EGSR-relations.png used on input line 82.
+(pdftex.def)             Requested size: 235.3788pt x 86.32228pt.
+ [2 <F:/ObjectTrackingAAAI/figure/GSR.png>]
+<./figure/QCN.png, id=22, 341.02406pt x 174.6525pt>
+File: ./figure/QCN.png Graphic file (type png)
+ <use ./figure/QCN.png>
+Package pdftex.def Info: ./figure/QCN.png used on input line 97.
+(pdftex.def)             Requested size: 119.3602pt x 61.12929pt.
+
+<./figure/quadrants.png, id=23, 424.58624pt x 276.28218pt>
+File: ./figure/quadrants.png Graphic file (type png)
+
+<use ./figure/quadrants.png>
+Package pdftex.def Info: ./figure/quadrants.png used on input line 105.
+(pdftex.def)             Requested size: 127.37685pt x 82.88528pt.
+ [3 <F:/ObjectTrackingAAAI/figure/CardinalTiles.png (PNG copy)> <F:/ObjectTrack
+ingAAAI/figure/EGSR-relations.png (PNG copy)> <F:/ObjectTrackingAAAI/figure/QCN
+.png> <F:/ObjectTrackingAAAI/figure/quadrants.png>] <./figure/BirdImpact.png, i
+d=30, 705.63625pt x 199.74625pt>
+File: ./figure/BirdImpact.png Graphic file (type png)
+
+<use ./figure/BirdImpact.png>
+Package pdftex.def Info: ./figure/BirdImpact.png used on input line 136.
+(pdftex.def)             Requested size: 211.6925pt x 59.92433pt.
+
+<./figure/ScenarioByRules.png, id=31, 366.61969pt x 137.01187pt>
+File: ./figure/ScenarioByRules.png Graphic file (type png)
+
+<use ./figure/ScenarioByRules.png>
+Package pdftex.def Info: ./figure/ScenarioByRules.png used on input line 141.
+(pdftex.def)             Requested size: 128.3188pt x 47.95486pt.
+
+<./figure/SpatiallyCorrelatdScenario.png, id=32, 790.955pt x 264.99pt>
+File: ./figure/SpatiallyCorrelatdScenario.png Graphic file (type png)
+
+<use ./figure/SpatiallyCorrelatdScenario.png>
+Package pdftex.def Info: ./figure/SpatiallyCorrelatdScenario.png used on input 
+line 152.
+(pdftex.def)             Requested size: 197.73827pt x 66.24733pt.
+
+<./figure/SCOScenario.png, id=33, 284.56313pt x 140.02313pt>
+File: ./figure/SCOScenario.png Graphic file (type png)
+
+<use ./figure/SCOScenario.png>
+Package pdftex.def Info: ./figure/SCOScenario.png used on input line 157.
+(pdftex.def)             Requested size: 156.5102pt x 77.01295pt.
+ [4 <F:/ObjectTrackingAAAI/figure/BirdImpact.png (PNG copy)> <F:/ObjectTracking
+AAAI/figure/ScenarioByRules.png> <F:/ObjectTrackingAAAI/figure/SpatiallyCorrela
+tdScenario.png (PNG copy)> <F:/ObjectTrackingAAAI/figure/SCOScenario.png>]
+<./figure/Templates2.png, id=40, 616.55344pt x 374.90062pt>
+File: ./figure/Templates2.png Graphic file (type png)
+
+<use ./figure/Templates2.png>
+Package pdftex.def Info: ./figure/Templates2.png used on input line 179.
+(pdftex.def)             Requested size: 172.63377pt x 104.97145pt.
+
+<./figure/Fragmentation2.png, id=41, 411.03563pt x 109.1578pt>
+File: ./figure/Fragmentation2.png Graphic file (type png)
+
+<use ./figure/Fragmentation2.png>
+Package pdftex.def Info: ./figure/Fragmentation2.png used on input line 189.
+(pdftex.def)             Requested size: 246.62328pt x 65.49518pt.
+
+Overfull \hbox (7.2289pt too wide) in paragraph at lines 189--189
+ [][] 
+ []
+
+[5 <F:/ObjectTrackingAAAI/figure/Templates2.png> <F:/ObjectTrackingAAAI/figure/
+Fragmentation2.png>] <./figure/OMBRs.png, id=47, 701.62125pt x 228.855pt>
+File: ./figure/OMBRs.png Graphic file (type png)
+
+<use ./figure/OMBRs.png>
+Package pdftex.def Info: ./figure/OMBRs.png used on input line 215.
+(pdftex.def)             Requested size: 210.48799pt x 68.65701pt.
+
+<./figure/TrackingBackup.png, id=48, 763.35187pt x 252.945pt>
+File: ./figure/TrackingBackup.png Graphic file (type png)
+
+<use ./figure/TrackingBackup.png>
+Package pdftex.def Info: ./figure/TrackingBackup.png used on input line 233.
+(pdftex.def)             Requested size: 244.27759pt x 80.94405pt.
+
+Overfull \hbox (4.88321pt too wide) in paragraph at lines 233--233
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[6 <F:/ObjectTrackingAAAI/figure/OMBRs.png (PNG copy)> <F:/ObjectTrackingAAAI/f
+igure/TrackingBackup.png>]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `!htbp') on input line 300.
+
+LaTeX Font Info:    Font shape `OMS/ptm/m/it' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 304.
+[7] (F:\ObjectTrackingAAAI\KR14_Tracking.bbl
+Underfull \hbox (badness 5741) in paragraph at lines 12--16
+[]\OT1/ptm/m/n/10 AIBirds.  2013.  An-gry Birds: AI Com-pe-ti-tion.
+ []
+
+
+Underfull \hbox (badness 5036) in paragraph at lines 19--25
+[]\OT1/ptm/m/n/10 Balbiani, P.; Con-dotta, J.-F.; and Del Cerro, L. F.
+ []
+
+
+Underfull \hbox (badness 2368) in paragraph at lines 19--25
+\OT1/ptm/m/n/10 po-ral re-la-tions.  In \OT1/ptm/m/it/10 PRIN-CI-PLES OF KNOWL-
+EDGE
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 128--132
+[]\OT1/ptm/m/n/10 Rovio.  2013.  An-gry Birds Chrome.
+ []
+
+) [8] (F:\ObjectTrackingAAAI\KR14_Tracking.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 1993 strings out of 494045
+ 28114 string characters out of 3148390
+ 88831 words of memory out of 3000000
+ 5271 multiletter control sequences out of 15000+200000
+ 19576 words of font info for 35 fonts, out of 3000000 for 9000
+ 715 hyphenation exceptions out of 8191
+ 27i,10n,19p,1823b,271s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+mr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Progr
+am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files/
+MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/
+type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/u
+tmri8a.pfb>
+Output written on KR14_Tracking.pdf (8 pages, 808806 bytes).
+PDF statistics:
+ 98 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
+

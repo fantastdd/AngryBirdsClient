@@ -1,0 +1,14 @@
+\documentclass[letterpaper]{article}
+\begin{document}
+\section{Problem Description}
+
+Let \cal{S(scene, identities)} be a state that has two components, scene and identities. Scene is every object that can be seen while identity uniquely identifies an object.    
+
+
+Let \cal{B}(\cal{S},\cal{A}) be a deterministic black box that takes a state \cal{S}, an action \cal{A} as input, and outputs a partially observable state \cal{E(e, *)} where identity information is hidden. 
+
+In order to interact with the black box (make reasonable actions), we should first learn its behaviours, specifically, what is the outcome by applying a certain action on a state. It is important to understand the changes / difference between the before and after states. However, since the black box does not provide the identity information, we are unable to capture the changes directly.    
+
+To solve this, our task is to create a model \cal{M(\cal{S}, \cal{A}, e)} that given a state \cal{S} , an action \cal{A}, and the resulting scene \cal{e}, the model outputs the identity information for \cal{e}. By having the identify information, we can then discover the state changes, the result of an action, which is a step stone for coming up reasonable actions. 
+
+\end{document}
