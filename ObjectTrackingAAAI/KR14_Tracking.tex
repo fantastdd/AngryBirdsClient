@@ -1,5 +1,6 @@
 %File: formatting-instruction.tex
 \documentclass[letterpaper]{article}
+\usepackage[font=small,textfont=it]{caption}
 \usepackage{aaai}
 \usepackage{times}
 \usepackage{helvet}
@@ -14,14 +15,9 @@
 \renewcommand\baselinestretch{0.949}
 \pdfinfo{
 /Title (Multiple Object Tracking using Spatial Reasoning)
-/Author (Xiaoyu Ge, Jochen Renz)}
-\title{Multiple Object Tracking using Spatial Reasoning}
-\author{Xiaoyu Ge \and Jochen Renz \\
-Research School of Computer Science\\
-The Australian National University \\
-Canberra, Australia\\
-\{xiaoyu.ge, jochen.renz\}@anu.edu.au
 }
+\title{Multiple Object Tracking using Spatial Reasoning}
+
 \setcounter{secnumdepth}{0}  
  \begin{document}
 \maketitle    
@@ -52,33 +48,35 @@ We develop an algorithm that allows us to infer identity assignments of PIOs tha
 In order to be able to track objects in images, we obviously have to be able to first obtain objects from images. Object recognition \cite{belongie2002shape,lowe1999object} is one of the hardest and most researched problems in Computer Science and it is still unsolved in its generality. In this paper we assume that objects can be detected and we will use cases where object detection is solved and works. In particular, we use images taken from the Angry Birds game, as this is the main motivation of our work in this paper. 
 The basic software provided by the Angry Birds AI competition organisers includes an object recognition module that detects all known objects with reasonable accuracy and places a minimum bounding rectangle (MBR) around them. In this paper we use an advanced version of the object recognition module which is based on a student project by Andrew Wang and which will be integrated to the basic software soon \cite{andrewwang}. This software detects the real shapes of all known objects plus the contour of the ground. For our paper, we only consider rectangular objects and circular objects. We use an MBR to approximate the region occupied by a circle and use exact shapes for the general solid rectangles (GSR), i.e. rectangles that can have any angle and are impenetrable, as is the case in Angry Birds. 
 
-In order to represent these objects we use a qualitative spatial representation in addition to the real shape and location of the objects. Many rectangle-based qualitative spatial calculi \cite{balbiani1998model,cohn2012thinking,sokeh2013efficient} have developed in the context of Qualitative Spatial Reasoning \cite{cohn2008qualitative}. These calculi typically deal with one or more spatial aspects such as topology, size, direction, or distance, and make a number of qualitative distinctions according to these aspects. There is currently only one spatial calculus that specifically deals with rectangles of arbitrary angles, the GSR-n calculus proposed by \cite{Ge2013}. GSR-n is a comprehensive spatial representation of GSRs. It defines eight contact sectors that correspond to the eight edges and corners of the rectangles. As shown in Figure~\ref{GSR}(a) and (b), we distinguish eight sectors for regular rectangles ($R_1,\ldots,R_8$) and eight sectors for angular rectangles ($A_1,\ldots,A_8$). Given two GSRs $o_1$ and $o_2$ that contact each other via $sector_1, sector_2 \in \{A_1, ..., A_8, R_1, ..., R_8\}$, the contact relation between $o_1$ and $o_2$ can be expressed as the constraint $o_1 \, (sector_1, sector_2) \, o_2$ (Figure \ref{GSR}.c). With the contact relations, GSR-n allows us to distinguish if and how two objects contact each other. Since the objects can only interact via contacts, we can further infer the possible motions of an object from the GSR relations the object holds with others. GSR-n also defines a set $n$ of unary relations using  $Qualitative\,Corner\,Instantiations$, which qualitatively describes the size and leaning direction of a GSR. Since we represent the rectangles using their real shapes, we do not need the unary relations. 
-\begin{figure}[h!]
-\centering\includegraphics[scale=0.28]{GSR.png}\caption{Contact sectors of (a) a normal rectangle (without rotation) and (b) an angular rectangle. (c) An example scenario where $o_1 (R_1, A_4) o_2$, $o_2 (A_8, A_4) o_3$}
-\label{GSR}
+To represent these objects we use a qualitative spatial representation in addition to the real shape and location of the objects. Many rectangle-based qualitative spatial calculi \cite{balbiani1998model,cohn2012thinking,sokeh2013efficient} have developed in the context of Qualitative Spatial Reasoning \cite{cohn2008qualitative}. These calculi typically deal with one or more spatial aspects such as topology, size, direction, or distance, and make a number of qualitative distinctions according to these aspects. There is currently only one spatial calculus that specifically deals with rectangles of arbitrary angles, the GSR-n calculus proposed by \cite{Ge2013}. GSR-n is a comprehensive spatial representation of GSRs. It defines eight contact sectors that correspond to the eight edges and corners of the rectangles. As shown in Figure~\ref{GSR}(a) and (b), we distinguish eight sectors for regular rectangles ($R_1,\ldots,R_8$) and eight sectors for angular rectangles ($A_1,\ldots,A_8$). Given two GSRs $o_1$ and $o_2$ that contact each other via $sector_1, sector_2 \in \{A_1, ..., A_8, R_1, ..., R_8\}$, the contact relation between $o_1$ and $o_2$ can be expressed as the constraint $o_1 \, (sector_1, sector_2) \, o_2$ (Figure \ref{GSR}.c). With the contact relations, GSR-n allows us to distinguish if and how two objects contact each other. Since the objects can only interact via contacts, we can further infer the possible motions of an object from the GSR relations the object holds with others. GSR-n also defines a set $n$ of unary relations that qualitatively describes the size and leaning direction of a GSR. Since we represent the rectangles using their real shapes, we do not need the unary relations. 
+
+\begin{figure}[t]
+\centering\includegraphics[scale=0.28]{GSR.png}
 \vspace{-3mm}
+\caption{Contact sectors of (a) a normal rectangle (without rotation) and (b) an angular rectangle. (c) An example scenario where $o_1 (R_1, A_4) o_2$, $o_2 (A_8, A_4) o_3$}
+\label{GSR}
+\vspace{-4mm}
 \end{figure}
+\begin{figure}[t]
+\centering\includegraphics[scale=0.30]{CardinalTiles.png}
+\vspace{-4mm}
+\caption{(a) The nine cardinal tiles (b) An example scenario where \emph{$o_3$ (TOP) $o_1$}, \emph{$o_2$ (RIGHT) $o_1$}, and \emph{$o_4$ (BOTTOM\,LEFT) $o_1$}}
+\label{CardinalTile}
+\vspace{-4mm}
+\end{figure}
+
 
 
 \subsection{Objects Representation with the extended GSR-n relations (EGSR)}
 
+
 Given two GSRs, we obtain the contact relation by enumerating all the plausible combinations of the two GSRs' contact sectors and for each combination calculating the distance between the two sectors. The combination with the shortest distance constitutes the contact relation. Note, the shortest distance can be non-zero. A non-zero distance means the two GSRs are separate, otherwise touch. So unlike the original definition that the contact relation can only be assigned when two GSRs touch, here we can assign a contact relation for any pair of GSRs. To distinguish whether two GSRs touch or not, we turn to qualitative distance relations which are covered in the next section.
 
-\begin{figure}[t!]
-\centering\includegraphics[scale=0.30]{CardinalTiles.png}\caption{(a) The nine cardinal tiles (b) An example scenario where \emph{$o_3$ (TOP) $o_1$}, \emph{$o_2$ (RIGHT) $o_1$}, and \emph{$o_4$ (BOTTOM\,LEFT) $o_1$}}
-\label{CardinalTile}
-\vspace{-1mm}
-\end{figure}
 
 
 The problem with GSR-n is that it uses $(\emptyset, \emptyset)$ to represent the spatial relation between all the non-touched GSRs. Thus, it introduces ambiguities when the rectangles are disconnected. To overcome the ambiguities, we extend the original GSR-n by integrating it with the cardinal tiles \cite{goyal1997direction}. Specifically, we partition the embedding space around an reference object into nine mutually exclusive tiles(Figure \ref{CardinalTile}.a). The centre tile corresponds to the minimum bounding rectangle of the object and the other eight tiles correspond to the eight cardinal directions. We call the \emph{LEFT, RIGHT, BOTTOM, TOP} core tiles.  
 
-\begin{figure}[t!]
-\centering\includegraphics[scale=0.25]{EGSR-relations.png}
-\caption{Contact sectors and Cardinal directions of (a) an angular rectangle and (b) a normal rectangle}
-\label{EGSR}
-\vspace{-3mm}
-\end{figure}
+
 
 The new representation is called EGSR (Figure \ref{EGSR}). Given a set ${\cal B}_{GSR}$ of GSR contact relations and a set ${\cal B}_{card}$ of cardinal tiles,  we add $\bot$ to both sets to indicate a unassigned relation, an EGSR relation is then written as $(r_1, r_2), r_1 \in {\cal B}_{GSR}\cup \{\bot\}, r_2 \in {\cal B}_{card}\cup \{\bot\}$. We abbreviate $(r_1,r_2)$ by the cardinal tile $r_2$ or by the contact relation $r_1$ if it is clear which one is meant. 
 
@@ -87,19 +85,29 @@ We compute the EGSR relation between two spatial objects by first checking wheth
 \cite{wallgrun2010qualitative} introduced the notion of qualitative interpretation that extracts qualitative descriptions from the input data. A scenario containing multiple spatial objects can be qualitatively interpreted by EGSR via a qualitative constraint network (QCN). QCN is a labelled graph where each node corresponds to an object and directed edges represents relational constraint that has to hold between the two objects. 
 Figure \ref{QCN} shows an example of a QCN based on EGSR relations.
 
-
- \begin{figure}[h!]
-\centering\includegraphics[scale=0.35]{QCN.png}\caption{(a) A spatial scenario where the four rectangles form a stable structure under downward gravity (b) The corresponding qualitative constraint network}
-\label{QCN}
+\begin{figure}[t]
+\centering\includegraphics[scale=0.25]{EGSR-relations.png}
+\vspace{-3mm}
+\caption{Contact sectors and Cardinal directions of (a) an angular rectangle and (b) a normal rectangle}
+\label{EGSR}
+\vspace{-3mm}
 \end{figure}
 
+ \begin{figure}[t]
+\centering\includegraphics[scale=0.35]{QCN.png}\vspace{-3mm}\caption{(a) A spatial scenario where the four rectangles form a stable structure under downward gravity (b) The corresponding qualitative constraint network}
+\label{QCN}
+\vspace{-6mm}
+\end{figure}
+\vspace{-2mm}
 \section{Efficient Matching by Approximating Movement}\label{approxM}
 
 The search space of the problem is huge as there is a combinatorial number of potential matches between any two object sets. However, most matches can be avoided by searching through the corresponding objects only in a limited area. The area of the initial object should therefore cover all the objects in the subsequent scene that can be potentially matched to the initial object.  We use a circular region to represent this area. The circle's centre is located at the centroid of the initial object and the radius of the circle is the maximum shift of the centroid. The radius is calculated as $v \times t$ where $v$ is the maximum velocity of the object and $t$ is the time gap between the initial and subsequent scenes. This calculation ensures that the circle can adapt to different time gaps. We call this circle the \emph{movement\,bounding\,circle} (MBC).  
-\begin{figure}[h!]
-\centering\includegraphics[scale=0.3]{quadrants.png}\caption{(a) Qualitative distance with respect to object A and its MBC (b)  The four quadrants of a MBC }
+\begin{figure}[t]
+\centering\includegraphics[scale=0.3]{quadrants.png}
+\vspace{-3mm}
+\caption{(a) Qualitative distance with respect to object A and its MBC (b)  The four quadrants of a MBC }
 \label{Quadrants}
-\vspace{-4mm}
+\vspace{-7mm}
 \end{figure}
 
 The relative distance between two objects can then be allocated to three meaningful classes, namely touch, reachable, and non-reachable (Figure \ref{Quadrants}.a. An object $o$ can touch another object $o^\prime$ at one of its contact sectors. $o^\prime$ is reachable by $o$ if $o^\prime$ is within the MBC of $o$ otherwise non-reachable. 
@@ -128,30 +136,40 @@ The model $M_{\cal{R}}$ contains all such configurations and can be replaced wit
 %\end{figure}
 
 
-\begin{figure}[t!]
-\centering\includegraphics[scale=0.28]{BirdImpact.png}\caption{(a) The object in cyan is stable, and the impending impact is indicated by the arrow (b) A subsequent scene after the bird hit (c) The estimated active quadrant (shadowed area)}
+\begin{figure}[t]
+\centering\includegraphics[scale=0.28]{BirdImpact.png}
+\vspace{-3mm}
+\caption{(a) The object in cyan is stable, and the impending impact is indicated by the arrow (b) A subsequent scene after the bird hit (c) The estimated active quadrant (shadowed area)}
 \label{BirdImpact}
+\vspace{-3mm}
 \end{figure}
 
-\begin{figure}[t!]
-\centering\includegraphics[scale=0.35]{ScenarioByRules.png}\caption{ The active quadrants of $o_1$ is (a)  $C^{(+,-)}$ by satisfying the Right-leaning configuration (b) $C^{(*,-)}$ because $o_1$ is unstable and there is no object contacts $A_5$ of $o_1$ (c) No active quadrants as the object is stable}
+\begin{figure}[t]
+\centering\includegraphics[scale=0.35]{ScenarioByRules.png}
+\vspace{-3mm}
+\caption{ The active quadrants of $o_1$ is (a)  $C^{(+,-)}$ by satisfying the Right-leaning configuration (b) $C^{(*,-)}$ because $o_1$ is unstable and there is no object contacts $A_5$ of $o_1$ (c) No active quadrants as the object is stable}
 \label{ScenarioByRules}
-\vspace{-5mm}
+\vspace{-6mm}
 \end{figure}
-
+\vspace{-2mm}
 \section{Handling Common Movement by Spatial Reasoning}
 \label{CM}
 
 One challenge is to determine a match between PIOs that are close to each other and have similar trajectories. Figure \ref{SCOExample_2}.a  shows a scene where objects A and B form a slope and three indistinguishable squares, $o_1$, $o_2$ and $o_3$, are lying on the slope. Figure \ref{SCOExample_2}.b is a subsequent image where the three squares have rolled down slightly. There are 6 ways in total to match the squares in the two images but only $\{o_1 \sim o_4, o_2 \sim o_5, o_3 \sim o_6\}$ is possible ($\sim$ is a operator that matches one object to another). Because they do not use reasoning about the spatial relations between the squares, some optimization algorithms, e.g.\ minimizing centroid shift, will tend to match $o_2$ with $o_6$. In many cases, object dynamics, such as velocities, are unavailable, thus many of the state-of-the-art tracking algorithms will not work well because of the lack of a suitable dynamic model. 
 
-\begin{figure}[b!]
-\centering\includegraphics[scale=0.25]{SpatiallyCorrelatdScenario.png}\caption{(a) An initial scene (b) A subsequent scene where the squares have rolled down slightly (c) The EGSR constraint network of the initial scene (only retain the edges indicating contacts) and the SCO}
+\begin{figure}[t]
+\centering\includegraphics[scale=0.25]{SpatiallyCorrelatdScenario.png}
+\vspace{-2.8mm}\caption{(a) An initial scene (b) A subsequent scene where the squares have rolled down slightly (c) The EGSR constraint network of the initial scene (only retain the edges indicating contacts) and the SCO}
+\vspace{-4mm}
 \label{SCOExample_2}
 \end{figure}
 
-\begin{figure}[b!]
-\centering\includegraphics[scale=0.55]{SCOScenario.png}\caption{(a) A typical Angry Birds scenario (b) SCOs (each highlighted by a different color)}
+\begin{figure}[t]
+\centering\includegraphics[scale=0.55]{SCOScenario.png}
+\vspace{-3mm}
+\caption{(a) A typical Angry Birds scenario (b) SCOs (each highlighted by a different color)}
 \label{SCOExample}
+\vspace{-4mm}
 \end{figure}
 
 Humans can solve this case efficiently using spatial reasoning. Since we know the objects are moving at a similar velocity, the relative spatial changes among them are subtle. Hence the spatial relations between those objects are unlikely to become converse while they are moving. When matching, we try to keep the original spatial relations among the subsequent objects. We emulate this reasoning in testing a match by first identifying those objects that are following a similar trajectory and then determining whether any relation has become converse in the subsequent image. 
@@ -168,18 +186,22 @@ Given a set of initial objects, we obtain the SCOs by checking the node equivale
 We proposed a method that utilizes all the above mentioned techniques to solve the matching problem (Alg. \ref{algo}). We refer to objects in an initial scene as initial objects and objects in a subsequent scene as subsequent objects.
 
 First, the method randomly assigns a unique ID to each initial object, and estimates the MBC quadrants for each initial object according to the object's spatial relations (Alg. \ref{algo} line \ref{MA}). The list of possible matches for each initial object is set so that it contains only the subsequent objects that are of the same type and within the MBC quadrants (Alg. \ref{algo} line \ref{SetPossible}). The method then creates a preference list from the possible matches of each of the initial objects: the subsequent objects in the preference list are sorted by the size of the centroid shift from the initial object in ascending order. The method matches the two sets of objects using a stable marriage algorithm \cite{gale1962college} with the pre-computed preference lists (Alg. \ref{algo} line \ref{calPref}). The algorithm ensures each match is stable in the sense that no pair of objects would prefer each other over their matched partners. Then, the method finds all groups of spatially correlated objects from the initial objects and gets their corresponding objects from the match (Alg. \ref{algo} line \ref{getSCO}). The method then checks to see whether the spatial constraint  has been violated. If it has, it resolves this accordingly (Alg. \ref{algo} line \ref{CommonMotion}).
-
+\vspace{-0.5mm}
 \section{Implementation}
+
 We implemented our method and applied it to the Angry Birds where the vision system can detect the exact shapes of the objects \cite{andrewwang}. The objects' visual appearance are restricted to a finite number of templates (Figure \ref{Templates}).  
 \begin{figure}[t!]
-\centering\includegraphics[scale=0.28]{Templates2.png}\caption{(a) Main Templates used in Angry Birds (b) The vision detects the real shapes of the objects in a typical Angry Birds scenario}
+\centering\includegraphics[scale=0.28]{Templates2.png}
+\vspace{-2.5mm}
+\caption{(a) Main Templates used in Angry Birds (b) The vision detects the real shapes of the objects in a typical Angry Birds scenario}
 \label{Templates}
 \vspace{-4mm}
 \end{figure}
 However, occlusion or fragmentation are not accounted for in the vision system.
 It has the following limitations that can severely affect the matching accuracy: (1) Debris is not recognized so that it cannot determine whether an object, say a stone, is a real stone or just a piece of debris from a previously destroyed stone (Figure \ref{Fragments}.a). (2) Damaged objects will be detected as several separate smaller pieces (Figure \ref{Fragments}.b). (3) Objects can be occluded by debris or other game effects e.g. scores (Figure \ref{Fragments}.c).
 \begin{figure}[t!]
-\centering\includegraphics[scale=0.6]{Fragmentation2.png}\caption{(a) The object with ID 5 is broken into pieces by a hit (b) The object with ID 4 is partially occluded (c) The object with ID 10 is damaged and detected as two separate blocks}
+\centering\includegraphics[scale=0.6]{Fragmentation2.png}
+\vspace{-7mm}\caption{(a) The object with ID 5 is broken into pieces by a hit (b) The object with ID 4 is partially occluded (c) The object with ID 10 is damaged and detected as two separate blocks}
 \label{Fragments}
 \vspace{-5mm}
 \end{figure}
@@ -198,12 +220,14 @@ An object can also be totally occluded. Before the matching, we cache the spatia
 
  
 \begin{figure}[t!]
-\centering\includegraphics[scale=0.3]{OMBRs.png}\caption{(a) OMBRs are indicated by the dotted rectangles (b) $o_1$ has been destroyed by a bird hit, and the blue dots are recognized as debris}  
+\centering\includegraphics[scale=0.3]{OMBRs.png}
+\vspace{-2.5mm}
+\caption{(a) OMBRs are indicated by the dotted rectangles (b) $o_1$ has been destroyed by a bird hit, and the blue dots are recognized as debris}  
 \label{OMBRs}
-\vspace{-5mm}
+\vspace{-7mm}
 \end{figure}
 
-
+\vspace{-2mm}
 \section{Evaluation}
 
 Matching an object can be trivial if the object has a unique appearance or stays stationary across images. We measure the accuracy of the tracking method by the percentage of correct matches out of the possible mismatches. Specifically, given a set \emph{n} of objects in an initial scenario and assume \emph{m} of them are either of unique type or stationary across images, then the total number of possible mismatches is \emph{n - m}. We count the correct matches \emph{c} of the \emph{n - m} possible mismatches. The accuracy is  \emph{c / (n - m)}. The evaluation has been done in two steps. We first collect samples from active angry birds scenarios, and obtain the ground truth by applying our method using the smallest time gap. Then we evaluate the method by varying the time gaps and obtain the accuracy by comparing against the ground truth.
@@ -213,18 +237,17 @@ Matching an object can be trivial if the object has a unique appearance or stays
 
 We collect a sample by capturing a sequence of screenshots before and after a shot using the smallest time gap (50 ms). The average time gap between the beginning and the end screenshot is 10 seconds. That is, a sample contains around 200 screenshots.  We apply our method to the whole sequence so that the method will keep tracking the objects through all of the screenshots, from the first until the last(Figure \ref{Tracking}). The match between the initial objects in the first screenshot and the subsequent objects in the last screenshot will be saved as the ground truth for later evaluation. %We also save the number of stationary and unique objects per sample.
 
-\begin{figure}[b!]
-\centering\includegraphics[scale=0.32]{TrackingBackup.png}\caption{The method tracks through the screenshots and labels the matched objects with the same ID.} %The match between the first and last screenshots is saved as the ground truth
+\begin{figure}[t]
+\centering\includegraphics[scale=0.25]{TrackingBackup.png}\caption{The method tracks through the screenshots and labels the matched objects with the same ID.} %The match between the first and last screenshots is saved as the ground truth
 \label{Tracking}
-\vspace{-4mm}
+\vspace{-6mm}
 \end{figure}
 
 To automate this process, we run an angry-birds agent that always aims at an random pig on the first 21 poached-eggs Levels \cite{abGame}. The agent starts to capture screenshots once a shot is made, and stops after 10 seconds. At each level, the agent records the screenshots of at most four shots. We collected 62 non-trivial samples. To evaluate the accuracy of the ground truth, we run our method on 10 samples randomly picked from the 62. We determine the accuracy by manually labelling the initial objects and their correspondence in the end screenshot, and compare with the matching. This accuracy is a lower-bound accuracy of matching between a pair of screenshots with the specified time gap, because any incorrect matches made in the intermediate stage will yield mismatches between the first and end screenshots.  
 The method can match most of the objects with less than 4 mismatches per sample.The method achieves real-time performance with average 3 ms per match. To illustrate the significant improvements achieved by the reasoning techniques mentioned above, we compare our method with an approach (\emph{BASIC}) that matches objects using their visual appearance and minimizes the centroid shift between initial and subsequent objects. \emph{BASIC} is a modified version of our method with the movement approximation, and common movement handling disabled. The results are shown in Table \ref{empiResults} with each row represents a sample. For each sample, we also show the percentage of the number of correctly matched objects out of the total number of objects (\emph{TPercent}).
 
 
-\begin{table}[t!]
-\caption{Results on the 10 samples(\,\emph{QSR}: the proposed method, \emph{BASIC}: the modified method )}\label{empiResults}
+\begin{table}[t!]\small
 \centering
 \begin{tabular}{c|c|c|c|c|c}
 \hline
@@ -244,11 +267,13 @@ QSR  & QSR & BASIC & QSR & BASIC\\
 0.94&1.00 & 0.5 & 0 & 2\\
 \hline
 \end{tabular}
-\vspace{-5mm}
+\vspace{-2mm}
+\caption{Results on the 10 samples(\,\emph{QSR}: the proposed method, \emph{BASIC}: the modified method )}\label{empiResults}
+\vspace{-4mm}
 \end{table}
 
-\begin{table}[t!]
-\caption{Results on the 62 samples with different time gaps. TPercen, Accuracy, Mismatch are average of all the samples }\label{empiResults_2}
+\begin{table}[t!]\small
+
 \centering
 \begin{tabular}{c|c|c|c}
 \hline
@@ -261,7 +286,9 @@ Time gap (ms) & TPercent & Accuracy & Mismatch\\
 1000 & 0.82 & 0.68 & 4.22\\
 \hline
 \end{tabular}
-\vspace{-5mm}
+\vspace{-2mm}
+\caption{Results on the 62 samples with different time gaps. TPercen, Accuracy, Mismatch are average of all the samples }\label{empiResults_2}
+\vspace{-8mm}
 \end{table}
 
 
@@ -283,7 +310,7 @@ The time gaps we considered are relevant as they form the minimum time gaps for 
 As mentioned in the introduction, there are a number of other interesting application domains where similar problems are considered. One problem in other domains might be that object recognition is not as accurate as in the Angry Birds domain, also because the number and type of objects is not restricted. 
 One possible line of future work is to extend our method to deal with arbitrary objects and not only rectangular shaped objects. We might be able to use similar methods by using the tightest fitting minimum bounding rectangles that can have any angle around all objects, independent of the objects' shape and orientation.   
 
-\begin{algorithm}[!]
+\begin{algorithm}[!]\footnotesize
 \caption{The Object Tracking Algorithm}\label{algo}
 \begin{algorithmic}[1]
 \Procedure {MatchObjects}{\emph{objs}}
@@ -333,8 +360,8 @@ One possible line of future work is to extend our method to deal with arbitrary 
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-\newpage
 
+\newpage
 \bibliography{OT}
 \bibliographystyle{aaai}
  \end{document}
