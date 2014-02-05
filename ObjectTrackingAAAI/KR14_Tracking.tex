@@ -14,9 +14,9 @@
 \setlength{\pdfpageheight}{11in}
 \renewcommand\baselinestretch{0.949}
 \pdfinfo{
-/Title (Multiple Object Tracking using Spatial Reasoning)
+/Title (Tracking Perceptually Indistinguishable Objects using Spatial Reasoning)
 }
-\title{Multiple Object Tracking using Spatial Reasoning}
+\title{Tracking Perceptually Indistinguishable Objects using Spatial Reasoning}
 
 \setcounter{secnumdepth}{0}  
  \begin{document}
@@ -38,13 +38,13 @@ One example of this problem is the game of Snooker where there are 15 indistingu
 
 Our interest in this problem is motivated by the Angry Birds AI competition \cite{abCompetition} where the task is to build an AI agent that can play the popular game Angry Birds as good as the best human players. A major problem in this context is to accurately predict the outcome of a shot, i.e., to infer how the game objects move when hit by a bird in a particular way. One way of estimating consequences of shots is to know which object after a shot corresponds to which object before a shot. Then we can use this information to learn consequences of actions by using before and after object locations as input to machine learning algorithms. Once we can estimate consequences of shots, it becomes possible to plan good shot sequences that can solve given game levels. Therefore, identifying which objects after a shot correspond to which objects before a shot is an important step in building a sophisticated Angry Birds AI agent.
 
-We develop an algorithm that allows us to infer identity assignments of PIOs that are consistent with the physical effects of a single impact. We evaluate our proposed solution using the Angry Birds scenario. We take subsequent screenshots of an active Angry Birds game taken with varying time gaps and apply our method to match the objects between successive screenshots. We measure the accuracy of our method by using the percentage of correct matches out of the total number of possible mismatches. As expected, it turns out that the smaller the time gaps, the higher the accuracy of the matches. But overall the quality of our matches is very high.
+We develop an algorithm that allows us to infer identity assignments of PIOs that are consistent with the physical effects of a single impact. We evaluate our proposed solution using the Angry Birds scenario. We take subsequent screenshots of an active Angry Birds game with varying time gaps and apply our method to match the objects between successive screenshots. We measure the accuracy of our method by using the percentage of correct matches out of the total number of possible mismatches. As expected, it turns out that the smaller the time gaps, the higher the accuracy of the matches. But overall the quality of our matches is very high.
 
 
 
-
+\vspace{-5mm}
 \section{Detection and Representation of Objects in Images}
-
+\vspace{-5mm}
 In order to be able to track objects in images, we obviously have to be able to first obtain objects from images. Object recognition \cite{belongie2002shape,lowe1999object} is one of the hardest and most researched problems in Computer Science and it is still unsolved in its generality. In this paper we assume that objects can be detected and we will use cases where object detection is solved and works. In particular, we use images taken from the Angry Birds game, as this is the main motivation of our work in this paper. 
 The basic software provided by the Angry Birds AI competition organisers includes an object recognition module that detects all known objects with reasonable accuracy and places a minimum bounding rectangle (MBR) around them. In this paper we use an advanced version of the object recognition module which is based on a student project by Andrew Wang and which will be integrated to the basic software soon \cite{andrewwang}. This software detects the real shapes of all known objects plus the contour of the ground. For our paper, we only consider rectangular objects and circular objects. We use an MBR to approximate the region occupied by a circle and use exact shapes for the general solid rectangles (GSR), i.e. rectangles that can have any angle and are impenetrable, as is the case in Angry Birds. 
 
@@ -100,8 +100,7 @@ Figure \ref{QCN} shows an example of a QCN based on EGSR relations.
 \end{figure}
 \vspace{-2mm}
 \section{Efficient Matching by Approximating Movement}\label{approxM}
-
-The search space of the problem is huge as there is a combinatorial number of potential matches between any two object sets. However, most matches can be avoided by searching through the corresponding objects only in a limited area. The area of the initial object should therefore cover all the objects in the subsequent scene that can be potentially matched to the initial object.  We use a circular region to represent this area. The circle's centre is located at the centroid of the initial object and the radius of the circle is the maximum shift of the centroid. The radius is calculated as $v \times t$ where $v$ is the maximum velocity of the object and $t$ is the time gap between the initial and subsequent scenes. This calculation ensures that the circle can adapt to different time gaps. We call this circle the \emph{movement\,bounding\,circle} (MBC).  
+Given a set \emph{O} of object types where objects of the same type are PIOs, a set $O_{t_1}$ of objects of given type at time $t_1$ , and a set $O_{t_2}$ of objects of given type at later time $t_2$ after a physical event. The task is to match objects in $O_{t_1}$ to those in $O_{t2}$ such that the matched objects are identical. We refer to objects in an initial scene as initial objects and objects in a subsequent scene as subsequent objects. The search space of the problem is huge as there is a combinatorial number of potential matches between any two object sets. However, most matches can be avoided by searching through the corresponding objects only in a limited area. The area of the initial object should therefore cover all the objects in the subsequent scene that can be potentially matched to the initial object.  We use a circular region to represent this area. The circle's centre is located at the centroid of the initial object and the radius of the circle is the maximum shift of the centroid. The radius is calculated as $v \times t$ where $v$ is the maximum velocity of the object and $t$ is the time gap between the initial and subsequent scenes. This calculation ensures that the circle can adapt to different time gaps. We call this circle the \emph{movement\,bounding\,circle} (MBC).  
 \begin{figure}[t]
 \centering\includegraphics[scale=0.3]{quadrants.png}
 \vspace{-3mm}
@@ -155,7 +154,7 @@ The model $M_{\cal{R}}$ contains all such configurations and can be replaced wit
 \section{Handling Common Movement by Spatial Reasoning}
 \label{CM}
 
-One challenge is to determine a match between PIOs that are close to each other and have similar trajectories. Figure \ref{SCOExample_2}.a  shows a scene where objects A and B form a slope and three indistinguishable squares, $o_1$, $o_2$ and $o_3$, are lying on the slope. Figure \ref{SCOExample_2}.b is a subsequent image where the three squares have rolled down slightly. There are 6 ways in total to match the squares in the two images but only $\{o_1 \sim o_4, o_2 \sim o_5, o_3 \sim o_6\}$ is possible ($\sim$ is a operator that matches one object to another). Because they do not use reasoning about the spatial relations between the squares, some optimization algorithms, e.g.\ minimizing centroid shift, will tend to match $o_2$ with $o_6$. In many cases, object dynamics, such as velocities, are unavailable, thus many of the state-of-the-art tracking algorithms will not work well because of the lack of a suitable dynamic model. 
+One challenge is to determine a match between PIOs that are close to each other and have similar trajectories. Figure \ref{SCOExample_2}.a  shows a scene where objects A and B form a slope and three indistinguishable squares, $o_1$, $o_2$ and $o_3$, are lying on the slope. Figure \ref{SCOExample_2}.b is a subsequent image where the three squares have rolled down slightly. There are 6 ways in total to match the squares but only $\{o_1 \sim o_4, o_2 \sim o_5, o_3 \sim o_6\}$ is possible ($\sim$ is a operator that matches one object to another). Because they do not use reasoning about the spatial relations between the squares, some optimization algorithms, e.g.\ minimizing centroid shift, will tend to match $o_2$ with $o_6$. In many cases, object dynamics, such as velocities, are unavailable, thus many of the state-of-the-art tracking algorithms will not work well because of the lack of a suitable dynamic model. 
 
 \begin{figure}[t]
 \centering\includegraphics[scale=0.25]{SpatiallyCorrelatdScenario.png}
@@ -181,19 +180,18 @@ Given a set of initial objects, we obtain the SCOs by checking the node equivale
 
 
 
-\section{A Method for Tracking Objects}
+\section{A Method for Tracking PIOs}
 
-We proposed a method that utilizes all the above mentioned techniques to solve the matching problem (Alg. \ref{algo}). We refer to objects in an initial scene as initial objects and objects in a subsequent scene as subsequent objects.
-
-First, the method randomly assigns a unique ID to each initial object, and estimates the MBC quadrants for each initial object according to the object's spatial relations (Alg. \ref{algo} line \ref{MA}). The list of possible matches for each initial object is set so that it contains only the subsequent objects that are of the same type and within the MBC quadrants (Alg. \ref{algo} line \ref{SetPossible}). The method then creates a preference list from the possible matches of each of the initial objects: the subsequent objects in the preference list are sorted by the size of the centroid shift from the initial object in ascending order. The method matches the two sets of objects using a stable marriage algorithm \cite{gale1962college} with the pre-computed preference lists (Alg. \ref{algo} line \ref{calPref}). The algorithm ensures each match is stable in the sense that no pair of objects would prefer each other over their matched partners. Then, the method finds all groups of spatially correlated objects from the initial objects and gets their corresponding objects from the match (Alg. \ref{algo} line \ref{getSCO}). The method then checks to see whether the spatial constraint  has been violated. If it has, it resolves this accordingly (Alg. \ref{algo} line \ref{CommonMotion}).
-\vspace{-0.5mm}
+We proposed a method that utilizes all the above mentioned techniques to solve the tracking problem (Alg. \ref{algo}). %We refer to objects in an initial scene as initial objects and objects in a subsequent scene as subsequent objects. 
+Our method first randomly assigns a unique ID to each initial object, and estimates the MBC quadrants according to their spatial relations (Alg. \ref{algo} line \ref{MA}). The list of possible matches for each initial object is set so that it contains only the subsequent objects that are of the same type and within the MBC quadrants (Alg. \ref{algo} line \ref{SetPossible}). The method then creates a preference list from the possible matches of each of the initial objects: the subsequent objects in the preference list are sorted by the size of the centroid shift from the initial object in ascending order. The method matches the two sets of objects using a stable marriage algorithm \cite{gale1962college} with the pre-computed preference lists (Alg. \ref{algo} line \ref{calPref} -- line \ref{stableMarriage}). The algorithm ensures each match is stable in the sense that no pair of objects would prefer each other over their matched partners. Then, it finds all groups of spatially correlated objects from the initial objects and gets their corresponding objects from the match (Alg. \ref{algo} line \ref{getSCO}). The method then checks to see whether the spatial constraint  has been violated. If it has, it resolves this accordingly (Alg. \ref{algo} line \ref{CommonMotion}).
+\vspace{-4mm}
 \section{Implementation}
 
-We implemented our method and applied it to the Angry Birds where the vision system can detect the exact shapes of the objects \cite{andrewwang}. The objects' visual appearance are restricted to a finite number of templates (Figure \ref{Templates}).  
+We implemented our method and applied it to the Angry Birds where the vision system can detect the exact shapes of the objects \cite{andrewwang}. The objects' visual appearance are restricted to a finite number of types (Figure \ref{Templates}).  
 \begin{figure}[t!]
 \centering\includegraphics[scale=0.28]{Templates2.png}
 \vspace{-2.5mm}
-\caption{(a) Main Templates used in Angry Birds (b) The vision detects the real shapes of the objects in a typical Angry Birds scenario}
+\caption{(a) Main object types in Angry Birds (b) The vision detects the real shapes of the objects in a typical Angry Birds scenario}
 \label{Templates}
 \vspace{-4mm}
 \end{figure}
@@ -230,7 +228,7 @@ An object can also be totally occluded. Before the matching, we cache the spatia
 \vspace{-2mm}
 \section{Evaluation}
 
-Matching an object can be trivial if the object has a unique appearance or stays stationary across images. We measure the accuracy of the tracking method by the percentage of correct matches out of the possible mismatches. Specifically, given a set \emph{n} of objects in an initial scenario and assume \emph{m} of them are either of unique type or stationary across images, then the total number of possible mismatches is \emph{n - m}. We count the correct matches \emph{c} of the \emph{n - m} possible mismatches. The accuracy is  \emph{c / (n - m)}. The evaluation has been done in two steps. We first collect samples from active angry birds scenarios, and obtain the ground truth by applying our method using the smallest time gap. Then we evaluate the method by varying the time gaps and obtain the accuracy by comparing against the ground truth.
+Matching an object can be trivial if the object has a unique appearance or stays stationary across images. We measure the accuracy of the method by the percentage of correct matches out of the possible mismatches. Given a set \emph{n} of objects in an initial scenario and assume \emph{m} of them are either of unique type or stationary across images, we count the correct matches \emph{c} of the \emph{n - m} possible mismatches. The accuracy is  \emph{c / (n - m)}. We also show the percentage (\emph{TPercent}) of the number of correctly matched objects out of the total number of objects (\emph{c / n}). The evaluation has been done in two steps. We first collect samples from active angry birds scenarios, and obtain the ground truth by applying our method using the smallest time gap. Then we evaluate the method by varying the time gaps and obtain the accuracy by comparing against the ground truth.
 
  
 \subsection{Obtaining Ground Truth}
@@ -240,11 +238,11 @@ We collect a sample by capturing a sequence of screenshots before and after a sh
 \begin{figure}[t]
 \centering\includegraphics[scale=0.25]{TrackingBackup.png}\caption{The method tracks through the screenshots and labels the matched objects with the same ID.} %The match between the first and last screenshots is saved as the ground truth
 \label{Tracking}
-\vspace{-6mm}
+\vspace{-5mm}
 \end{figure}
 
 To automate this process, we run an angry-birds agent that always aims at an random pig on the first 21 poached-eggs Levels \cite{abGame}. The agent starts to capture screenshots once a shot is made, and stops after 10 seconds. At each level, the agent records the screenshots of at most four shots. We collected 62 non-trivial samples. To evaluate the accuracy of the ground truth, we run our method on 10 samples randomly picked from the 62. We determine the accuracy by manually labelling the initial objects and their correspondence in the end screenshot, and compare with the matching. This accuracy is a lower-bound accuracy of matching between a pair of screenshots with the specified time gap, because any incorrect matches made in the intermediate stage will yield mismatches between the first and end screenshots.  
-The method can match most of the objects with less than 4 mismatches per sample.The method achieves real-time performance with average 3 ms per match. To illustrate the significant improvements achieved by the reasoning techniques mentioned above, we compare our method with an approach (\emph{BASIC}) that matches objects using their visual appearance and minimizes the centroid shift between initial and subsequent objects. \emph{BASIC} is a modified version of our method with the movement approximation, and common movement handling disabled. The results are shown in Table \ref{empiResults} with each row represents a sample. For each sample, we also show the percentage of the number of correctly matched objects out of the total number of objects (\emph{TPercent}).
+The method can match most of the objects with less than 2 mismatches per sample.The method achieves real-time performance with average 7 ms per match. To illustrate the significant improvements achieved by the reasoning techniques mentioned above, we compare our method with an approach (\emph{BASIC}) that matches objects using their visual appearance and minimizes the centroid shift between initial and subsequent objects. \emph{BASIC} is a modified version of our method with the movement approximation, and common movement handling disabled. The results are shown in Table \ref{empiResults} with each row represents a sample.
 
 
 \begin{table}[t!]\small
@@ -259,7 +257,7 @@ QSR  & QSR & BASIC & QSR & BASIC\\
 1.00&1.00 & 1.00 & 0 & 0\\
 0.94&0.80 & 0.40 & 2 & 6\\
 0.89&0.85 & 0.54 & 2 & 6\\
-0.91&0.76 & 0.41 & 4 & 10\\
+0.91&0.87 & 0.41 & 2 & 10\\
 1.00&1.00 & 0.00 & 0 & 2\\
 1.00&1.00 & 0.56 & 0 & 4\\
 0.93&0.78 & 0.33 & 2 & 6 \\
@@ -269,7 +267,7 @@ QSR  & QSR & BASIC & QSR & BASIC\\
 \end{tabular}
 \vspace{-2mm}
 \caption{Results on the 10 samples(\,\emph{QSR}: the proposed method, \emph{BASIC}: the modified method )}\label{empiResults}
-\vspace{-4mm}
+\vspace{-6mm}
 \end{table}
 
 \begin{table}[t!]\small
@@ -279,7 +277,7 @@ QSR  & QSR & BASIC & QSR & BASIC\\
 \hline
 Time gap (ms) & TPercent & Accuracy & Mismatch\\
 \hline
-100 & 0.91 & 0.85 & 2.22\\
+100 & 0.94 & 0.85 & 2.22\\
 200 & 0.89 & 0.80 & 3.22\\
 300 & 0.88 & 0.77 & 3.4\\
 500 & 0.85 & 0.70 & 3.98\\
@@ -287,14 +285,14 @@ Time gap (ms) & TPercent & Accuracy & Mismatch\\
 \hline
 \end{tabular}
 \vspace{-2mm}
-\caption{Results on the 62 samples with different time gaps. TPercen, Accuracy, Mismatch are average of all the samples }\label{empiResults_2}
-\vspace{-8mm}
+\caption{Results on the 52 samples with different time gaps. TPercen, Accuracy, Mismatch are average of all the samples }\label{empiResults_2}
+\vspace{-7mm}
 \end{table}
 
 
 \subsection{Experimental Results}
 
-We evaluate our method on the 62 samples (12400 screenshots) with varying time gaps, namely 100 ms, 200 ms (the maximum delay in getting screenshots in the competition), 300 ms (the time taken by requesting a screenshot plus the vision segmentation), 500ms, and 1000 ms. For a particular time gap, say 200 ms, the method will start from the first screenshot, go through every \emph{200/50 = 4} (50 ms is the time gap used to collect the samples) screenshots of the original sequence, until the last. E.g. Given a sample with a sequence of screenshots $s_1, s_2, ..., s_{14}$, the method using 200 ms as the time gap will track through $s_1, s_6, s_{10}, s_{14}$ sequentially. The accuracy and mismatches are then obtained by comparing against the saved ground truth. Thus, the mismatches can be viewed as \emph{additional mismatches} to the ground truth. As expected, the accuracy drops down when applying larger time gaps (Table \ref{empiResults_2}). 
+We evaluate our method on the remaining 52 samples (10400 screenshots) with varying time gaps, namely 100 ms, 200 ms (the maximum delay in getting screenshots in the competition), 300 ms (the time taken by requesting a screenshot plus the vision segmentation), 500ms, and 1000 ms. For a particular time gap, say 200 ms, the method will start from the first screenshot, go through every \emph{200/50 = 4} (50 ms is the time gap used to collect the samples) screenshots of the original sequence, until the last. E.g. Given a sample with a sequence of screenshots $s_1, s_2, ..., s_{14}$, the method using 200 ms as the time gap will track through $s_1, s_6, s_{10}, s_{14}$ sequentially. The accuracy and mismatches are obtained by comparing against the saved ground truth. Thus, the mismatches can be viewed as \emph{additional mismatches} to the ground truth. As expected, the accuracy drops down when applying larger time gaps (Table \ref{empiResults_2}). 
 \vspace{-2mm}
 
 
@@ -314,53 +312,58 @@ One possible line of future work is to extend our method to deal with arbitrary 
 \caption{The Object Tracking Algorithm}\label{algo}
 \begin{algorithmic}[1]
 \Procedure {MatchObjects}{\emph{objs}}
-\State \emph{iniobjs}// initial objects, \emph{sol$\leftarrow$ \{\}}
-\State \emph{pmatches$\leftarrow$ApproxMovement(iniobjs,objs)} \label{SetPossible}
-\State CalculatePreference(\emph{iniobjs},\emph{pmatches})\label{calPref}
-\State \emph{freeobjs$\leftarrow$iniobjs}
-\While{freeobjs is not empty}\label{stableMarriage}
+\State \emph{iniobjs}// initial objects, \emph{sol$\leftarrow$ \{\}}//solution
+\For {\emph{iniobj$\in$iniobjs}}\label{MA}
+\State \emph{pobjs$\leftarrow$\{\}}, compute the active quadrants of \emph{iniobj}, add \emph{obj$\in$objs} to \emph{pobjs} if \emph{obj} is within the quadrants and have the same type with \emph{iniobj} 
+\State \emph{pmatches$\leftarrow$pmatches $\cup$ \{(iniobj, pobjs)\}}\label{SetPossible}
+\EndFor
+\State CreatePreference(\emph{iniobjs},\emph{pmatches})\label{calPref}, \emph{freeobjs$\leftarrow$iniobjs}
+\While{freeobjs is not empty}
 \State \emph{iniobj $\leftarrow$ dequeue(freeobjs)}, get the next preferred \emph{obj} from \emph{iniobj}'s preference list  
 \If {\emph{obj} is not assigned yet}
    \emph{sol $\leftarrow$ sol $\cup$ \{(iniobj,obj)\}}
-  \Else\,\emph{obj} has been assigned to \emph{$iniobj^{\prime}$}
+  \Else\,\emph{obj} has been assigned to some object \emph{$iniobj^{\prime}$}
   \If{\emph{obj} prefers \emph{iniobj} to \emph{$iniobj^{\prime}$}}
-   \emph{sol$\leftarrow$ sol $\cup$ \{(iniobj, obj)\}}, \emph{freeobjs$\leftarrow$ $freeobjsj^{\prime}$\}}
+   \emph{sol$\leftarrow$ sol $\cup$ \{(iniobj, obj)\}}, \emph{freeobjs$\leftarrow$ $freeobjs^{\prime}$\}}
   \Else\, 
    \emph{freeobjs$\leftarrow$ freeobjs$\cup$\{iniobj\}}
 \EndIf 
 \EndIf
-\EndWhile
-\State CommonMotion(GetSCO(\emph{iniobjs}), \emph{sol})
-\EndProcedure
-
-\Procedure{GetSCO}{\emph{objs}}\label{getSCO}
-\State \emph{cobjsList$\leftarrow$\{\}}
-\For {\emph{obj}$\in$\emph{objs}}
-\State \emph{cobjs$\leftarrow$objs}, \emph{tobjs}$\leftarrow$objects that touch \emph{obj}
-\For {\emph{tobj}$\in$\emph{tobjs}}
-\State \emph{ttobjs}$\leftarrow$ a set of the objects excluding \emph{obj} that touch \emph{tobj} via the same contact.
-\State \emph{cobjs}$\leftarrow$\emph{cobjs} $\cap$ \emph{ttobjs}
-\EndFor
-\State \emph{cobjsList}$\leftarrow$\emph{cobjsList $\cup$ cobjs}
-\EndFor\,
-\Return \emph{cobjsList}
-\EndProcedure
-
-\Procedure{ApproxMovement}{\emph{iniobjs}, \emph{objs}}\label{MA}
-\For {\emph{iniobj$\in$iniobjs}}
-\State \emph{pobjs$\leftarrow$\{\}}, compute the active quadrants of \emph{iniobj}, add \emph{obj$\in$objs} to \emph{pobjs} if \emph{obj} is within the quadrants and have the same type with \emph{iniobj} 
-\State \emph{pmatches$\leftarrow$pmatches $\cup$ \{(iniobj, pobjs)\}}
-\EndFor\,
-\Return \emph{pmatches}
-\EndProcedure
-\Procedure{CommonMotion}{$cobjsList$, $sol$}\label{CommonMotion}
-\For {\emph{cobjs$\in$cobjsList}}
-\State for each object in \emph{cobjs}, get its matched \emph{obj} from \emph{sol}. Check whether the spatial constraints are violated. Re-assign until resolved  
+\EndWhile\label{stableMarriage}
+\State build the QCN on \emph{iniobjs}, get \emph{SCOs} by node equivalence \label{getSCO}
+\For {\emph{sco$\in$SCOs}}\label{CommonMotion}
+\State for each object in \emph{sco}, get its matched \emph{obj} from \emph{sol}. Check whether the spatial constraints are violated. Re-assign until resolved 
 \EndFor
 \EndProcedure
+%
+%\Procedure{GetSCO}{\emph{objs}}\label{getSCO}
+%\State \emph{cobjsList$\leftarrow$\{\}}
+%\For {\emph{obj}$\in$\emph{objs}}
+%\State \emph{cobjs$\leftarrow$objs}, \emph{tobjs}$\leftarrow$objects that touch \emph{obj}
+%\For {\emph{tobj}$\in$\emph{tobjs}}
+%\State \emph{ttobjs}$\leftarrow$ a set of the objects excluding \emph{obj} that touch \emph{tobj} via the same contact.
+%\State \emph{cobjs}$\leftarrow$\emph{cobjs} $\cap$ \emph{ttobjs}
+%\EndFor
+%\State \emph{cobjsList}$\leftarrow$\emph{cobjsList $\cup$ cobjs}
+%\EndFor\,
+%\Return \emph{cobjsList}
+%\EndProcedure
+
+%\Procedure{ApproxMovement}{\emph{iniobjs}, \emph{objs}}\label{MA}
+%\For {\emph{iniobj$\in$iniobjs}}
+%\State \emph{pobjs$\leftarrow$\{\}}, compute the active quadrants of %\emph{iniobj}, add \emph{obj$\in$objs} to \emph{pobjs} if \emph{obj} is within the quadrants and have the same type with \emph{iniobj} 
+%\State \emph{pmatches$\leftarrow$pmatches $\cup$ \{(iniobj, pobjs)\}}
+%\EndFor\,
+%\Return \emph{pmatches}
+%\EndProcedure
+%\Procedure{CommonMotion}{\emph{SCOs, sol}}\label{CommonMotion}
+%\For {\emph{soc$\in$SCOs}}
+%\State for each object in \emph{sco}, get its matched \emph{obj} from \emph{sol}. Check whether the spatial constraints are violated. Re-assign until resolved  
+%\EndFor
+%\EndProcedure
 \end{algorithmic}
 \end{algorithm}
-
+\clearpage
 \newpage
 \bibliography{OT}
 \bibliographystyle{aaai}
